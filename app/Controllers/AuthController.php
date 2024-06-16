@@ -5,16 +5,15 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 
 use App\Models\Employee as EmployeeModel;
-use Config\Cookie;
 
-class Login extends BaseController
+class AuthController extends BaseController
 {
 
     private $n = 60;
 
-    public function index()
+    public function login()
     {
-        $this->cachePage($this->n);
+        // $this->cachePage($this->n);
         return view('login');
     }
 
@@ -28,12 +27,10 @@ class Login extends BaseController
 
          $employee = $employeeModel->where('name', $name)->first();
          
-       
+        
+         $session = service('session');
 
          if ($employee && $employee->verifyPassword($password)) {
-             // Authentication successful
-
-             $session = service('session');
 
              $newData = [
                 'name' => $name,
@@ -45,11 +42,23 @@ class Login extends BaseController
              return redirect()->to("/"); 
 
          } else {
-             return redirect()->back()->with('error', 'Invalid username or password');
+
+            $session->setFlashdata('error', 'Invalid username or password');
+
+            return redirect()->back();
          }
         
 
     
 
+    }
+
+    public function logout(){
+        $session = service('session');
+
+        $array_items = ['name', 'role'];
+        $session->remove($array_items);
+
+        return redirect()->to("login");
     }
 }

@@ -9,7 +9,11 @@ $routes->get('/', 'Home::index');
 
 $routes->get('dashboard', 'Home::index');
 
-$routes->post('login/acceptdata' ,'Login::acceptData');
+//AUTHENTICATION
 
-$routes->get('login', 'Login::index');
+$routes->post('login/acceptdata' ,'AuthController::acceptData');
+
+$routes->get('login', 'AuthController::login');
+
+$routes->get('logout', 'AuthController::logout');
 

@@ -25,19 +25,22 @@ class AuthFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        // $isLoggedin = false;
+        $session = session();
 
-        // if(!$isLoggedin){
-
-        //     return redirect("Login::index");
+        if($session && $session->has('name')){
+            if(strtolower(uri_string()) === "login"
+                    ){
+                return redirect("Home::index");
+            }
             
-        // }else{
-        //     if(strtolower(current_url(false)) === "login"){
-        //         return redirect("Home::index");
-        //     }
-        // }
+        }else{
 
-        
+            if(strtolower(uri_string()) !== "login"
+             && strtolower(uri_string()) !== "login/acceptdata"){
+                return redirect("AuthController::login");
+            }
+
+        }
     }
 
     /**
@@ -54,6 +57,6 @@ class AuthFilter implements FilterInterface
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        //
+       
     }
 }
