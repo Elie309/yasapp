@@ -4,7 +4,7 @@
   },
   "name": "yasapp",
   "version": "1.0.0",
-  "description": "## What is CodeIgniter?",
+  "description": "The Real Estate App - YASApp",
   "main": "tailwind.config.js",
   "directories": {
     "test": "tests"

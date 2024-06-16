@@ -12,3 +12,6 @@ The Real Estate App is a web application designed to manage real estate properti
 - **Search and Filter**: Search for properties by various criteria such as location, price range, and property type.
 - **Responsive Design**: Fully responsive design that works on all devices, from desktops to mobile phones.
 
+## License
+
+This repository is licensed under a proprietary license. All rights reserved. No permission is granted to use, copy, modify, or distribute this software for any purpose without prior written permission from the author.
