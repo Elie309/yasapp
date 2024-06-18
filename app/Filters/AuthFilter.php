@@ -28,8 +28,7 @@ class AuthFilter implements FilterInterface
         $session = session();
 
         if($session && $session->has('name')){
-            if(strtolower(uri_string()) === "login"
-                    ){
+            if(strtolower(uri_string()) === "login"){
                 return redirect("Home::index");
             }
             
