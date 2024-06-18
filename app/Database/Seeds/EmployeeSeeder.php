@@ -14,27 +14,27 @@ class EmployeeSeeder extends Seeder
 
         $data = [
             [
-                'name'   => 'admin',
-                'password'   => password_hash('admin123', PASSWORD_BCRYPT),
-                'role'       => 'admin',
+                'employee_name'   => 'admin',
+                'employee_password'   => password_hash('admin123', PASSWORD_BCRYPT),
+                'employee_role'       => 'admin',
             ],
             [
-                'name'   => 'user',
-                'password'   => password_hash('user123', PASSWORD_BCRYPT),
-                'role'       => 'user',
+                'employee_name'   => 'user',
+                'employee_password'   => password_hash('user123', PASSWORD_BCRYPT),
+                'employee_role'       => 'user',
             ],
         ];
 
         // Generate additional fake data
         for ($i = 0; $i < 10; $i++) {
             $data[] = [
-                'name'   => $faker->unique()->userName,
-                'password'   => password_hash($faker->password, PASSWORD_BCRYPT),
-                'role'       => 'user',
+                'employee_name'   => $faker->unique()->userName,
+                'employee_password'   => password_hash($faker->password, PASSWORD_BCRYPT),
+                'employee_role'       => 'user',
             ];
         }
         
-        $this->db->table('employee')->insertBatch($data);
+        $this->db->table('employees')->insertBatch($data);
     }
 }
 

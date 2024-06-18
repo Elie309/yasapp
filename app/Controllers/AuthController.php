@@ -9,10 +9,11 @@ use App\Models\Employee as EmployeeModel;
 class AuthController extends BaseController
 {
 
-    private $n = 60;
+    // private $n = 60;
 
     public function login()
     {
+        //TODO: To activate later on production
         // $this->cachePage($this->n);
         return view('login');
     }
@@ -25,7 +26,7 @@ class AuthController extends BaseController
 
          $employeeModel = new EmployeeModel();
 
-         $employee = $employeeModel->where('name', $name)->first();
+         $employee = $employeeModel->where('employee_name', $name)->first();
          
         
          $session = service('session');
@@ -34,7 +35,7 @@ class AuthController extends BaseController
 
              $newData = [
                 'name' => $name,
-                'role' => $employee->role,
+                'role' => $employee->employee_role,
              ];
     
              $session->set($newData);

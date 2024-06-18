@@ -12,13 +12,13 @@ class Employee extends Entity
 
     public function setPassword(string $pass)
     {
-        $this->attributes['password'] = password_hash($pass, PASSWORD_BCRYPT);
+        $this->attributes['employee_password'] = password_hash($pass, PASSWORD_BCRYPT);
 
         return $this;
     }
 
     public function verifyPassword($password)
     {
-        return password_verify($password, $this->attributes['password']);
+        return password_verify($password, $this->attributes['employee_password']);
     }
 }
