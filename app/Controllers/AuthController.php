@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 
-use App\Models\Employee as EmployeeModel;
+use App\Models\EmployeeModel;
 
 class AuthController extends BaseController
 {
