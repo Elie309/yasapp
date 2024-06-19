@@ -33,14 +33,13 @@ class AuthFilter implements FilterInterface
             $role = strtolower($session->get('role'));
 
             if($currentUri === "login"){
-                return redirect("Home::index");
+                return redirect("HomeController::index");
             }
 
             $allowedRoles = ["admin", "manager"];
             
             if (str_contains($currentUri, "settings") && !in_array($role, $allowedRoles)) {
-                log_message('debug', 'Redirecting to Home::index due to restricted access to settings.');
-                return redirect("Home::index");
+                return redirect("HomeController::index");
             }
             
         }else{

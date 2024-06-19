@@ -5,9 +5,9 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+$routes->get('/', 'HomeController::index');
 
-$routes->get('dashboard', 'Home::index');
+$routes->get('dashboard', 'HomeController::index');
 
 //AUTHENTICATION
 
