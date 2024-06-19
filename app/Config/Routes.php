@@ -17,3 +17,7 @@ $routes->get('login', 'AuthController::login');
 
 $routes->get('logout', 'AuthController::logout');
 
+
+//SETTINGS
+$routes->get('settings', 'SettingsController::index');
+
