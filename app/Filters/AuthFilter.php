@@ -26,16 +26,28 @@ class AuthFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
+        $currentUri = strtolower(uri_string());
 
         if($session && $session->has('name')){
-            if(strtolower(uri_string()) === "login"){
+
+            $role = strtolower($session->get('role'));
+
+            if($currentUri === "login"){
+                return redirect("Home::index");
+            }
+
+            $allowedRoles = ["admin", "manager"];
+            
+            if (str_contains($currentUri, "settings") && !in_array($role, $allowedRoles)) {
+                log_message('debug', 'Redirecting to Home::index due to restricted access to settings.');
                 return redirect("Home::index");
             }
             
         }else{
 
-            if(strtolower(uri_string()) !== "login"
-             && strtolower(uri_string()) !== "login/acceptdata"){
+            $allowedLinksForNonUsers = ["login", "login/acceptdata"];
+
+            if(!in_array($currentUri, $allowedLinksForNonUsers)){
                 return redirect("AuthController::login");
             }
 

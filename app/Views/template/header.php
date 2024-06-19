@@ -35,6 +35,15 @@
                     <li class="mb-4"><a href="" class="block p-4 rounded hover:bg-red-800">Listings</a></li>
                     <li class="mb-4"><a href="" class="block p-4 rounded hover:bg-red-800">Requests</a></li>
                     <li class="mb-4"><a href="" class="block p-4 rounded hover:bg-red-800">Profile</a></li>
+
+                    <?php 
+                    
+                    if($role === 'admin' ){
+                        echo '<li class="mb-4"><a href="settings" class="block p-4 rounded hover:bg-red-800">Settings</a></li>';
+                    }
+
+                    ?>
+
                     <li class="mb-4"><a href="/logout" class="block p-4 rounded hover:bg-red-800">Logout</a></li>
                 </ul>
             </nav>
