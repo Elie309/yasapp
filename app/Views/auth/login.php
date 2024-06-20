@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href="css/output.css" rel="stylesheet">
+    <link href="<?= base_url('/css/output.css') ?>" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 sm:flex sm:items-center sm:justify-center min-h-screen">
@@ -22,7 +22,7 @@
             <div class="w-full sm:h-1/2 sm:w-1/2
                 flex items-center justify-center
                 ">
-                <img src="logo.webp" alt="Logo" class="w-2/3 sm:w-full drop-shadow-md min-h-fit">
+                <img src="<?= base_url('logo.webp') ?>" alt="Logo" class="w-2/3 sm:w-full drop-shadow-md min-h-fit">
             </div>
 
 
@@ -32,7 +32,7 @@
                 <form action="<?= base_url('login/acceptdata') ?>" method="POST">
                     <div class="mb-4">
 
-                        <label for="Name" class="block font-bold text-red-800">Email</label>
+                        <label for="name" class="block font-bold text-red-800">Email</label>
 
                         <input type="text" id="name" name="name" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
 
