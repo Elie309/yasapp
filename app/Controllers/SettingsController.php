@@ -11,6 +11,13 @@ class SettingsController extends BaseController
     {
         $session = service('session');
         
-        return view("template/header", ['role' => $session->get('role')]) . view('settings') . view("template/footer");
+        return view("template/header", ['role' => $session->get('role')]) . view('settings/settings') . view("template/footer");
+    }
+
+    public function location(){
+
+        $session = service('session');
+        
+        return view("template/header", ['role' => $session->get('role')]) . view('settings/location') . view("template/footer");
     }
 }
