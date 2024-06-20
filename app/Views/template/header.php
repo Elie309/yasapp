@@ -8,7 +8,7 @@
     <link href="<?= base_url('css/output.css') ?>" rel="stylesheet">
 </head>
 
-<body class=" bg-gray-100 flex flex-col min-h-screen overflow-hidden">
+<body class=" bg-gray-100 flex flex-col min-h-screen  overflow-x-hidden overflow-y-auto">
     <!-- Top Navigation Bar -->
     <nav class="md:hidden bg-gray-800 text-white px-4 py-2 flex justify-between">
         <img src="<?= base_url('logo.png') ?>" alt="Logo" class="w-36">
@@ -21,7 +21,7 @@
 
         <!-- Sidebar -->
         <div id="sidebar" class="hidden
-                            absolute z-50 w-full min-h-full bg-gray-700
+                            w-full min-h-full bg-gray-700
                             md:relative md:block md:w-1/4 md:max-w-60 md:bg-gray-800 
                             text-white p-4 
                            ">
