@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS Users (
 -- Countries TABLE 
 CREATE TABLE IF NOT EXISTS Countries (
     country_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    country_name VARCHAR(255) NOT NULL,
-    country_code VARCHAR(5) NOT NULL
+    country_name VARCHAR(255) NOT NULL UNIQUE,
+    country_code VARCHAR(5) NOT NULL UNIQUE
 );
 
 -- Phones TABLE 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS Phones (
 CREATE TABLE IF NOT EXISTS Regions (
     region_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     country_id INT UNSIGNED NOT NULL,
-    region_name VARCHAR(255) NOT NULL,
+    region_name VARCHAR(255) NOT NULL UNIQUE,
     FOREIGN KEY (country_id) REFERENCES Countries(country_id)
 );
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS Regions (
 CREATE TABLE IF NOT EXISTS Subregions (
     subregion_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     region_id INT UNSIGNED NOT NULL,
-    subregion_name VARCHAR(255) NOT NULL,
+    subregion_name VARCHAR(255) NOT NULL UNIQUE,
     FOREIGN KEY (region_id) REFERENCES Regions(region_id)
 );
 
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS Subregions (
 CREATE TABLE IF NOT EXISTS Cities (
     city_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     subregion_id INT UNSIGNED NOT NULL,
-    city_name VARCHAR(255) NOT NULL,
+    city_name VARCHAR(255) NOT NULL UNIQUE,
     FOREIGN KEY (subregion_id) REFERENCES Subregions(subregion_id)
 );
 
@@ -73,14 +73,14 @@ CREATE TABLE IF NOT EXISTS Locations (
 -- PaymentPlans TABLE
 CREATE TABLE IF NOT EXISTS PaymentPlans (
     payment_plan_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    payment_plan_name VARCHAR(255) NOT NULL
+    payment_plan_name VARCHAR(255) NOT NULL UNIQUE
 );
 
 -- Currencies TABLE 
 CREATE TABLE IF NOT EXISTS Currencies (
     currency_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    currency_code VARCHAR(10) NOT NULL,
-    currency_name VARCHAR(255) NOT NULL
+    currency_code VARCHAR(10) NOT NULL UNIQUE,
+    currency_name VARCHAR(255) NOT NULL UNIQUE
 );
 
 
