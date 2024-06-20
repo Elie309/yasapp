@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link href="css/output.css" rel="stylesheet">
+    <link href="<?= base_url('css/output.css') ?>" rel="stylesheet">
 </head>
 
 <body class=" bg-gray-100 flex flex-col min-h-screen overflow-hidden">
     <!-- Top Navigation Bar -->
     <nav class="md:hidden bg-gray-800 text-white px-4 py-2 flex justify-between">
-        <img src="logo.png" alt="Logo" class="w-36">
+        <img src="<?= base_url('logo.png') ?>" alt="Logo" class="w-36">
         <button id="sidebar-toggle" class="md:hidden text-3xl text-white focus:outline-none mr-4">
             &#9776;
         </button>
@@ -28,7 +28,7 @@
 
 
             <div class="hidden md:block mb-8">
-                <img src="logo.png" alt="Logo" class="w-full max-w-60 max-h-32 mx-auto md:mx-0">
+                <img src="<?= base_url('logo.png') ?>" alt="Logo" class="w-full max-w-60 max-h-32 mx-auto md:mx-0">
             </div>
             <nav>
                 <ul class="font-bold text-center md:text-start">

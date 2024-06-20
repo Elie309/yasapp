@@ -15,7 +15,7 @@ class AuthController extends BaseController
     {
         //TODO: To activate later on production
         // $this->cachePage($this->n);
-        return view('login');
+        return view('auth/login');
     }
 
     public function acceptData(){
