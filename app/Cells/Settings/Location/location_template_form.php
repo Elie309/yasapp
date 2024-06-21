@@ -30,7 +30,9 @@
             <label for="<?= $inputFormId ?>" class="block text-gray-700"><?php echo $inputFormName ?></label>
             <input type="text" id="<?= $inputFormId ?>" name="<?= $inputFormId ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
         </div>
-        <button type="submit" class="w-full bg-red-800 text-white py-2 rounded hover:bg-red-900">Add <?php echo $inputFormName ?></button>
+        <button type="submit" class="w-full bg-red-800 text-white
+                        py-2 rounded ease-in-out 
+                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Add <?php echo $inputFormName ?></button>
     </form>
 
 </div>
