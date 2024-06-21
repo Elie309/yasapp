@@ -20,5 +20,18 @@ $routes->get('logout', 'AuthController::logout');
 
 //SETTINGS
 $routes->get('settings', 'SettingsController::index');
-$routes->get('settings/location', 'SettingsController::location');
+$routes->get('settings/location', 'Settings\LocationController::index');
+
+//SETTINGS POST
+
+$routes->post('settings/location/add-city', 'Settings\LocationController::addCity');
+$routes->post('settings/location/add-subregion', 'Settings\LocationController::addSubregion');
+$routes->post('settings/location/add-region', 'Settings\LocationController::addRegion');
+$routes->post('settings/location/add-country', 'Settings\LocationController::addCountry');
+
+
+
+
+
+
 

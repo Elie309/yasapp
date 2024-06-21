@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Location;
 
 use CodeIgniter\Model;
 
-class Country extends Model
+class CountryModel extends Model
 {
     protected $table            = 'countries';
     protected $primaryKey       = 'country_id';
@@ -21,7 +21,4 @@ class Country extends Model
     protected array $castHandlers = [];
 
     protected $useTimestamps = false;
-
-
-
 }
