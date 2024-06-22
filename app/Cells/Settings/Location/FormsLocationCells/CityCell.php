@@ -7,10 +7,10 @@ use App\Cells\Settings\Location\LocationTemplateFormCell;
 class CityCell extends LocationTemplateFormCell
 {
     public $title = "City";
-    public $linkPost = "/add-city";
+    public $linkPost = "/settings/location/add-city";
 
     public $selectFormName = "Subregion";
-    public $selectFormId = "subregion_name";
+    public $selectFormId = "subregion_id";
 
     public $selectOptions = [
         ['id' => 1, 'name' => 'Lebanon'],

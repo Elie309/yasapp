@@ -6,7 +6,7 @@ use App\Cells\Settings\Location\LocationTemplateFormCell;
 class RegionCell extends LocationTemplateFormCell
 {
     public $title = "Region";
-    public $linkPost = "/add-region";
+    public $linkPost = "/settings/location/add-region";
 
     public $selectFormName = "Country";
     public $selectFormId = "country_id";

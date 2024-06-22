@@ -7,7 +7,7 @@ use App\Cells\Settings\Location\LocationTemplateFormCell;
 class SubregionCell extends LocationTemplateFormCell
 {
     public $title = "Subregion";
-    public $linkPost = "/add-subregion";
+    public $linkPost = "/settings/location/add-subregion";
 
     public $selectFormName = "Region";
     public $selectFormId = "region_id";
