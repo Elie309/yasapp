@@ -4,7 +4,7 @@ namespace App\Entities;
 
 use CodeIgniter\Entity\Entity;
 
-class Employee extends Entity
+class EmployeeEntity extends Entity
 {
     protected $datamap = [];
     protected $dates   = ['created_at', 'updated_at'];
