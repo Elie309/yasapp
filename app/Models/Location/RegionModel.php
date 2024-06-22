@@ -7,40 +7,34 @@ use CodeIgniter\Model;
 class RegionModel extends Model
 {
     protected $table            = 'regions';
-    protected $primaryKey       = 'id';
+    protected $primaryKey       = 'region_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = \App\Entities\Location\RegionEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['country_id','region_name'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
-    protected array $castHandlers = [];
-
-    // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
+    protected $validationRules      = [
+        'country_id' => 'required|integer',
+        'region_name' => 'required|string|max_length[255]',
+    ];
+    protected $validationMessages   = [
+        'country_id' => [
+            'required' => 'country ID is required.',
+            'integer' => 'country ID must be an integer.',
+        ],
+        'region_name' => [
+            'required' => 'region name is required.',
+            'string' => 'region name must be a string.',
+            'max_length' => 'region name cannot exceed 255 characters.',
+        ],
+    ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
 }

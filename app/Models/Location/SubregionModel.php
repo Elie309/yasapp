@@ -7,40 +7,35 @@ use CodeIgniter\Model;
 class SubregionModel extends Model
 {
     protected $table            = 'subregions';
-    protected $primaryKey       = 'id';
+    protected $primaryKey       = 'subregion_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = \App\Entities\Location\SubregionEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['region_id', 'subregion_name'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
+    
     protected array $castHandlers = [];
 
-    // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
-
     // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
+    protected $validationRules      = [
+        'region_id' => 'required|integer',
+        'subregion_name' => 'required|string|max_length[255]',
+    ];
+    protected $validationMessages   = [
+        'region_id' => [
+            'required' => 'Region ID is required.',
+            'integer' => 'Region ID must be an integer.',
+        ],
+        'subregion_name' => [
+            'required' => 'Subregion name is required.',
+            'string' => 'Subregion name must be a string.',
+            'max_length' => 'Subregion name cannot exceed 255 characters.',
+        ],
+    ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
-
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
 }
