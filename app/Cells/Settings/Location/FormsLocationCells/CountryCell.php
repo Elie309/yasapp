@@ -12,11 +12,6 @@ class CountryCell extends LocationTemplateFormCell
     public $selectFormName = "Country";
     public $selectFormId = "country_id";
 
-    public $selectOptions = [
-        ['id' => 1, 'name' => 'Lebanon'],
-        ['id' => 2, 'name' => 'USA'],
-        ['id' => 3, 'name' => 'Canada'],
-    ];
 
     public $inputFormName = "Country";
     public $inputFormId = "country_name";

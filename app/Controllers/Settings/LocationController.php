@@ -13,8 +13,22 @@ class LocationController extends BaseController
     public function index()
     {
         $session = service('session');
+
+        $cityModel = new CityModel();
+        $subregionModel = new SubregionModel();
+        $regionModel = new RegionModel();
+        $countryModel = new CountryModel();
+
+        $countries = $countryModel->findAll();
+        $regions = $regionModel->findAll();
+        $subregions = $subregionModel->findAll();
+        $cities = $cityModel->findAll();
+
+
         
-        return view("template/header", ['role' => $session->get('role')]) . view('settings/location') . view("template/footer");
+        return view("template/header", ['role' => $session->get('role')]) . 
+                view('settings/location', ['countries' => $countries, "regions" => $regions, 'subregions' => $subregions, 'cities' => $cities]) . 
+                view("template/footer");
     }
 
     public function addCity()

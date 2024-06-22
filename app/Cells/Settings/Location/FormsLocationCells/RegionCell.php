@@ -11,15 +11,15 @@ class RegionCell extends LocationTemplateFormCell
     public $selectFormName = "Country";
     public $selectFormId = "country_id";
 
-    public $selectOptions = [
-        ['id' => 1, 'name' => 'Lebanon'],
-        ['id' => 2, 'name' => 'USA'],
-        ['id' => 3, 'name' => 'Canada'],
-    ];
+    public $selectOptions = [];
 
     public $inputFormName = "Region";
     public $inputFormId = "region_name";
 
     protected string $view = APPPATH. "Cells/Settings/Location/location_template_form.php";
 
+    public function __construct($countries)
+    {
+        $this->selectOptions = $countries;
+    }
 }
