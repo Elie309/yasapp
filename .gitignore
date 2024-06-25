@@ -126,3 +126,4 @@ nb-configuration.xml
 /phpunit*.xml
 
 node_modules
+public/css/output.css
