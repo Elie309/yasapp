@@ -3,6 +3,7 @@
 namespace App\Cells\Settings\Location\FormsLocationCells;
 
 use App\Cells\Settings\Location\LocationTemplateFormCell;
+use App\Models\Location\RegionModel;
 
 class SubregionCell extends LocationTemplateFormCell
 {
@@ -12,15 +13,24 @@ class SubregionCell extends LocationTemplateFormCell
     public $selectFormName = "Region";
     public $selectFormId = "region_id";
 
-    public $selectOptions = [
-        ['id' => 1, 'name' => 'Lebanon'],
-        ['id' => 2, 'name' => 'USA'],
-        ['id' => 3, 'name' => 'Canada'],
-    ];
+    public $selectOptions = [];
 
     public $inputFormName = "Subregion";
     public $inputFormId = "subregion_name";
 
     protected string $view = APPPATH . "Cells/Settings/Location/location_template_form.php";
+
+    public function __construct()
+    {
+        $regionModel = new RegionModel();
+        $regions = $regionModel->findAll();
+
+        foreach ($regions as $region) {
+            $this->selectOptions[] = [
+                'id' => $region->region_id,
+                'name' => $region->region_name
+            ];
+        }
+    }
 
 }
