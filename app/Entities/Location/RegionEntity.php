@@ -13,4 +13,10 @@ class RegionEntity extends Entity
         'country_id' => 'integer',
         'region_name' => 'string',
     ];
+
+    public function getSubregions()
+    {
+        $subregionModel = new \App\Models\Location\SubregionModel();
+        return $subregionModel->where('region_id', $this->region_id)->findAll();
+    }
 }

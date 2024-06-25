@@ -13,4 +13,10 @@ class CountryEntity extends Entity
         'country_code' => 'string',
         'country_name' => 'string',
     ];
+
+    public function getRegions()
+    {
+        $regionModel = new \App\Models\Location\RegionModel();
+        return $regionModel->where('country_id', $this->country_id)->findAll();
+    }
 }
