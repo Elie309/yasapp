@@ -12,7 +12,7 @@ class CityModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['subregion_id', 'city_name'];
+    protected $allowedFields    = ['city_id','subregion_id', 'city_name'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

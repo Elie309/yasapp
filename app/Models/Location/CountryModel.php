@@ -12,7 +12,7 @@ class CountryModel extends Model
     protected $returnType       = \App\Entities\Location\CountryEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['country_code', 'country_name'];
+    protected $allowedFields    = ['country_id', 'country_code', 'country_name'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

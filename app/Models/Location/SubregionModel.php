@@ -12,7 +12,7 @@ class SubregionModel extends Model
     protected $returnType       = \App\Entities\Location\SubregionEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['region_id', 'subregion_name'];
+    protected $allowedFields    = ['subregion_id','region_id', 'subregion_name'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

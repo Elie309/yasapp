@@ -12,7 +12,7 @@ class RegionModel extends Model
     protected $returnType       = \App\Entities\Location\RegionEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['country_id','region_name'];
+    protected $allowedFields    = ['region_id', 'country_id','region_name'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
