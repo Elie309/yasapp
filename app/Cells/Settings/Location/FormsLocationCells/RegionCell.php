@@ -18,8 +18,4 @@ class RegionCell extends LocationTemplateFormCell
 
     protected string $view = APPPATH. "Cells/Settings/Location/location_template_form.php";
 
-    public function __construct($countries)
-    {
-        $this->selectOptions = $countries;
-    }
 }

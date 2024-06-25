@@ -13,7 +13,7 @@
 
 
 
-            <?=  $this->render('CountryCell', ['countries' => $countries]) ?>
+            <?= view_cell('\App\Cells\Settings\Location\FormsLocationCells\CountryCell::render') ?>
             <?= view_cell('\App\Cells\Settings\Location\FormsLocationCells\RegionCell::render') ?>
             <?= view_cell('\App\Cells\Settings\Location\FormsLocationCells\SubregionCell::render') ?>
             <?= view_cell('\App\Cells\Settings\Location\FormsLocationCells\CityCell::render') ?>
