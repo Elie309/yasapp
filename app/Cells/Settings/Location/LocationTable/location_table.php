@@ -1,3 +1,9 @@
+<?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
+    'modalId' => 'editDeleteModal',
+    'modalTitle' => 'Edit/Delete Entity',
+    'modalBody' => '<p>Are you sure you want to perform this action?</p>'
+]) ?>
+
 <div class="w-full container mx-auto p-4">
     <div class="bg-white p-6 rounded shadow-md">
 
@@ -10,9 +16,24 @@
                 <table class="w-full table-auto">
                     <thead>
                         <tr>
-                            <th class="px-4 py-2">Region</th>
-                            <th class="px-4 py-2">Subregion</th>
-                            <th class="px-4 py-2">City</th>
+                            <th class="px-4 py-2">
+                                <a href="/settings/location/edit-Region/" class=" flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                    Region
+                                    <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">
+                                <a href="/settings/location/edit-subregion/ ?>" class="flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                    Subregion
+                                    <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">
+                                <a href="/settings/location/edit-city/ ?>" class="flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                    City
+                                    <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
+                                </a>
+                            </th>
                         </tr>
                     </thead>
 
@@ -44,10 +65,6 @@
                                 <!-- REGION -->
                                 <td class="border px-4 py-2 align-top" rowspan="<?= $totalCities ?>">
                                     <?= esc($region['region_name']) ?>
-                                    <div class="mt-2">
-                                        <a href="/settings/location/edit-region/<?= $region['region_id'] ?>" class="text-blue-600 hover:text-blue-800">Edit</a> |
-                                        <a href="/settings/location/delete-region/<?= $region['region_id'] ?>" class="text-red-600 hover:text-red-800">Delete</a>
-                                    </div>
                                 </td>
 
                                 <!-- SUBREGION -->
@@ -59,10 +76,6 @@
 
                             <td class="border px-4 py-2 align-top" rowspan="<?= count($subregion['cities']) === 0 ? 1 : count($subregion['cities']) ?>">
                                 <?= esc($subregion['subregion_name']) ?>
-                                <div class="mt-2">
-                                    <a href="/settings/location/edit-subregion/<?= $subregion['subregion_id'] ?>" class="text-blue-600 hover:text-blue-800">Edit</a> |
-                                    <a href="/settings/location/delete-subregion/<?= $subregion['subregion_id'] ?>" class="text-red-600 hover:text-red-800">Delete</a>
-                                </div>
                             </td>
 
                             <!-- CITIES  -->
@@ -72,10 +85,6 @@
                             <?php endif; ?>
                             <td class="border px-4 py-2">
                                 <?= esc($city['city_name']) ?>
-                                <div class="mt-2">
-                                    <a href="/settings/location/edit-city/<?= $city['city_id'] ?>" class="text-blue-600 hover:text-blue-800">Edit</a> |
-                                    <a href="/settings/location/delete-city/<?= $city['city_id'] ?>" class="text-red-600 hover:text-red-800">Delete</a>
-                                </div>
                             </td>
                             </tr>
                         <?php endforeach; ?>
