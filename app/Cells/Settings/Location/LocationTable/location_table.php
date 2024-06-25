@@ -44,6 +44,10 @@
                                 <!-- REGION -->
                                 <td class="border px-4 py-2 align-top" rowspan="<?= $totalCities ?>">
                                     <?= esc($region['region_name']) ?>
+                                    <div class="mt-2">
+                                        <a href="/settings/location/edit-region/<?= $region['region_id'] ?>" class="text-blue-600 hover:text-blue-800">Edit</a> |
+                                        <a href="/settings/location/delete-region/<?= $region['region_id'] ?>" class="text-red-600 hover:text-red-800">Delete</a>
+                                    </div>
                                 </td>
 
                                 <!-- SUBREGION -->
@@ -55,6 +59,10 @@
 
                             <td class="border px-4 py-2 align-top" rowspan="<?= count($subregion['cities']) === 0 ? 1 : count($subregion['cities']) ?>">
                                 <?= esc($subregion['subregion_name']) ?>
+                                <div class="mt-2">
+                                    <a href="/settings/location/edit-subregion/<?= $subregion['subregion_id'] ?>" class="text-blue-600 hover:text-blue-800">Edit</a> |
+                                    <a href="/settings/location/delete-subregion/<?= $subregion['subregion_id'] ?>" class="text-red-600 hover:text-red-800">Delete</a>
+                                </div>
                             </td>
 
                             <!-- CITIES  -->
@@ -64,6 +72,10 @@
                             <?php endif; ?>
                             <td class="border px-4 py-2">
                                 <?= esc($city['city_name']) ?>
+                                <div class="mt-2">
+                                    <a href="/settings/location/edit-city/<?= $city['city_id'] ?>" class="text-blue-600 hover:text-blue-800">Edit</a> |
+                                    <a href="/settings/location/delete-city/<?= $city['city_id'] ?>" class="text-red-600 hover:text-red-800">Delete</a>
+                                </div>
                             </td>
                             </tr>
                         <?php endforeach; ?>
