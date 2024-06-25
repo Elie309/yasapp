@@ -12,7 +12,7 @@ class SubregionModel extends Model
     protected $returnType       = \App\Entities\Location\SubregionEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['subregion_id','region_id', 'subregion_name'];
+    protected $allowedFields    = ['region_id', 'subregion_name'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -23,7 +23,7 @@ class SubregionModel extends Model
     // Validation
     protected $validationRules      = [
         'region_id' => 'required|integer',
-        'subregion_name' => 'required|string|max_length[255]',
+        'subregion_name' => 'required|string|max_length[255]|is_unique[subregions.subregion_name]',
     ];
     protected $validationMessages   = [
         'region_id' => [
@@ -34,6 +34,7 @@ class SubregionModel extends Model
             'required' => 'Subregion name is required.',
             'string' => 'Subregion name must be a string.',
             'max_length' => 'Subregion name cannot exceed 255 characters.',
+            'is_unique' => 'Subregion name should be unique'
         ],
     ];
     protected $skipValidation       = false;

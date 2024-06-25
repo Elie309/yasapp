@@ -9,10 +9,10 @@ class CityModel extends Model
     protected $table            = 'cities';
     protected $primaryKey       = 'city_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = \App\Entities\Location\CityEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['city_id','subregion_id', 'city_name'];
+    protected $allowedFields    = ['subregion_id', 'city_name'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
