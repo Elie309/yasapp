@@ -1,8 +1,4 @@
-<?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
-    'modalId' => 'editDeleteModal',
-    'modalTitle' => 'Edit/Delete Entity',
-    'modalBody' => '<p>Are you sure you want to perform this action?</p>'
-]) ?>
+
 
 <div class="w-full container mx-auto p-4">
     <div class="bg-white p-6 rounded shadow-md">
@@ -17,22 +13,22 @@
                     <thead>
                         <tr>
                             <th class="px-4 py-2">
-                                <a href="/settings/location/edit-Region/" class=" flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                <button onclick="openModal('EditRegion')" class=" flex flex-row justify-center text-blue-600 hover:text-blue-800">
                                     Region
                                     <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
-                                </a>
+                                </button>
                             </th>
                             <th class="px-4 py-2">
-                                <a href="/settings/location/edit-subregion/ ?>" class="flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                <button onclick="openModal('EditSubregion')" class="flex flex-row justify-center text-blue-600 hover:text-blue-800">
                                     Subregion
                                     <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
-                                </a>
+                                </button>
                             </th>
                             <th class="px-4 py-2">
-                                <a href="/settings/location/edit-city/ ?>" class="flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                <button onclick="openModal('EditCity')" class="flex flex-row justify-center text-blue-600 hover:text-blue-800">
                                     City
                                     <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
-                                </a>
+                                </button>
                             </th>
                         </tr>
                     </thead>
@@ -98,3 +94,23 @@
         <?php endforeach; ?>
     </div>
 </div>
+
+<!-- TODO: EDIT BELOW CELLS -->
+
+<?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
+    'modalId' => 'EditCity',
+    'modalTitle' => 'Edit/Delete Entity',
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render')
+]) ?>
+
+<?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
+    'modalId' => 'EditSubregion',
+    'modalTitle' => 'Edit/Delete Entity',
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render')
+]) ?>
+
+<?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
+    'modalId' => 'EditRegion',
+    'modalTitle' => 'Edit/Delete Entity',
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render')
+]) ?>
