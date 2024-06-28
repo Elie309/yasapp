@@ -244,17 +244,45 @@ class LocationSeeder extends Seeder
                             'Kfaraakka', 'Amioun', 'Enfeh', 'Deddeh', 'Kousba', 'Ras Maska'
                         ]
                     ],
-                    ['subregion_name' => 'Miniyeh-Danniyeh District', 'cities' => ['Miniyeh']],
-                    ['subregion_name' => 'Tripoli', 'cities' => ['Tripoli']],
-                    ['subregion_name' => 'Zgharta', 'cities' => ['Zgharta']],
+                    [
+                        'subregion_name' => 'Miniyeh-Danniyeh District', 'cities' =>
+                        [
+                            'Aassoun', 'Bakhoun', 'Beddawi', 'Beit El Faqs', 'Btermaz', 'Bqaa Safrine', 'Haql El Aazimeh', 'Kfar Habou', 'Khaldieh', 'Markabta', 'Miniyeh', 'Mrah Es Srayj', 'Qarsita', 'Qattine', 'Sfira', 'Sir', 'Tarane'
+                        ]
+                    ],
+                    [
+                        'subregion_name' => 'Tripoli', 'cities' =>
+                        ['Tripoli', 'Al-Qalamoun', 'El-Mina']
+                    ],
+                    [
+                        'subregion_name' => 'Zgharta', 'cities' =>
+                        [
+                            'Aarjes', 'Aintourine', 'Aitou', 'Alma', 'Arbet Kozhaya', 'Ardeh', 'Ashashe', 'Aslout', 'Asnoun', 'Basloukit', 'Bchennine', 'Beit Awkar', 'Beit Obeid', 'Besbeel', 'Bhairet Toula', 'Bnachii', 'Bousit', 'Daraya', 'Ehden', 'Ejbeh', 'Fraydiss', 'Haret Al Fawar', 'Harf Ardeh', 'Harf Miziara', 'Hawqa', 'Hilan', 'Houmeiss', 'Iaal', 'Jdaydeh', 'Kadrieh', 'Karahbache', 'Karmsaddeh', 'Kfardlakos', 'Kfarfou', 'Kfarhawra', 'Kfarsghab', 'Kfarshakhna', 'Kfarhata', 'Kfaryachit', 'Kfarzeina', 'Mazraat Al Nahr', 'Mazraat Al Toufah', 'Mazraat Hraikis', 'Mejdlaya', 'Miriata', 'Miziara', 'Sakhra', 'Morh Kfarsghab', 'Rachiine', 'Raskifa', 'Sebhel', 'Sereel', 'Toula', 'Zgharta'
+                        ]
+                    ],
                 ]
             ],
             [
                 'region_name' => 'South Governorate',
                 'subregions' => [
-                    ['subregion_name' => 'Sidon', 'cities' => ['Sidon']],
-                    ['subregion_name' => 'Jezzine', 'cities' => ['Jezzine']],
-                    ['subregion_name' => 'Tyre', 'cities' => ['Tyre']],
+                    [
+                        'subregion_name' => 'Sidon', 'cities' =>
+                        [
+                            'Aaddoussiyeh', 'Aadloun', 'Aaqtanit', 'Ain El Delb', 'Anqoun', 'Ansariye', 'Arzai', 'Erkay', 'Babliyeh', 'Bqosta', 'Bramiyeh', 'Darb es Sim', 'Ghazieh', 'Ghassanieh', 'Hajjeh', 'Hlaliyeh', 'Jazireh', 'Kfar Beit', 'Kfar Chellal', 'Kfar Hatta', 'Kfar Melki', 'Loubieh', 'Maghdouché', 'Majdelyoun', 'Matariyyah', 'Merouaniyeh', 'Mazraat El Aousamiyyat', 'Miye ou Miye', 'Najjariyeh', 'Qaaqaaiyet El Snoubar', 'Qennarit', 'Qnaitra', 'Qraiyeh', 'Saksakiyeh', 'Salhiyeh', 'Sarafand', 'Tabbaya', 'Tanbourit', 'Zaghdraiya', 'Zeita', 'Zrarieh'
+                        ]
+                    ],
+                    [
+                        'subregion_name' => 'Jezzine', 'cities' =>
+                        [
+                            'Aaramta', 'Aishiya', 'Al Rihan', 'Aray', 'Azour', 'Benouati', 'Bkassine', 'Bteddine El Loqch', 'Haytoura', 'Homsiyeh', 'Jarmaq', 'Jernaya', 'Karkha', 'Kaitouly', 'Kfar Falous', 'Kfarhouna', 'Kfar Jarra', 'Lebaa', 'Louayzeh', 'Machmoucheh', 'Midane', 'Mjeydil', 'Mlikh', 'Ouadi Jezzine', 'Roum', 'Sabbah', 'Saydoun', 'Sejoud', 'Sfaray', 'Snaya'
+                        ]
+                    ],
+                    [
+                        'subregion_name' => 'Tyre', 'cities' =>
+                        [
+                            'Aabbassiyeh', 'Aalma ech Chaab', 'Ain Baal', 'Aitit', 'Barish', 'Bayyad', 'Bazourieh', 'Bedias', 'Boustane', 'Borj Ech Chemali', 'Borj Rahal', 'Chamaa', 'Chaitiyeh', 'Chehabiyeh', 'Chehour', 'Chihine', 'Debaal', 'Deir Aames', 'Deir Kifa', 'Deir Qanoun En Nahr', 'Halloussiyeh', 'Hanaouay', 'Jennata', 'Jibbain', 'Jwaya', 'Kneisseh', 'Maarakeh', 'Maaroub', 'Mansouri', 'Majadel', 'Majdel Zoun', 'Mahrouna', 'Marwahin', 'Naqoura', 'Qana', 'Qlaileh', 'Ras al-Ain', 'Rechknanay', 'Selaa', 'Siddikine', 'Srifa', 'Tayr Debba', 'Tayr Falsay', 'Tayr Harfa', 'Toura', 'Yarine', 'Zalloutieh', 'Zibqin'
+                        ]
+                    ],
                 ]
             ]
         ];
