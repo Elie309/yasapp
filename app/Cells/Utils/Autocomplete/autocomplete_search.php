@@ -1,37 +1,36 @@
-<div class="container w-full">
-    <h2 class="text-center">Autocomplete</h2>
+<div class="container w-full my-2">
     <div class="container relative">
-        <input type="text" id="search" name="dump_info" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" placeholder="Search" autocomplete="off">
-        <input type="hidden" id="result_id" name="<?= $selectedName ?>" value="0" />
-        <div id="result" class="absolute z-50 mt-2 bg-white shadow-md w-full rounded-lg"></div>
+        <input type="text" id="search_<?= $selectedName ?>" name="dump_info" class="select-all w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" placeholder="<?= $placeholder ?>" autocomplete="off">
+        <input type="hidden" id="result_id_<?= $selectedName ?>" name="<?= $selectedName ?>" value="0" />
+        <div id="result_<?= $selectedName ?>" class=" max-h-80 overflow-y-auto absolute z-50 mt-2 bg-white shadow-md w-full rounded-lg">
 
+        </div>
     </div>
 
-
-
     <script>
-        // PHP JSON data embedded directly into JavaScript
-        var items = <?php echo json_encode($data); ?>;
+        <?php echo 'var items_' . $selectedName . ' = ' .   json_encode($data); ?>;
+        var selectedName_<?= $selectedName  ?> = '<?= $selectedName ?>';
 
-        function setSearchResult(item, id) {
-            const search = document.getElementById('search');
-            const result_id = document.getElementById('result_id');
+        function setSearchResult_<?= $selectedName  ?>(item, id) {
+            const search = document.getElementById('search_' + selectedName_<?= $selectedName  ?>);
+            const result_id = document.getElementById('result_id_' + selectedName_<?= $selectedName  ?>);
 
             search.value = item;
             result_id.value = id;
-            const result = document.getElementById('result');
+            const result = document.getElementById('result_' + selectedName_<?= $selectedName  ?>);
             result.innerHTML = ''
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const search = document.getElementById('search');
-            const result = document.getElementById('result');
+            const search = document.getElementById('search_' + selectedName_<?= $selectedName  ?>);
+            const result = document.getElementById('result_' + selectedName_<?= $selectedName  ?>);
 
             search.addEventListener('input', function() {
-                const query = search.value.toLowerCase(); // Convert to lowercase for case-insensitive search
+
+                const query = search.value.toLowerCase();
 
                 if (query !== '') {
-                    let filteredArray = items.filter(item => item['name'].toLowerCase().includes(query));
+                    let filteredArray = <?= 'items_' . $selectedName  ?>.filter(item => item['name'].toLowerCase().includes(query));
 
                     let output = '<ul class="py-4 px-2">';
                     filteredArray.forEach(item => {
@@ -41,7 +40,7 @@
                                 hover:text-white hover:bg-red-800 
                                 w-full"
 
-                                onclick="setSearchResult('${item['name']}', '${item['id']}')">
+                                onclick="setSearchResult_<?= $selectedName  ?>('${item['name']}', '${item['id']}')">
                                 ${item['name']}
                             </button></li>`;
                     });
@@ -52,6 +51,7 @@
 
                     output += '</ul>';
                     result.innerHTML = output;
+
                 } else {
                     result.innerHTML = '';
                 }

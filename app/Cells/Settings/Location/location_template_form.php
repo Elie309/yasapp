@@ -15,14 +15,12 @@
 
         <?php } else { ?>
 
-            <div class="mb-4">
-                <label for="<?= $selectFormId ?>" class="block text-gray-700"><?php echo $selectFormName ?> name</label>
-                <select id="<?= $selectFormId ?>" name="<?= $selectFormId ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
-                    <?php foreach ($selectOptions as $option) : ?>
-                        <option value="<?= esc($option['id']) ?>"><?= esc($option['name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+                'placeholder' => 'Search ' . $selectFormName,
+                'data' => $selectOptions,
+                'selectedId' => $selectFormId,
+                'selectedName' => $selectFormId
+            ]) ?>
 
         <?php } ?>
 

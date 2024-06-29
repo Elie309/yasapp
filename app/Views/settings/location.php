@@ -5,12 +5,6 @@
         <?= view_cell('\App\Cells\Settings\SettingsCell::render') ?>
 
         <br />
-        <h2 class="w-full my-8 text-3xl font-bold text-center">Autocomplete</h2>
-
-        <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render') ?>
-
-
-        <br />
 
         <h2 class="w-full my-8 text-3xl font-bold text-center">Location Management</h2>
 

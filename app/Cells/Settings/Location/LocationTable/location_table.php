@@ -99,18 +99,18 @@
 
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
     'modalId' => 'EditCity',
-    'modalTitle' => 'Edit/Delete Entity',
+    'modalTitle' => 'Edit City',
     'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render')
 ]) ?>
 
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
     'modalId' => 'EditSubregion',
-    'modalTitle' => 'Edit/Delete Entity',
-    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render')
+    'modalTitle' => 'EditSubregion',
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\SubregionCell::render')
 ]) ?>
 
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
     'modalId' => 'EditRegion',
-    'modalTitle' => 'Edit/Delete Entity',
-    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render')
+    'modalTitle' => 'Edit Region',
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\RegionCell::render')
 ]) ?>
