@@ -1,5 +1,3 @@
-
-
 <div class="w-full container mx-auto p-4">
     <div class="bg-white p-6 rounded shadow-md">
 
@@ -7,7 +5,12 @@
         <?php foreach ($countries as $country) : ?>
             <div class="mb-6">
 
-                <h2 class="text-2xl font-bold mb-2"><?= esc($country->country_name) ?></h2>
+                <h2 class="text-2xl font-bold mb-2">
+                    <button onclick="openModal('EditCountry')" class=" flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                        <?= esc($country->country_name) ?>
+                        <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
+                    </button>
+                </h2>
 
                 <table class="w-full table-auto">
                     <thead>
@@ -77,11 +80,11 @@
                             <!-- CITIES  -->
                             <?php foreach ($subregion->cities as $cityIndex => $city) : ?>
                                 <?php if ($cityIndex > 0) : ?>
-                                    <tr>
-                                <?php endif; ?>
-                                <td class="border px-4 py-2">
-                                    <?= esc($city->city_name) ?>
-                                </td>
+                            <tr>
+                            <?php endif; ?>
+                            <td class="border px-4 py-2">
+                                <?= esc($city->city_name) ?>
+                            </td>
                             </tr>
                         <?php endforeach; ?>
 
@@ -95,12 +98,21 @@
     </div>
 </div>
 
+
+
+
 <!-- TODO: EDIT BELOW CELLS -->
 
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
-    'modalId' => 'EditCity',
-    'modalTitle' => 'Edit City',
-    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render')
+    'modalId' => 'EditCountry',
+    'modalTitle' => 'Edit Country',
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CountryCell::render')
+]) ?>
+
+<?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
+    'modalId' => 'EditRegion',
+    'modalTitle' => 'Edit Region',
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\RegionCell::render')
 ]) ?>
 
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
@@ -109,8 +121,19 @@
     'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\SubregionCell::render')
 ]) ?>
 
+
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
-    'modalId' => 'EditRegion',
-    'modalTitle' => 'Edit Region',
-    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\RegionCell::render')
+    'modalId' => 'EditCity',
+    'modalTitle' => 'Edit City',
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render')
 ]) ?>
+
+
+<?php if (session()->has('title')) : ?>
+
+<script>
+    var textId = '<?= strtoupper(substr(session('title'), 0, 1)) . strtolower(substr(session('title'), 1)); ?>';
+    openModal('Edit'+textId );
+</script>
+
+<?php endif ?>

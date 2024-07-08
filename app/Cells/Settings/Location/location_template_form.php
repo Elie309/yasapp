@@ -49,9 +49,9 @@
 
         <?php if (session()->has('success')) : ?>
             <div class=" text-sm my-2 bg-green-100 border border-green-800 text-green-800 text-center px-4 py-3 rounded relative" role="alert">
-                        <p><?= esc(session('success')) ?></p>
-                    </div>
-                <?php endif; ?>
+                <p><?= esc(session('success')) ?></p>
+            </div>
+        <?php endif; ?>
 
 
     <?php endif; ?>
