@@ -117,7 +117,7 @@
 
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
     'modalId' => 'EditSubregion',
-    'modalTitle' => 'EditSubregion',
+    'modalTitle' => 'Edit Subregion',
     'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\SubregionCell::render')
 ]) ?>
 
