@@ -7,7 +7,10 @@ use App\Models\Location\CountryModel;
 class RegionCell extends LocationTemplateFormCell
 {
     public $title = "Region";
-    public $linkPost = "/settings/location/add-region";
+    public $linkPostAdd = "/settings/location/add-region";
+    public $linkPostEdit = "/settings/location/edit-region";
+    public $linkPostDelete = "/settings/location/delete-region";
+
 
     public $selectFormName = "Country";
     public $selectFormId = "country_id";
@@ -16,6 +19,7 @@ class RegionCell extends LocationTemplateFormCell
 
     public $inputFormName = "Region";
     public $inputFormId = "region_name";
+    
 
     protected string $view = APPPATH. "Cells/Settings/Location/location_template_form.php";
 

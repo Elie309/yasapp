@@ -8,7 +8,9 @@ use App\Models\Location\SubregionModel;
 class CityCell extends LocationTemplateFormCell
 {
     public $title = "City";
-    public $linkPost = "/settings/location/add-city";
+    public $linkPostAdd = "/settings/location/add-city";
+    public $linkPostEdit = "/settings/location/edit-city";
+    public $linkPostDelete = "/settings/location/delete-city";
 
     public $selectFormName = "Subregion";
     public $selectFormId = "subregion_id";

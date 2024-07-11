@@ -29,6 +29,11 @@ $routes->post('settings/location/add-subregion', 'Settings\LocationController::a
 $routes->post('settings/location/add-region', 'Settings\LocationController::addRegion');
 $routes->post('settings/location/add-country', 'Settings\LocationController::addCountry');
 
+$routes->post('settings/location/delete-city', 'Settings\LocationController::deleteCity');
+$routes->post('settings/location/delete-subregion', 'Settings\LocationController::deleteSubregion');
+$routes->post('settings/location/delete-region', 'Settings\LocationController::deleteRegion');
+$routes->post('settings/location/delete-country', 'Settings\LocationController::deleteCountry');
+
 
 
 

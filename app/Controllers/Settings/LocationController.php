@@ -30,9 +30,6 @@ class LocationController extends BaseController
             'city_name' => $this->request->getPost('city_name')
         ];
 
-       $session->setFlashdata("title", 'city');
-
-
         if ($cityModel->save($data) === false) {
             return redirect()->back()->withInput()->with('errors', $cityModel->errors());
         }
@@ -42,7 +39,6 @@ class LocationController extends BaseController
 
     public function addSubregion()
     {
-        $session = session();
 
         $subregionModel = new SubregionModel();
 
@@ -50,8 +46,6 @@ class LocationController extends BaseController
             'region_id' => $this->request->getPost('region_id'),
             'subregion_name' => $this->request->getPost('subregion_name')
         ];
-
-       $session->setFlashdata("title", 'subregion');
 
 
         if ($subregionModel->save($data) === false) {
@@ -63,7 +57,6 @@ class LocationController extends BaseController
 
     public function addRegion()
     {
-        $session = session();
 
         $regionModel = new RegionModel();
 
@@ -71,8 +64,6 @@ class LocationController extends BaseController
             'country_id' => $this->request->getPost('country_id'),
             'region_name' => $this->request->getPost('region_name')
         ];
-
-       $session->setFlashdata("title", 'region');
 
 
         if ($regionModel->save($data) === false) {
@@ -84,7 +75,6 @@ class LocationController extends BaseController
 
     public function addCountry()
     {
-        $session = session();
         $countryModel = new CountryModel();
 
         $data = [
@@ -92,12 +82,63 @@ class LocationController extends BaseController
             'country_code' => $this->request->getPost('country_code')
         ];
 
-       $session->setFlashdata("title", 'country');
-
         if ($countryModel->save($data) === false) {
             return redirect()->back()->withInput()->with('errors', $countryModel->errors());
         }
 
         return redirect()->to('/settings/location')->with('success', 'Country added successfully');
+    }
+
+
+    public function deleteCity(){
+        $cityModel = new CityModel();
+
+        $cityId = $this->request->getPost('city_id');
+
+        if ($cityModel->delete($cityId) === false) {
+            return redirect()->back()->withInput()->with('errors', $cityModel->errors());
+        }
+
+        return redirect()->to('/settings/location')->with('success', 'Subregion delete successfully');
+        
+    }
+
+
+    public function deleteSubregion(){
+
+        $subregionModel = new SubregionModel();
+
+        $subregionId = $this->request->getPost('subregion_id');
+
+        if ($subregionModel->delete($subregionId) === false) {
+            return redirect()->back()->withInput()->with('errors', $subregionModel->errors());
+        }
+
+        return redirect()->to('/settings/location')->with('success', 'Subregion delete successfully');
+
+    }
+    public function deleteRegion(){
+        $regionModel = new RegionModel();
+
+        $regionId = $this->request->getPost('region_id');
+
+        if ($regionModel->delete($regionId) === false) {
+            return redirect()->back()->withInput()->with('errors', $regionModel->errors());
+        }
+
+        return redirect()->to('/settings/location')->with('success', 'Region delete successfully');
+
+    }
+
+    public function deleteCountry(){
+        $countryModel = new CountryModel();
+
+        $countryId = $this->request->getPost('country_id');
+
+        if ($countryModel->delete($countryId) === false) {
+            return redirect()->back()->withInput()->with('errors', $countryModel->errors());
+        }
+
+        return redirect()->to('/settings/location')->with('success', 'Country delete successfully');
     }
 }
