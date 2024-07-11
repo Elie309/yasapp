@@ -1,5 +1,6 @@
 <div id="<?= $modalId ?>" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 items-center justify-center">
-    <div class="bg-white rounded-lg overflow-hidden w-3/4 lg:w-1/2">
+
+    <div class="bg-white sm:rounded-lg overflow-hidden w-full sm:w-3/4 lg:w-1/2">
         <div class="p-4 border-b">
             <h3 class="text-xl font-semibold"><?= $modalTitle ?></h3>
         </div>

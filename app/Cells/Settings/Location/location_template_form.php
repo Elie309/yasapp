@@ -2,7 +2,7 @@
 
     <h1 class="text-2xl font-bold text-center mb-8">Add <?php echo $title ?></h1>
 
-    <form action="<?= $linkPost ?>" method="POST" class="bg-white p-6 rounded shadow-md">
+    <form action="<?= $linkPost ?>" method="POST" class="mx-auto my-3 w-5/6">
 
 
         <?php if (strtolower($title) === "country") { ?>
@@ -32,30 +32,5 @@
                         py-2 rounded ease-in-out 
                         hover:bg-red-900 focus:outline-none focus:bg-red-900">Add <?php echo $inputFormName ?></button>
     </form>
-
-
-    <?php if (session()->has('title') && session('title') == strtolower($title)) : ?>
-
-
-        <?php if (session()->has('errors')) : ?>
-            <div class="text-sm my-4 bg-red-100 border border-red-800 text-red-800 text-center px-4 py-3 rounded relative" role="alert"">
-                <ul>
-                    <?php foreach (session('errors') as $error) : ?>
-                        <li><?= esc($error) ?></li>
-                    <?php endforeach ?>
-                </ul>
-            </div>
-        <?php endif; ?>
-
-        <?php if (session()->has('success')) : ?>
-            <div class=" text-sm my-2 bg-green-100 border border-green-800 text-green-800 text-center px-4 py-3 rounded relative" role="alert">
-                <p><?= esc(session('success')) ?></p>
-            </div>
-        <?php endif; ?>
-
-
-    <?php endif; ?>
-
-
 
 </div>
