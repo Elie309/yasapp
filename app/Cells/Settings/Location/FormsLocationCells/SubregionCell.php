@@ -15,24 +15,15 @@ class SubregionCell extends LocationTemplateFormCell
     public $selectFormName = "Region";
     public $selectFormId = "region_id";
 
-    public $selectOptions = [];
+    public $data_location = [];
 
-    public $inputFormName = "Subregion";
-    public $inputFormId = "subregion_name";
+    public $selectOptionsParent = [];
+    public $selectedOptionsCurrent = [];
+
+    public $inputFormName = "subregion_name";
+    public $inputFormId = "subregion_id";
 
     protected string $view = APPPATH . "Cells/Settings/Location/location_template_form.php";
 
-    public function __construct()
-    {
-        $regionModel = new RegionModel();
-        $regions = $regionModel->findAll();
-
-        foreach ($regions as $region) {
-            $this->selectOptions[] = [
-                'id' => $region->region_id,
-                'name' => $region->region_name
-            ];
-        }
-    }
 
 }

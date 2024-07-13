@@ -2,15 +2,18 @@
     <div class="bg-white p-6 rounded shadow-md">
 
         <!-- Will iterate through each country -->
-        <?php foreach ($countries as $country) : ?>
+        <?php foreach ($data_location as $country) : ?>
             <div class="mb-6">
 
                 <h2 class="text-2xl font-bold mb-2">
                     <button onclick="openModal('EditCountry')" class=" flex flex-row justify-center text-blue-600 hover:text-blue-800">
-                        <?= esc($country->country_name) ?>
+                        <?= esc($country->country_name) ?> - (code: <?= esc($country->country_code) ?> )  
                         <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
                     </button>
                 </h2>
+
+                <!-- Make only openModel on the first iteration -->
+                    
 
                 <table class="w-full table-auto">
                     <thead>
@@ -98,6 +101,54 @@
     </div>
 </div>
 
+<!-- Extract all necessary data from above using neceassry iterations since data_location hold many countries and each countires has regions...-->
+
+<?php
+
+$countries = [];
+$regions = [];
+$subregions = [];
+$cities = [];
+
+// Extract all countries using Foreach loop
+foreach ($data_location as $country) {
+    // create an array for countires name and id
+    $countries[] = [
+        'id' => $country->country_id,
+        'name' => $country->country_name
+    ];
+
+    // Extract all regions using Foreach loop
+    foreach ($country->regions as $region) {
+        // create an array for regions name and id
+        $regions[] = [
+            'id' => $region->region_id,
+            'name' => $region->region_name
+        ];
+
+        // Extract all subregions using Foreach loop
+        foreach ($region->subregions as $subregion) {
+            // create an array for subregions name and id
+            $subregions[] = [
+                'id' => $subregion->subregion_id,
+                'name' => $subregion->subregion_name
+            ];
+
+            // Extract all cities using Foreach loop
+            foreach ($subregion->cities as $city) {
+                // create an array for cities name and id
+                $cities[] = [
+                    'id' => $city->city_id,
+                    'name' => $city->city_name
+                ];
+            }
+        }
+    }
+}
+
+
+?>
+
 
 
 
@@ -106,34 +157,35 @@
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
     'modalId' => 'EditCountry',
     'modalTitle' => 'Edit Country',
-    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CountryCell::render')
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CountryCell::render', [
+        'selectedOptionsCurrent' => $countries,
+    ])
 ]) ?>
 
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
     'modalId' => 'EditRegion',
     'modalTitle' => 'Edit Region',
-    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\RegionCell::render')
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\RegionCell::render', [
+        'selectOptionsParent' => $countries,
+        'selectedOptionsCurrent' => $regions,
+    ])
 ]) ?>
 
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
     'modalId' => 'EditSubregion',
     'modalTitle' => 'Edit Subregion',
-    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\SubregionCell::render')
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\SubregionCell::render', [
+        'selectOptionsParent' => $regions,
+        'selectedOptionsCurrent' => $subregions,
+    ])
 ]) ?>
 
 
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
     'modalId' => 'EditCity',
     'modalTitle' => 'Edit City',
-    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render')
+    'modalBody' => view_cell('App\Cells\Settings\Location\FormsLocationCells\CityCell::render', [
+        'selectOptionsParent' => $subregions,
+        'selectedOptionsCurrent' => $cities,
+    ])
 ]) ?>
-
-
-<?php if (session()->has('title')) : ?>
-
-<script>
-    var textId = '<?= strtoupper(substr(session('title'), 0, 1)) . strtolower(substr(session('title'), 1)); ?>';
-    openModal('Edit'+textId );
-</script>
-
-<?php endif ?>

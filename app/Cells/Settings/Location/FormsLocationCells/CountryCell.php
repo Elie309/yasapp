@@ -3,7 +3,6 @@
 namespace App\Cells\Settings\Location\FormsLocationCells;
 
 use App\Cells\Settings\Location\LocationTemplateFormCell;
-use App\Models\Location\CountryModel;
 
 class CountryCell extends LocationTemplateFormCell
 {
@@ -12,29 +11,19 @@ class CountryCell extends LocationTemplateFormCell
     public $linkPostEdit = "/settings/location/edit-country";
     public $linkPostDelete = "/settings/location/delete-country";
 
-    public $selectOptions = [];
+    public $selectedOptionsCurrent = [];
+
+    public $data_location = [];
     
 
     public $selectFormName = "Country";
     public $selectFormId = "country_id";
 
 
-    public $inputFormName = "Country";
-    public $inputFormId = "country_name";
+    public $inputFormName = "country_name";
+    public $inputFormId = "country_id";
 
     protected string $view = APPPATH. "Cells/Settings/Location/location_template_form.php";
 
-    public function __construct()
-    {
-        $countryModel = new CountryModel();
-        $countries = $countryModel->findAll();
-
-        foreach ($countries as $subregion) {
-            $this->selectOptions[] = [
-                'id' => $subregion->subregion_id,
-                'name' => $subregion->subregion_name
-            ];
-        }
-    }
 
 }

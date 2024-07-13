@@ -2,7 +2,6 @@
 namespace App\Cells\Settings\Location\FormsLocationCells;
 
 use App\Cells\Settings\Location\LocationTemplateFormCell;
-use App\Models\Location\CountryModel;
 
 class RegionCell extends LocationTemplateFormCell
 {
@@ -15,25 +14,16 @@ class RegionCell extends LocationTemplateFormCell
     public $selectFormName = "Country";
     public $selectFormId = "country_id";
 
-    public $selectOptions = [];
+    public $data_location = [];
 
-    public $inputFormName = "Region";
-    public $inputFormId = "region_name";
+    public $selectOptionsParent = [];
+    public $selectedOptionsCurrent = [];
+
+    public $inputFormName = "region_name";
+    public $inputFormId = "region_id";
     
 
     protected string $view = APPPATH. "Cells/Settings/Location/location_template_form.php";
 
-    public function __construct()
-    {
-        $countryModel = new CountryModel();
-        $countries = $countryModel->findAll();
-
-        foreach ($countries as $country) {
-            $this->selectOptions[] = [
-                'id' => $country->country_id,
-                'name' => $country->country_name
-            ];
-        }
-    }
 
 }

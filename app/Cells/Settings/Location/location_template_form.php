@@ -18,7 +18,7 @@
 
             <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
                 'placeholder' => 'Search ' . $selectFormName,
-                'data' => $selectOptions,
+                'data' => $selectOptionsParent,
                 'selectedId' => $selectFormId,
                 'selectedName' => $selectFormId
             ]) ?>
@@ -26,12 +26,12 @@
         <?php } ?>
 
         <div class="mb-4">
-            <label for="<?= $inputFormId ?>" class="block text-gray-700"><?php echo $inputFormName ?></label>
-            <input type="text" id="<?= $inputFormId ?>" name="<?= $inputFormId ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+            <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
+            <input type="text" id="<?= $inputFormName ?>" name="<?= $inputFormName ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
         </div>
         <button type="submit" class="w-full bg-red-800 text-white
                         py-2 rounded ease-in-out 
-                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Add <?php echo $inputFormName ?></button>
+                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Add <?php echo $title ?></button>
     </form>
 
     </br>
@@ -45,7 +45,14 @@
 
         <?php if (strtolower($title) === "country") { ?>
 
-            <div class="mb-4">
+            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+                'placeholder' => 'Search ' . $title,
+                'data' => $selectedOptionsCurrent,
+                'selectedId' => $inputFormId,
+                'selectedName' => $inputFormName . '_edit'
+            ]) ?>
+
+            <div class="my-4">
                 <label for="country_code" class="block text-gray-700">Country Code</label>
                 <input type="text" id="country_code" name="country_code" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
             </div>
@@ -54,21 +61,21 @@
         <?php } else { ?>
 
             <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                'placeholder' => 'Search ' . $selectFormName,
-                'data' => $selectOptions,
-                'selectedId' => $selectFormId,
-                'selectedName' => $selectFormId
+                'placeholder' => 'Search ' . $title,
+                'data' => $selectedOptionsCurrent,
+                'selectedId' => $inputFormId,
+                'selectedName' => $inputFormName . '_edit'
             ]) ?>
 
         <?php } ?>
 
         <div class="mb-4">
-            <label for="<?= $inputFormId ?>" class="block text-gray-700"><?php echo $inputFormName ?></label>
-            <input type="text" id="<?= $inputFormId ?>" name="<?= $inputFormId ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+            <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
+            <input type="text" id="<?= $inputFormName ?>" name="<?= $inputFormName ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
         </div>
         <button type="submit" class="w-full bg-red-800 text-white
                         py-2 rounded ease-in-out 
-                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Add <?php echo $inputFormName ?></button>
+                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Edit <?php echo $title ?></button>
     </form>
 
     </br>
@@ -83,13 +90,14 @@
 
             <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
                 'placeholder' => 'Search ' . $title,
-                'data' => $selectOptions,
-                'selectedName' => $selectFormId
+                'data' => $selectedOptionsCurrent,
+                'selectedId' => $inputFormId,
+                'selectedName' => $inputFormName . '_delete'
             ]) ?>
 
         <button type="submit" class="mt-2 w-full bg-red-800 text-white
                         py-2 rounded ease-in-out 
-                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Delete <?php echo $inputFormName ?></button>
+                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Delete <?php echo $title ?></button>
     </form>
 
 
