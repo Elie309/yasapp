@@ -3,7 +3,7 @@
         <input type="text" id="search_<?= $selectedName ?>" name="dump_info" class="select-all w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" placeholder="<?= $placeholder ?>" autocomplete="off">
         
         <!-- THIS INPUT WILL BE TAKEN TO THE FORM SUBMIT -->
-        <input type="hidden" id="result_id_<?= $selectedName ?>" name="<?= $selectedName ?>" value="0" />
+        <input type="hidden" id="result_id_<?= $selectedName ?>" name="<?= $selectedId ?>" value="0" />
         <div id="result_<?= $selectedName ?>" class=" max-h-80 overflow-y-auto absolute z-50 mt-2 bg-white shadow-md w-full rounded-lg">
 
         </div>
