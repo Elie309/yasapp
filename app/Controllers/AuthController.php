@@ -48,9 +48,6 @@ class AuthController extends BaseController
 
             return redirect()->back();
          }
-        
-
-    
 
     }
 
