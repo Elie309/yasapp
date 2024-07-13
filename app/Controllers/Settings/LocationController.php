@@ -13,9 +13,34 @@ class LocationController extends BaseController
     public function index()
     {
         $session = service('session');
+
+          // Load model
+          $countryModel = new CountryModel();
+
+          // Fetch data
+          $countries = $countryModel->findAll();
+  
+          // Format data
+          foreach ($countries as $country) {
+              $regions = $country->getRegions();
+  
+              foreach ($regions as $region) {
+                  $subregions = $region->getSubregions();
+  
+                  foreach ($subregions as $subregion) {
+                      $cities = $subregion->getCities();
+                      $subregion->cities = $cities;
+                  }
+  
+                  $region->subregions = $subregions;
+              }
+  
+              $country->regions = $regions;
+          }
+  
         
         return view("template/header", ['role' => $session->get('role')]) . 
-                view('settings/location') . 
+                view('settings/location', ['data_location' => $countries]) . 
                 view("template/footer");
     }
 
