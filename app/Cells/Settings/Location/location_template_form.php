@@ -27,7 +27,7 @@
 
         <div class="mb-4">
             <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
-            <input type="text" id="<?= $inputFormName ?>" name="<?= $inputFormName ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+            <input type="text" id="<?= $inputFormName ?>" name="<?= $inputFormName ?>" placeholder="<?= $title ?> name" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
         </div>
         <button type="submit" class="w-full bg-red-800 text-white
                         py-2 rounded ease-in-out 
@@ -71,7 +71,7 @@
 
         <div class="mb-4">
             <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
-            <input type="text" id="<?= $inputFormName ?>" name="<?= $inputFormName ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+            <input type="text" id="<?= $inputFormName ?>" placeholder="<?= $title ?> name" name="<?= $inputFormName ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
         </div>
         <button type="submit" class="w-full bg-red-800 text-white
                         py-2 rounded ease-in-out 
