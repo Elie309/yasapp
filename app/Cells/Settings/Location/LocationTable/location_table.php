@@ -6,7 +6,7 @@
             <div class="mb-6">
 
                 <h2 class="text-2xl font-bold mb-2">
-                    <button onclick="openModal('EditCountry')" class=" flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                    <button onclick="openModal('EditCountry')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
                         <?= esc($country->country_name) ?> - (code: <?= esc($country->country_code) ?> )  
                         <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
                     </button>
@@ -19,19 +19,19 @@
                     <thead>
                         <tr>
                             <th class="px-4 py-2">
-                                <button onclick="openModal('EditRegion')" class=" flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                <button onclick="openModal('EditRegion')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
                                     Region
                                     <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
                                 </button>
                             </th>
                             <th class="px-4 py-2">
-                                <button onclick="openModal('EditSubregion')" class="flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                <button onclick="openModal('EditSubregion')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
                                     Subregion
                                     <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
                                 </button>
                             </th>
                             <th class="px-4 py-2">
-                                <button onclick="openModal('EditCity')" class="flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                <button onclick="openModal('EditCity')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
                                     City
                                     <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
                                 </button>
