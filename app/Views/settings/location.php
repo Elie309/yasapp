@@ -1,4 +1,4 @@
-<div class="w-full bg-gray-100 min-h-full flex flex-col items-start justify-center">
+<div class="w-full bg-gray-100 min-h-full flex flex-col">
     <div class="container mx-auto p-4 w-full">
         <h1 class="text-4xl font-bold text-center mb-8">Settings</h1>
 
@@ -32,3 +32,5 @@
             <?= view_cell('\App\Cells\Settings\Location\LocationTable\LocationTableCell::render', ['data_location' => $data_location]) ?>
         </div>
     </div>
+
+</div>

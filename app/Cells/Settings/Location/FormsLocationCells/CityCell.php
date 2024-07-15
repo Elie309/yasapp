@@ -14,9 +14,6 @@ class CityCell extends LocationTemplateFormCell
     public $selectFormName = "Subregion";
     public $selectFormId = "subregion_id";
 
-    public $data_location = [];
-
-
     public $selectOptionsParent = [];
     public $selectedOptionsCurrent = [];
 

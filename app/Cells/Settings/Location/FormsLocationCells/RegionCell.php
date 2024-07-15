@@ -14,8 +14,6 @@ class RegionCell extends LocationTemplateFormCell
     public $selectFormName = "Country";
     public $selectFormId = "country_id";
 
-    public $data_location = [];
-
     public $selectOptionsParent = [];
     public $selectedOptionsCurrent = [];
 

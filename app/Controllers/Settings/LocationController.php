@@ -189,8 +189,7 @@ class LocationController extends BaseController
 
             return redirect()->to('/settings/location')->with('success', 'Country updated successfully');
         } else {
-            // No changes detected, handle accordingly (e.g., show a message)
-            return redirect()->back()->with('info', 'No changes detected.');
+            return redirect()->back()->with('success', 'No changes detected.');
         }
     }
 
@@ -210,9 +209,9 @@ class LocationController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $cityModel->errors());
             }
 
-            return redirect()->to('/settings/location')->with('success', 'Subregion delete successfully');
+            return redirect()->to('/settings/location')->with('success', 'City deleted successfully');
         } catch (DatabaseException $e) {
-            return redirect()->back()->with('errors', ['Country cannot be deleted']);
+            return redirect()->back()->with('errors', ['City cannot be deleted']);
         }
     }
 
@@ -229,9 +228,9 @@ class LocationController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $subregionModel->errors());
             }
 
-            return redirect()->to('/settings/location')->with('success', 'Subregion delete successfully');
+            return redirect()->to('/settings/location')->with('success', 'Subregion deleted successfully');
         } catch (DatabaseException $e) {
-            return redirect()->back()->with('errors', ['Country cannot be deleted']);
+            return redirect()->back()->with('errors', ['Subregion cannot be deleted']);
 
         }
     }
@@ -247,9 +246,9 @@ class LocationController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $regionModel->errors());
             }
 
-            return redirect()->to('/settings/location')->with('success', 'Region delete successfully');
+            return redirect()->to('/settings/location')->with('success', 'Region deleted successfully');
         } catch (DatabaseException $e) {
-            return redirect()->back()->with('errors', ['Country cannot be deleted']);
+            return redirect()->back()->with('errors', ['Region cannot be deleted']);
         }
     }
 
@@ -265,7 +264,7 @@ class LocationController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $countryModel->errors());
             }
 
-            return redirect()->to('/settings/location')->with('success', 'Country delete successfully');
+            return redirect()->to('/settings/location')->with('success', 'Country deleted successfully');
         } catch (DatabaseException $e) {
             return redirect()->back()->with('errors', ['Country cannot be deleted']);
         }
