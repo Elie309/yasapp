@@ -79,8 +79,9 @@ CREATE TABLE IF NOT EXISTS PaymentPlans (
 -- Currencies TABLE 
 CREATE TABLE IF NOT EXISTS Currencies (
     currency_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    currency_code VARCHAR(10) NOT NULL UNIQUE,
+    currency_code VARCHAR(3) NOT NULL UNIQUE,
     currency_name VARCHAR(255) NOT NULL UNIQUE
+    currency_symbol VARCHAR(10) NOT NULL UNIQUE
 );
 
 
