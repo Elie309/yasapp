@@ -30,9 +30,11 @@ class PaymentPlansController extends BaseController
             'payment_plan_name' => $this->request->getPost('payment_plan_name')
         ];
 
-        $paymentPlansModel->insert($data);
-
-        return redirect()->to('/settings/payment-plans')->with('success', 'Payment plan added successfully');
+        if ($paymentPlansModel->save($data)) {
+            return redirect()->to('/settings/payment-plans')->with('success', 'Payment plan added successfully');
+        } else {
+            return redirect()->to('/settings/payment-plans')->with('errors', $paymentPlansModel->errors());
+        };
     }
 
     public function updatePaymentPlan()
@@ -44,21 +46,24 @@ class PaymentPlansController extends BaseController
             'payment_plan_name' => $this->request->getPost('payment_plan_name')
         ];
 
-        $paymentPlansModel->update($this->request->getPost('payment_plan_id'), $data);
-
-
-        return redirect()->to('/settings/payment-plans')->with('success', 'Payment plan updated successfully');
+        if ($paymentPlansModel->update($this->request->getPost('payment_plan_id'), $data)) {
+            return redirect()->to('/settings/payment-plans')->with('success', 'Payment plan updated successfully');
+        } else {
+            return redirect()->to('/settings/payment-plans')->with('errors', $paymentPlansModel->errors());
+        };
     }
 
     public function deletePaymentPlan()
     {
         try {
-            
+
             $paymentPlansModel = new PaymentPlansModel();
 
-            $paymentPlansModel->delete($this->request->getPost('payment_plan_id'));
-
-            return redirect()->to('/settings/payment-plans')->with('success', 'Payment plan deleted successfully');
+            if($paymentPlansModel->delete($this->request->getPost('payment_plan_id'))){
+                return redirect()->to('/settings/payment-plans')->with('success', 'Payment plan deleted successfully');
+            } else {
+                return redirect()->to('/settings/payment-plans')->with('errors', $paymentPlansModel->errors());
+            };
 
         } catch (DatabaseException $e) {
             return redirect()->back()->with('errors', ['Payment plan cannot be deleted']);
