@@ -46,9 +46,7 @@
 
                     </div>
 
-                    <button type="submit" class="w-full bg-red-800 text-white
-                        py-2 rounded ease-in-out 
-                        hover:bg-red-900 focus:outline-none focus:bg-red-900">
+                    <button type="submit" class="w-full main-btn">
                         Login
                     </button>
 

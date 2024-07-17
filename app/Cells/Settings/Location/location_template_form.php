@@ -29,9 +29,7 @@
             <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
             <input type="text" id="<?= $inputFormName ?>" name="<?= $inputFormName ?>" placeholder="<?= $title ?> name" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
         </div>
-        <button type="submit" class="w-full bg-red-800 text-white
-                        py-2 rounded ease-in-out 
-                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Add <?php echo $title ?></button>
+        <button type="submit" class="w-full main-btn">Add <?php echo $title ?></button>
     </form>
 
     </br>
@@ -73,9 +71,7 @@
             <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
             <input type="text" id="<?= $inputFormName ?>" placeholder="<?= $title ?> name" name="<?= $inputFormName ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
         </div>
-        <button type="submit" class="w-full bg-red-800 text-white
-                        py-2 rounded ease-in-out 
-                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Edit <?php echo $title ?></button>
+        <button type="submit" class="w-full main-btn">Edit <?php echo $title ?></button>
     </form>
 
     </br>
@@ -95,9 +91,7 @@
                 'selectedName' => $inputFormName . '_delete'
             ]) ?>
 
-        <button type="submit" class="mt-2 w-full bg-red-800 text-white
-                        py-2 rounded ease-in-out 
-                        hover:bg-red-900 focus:outline-none focus:bg-red-900">Delete <?php echo $title ?></button>
+        <button type="submit" class="mt-2 w-full main-btn">Delete <?php echo $title ?></button>
     </form>
 
 

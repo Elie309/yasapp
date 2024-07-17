@@ -6,11 +6,11 @@
 
         <br />
 
-        <h2 class="w-full my-8 text-3xl font-bold text-center">Location Overview</h2>
+        <h2 class="main-title-page">Location Overview</h2>
 
 
         <?php if (session()->has('errors')) : ?>
-            <div class="text-sm my-4 bg-red-100 border border-red-800 text-red-800 text-center px-4 py-3 rounded relative" role="alert">
+            <div class="error-div" role="alert">
                 <ul>
                     <?php foreach (session('errors') as $error) : ?>
                         <li><?= esc($error) ?></li>
@@ -20,7 +20,7 @@
         <?php endif; ?>
 
         <?php if (session()->has('success')) : ?>
-            <div class=" text-sm my-2 bg-green-100 border border-green-800 text-green-800 text-center px-4 py-3 rounded relative" role="alert">
+            <div class="success-div" role="alert">
                 <p><?= esc(session('success')) ?></p>
             </div>
         <?php endif; ?>

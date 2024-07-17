@@ -6,11 +6,11 @@
 
         <br />
 
-        <h2 class="w-full my-8 text-3xl font-bold text-center">Payment plans Overview</h2>
+        <h2 class="main-title-page">Payment plans Overview</h2>
 
 
         <?php if (session()->has('errors')) : ?>
-            <div class="text-sm my-4 bg-red-100 border border-red-800 text-red-800 text-center px-4 py-3 rounded relative" role="alert">
+            <div class="error-div" role="alert">
                 <ul>
                     <?php foreach (session('errors') as $error) : ?>
                         <li><?= esc($error) ?></li>
@@ -20,7 +20,7 @@
         <?php endif; ?>
 
         <?php if (session()->has('success')) : ?>
-            <div class=" text-sm my-2 bg-green-100 border border-green-800 text-green-800 text-center px-4 py-3 rounded relative" role="alert">
+            <div class="success-div" role="alert">
                 <p><?= esc(session('success')) ?></p>
             </div>
         <?php endif; ?>
@@ -28,14 +28,12 @@
         <!-- TABLE SHOW CURRENT PRODUCT -->
 
         <div class="mt-8 bg-white p-10 shadow-md rounded-md">
+            
             <table class="w-full border border-gray-300">
                 <thead>
                     <tr>
                         <th class="px-4 py-2 bg-gray-200 border-b flex justify-center">
-                            <button onclick="openModal('EditPaymentPlans')" class=" focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
                                 Payment Plan Name
-                                <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
-                            </button>
                         </th>
                     </tr>
                 </thead>
@@ -50,6 +48,12 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+
+            <div class="flex justify-end my-3 ">
+                <button onclick="openModal('EditPaymentPlans')" class="main-btn">
+                    <h3>Edit Payment Plans</h3>
+                </button>
+            </div>
         </div>
     </div>
 </div>
