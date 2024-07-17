@@ -39,7 +39,7 @@ class CurrenciesModel extends Model
             'required' => 'The Currency Name is required.',
             'string' => 'The Currency Name must be a valid string.',
             'max_length' => 'The Currency Name cannot exceed 255 characters.',
-            'is_unique' => 'The Currency name must be unique.',
+            'is_unique' => 'The Currency Name must be unique.',
 
         ],
         'currency_symbol' => [
