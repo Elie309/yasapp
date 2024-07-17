@@ -40,6 +40,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $data = []; ?>
                     <?php foreach ($paymentPlans as $plan) : ?>
                         <!-- Create a new array which has id and name as keys -->
                         <?php $data[] = ['id' => $plan->payment_plan_id, 'name' => $plan->payment_plan_name]; ?>
