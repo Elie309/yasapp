@@ -1,6 +1,6 @@
 <div class="container w-full my-2">
     <div class="container relative">
-        <input type="text" id="search_<?= $selectedName ?>" name="dump_info" class="select-all w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" placeholder="<?= $placeholder ?>" autocomplete="off">
+        <input type="text" id="search_<?= $selectedName ?>" name="dump_info" class="select-all main-input" placeholder="<?= $placeholder ?>" autocomplete="off" required>
         
         <!-- THIS INPUT WILL BE TAKEN TO THE FORM SUBMIT -->
         <input type="hidden" id="result_id_<?= $selectedName ?>" name="<?= $selectedId ?>" value="0" />

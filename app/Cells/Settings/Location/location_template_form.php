@@ -9,8 +9,8 @@
         <?php if (strtolower($title) === "country") { ?>
 
             <div class="mb-4">
-                <label for="country_code" class="block text-gray-700">Country Code</label>
-                <input type="text" id="country_code" name="country_code" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+                <label for="country_code" class="main-label">Country Code</label>
+                <input type="text" id="country_code" name="country_code" class="main-input" required>
             </div>
 
 
@@ -26,8 +26,8 @@
         <?php } ?>
 
         <div class="mb-4">
-            <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
-            <input type="text" id="<?= $inputFormName ?>" name="<?= $inputFormName ?>" placeholder="<?= $title ?> name" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+            <label for="<?= $inputFormName ?>" class="main-label"><?php echo $title ?></label>
+            <input type="text" id="<?= $inputFormName ?>" name="<?= $inputFormName ?>" placeholder="<?= $title ?> name" class="main-input" required>
         </div>
         <button type="submit" class="w-full main-btn">Add <?php echo $title ?></button>
     </form>
@@ -51,8 +51,8 @@
             ]) ?>
 
             <div class="my-4">
-                <label for="country_code" class="block text-gray-700">Country Code</label>
-                <input type="text" id="country_code" name="country_code" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+                <label for="country_code" class="main-label">Country Code</label>
+                <input type="text" id="country_code" name="country_code" class="main-input" required>
             </div>
 
 
@@ -68,8 +68,8 @@
         <?php } ?>
 
         <div class="mb-4">
-            <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
-            <input type="text" id="<?= $inputFormName ?>" placeholder="<?= $title ?> name" name="<?= $inputFormName ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+            <label for="<?= $inputFormName ?>" class="main-label"><?php echo $title ?></label>
+            <input type="text" id="<?= $inputFormName ?>" placeholder="<?= $title ?> name" name="<?= $inputFormName ?>" class="main-input" required>
         </div>
         <button type="submit" class="w-full main-btn">Edit <?php echo $title ?></button>
     </form>

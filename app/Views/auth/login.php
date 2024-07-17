@@ -32,16 +32,16 @@
                 <form action="<?= base_url('login/acceptdata') ?>" method="POST">
                     <div class="mb-4">
 
-                        <label for="name" class="block font-bold text-red-800">Email</label>
+                        <label for="name" class="main-label">Email</label>
 
-                        <input type="text" id="name" name="name" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+                        <input type="text" id="name" name="name" class="main-input" required>
 
                     </div>
                     <div class="mb-6">
 
-                        <label for="password" class="block font-bold text-red-800">Password</label>
+                        <label for="password" class="main-label">Password</label>
 
-                        <input type="password" id="password" name="password" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+                        <input type="password" id="password" name="password" class="main-input" required>
 
 
                     </div>

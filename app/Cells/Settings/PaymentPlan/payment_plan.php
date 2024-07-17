@@ -6,8 +6,8 @@
     <form action="<?= $linkPostAdd ?>" method="POST" class="mx-auto my-3 w-5/6">
 
         <div class="mb-4">
-            <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
-            <input type="text" id="<?= $inputFormName ?>" placeholder="<?= $title ?> name" name="<?= $inputFormName ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+            <label for="<?= $inputFormName ?>" class="main-label"><?php echo $title ?></label>
+            <input type="text" id="<?= $inputFormName ?>" placeholder="<?= $title ?> name" name="<?= $inputFormName ?>" class="main-input" required>
         </div>
 
         <button type="submit" class="w-full main-btn">Add <?php echo $title ?></button>
@@ -29,8 +29,8 @@
         ]) ?>
 
         <div class="mb-4">
-            <label for="<?= $inputFormName ?>" class="block text-gray-700"><?php echo $title ?></label>
-            <input type="text" id="<?= $inputFormName ?>"  placeholder="<?= $title ?> name" name="<?= $inputFormName ?>" class="w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none" required>
+            <label for="<?= $inputFormName ?>" class="main-label"><?php echo $title ?></label>
+            <input type="text" id="<?= $inputFormName ?>"  placeholder="<?= $title ?> name" name="<?= $inputFormName ?>" class="main-input" required>
         </div>
 
         <button type="submit" class="w-full main-btn">Edit <?php echo $title ?></button>
