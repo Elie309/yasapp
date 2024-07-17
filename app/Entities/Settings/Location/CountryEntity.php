@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Location;
+namespace App\Entities\Settings\Location;
 
 use CodeIgniter\Entity\Entity;
 
@@ -16,7 +16,7 @@ class CountryEntity extends Entity
 
     public function getRegions()
     {
-        $regionModel = new \App\Models\Location\RegionModel();
+        $regionModel = new \App\Models\Settings\Location\RegionModel();
         return $regionModel->where('country_id', $this->country_id)->findAll();
     }
 }

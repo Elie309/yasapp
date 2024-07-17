@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cells\Settings\SettingsOptions;
+namespace App\Cells\Settings\PaymentPlan;
 
 use CodeIgniter\View\Cells\Cell;
 
@@ -15,8 +15,6 @@ class PaymentPlanCell extends Cell
 
     public $inputFormName = "payment_plan_name";
     public $inputFormId = "payment_plan_id";
-
-    protected string $view = APPPATH. "Cells/Settings/forms_crud.php";
 
 
 }

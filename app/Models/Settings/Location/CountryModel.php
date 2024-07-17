@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Location;
+namespace App\Models\Settings\Location;
 
 use CodeIgniter\Model;
 
@@ -9,7 +9,7 @@ class CountryModel extends Model
     protected $table            = 'countries';
     protected $primaryKey       = 'country_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = \App\Entities\Location\CountryEntity::class;
+    protected $returnType       = \App\Entities\Settings\Location\CountryEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [ 'country_code', 'country_name'];

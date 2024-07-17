@@ -3,10 +3,10 @@
 namespace App\Controllers\Settings;
 
 use App\Controllers\BaseController;
-use App\Models\Location\CityModel;
-use App\Models\Location\SubregionModel;
-use App\Models\Location\RegionModel;
-use App\Models\Location\CountryModel;
+use App\Models\Settings\Location\CityModel;
+use App\Models\Settings\Location\SubregionModel;
+use App\Models\Settings\Location\RegionModel;
+use App\Models\Settings\Location\CountryModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class LocationController extends BaseController

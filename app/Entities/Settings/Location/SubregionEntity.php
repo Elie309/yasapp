@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Location;
+namespace App\Entities\Settings\Location;
 
 use CodeIgniter\Entity\Entity;
 
@@ -16,7 +16,7 @@ class SubregionEntity extends Entity
 
     public function getCities()
     {
-        $cityModel = new \App\Models\Location\CityModel();
+        $cityModel = new \App\Models\Settings\Location\CityModel();
         return $cityModel->where('subregion_id', $this->subregion_id)->findAll();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Location;
+namespace App\Entities\Settings\Location;
 
 use CodeIgniter\Entity\Entity;
 

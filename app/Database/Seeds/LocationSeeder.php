@@ -3,10 +3,10 @@
 namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
-use App\Models\Location\CountryModel;
-use App\Models\Location\RegionModel;
-use App\Models\Location\SubregionModel;
-use App\Models\Location\CityModel;
+use App\Models\Settings\Location\CountryModel;
+use App\Models\Settings\Location\RegionModel;
+use App\Models\Settings\Location\SubregionModel;
+use App\Models\Settings\Location\CityModel;
 
 class LocationSeeder extends Seeder
 {

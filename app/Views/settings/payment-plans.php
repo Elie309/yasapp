@@ -56,7 +56,7 @@
 <?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
     'modalId' => 'EditPaymentPlans',
     'modalTitle' => 'Edit Payment Plan',
-    'modalBody' => view_cell('App\Cells\Settings\SettingsOptions\PaymentPlanCell::render', [
+    'modalBody' => view_cell('App\Cells\Settings\PaymentPlan\PaymentPlanCell::render', [
         'selectedOptions' => $data,
     ])
 ]) ?>

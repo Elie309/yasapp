@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Location;
+namespace App\Models\Settings\Location;
 
 use CodeIgniter\Model;
 
@@ -9,7 +9,7 @@ class CityModel extends Model
     protected $table            = 'cities';
     protected $primaryKey       = 'city_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = \App\Entities\Location\CityEntity::class;
+    protected $returnType       = \App\Entities\Settings\Location\CityEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = ['subregion_id', 'city_name'];

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Location;
+namespace App\Models\Settings\Location;
 
 use CodeIgniter\Model;
 
@@ -9,7 +9,7 @@ class RegionModel extends Model
     protected $table            = 'regions';
     protected $primaryKey       = 'region_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = \App\Entities\Location\RegionEntity::class;
+    protected $returnType       = \App\Entities\Settings\Location\RegionEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [ 'country_id','region_name'];
