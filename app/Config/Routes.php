@@ -22,6 +22,7 @@ $routes->get('logout', 'AuthController::logout');
 $routes->get('settings', 'SettingsController::index');
 $routes->get('settings/location', 'Settings\LocationController::index');
 $routes->get('settings/payment-plans', 'Settings\PaymentPlansController::index');
+$routes->get('settings/currencies', 'Settings\CurrenciesController::index');
 
 //SETTINGS POST LOCATION
 
@@ -45,6 +46,12 @@ $routes->post('settings/location/delete-country', 'Settings\LocationController::
 $routes->post('settings/payment-plans/add-payment-plan', 'Settings\PaymentPlansController::addPaymentPlan');
 $routes->post('settings/payment-plans/edit-payment-plan', 'Settings\PaymentPlansController::updatePaymentPlan');
 $routes->post('settings/payment-plans/delete-payment-plan', 'Settings\PaymentPlansController::deletePaymentPlan');
+
+// SETTINGS POST CURRENCIES
+
+$routes->post('settings/currencies/add-currency', 'Settings\CurrenciesController::addCurrency');
+$routes->post('settings/currencies/edit-currency', 'Settings\CurrenciesController::updateCurrency');
+$routes->post('settings/currencies/delete-currency', 'Settings\CurrenciesController::deleteCurrency');
 
 
 
