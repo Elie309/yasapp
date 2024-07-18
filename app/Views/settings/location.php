@@ -26,9 +26,7 @@
         <?php endif; ?>
 
 
-
-
-        <div class="container mx-auto p-4 w-full">
+        <div class="mt-8 bg-white p-10 shadow-md rounded-md w-full">
             <?= view_cell('\App\Cells\Settings\Location\LocationTable\LocationTableCell::render', ['data_location' => $data_location]) ?>
         </div>
     </div>

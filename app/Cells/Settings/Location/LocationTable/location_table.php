@@ -1,104 +1,102 @@
-<div class="w-full container mx-auto p-4">
-    <div class="bg-white p-6 rounded shadow-md">
+<div>
 
-        <!-- Will iterate through each country -->
-        <?php foreach ($data_location as $country) : ?>
-            <div class="mb-6">
+    <!-- Will iterate through each country -->
+    <?php foreach ($data_location as $country) : ?>
+        <div class="mb-6">
 
-                <h2 class="text-2xl font-bold flex justify-center my-6">
-                    <button onclick="openModal('EditCountry')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
-                        <?= esc($country->country_name) ?> - (code: <?= esc($country->country_code) ?> )  
-                        <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
-                    </button>
-                </h2>
+            <h2 class="text-2xl font-bold flex justify-center my-6">
+                <button onclick="openModal('EditCountry')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                    <?= esc($country->country_name) ?> - (code: <?= esc($country->country_code) ?> )
+                    <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
+                </button>
+            </h2>
 
-                <!-- Make only openModel on the first iteration -->
-                    
-
-                <table class="w-full table-auto ">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2 border  border-black bg-gray-200">
-                                <button onclick="openModal('EditRegion')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
-                                    Region
-                                    <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
-                                </button>
-                            </th>
-                            <th class="px-4 py-2 border  border-black bg-gray-200"">
-                                <button onclick="openModal('EditSubregion')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
-                                    Subregion
-                                    <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
-                                </button>
-                            </th>
-                            <th class="px-4 py-2 border  border-black bg-gray-200">
-                                <button onclick="openModal('EditCity')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
-                                    City
-                                    <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
-                                </button>
-                            </th>
-                        </tr>
-                    </thead>
+            <!-- Make only openModel on the first iteration -->
 
 
-                    <tbody>
-                        <?php foreach ($country->regions as $region) : ?>
-                            <!-- To know how much we need to span the first col
+            <table class="w-full table-auto ">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 border  border-black bg-gray-200">
+                            <button onclick="openModal('EditRegion')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                Region
+                                <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
+                            </button>
+                        </th>
+                        <th class="px-4 py-2 border  border-black bg-gray-200"">
+                                <button onclick=" openModal('EditSubregion')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                            Subregion
+                            <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
+                            </button>
+                        </th>
+                        <th class="px-4 py-2 border  border-black bg-gray-200">
+                            <button onclick="openModal('EditCity')" class="focus:outline-blue-600 flex flex-row justify-center text-blue-600 hover:text-blue-800">
+                                City
+                                <img class="w-5 mx-2" src="<?= base_url("images/icons/edit_pen.png") ?>" alt="Edit">
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    <?php foreach ($country->regions as $region) : ?>
+                        <!-- To know how much we need to span the first col
                                  we need to know how many cities we have that will decide the span of the row -->
-                            <?php
-                            $totalCities = 0;
-                            foreach ($region->subregions as $subregion) {
-                                $totalCities += count($subregion->cities);
+                        <?php
+                        $totalCities = 0;
+                        foreach ($region->subregions as $subregion) {
+                            $totalCities += count($subregion->cities);
 
-                                // If we have no cities inside a subregion we need to now show anything
-                                //so we need to add one for the count
-                                if (count($subregion->cities) === 0) {
-                                    $totalCities += 1;
-                                }
+                            // If we have no cities inside a subregion we need to now show anything
+                            //so we need to add one for the count
+                            if (count($subregion->cities) === 0) {
+                                $totalCities += 1;
                             }
+                        }
 
-                            if ($totalCities === 0) {
-                                $totalCities = 1;
-                            }
+                        if ($totalCities === 0) {
+                            $totalCities = 1;
+                        }
 
-                            ?>
-
-
-                            <tr>
-                                <!-- REGION -->
-                                <td class="border px-4 py-2 align-top" rowspan="<?= $totalCities ?>">
-                                    <?= esc($region->region_name) ?>
-                                </td>
-
-                                <!-- SUBREGION -->
-                                <?php foreach ($region->subregions as $subregionIndex => $subregion) : ?>
-                                    <?php if ($subregionIndex > 0) : ?>
-                            <tr>
-                            <?php endif; ?>
+                        ?>
 
 
-                            <td class="border px-4 py-2 align-top" rowspan="<?= count($subregion->cities) === 0 ? 1 : count($subregion->cities) ?>">
-                                <?= esc($subregion->subregion_name) ?>
+                        <tr>
+                            <!-- REGION -->
+                            <td class="border px-4 py-2 align-top" rowspan="<?= $totalCities ?>">
+                                <?= esc($region->region_name) ?>
                             </td>
 
-                            <!-- CITIES  -->
-                            <?php foreach ($subregion->cities as $cityIndex => $city) : ?>
-                                <?php if ($cityIndex > 0) : ?>
-                            <tr>
-                            <?php endif; ?>
-                            <td class="border px-4 py-2">
-                                <?= esc($city->city_name) ?>
-                            </td>
-                            </tr>
-                        <?php endforeach; ?>
+                            <!-- SUBREGION -->
+                            <?php foreach ($region->subregions as $subregionIndex => $subregion) : ?>
+                                <?php if ($subregionIndex > 0) : ?>
+                        <tr>
+                        <?php endif; ?>
 
+
+                        <td class="border px-4 py-2 align-top" rowspan="<?= count($subregion->cities) === 0 ? 1 : count($subregion->cities) ?>">
+                            <?= esc($subregion->subregion_name) ?>
+                        </td>
+
+                        <!-- CITIES  -->
+                        <?php foreach ($subregion->cities as $cityIndex => $city) : ?>
+                            <?php if ($cityIndex > 0) : ?>
+                        <tr>
+                        <?php endif; ?>
+                        <td class="border px-4 py-2">
+                            <?= esc($city->city_name) ?>
+                        </td>
+                        </tr>
                     <?php endforeach; ?>
 
                 <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php endforeach; ?>
-    </div>
+
+            <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endforeach; ?>
 </div>
 
 <!-- Extract all necessary data from above using neceassry iterations since data_location hold many countries and each countires has regions...-->
