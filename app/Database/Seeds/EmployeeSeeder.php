@@ -17,11 +17,23 @@ class EmployeeSeeder extends Seeder
                 'employee_name'   => 'admin',
                 'employee_password'   => password_hash('admin123', PASSWORD_BCRYPT),
                 'employee_role'       => 'admin',
+                'employee_email'     => 'admin@admin.com',
+                'employee_phone'     => '1234567890',
+                'employee_birthday'  => $faker->date,
+                'employee_address'   => $faker->address,
+                'employee_status'    => 'active',
+
             ],
             [
                 'employee_name'   => 'user',
                 'employee_password'   => password_hash('user123', PASSWORD_BCRYPT),
                 'employee_role'       => 'user',
+                'employee_email'     => 'user@user.com',
+                'employee_phone'     => '123456780',
+                'employee_birthday'  => $faker->date,
+                'employee_address'   => $faker->address,
+                'employee_status'    => 'active',
+
             ],
         ];
 
@@ -29,8 +41,13 @@ class EmployeeSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             $data[] = [
                 'employee_name'   => $faker->unique()->userName,
-                'employee_password'   => password_hash($faker->password, PASSWORD_BCRYPT),
+                'employee_password'   => password_hash(123, PASSWORD_BCRYPT),
                 'employee_role'       => 'user',
+                'employee_email'     => $faker->unique()->email,
+                'employee_phone'     => $faker->phoneNumber,
+                'employee_birthday'  => $faker->date,
+                'employee_address'   => $faker->address,
+                'employee_status'    => $faker->randomElement(['active', 'inactive']),
             ];
         }
         
