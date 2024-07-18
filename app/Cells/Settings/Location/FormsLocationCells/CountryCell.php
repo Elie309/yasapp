@@ -7,9 +7,9 @@ use App\Cells\Settings\Location\LocationTemplateFormCell;
 class CountryCell extends LocationTemplateFormCell
 {
     public $title = "Country";
-    public $linkPostAdd = "/settings/location/add-country";
-    public $linkPostEdit = "/settings/location/edit-country";
-    public $linkPostDelete = "/settings/location/delete-country";
+    public $linkPostAdd = "/settings/locations/add-country";
+    public $linkPostEdit = "/settings/locations/edit-country";
+    public $linkPostDelete = "/settings/locations/delete-country";
 
     public $selectedOptionsCurrent = [];
 

@@ -9,7 +9,7 @@ class SettingsCell extends Cell
 
     public $settings = [
         [
-            'url' => '/settings/location',
+            'url' => '/settings/locations',
             'img' => "/images/location.webp",
             'title' => 'Location',
             'description' => 'Manage Countries, Regions, Subregions, and Cities.',
@@ -27,7 +27,7 @@ class SettingsCell extends Cell
             'description' => 'Manage Currencies.',
         ],
         [
-            'url' => '/settings/employee',
+            'url' => '/settings/employees',
             'img' => '/images/employee_ill.webp',
             'title' => 'Employee',
             'description' => 'Register Employees and Assign Roles.',

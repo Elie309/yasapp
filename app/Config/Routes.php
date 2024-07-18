@@ -20,26 +20,26 @@ $routes->get('logout', 'AuthController::logout');
 
 //SETTINGS
 $routes->get('settings', 'SettingsController::index');
-$routes->get('settings/location', 'Settings\LocationController::index');
+$routes->get('settings/locations', 'Settings\LocationController::index');
 $routes->get('settings/payment-plans', 'Settings\PaymentPlansController::index');
 $routes->get('settings/currencies', 'Settings\CurrenciesController::index');
 
 //SETTINGS POST LOCATION
 
-$routes->post('settings/location/add-city', 'Settings\LocationController::addCity');
-$routes->post('settings/location/add-subregion', 'Settings\LocationController::addSubregion');
-$routes->post('settings/location/add-region', 'Settings\LocationController::addRegion');
-$routes->post('settings/location/add-country', 'Settings\LocationController::addCountry');
+$routes->post('settings/locations/add-city', 'Settings\LocationController::addCity');
+$routes->post('settings/locations/add-subregion', 'Settings\LocationController::addSubregion');
+$routes->post('settings/locations/add-region', 'Settings\LocationController::addRegion');
+$routes->post('settings/locations/add-country', 'Settings\LocationController::addCountry');
 
-$routes->post('settings/location/edit-city', 'Settings\LocationController::updateCity');
-$routes->post('settings/location/edit-subregion', 'Settings\LocationController::updateSubregion');
-$routes->post('settings/location/edit-region', 'Settings\LocationController::updateRegion');
-$routes->post('settings/location/edit-country', 'Settings\LocationController::updateCountry');
+$routes->post('settings/locations/edit-city', 'Settings\LocationController::updateCity');
+$routes->post('settings/locations/edit-subregion', 'Settings\LocationController::updateSubregion');
+$routes->post('settings/locations/edit-region', 'Settings\LocationController::updateRegion');
+$routes->post('settings/locations/edit-country', 'Settings\LocationController::updateCountry');
 
-$routes->post('settings/location/delete-city', 'Settings\LocationController::deleteCity');
-$routes->post('settings/location/delete-subregion', 'Settings\LocationController::deleteSubregion');
-$routes->post('settings/location/delete-region', 'Settings\LocationController::deleteRegion');
-$routes->post('settings/location/delete-country', 'Settings\LocationController::deleteCountry');
+$routes->post('settings/locations/delete-city', 'Settings\LocationController::deleteCity');
+$routes->post('settings/locations/delete-subregion', 'Settings\LocationController::deleteSubregion');
+$routes->post('settings/locations/delete-region', 'Settings\LocationController::deleteRegion');
+$routes->post('settings/locations/delete-country', 'Settings\LocationController::deleteCountry');
 
 // SETTINGS POST PAYMENT PLANS
 
@@ -52,7 +52,6 @@ $routes->post('settings/payment-plans/delete-payment-plan', 'Settings\PaymentPla
 $routes->post('settings/currencies/add-currency', 'Settings\CurrenciesController::addCurrency');
 $routes->post('settings/currencies/edit-currency', 'Settings\CurrenciesController::updateCurrency');
 $routes->post('settings/currencies/delete-currency', 'Settings\CurrenciesController::deleteCurrency');
-
 
 
 

@@ -11,6 +11,9 @@ use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class LocationController extends BaseController
 {
+
+    private $link_back = '/settings/locations';
+
     public function index()
     {
         $session = service('session');
@@ -60,7 +63,7 @@ class LocationController extends BaseController
             return redirect()->back()->withInput()->with('errors', $cityModel->errors());
         }
 
-        return redirect()->to('/settings/location')->with('success', 'City added successfully');
+        return redirect()->to($this->link_back)->with('success', 'City added successfully');
     }
 
     public function addSubregion()
@@ -78,7 +81,7 @@ class LocationController extends BaseController
             return redirect()->back()->withInput()->with('errors', $subregionModel->errors());
         }
 
-        return redirect()->to('/settings/location')->with('success', 'Subregion added successfully');
+        return redirect()->to($this->link_back)->with('success', 'Subregion added successfully');
     }
 
     public function addRegion()
@@ -96,7 +99,7 @@ class LocationController extends BaseController
             return redirect()->back()->withInput()->with('errors', $regionModel->errors());
         }
 
-        return redirect()->to('/settings/location')->with('success', 'Region added successfully');
+        return redirect()->to($this->link_back)->with('success', 'Region added successfully');
     }
 
     public function addCountry()
@@ -112,7 +115,7 @@ class LocationController extends BaseController
             return redirect()->back()->withInput()->with('errors', $countryModel->errors());
         }
 
-        return redirect()->to('/settings/location')->with('success', 'Country added successfully');
+        return redirect()->to($this->link_back)->with('success', 'Country added successfully');
     }
 
 
@@ -129,7 +132,7 @@ class LocationController extends BaseController
             return redirect()->back()->withInput()->with('errors', $cityModel->errors());
         }
 
-        return redirect()->to('/settings/location')->with('success', 'City updated successfully');
+        return redirect()->to($this->link_back)->with('success', 'City updated successfully');
     }
 
     public function updateSubregion()
@@ -145,7 +148,7 @@ class LocationController extends BaseController
             return redirect()->back()->withInput()->with('errors', $subregionModel->errors());
         }
 
-        return redirect()->to('/settings/location')->with('success', 'Subregion updated successfully');
+        return redirect()->to($this->link_back)->with('success', 'Subregion updated successfully');
     }
 
 
@@ -162,7 +165,7 @@ class LocationController extends BaseController
             return redirect()->back()->withInput()->with('errors', $regionModel->errors());
         }
 
-        return redirect()->to('/settings/location')->with('success', 'Region updated successfully');
+        return redirect()->to($this->link_back)->with('success', 'Region updated successfully');
     }
 
 
@@ -187,7 +190,7 @@ class LocationController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $countryModel->errors());
             }
 
-            return redirect()->to('/settings/location')->with('success', 'Country updated successfully');
+            return redirect()->to($this->link_back)->with('success', 'Country updated successfully');
         } else {
             return redirect()->back()->with('success', 'No changes detected.');
         }
@@ -209,7 +212,7 @@ class LocationController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $cityModel->errors());
             }
 
-            return redirect()->to('/settings/location')->with('success', 'City deleted successfully');
+            return redirect()->to($this->link_back)->with('success', 'City deleted successfully');
         } catch (DatabaseException $e) {
             return redirect()->back()->with('errors', ['City cannot be deleted']);
         }
@@ -228,7 +231,7 @@ class LocationController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $subregionModel->errors());
             }
 
-            return redirect()->to('/settings/location')->with('success', 'Subregion deleted successfully');
+            return redirect()->to($this->link_back)->with('success', 'Subregion deleted successfully');
         } catch (DatabaseException $e) {
             return redirect()->back()->with('errors', ['Subregion cannot be deleted']);
 
@@ -246,7 +249,7 @@ class LocationController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $regionModel->errors());
             }
 
-            return redirect()->to('/settings/location')->with('success', 'Region deleted successfully');
+            return redirect()->to($this->link_back)->with('success', 'Region deleted successfully');
         } catch (DatabaseException $e) {
             return redirect()->back()->with('errors', ['Region cannot be deleted']);
         }
@@ -264,7 +267,7 @@ class LocationController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $countryModel->errors());
             }
 
-            return redirect()->to('/settings/location')->with('success', 'Country deleted successfully');
+            return redirect()->to($this->link_back)->with('success', 'Country deleted successfully');
         } catch (DatabaseException $e) {
             return redirect()->back()->with('errors', ['Country cannot be deleted']);
         }
