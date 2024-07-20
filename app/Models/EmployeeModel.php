@@ -28,13 +28,13 @@ class EmployeeModel extends Model
      protected $validationRules      = [
         'employee_id' => 'permit_empty|numeric',
         'employee_name' => 'required|string|max_length[100]',
-        'employee_password' => 'required|string|min_length[8]',
+        'employee_password' => 'required',
         'employee_role' => 'required|in_list[admin,manager,user]',
         'employee_email' => 'valid_email|is_unique[employees.employee_email,employee_id,{employee_id}]',
         'employee_phone' => 'numeric|is_unique[employees.employee_phone,employee_id,{employee_id}]',
         'employee_birthday' => 'permit_empty|valid_date',
         'employee_address' => 'permit_empty|string',
-        'employee_status' => 'permit_empty|in_list[active,inactive]',
+        'employee_status' => 'required|in_list[active,inactive]',
     ];
     protected $validationMessages   = [
         'employee_id' => [
@@ -47,8 +47,7 @@ class EmployeeModel extends Model
         ],
         'employee_password' => [
             'required' => 'Employee password is required.',
-            'string' => 'Employee password must be a string.',
-            'min_length' => 'Employee password must be at least 8 characters long.',
+            'min_length' => 'Employee password must be at least 5 characters long.',
         ],
         'employee_role' => [
             'required' => 'Employee role is required.',
@@ -69,6 +68,7 @@ class EmployeeModel extends Model
             'string' => 'Employee address must be a string.',
         ],
         'employee_status' => [
+            'required' => 'Employee status is required.',
             'in_list' => 'Employee status must be one of: active or inactive.',
         ],
     ];

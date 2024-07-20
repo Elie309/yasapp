@@ -36,22 +36,6 @@ class EmployeeSeeder extends Seeder
 
             ],
         ];
-
-        // Generate additional fake data
-        for ($i = 0; $i < 10; $i++) {
-            $data[] = [
-                'employee_name'   => $faker->unique()->userName,
-                'employee_password'   => password_hash(123, PASSWORD_BCRYPT),
-                'employee_role'       => 'user',
-                'employee_email'     => $faker->unique()->email,
-                'employee_phone'     => $faker->phoneNumber,
-                'employee_birthday'  => $faker->date,
-                'employee_address'   => $faker->address,
-                'employee_status'    => $faker->randomElement(['active', 'inactive']),
-            ];
-        }
-        
-        $this->db->table('employees')->insertBatch($data);
     }
 }
 

@@ -37,8 +37,12 @@ class EmployeesController extends BaseController
 
         // Handler for password
         $employee_password = $this->request->getPost('employee_password');
-        if(isset($employee_password) && !empty($employee_password)){
-            $employeeData['employee_password'] = password_hash($employee_password[0], PASSWORD_DEFAULT);
+
+        
+        //check if password is a string
+        if(isset($employee_password) && !empty($employee_password) && is_string($employee_password)){
+            //Use the entity to hash the password
+            $employeeData['employee_password'] = (new \App\Entities\EmployeeEntity())->setPassword($employee_password)->employee_password;
         }
 
         // CHeck for employee id
@@ -60,6 +64,7 @@ class EmployeesController extends BaseController
 
 
 
+            // Update the employee
             if($employeeModel->update($employeeData['employee_id'], $employeeData)){
                 return redirect()->to('/settings/employees')->with('success', 'Employee updated successfully');
             }else{

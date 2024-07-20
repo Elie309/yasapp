@@ -26,7 +26,7 @@ class AuthController extends BaseController
 
          $employeeModel = new EmployeeModel();
 
-         $employee = $employeeModel->where('employee_name', $name)->first();
+         $employee = $employeeModel->where('employee_name', $name)->where('employee_status', 'active')->first();
          
         
          $session = service('session');

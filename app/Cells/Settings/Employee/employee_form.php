@@ -12,7 +12,7 @@
 
         <label for="employee_password" class="main-label">Password</label>
         <!-- Note this will change the passsword -->
-         <p class="text-red-500 text-sm font-semibold italic">To set a new password only </p>
+        <p class="text-red-500 text-sm font-semibold italic">To set a new password only </p>
         <input type="password" id="employee_password" class="main-input" name="employee_password" autocomplete="off">
 
         <label for="employee_phone" class="main-label">Phone</label>
@@ -37,8 +37,8 @@
         <label for="employee_address" class="main-label">Address</label>
         <textarea id="employee_address" class="main-input" name="employee_address" rows="3"></textarea>
 
-        <div class="w-full flex justify-end my-2">
-            <button type="submit" class="main-btn w-1/6 right">Submit</button>
+        <div class="w-full flex justify-center my-2">
+            <button type="submit" class="main-btn w-1/2 md:w-2/6 right">Submit</button>
         </div>
 
     </form>
@@ -55,9 +55,17 @@
             document.getElementById('employee_phone').value = employeeData.employee_phone;
             document.getElementById('employee_role').value = employeeData.employee_role;
             document.getElementById('employee_status').value = employeeData.employee_status;
-            document.getElementById('employee_birthday').value = employeeData.employee_birthday;
+
+            // Assuming employeeData.employee_birthday is in the "dd-mm-yyyy" format
+            const [day, month, year] = employeeData.employee_birthday.split('-');
+            const formattedInputDate = `${year}-${month}-${day}`;
+
+            const date = new Date(formattedInputDate);
+            const formattedDate = date.toISOString().substring(0, 10); // Format as "yyyy-mm-dd" to match input[type="date"] requirements
+            document.getElementById('employee_birthday').value = formattedDate;
+
             document.getElementById('employee_address').value = employeeData.employee_address;
-            
+
         }
     }
 </script>
