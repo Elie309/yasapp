@@ -26,6 +26,7 @@ class EmployeeModel extends Model
 
      // Validation
      protected $validationRules      = [
+        'employee_id' => 'permit_empty|numeric',
         'employee_name' => 'required|string|max_length[100]',
         'employee_password' => 'required|string|min_length[8]',
         'employee_role' => 'required|in_list[admin,manager,user]',
@@ -36,6 +37,9 @@ class EmployeeModel extends Model
         'employee_status' => 'permit_empty|in_list[active,inactive]',
     ];
     protected $validationMessages   = [
+        'employee_id' => [
+            'numeric' => 'Employee ID must be a number.',
+        ],
         'employee_name' => [
             'required' => 'Employee name is required.',
             'string' => 'Employee name must be a string.',

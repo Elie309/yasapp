@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use CodeIgniter\Entity\Entity;
+use CodeIgniter\I18n\Time;
 
 class EmployeeEntity extends Entity
 {
@@ -19,6 +20,23 @@ class EmployeeEntity extends Entity
         'employee_birthday' => 'string',
         'employee_status' => 'string',
     ];
+
+    public function __get($name)
+{
+    if ($name === 'created_at' || $name === 'updated_at') {
+        $time = new Time($this->attributes[$name]);
+        return $time->setTimezone('Asia/Beirut')->format('Y-m-d H:i:s');
+    }
+
+    // Change format a birthday
+    if ($name === 'employee_birthday') {
+        $time = new Time($this->attributes[$name]);
+        return $time->setTimezone('Asia/Beirut')->format('d-m-Y');
+    }
+
+    return parent::__get($name);
+}
+
 
     public function setPassword(string $pass)
     {

@@ -2,14 +2,18 @@
 -- Employee TABLE
 CREATE TABLE IF NOT EXISTS Employees (
     employee_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
     employee_name VARCHAR(100) NOT NULL UNIQUE,
     employee_email VARCHAR(255) NOT NULL UNIQUE,
-    employee_password VARCHAR(255) NOT NULL,
     employee_phone VARCHAR(20) NOT NULL UNIQUE,
-    employee_role ENUM('admin', 'manager', 'user') NOT NULL DEFAULT 'user',
-    employee_status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+
+    employee_password VARCHAR(255) NOT NULL,
     employee_birthday DATE NULL,
     employee_address TEXT DEFAULT NULL,
+
+    employee_role ENUM('admin', 'manager', 'user') NOT NULL DEFAULT 'user',
+    employee_status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

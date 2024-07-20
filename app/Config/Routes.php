@@ -54,11 +54,8 @@ $routes->post('settings/currencies/add-currency', 'Settings\CurrenciesController
 $routes->post('settings/currencies/edit-currency', 'Settings\CurrenciesController::updateCurrency');
 $routes->post('settings/currencies/delete-currency', 'Settings\CurrenciesController::deleteCurrency');
 
-// SETTINGS POST EMPLOYEES
+$routes->post('settings/employees', 'Settings\EmployeesController::handleEmployeeForm');
 
-$routes->post('settings/employees/add-employee', 'Settings\EmployeesController::addEmployee');
-$routes->post('settings/employees/edit-employee', 'Settings\EmployeesController::updateEmployee');
-$routes->post('settings/employees/delete-employee', 'Settings\EmployeesController::deleteEmployee');
 
 
 

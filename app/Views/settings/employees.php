@@ -1,4 +1,3 @@
-
 <div class="w-full bg-gray-100 min-h-full flex flex-col">
     <div class="container mx-auto p-4 w-full">
         <h1 class="text-4xl font-bold text-center mb-8">Settings</h1>
@@ -27,7 +26,33 @@
         <?php endif; ?>
 
         <div class="mt-8 bg-white p-10 shadow-md rounded-md">
-            <?= view_cell('\App\Cells\Utils\Powergrid\PowergridCell::render', ['tableData' => $employeeData]) ?>
+            <?php $tableHeaders = [ // Corrected variable name
+                'employee_id' => 'ID',
+                'employee_name' => 'Name',
+                'employee_email' => 'Email',
+                'employee_phone' => 'Phone',
+                'employee_address' => 'Address',
+                'employee_birthday' => 'Birthday',
+                'employee_role' => 'Role',
+                'employee_status' => 'Status',
+                'created_at' => 'Created At',
+                'updated_at' => 'Updated At'
+            ];
+            ?>
+            <?= view_cell('\App\Cells\Utils\Powergrid\PowergridCell::render', 
+                ['tableId' => 'employee_table', 
+                'tableHeaders' => $tableHeaders, 
+                'tableData' => $employeeData,
+                'addButtonModelId' => 'EditEmployee',
+                'AddButtonName' => 'Add Employee',
+                'JSFunctionToRunOnClick' => 'setFormDetails();', //This function is present on the EditEmployee modal
+                ]) ?>
         </div>
     </div>
 </div>
+
+<?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
+    'modalId' => 'EditEmployee',
+    'modalTitle' => 'Edit Employee',
+    'modalBody' => view_cell('App\Cells\Settings\Employee\EmployeeFormCell::render')
+]) ?>
