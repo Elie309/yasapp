@@ -45,7 +45,11 @@
                 'tableData' => $employeeData,
                 'addButtonModelId' => 'EditEmployee',
                 'AddButtonName' => 'Add Employee',
-                'JSFunctionToRunOnClick' => 'setFormDetails();', //This function is present on the EditEmployee modal
+                'isOnClickRowActive' => true,
+                'modelIdOnClickRow' => 'EditEmployee',
+                'addButtonModelAdditionalFn' => 'clearFormDetails();',
+                'JSFunctionToRunOnClickRow' => 'setFormDetails();', //This function is present on the EditEmployee modal
+                'classOnClickRow' => 'cursor-pointer',
                 ]) ?>
         </div>
     </div>

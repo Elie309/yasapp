@@ -46,6 +46,18 @@
 
 <script>
     // Check local data a fill the form
+
+    function clearFormDetails() {
+        document.getElementById('employee_id').value = '';
+        document.getElementById('employee_name').value = '';
+        document.getElementById('employee_email').value = '';
+        document.getElementById('employee_phone').value = '';
+        document.getElementById('employee_role').value = 'user';
+        document.getElementById('employee_status').value = 'active';
+        document.getElementById('employee_birthday').value = '';
+        document.getElementById('employee_address').value = '';
+    }
+
     function setFormDetails() {
         const employeeData = JSON.parse(sessionStorage.getItem('tempTableData'));
         if (employeeData) {
