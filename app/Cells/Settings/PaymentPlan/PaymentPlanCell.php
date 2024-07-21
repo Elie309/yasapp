@@ -13,8 +13,23 @@ class PaymentPlanCell extends Cell
 
     public $selectedOptions = [];
 
+    public $formGetter;
+
     public $inputFormName = "payment_plan_name";
     public $inputFormId = "payment_plan_id";
+
+    public function formEdit(){
+        return view_cell('Settings/PaymentPlan/PaymentPlanCell::render', ['formGetter' => 'edit']);
+
+    }
+
+    public function formDelete(){
+        return view_cell('Settings/PaymentPlan/PaymentPlanCell::render', ['formGetter' => 'delete']);
+    }
+
+    public function formAdd(){
+        return view_cell('Settings/PaymentPlan/PaymentPlanCell::render', ['formGetter' => 'add']);
+    }
 
 
 }
