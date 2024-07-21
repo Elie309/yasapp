@@ -16,8 +16,14 @@ class PowergridCell extends Cell
     // Button details
     public $AddButtonName;
     public $addButtonModelId;
+    public $addButtonModelAdditionalFn;
 
+    public $isOnClickRowActive;
+    public $modelIdOnClickRow;
+    public $JSFunctionToRunOnClickRow;
+    public $classOnClickRow;
 
-    public $JSFunctionToRunOnClick;
+    public $actions = [];
+    
 
 }

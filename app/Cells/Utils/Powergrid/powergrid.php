@@ -1,18 +1,18 @@
 <div class="w-full">
 
-    <div class="flex flex-row justify-between mb-6">
-        <div>
-            <button id="download-xlsx" onclick="fnExcelReport()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download XLSX</button>
-        </div>
-        <div>
-            <button onclick="openModal('<?= $addButtonModelId ?>')" class="secondary-btn">
-                <?= $AddButtonName ?>
-            </button>
-        </div>
+    <div class="flex flex-row justify-end mb-6">
+        <button id="download-xlsx" onclick="fnExcelReport()" class="secondary-btn mx-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+        </button>
+        <button onclick="openModal('<?= $addButtonModelId ?>'); <?= isset($addButtonModelAdditionalFn) ? $addButtonModelAdditionalFn : ''  ?>" class="secondary-btn mx-2">
+            <?= $AddButtonName ?>
+        </button>
     </div>
 
     <div class="my-4 w-full grid grid-cols-2 gap-10 justify-around ">
-        <select id="columnSelect_<?= $tableId ?>" class="main-select ">
+        <select id="columnSelect_<?= $tableId ?>" class="main-select">
             <?php foreach ($tableHeaders as $key => $value) : ?>
                 <option value='<?= $value ?>'><?= $value ?></option>
             <?php endforeach; ?>
@@ -20,84 +20,89 @@
         <input type="text" onkeyup="filterTable(document.getElementById('columnSelect_<?= $tableId ?>').value, this.value)" placeholder="Search" class="main-input">
     </div>
 
+    <div class='w-full overflow-auto'>
 
-    <table id="<?= $tableId ?>" class="table-responsive max-w-full overflow-auto">
-        <!-- Generate table using HTML CSS AND PHP -->
+        <table id="<?= $tableId ?>" class="table-auto w-full">
 
-        <thead>
-            <tr>
-                <?php foreach ($tableHeaders as $key => $value) : ?>
-                    <th class="bg-gray-200 border border-gray-500">
-                        <?= $value ?>
-                    </th>
-                <?php endforeach; ?>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            foreach ($tableData as $data) {
-                echo "<tr class='clickable-row' data-row-data='" . htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8') . "'>";
-                foreach ($tableHeaders as $key => $value) {
-                    echo "<td class='border px-4 py-2'>" . $data->$key . "</td>";
+            <thead class="table-header-group">
+                <tr class="border border-gray-300">
+                    <?php foreach ($tableHeaders as $key => $value) : ?>
+                        <th class="bg-gray-200 text-center ">
+                            <?= $value ?>
+                        </th>
+                    <?php endforeach; ?>
+                    <?php if (isset($actions) && count($actions) > 0) : ?>
+                        <th class="bg-gray-200">Actions</th>
+                    <?php endif; ?>
+                </tr>
+            </thead>
+
+            <!-- BODY -->
+            <tbody>
+                <?php
+                $row_count = 0;
+                foreach ($tableData as $data) {
+
+                    echo "<tr class='clickable-row " . (isset($classOnClickRow) ? $classOnClickRow : ' ') . "' data-row-data='" . htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8') . "'>";
+                    foreach ($tableHeaders as $key => $value) {
+                        echo "<td class=''>" . $data->$key . "</td>";
+                    }
+
+                    $data = htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8');
+                    if (isset($actions) && count($actions) > 0) {
+                        echo "<td>";
+                        echo "<div class='flex flex-row justify-evenly'>";
+
+                        foreach ($actions as $action) {
+                            echo "<button ";
+                            echo "class='actionsBtn " . ($action['class'] ?? '') . "' ";
+                            echo 'onclick="actionStoreDataOnClickEvent(' . $data . '); ' . $action['functions'] .  ' "';
+                            // echo "data-row-data='" . $data ."'";
+                            echo ">";
+                            echo isset($action['img']) ? ($action['img']) : ($action['name']);
+
+                            echo "</button>";
+                        }
+                        echo "</div>";
+
+                        echo "</td>";
+                    }
+
+                    echo "</tr>";
+                    $row_count++;
                 }
-                echo "</tr>";
-            }
-            ?>
-        </tbody>
-    </table>
+                ?>
+            </tbody>
+        </table>
 
+    </div>
+
+
+    <!-- Styles even and odd rows -->
     <style>
-        <?= '#' . $tableId . " " ?>,
-        .table-responsive {
-            overflow-x: auto;
-            /* Enables horizontal scrolling */
-            -webkit-overflow-scrolling: touch;
-            /* Smooth scrolling on touch devices */
-        }
-
-        <?= '#' . $tableId . " "  ?>,
-
-        table {
-            width: 100%;
-            /* Ensures the table takes up the full width */
-            border-collapse: collapse;
-            /* Optional: for styling */
-
-        }
-
-        <?= '#' . $tableId . " " ?>th,
-        td {
-            text-align: left;
-            /* Optional: for styling */
-            padding: 3px;
-            /* Optional: for styling */
-        }
-
-        /* Body styles */
-        <?= '#' . $tableId . " " ?>td {
-            border: 1px solid #ddd;
-            /* Light gray border */
-            padding: 3px;
-            /* Adjust padding as needed */
-        }
-
-        /* Alternating row background colors */
-        <?= '#' . $tableId . " " ?>tr:nth-child(even) {
+        <?= '#' . $tableId . ' ' ?>tbody tr:nth-child(even) {
             background-color: #f2f2f2;
         }
 
-        /* Light gray for even rows */
-        <?= '#' . $tableId . " " ?>tr:nth-child(odd) {
-            background-color: #ffffff;
+        <?= '#' . $tableId . ' ' ?>tbody tr:hover {
+            background-color: #1f2937;
+            color: white;
         }
 
+        <?= '#' . $tableId . ' ' ?>th,
+        <?= '#' . $tableId . ' ' ?>td {
+            padding: 8px;
+        }
 
-        <?= '#' . $tableId . " " ?>tbody tr:hover {
-            background-color: #3b82f6;
-            color: white;
-            cursor: pointer;
+        <?= '#' . $tableId . ' ' ?>th {
+            background-color: #f2f2f2;
+        }
+
+        <?= '#' . $tableId . ' ' ?>td {
+            border: 1px solid #ddd;
         }
     </style>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
@@ -158,23 +163,36 @@
         }
 
 
-        // TODO: Make this script non-specific to the employee
-        document.querySelectorAll('.clickable-row').forEach(function(row) {
-            row.addEventListener('click', function() {
-                var rowData = JSON.parse(this.getAttribute('data-row-data'));
+        function actionStoreDataOnClickEvent(data) {
 
-                sessionStorage.setItem('tempTableData', JSON.stringify(rowData));
-                
-                openModal('<?= $addButtonModelId ?>');
-                <?php echo $JSFunctionToRunOnClick ?>
+            sessionStorage.setItem('tempTableData', JSON.stringify(data));
+            setTimeout(() => {
+                sessionStorage.removeItem('tempTableData');
+            }, 5000);
+        }
 
-                setTimeout(() => {
-                   sessionStorage.removeItem('tempTableData');
-                   sessionStorage.getItem('tempTableData', JSON.stringify(rowData));
-                }, 5000);
 
+
+
+        <?php if (isset($isOnClickRowActive) && $isOnClickRowActive) : ?>
+
+            document.querySelectorAll('.clickable-row').forEach(function(row) {
+                row.addEventListener('click', function() {
+                    var rowData = JSON.parse(this.getAttribute('data-row-data'));
+
+                    sessionStorage.setItem('tempTableData', JSON.stringify(rowData));
+
+                    openModal('<?= isset($modelIdOnClickRow) ? $modelIdOnClickRow : $addButtonModelId ?>');
+                    <?= isset($JSFunctionToRunOnClickRow) ? $JSFunctionToRunOnClickRow : '' ?>
+
+                    setTimeout(() => {
+                        sessionStorage.removeItem('tempTableData');
+                    }, 5000);
+
+                });
             });
-        });
+
+        <?php endif; ?>
     </script>
 
 </div>
