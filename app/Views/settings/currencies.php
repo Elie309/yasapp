@@ -29,17 +29,6 @@
 
         <div class="mt-8 bg-white p-10 shadow-md rounded-md">
 
-            <?php $data = []; ?>
-            <?php foreach ($currencies as $currency) : ?>
-                <!-- Create a new array which has id and name as keys -->
-                <?php $data[] = [
-                    'id' => $currency->currency_id, 'name' => $currency->currency_name,
-                    'code' => $currency->currency_code, 'symbol' => $currency->currency_symbol,
-                ];
-                ?>
-
-            <?php endforeach; ?>
-
             <?php $tableHeaders = [ // Corrected variable name
                 'currency_id' => 'ID',
                 'currency_name' => 'Currency Name',
@@ -76,7 +65,7 @@
                     'tableData' => $currencies,
                     'addButtonModelId' => 'AddCurrencies',
                     'AddButtonName' => 'Add Currency',
-                    'modelIdOnClickRow' => 'EditCurrencies',
+                    'modelIdOnClickRow' => '',
                     'JSFunctionToRunOnClickRow' => '', //This function is present in the form cell of currencies
                     'classOnClickRow' => '',
                     'actions' => $actions,

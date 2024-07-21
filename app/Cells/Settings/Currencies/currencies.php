@@ -21,7 +21,7 @@
 
         <form id="edit_currency" action="<?= $linkPostEdit ?>" method="POST" class="mx-auto my-3 w-5/6">
 
-            <input type="hidden" name="currency_id" id="edit_currency_id">
+            <input type="hidden" name="<?= $inputFormId ?>" id="edit_currency_id">
 
             <label for="edit_currency_name" class="main-label"><?php echo $title ?> Name</label>
             <input type="text" name="currency_name" id="edit_currency_name" class="main-input" required>
@@ -42,7 +42,7 @@
 
         <form id="delete_currency" action="<?= $linkPostDelete ?>" method="POST" class="mx-auto my-3 w-5/6">
 
-            <input type="hidden" name="currency_id" id="delete_currency_id">
+            <input type="hidden" name="<?= $inputFormId ?>" id="delete_currency_id">
 
             <p class="text-xl text-center text-red-600 font-semibold">Are you sure you want to delete this <?php echo $title ?>?</p>
 
