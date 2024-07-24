@@ -57,6 +57,12 @@ $routes->post('settings/currencies/delete-currency', 'Settings\CurrenciesControl
 $routes->post('settings/employees', 'Settings\EmployeesController::handleEmployeeForm');
 
 
+//PROFILE
+$routes->get('profile', 'Profile\ProfileController::index');
+$routes->post('profile', 'Profile\ProfileController::updateProfile');
+
+
+
 
 
 
