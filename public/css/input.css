@@ -36,4 +36,10 @@
     .main-select {
         @apply w-full px-2 py-1 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none;
     }
+
+    .container-main {
+        @apply container mx-auto w-full bg-gray-100 min-h-full flex flex-col mt-5;
+    }
+
+    
 }
