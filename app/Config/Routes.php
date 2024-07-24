@@ -11,15 +11,15 @@ $routes->get('dashboard', 'HomeController::index');
 
 //AUTHENTICATION
 
-$routes->post('login/acceptdata' ,'AuthController::acceptData');
+$routes->post('login/acceptdata' ,'Auth\AuthController::acceptData');
 
-$routes->get('login', 'AuthController::login');
+$routes->get('login', 'Auth\AuthController::login');
 
-$routes->get('logout', 'AuthController::logout');
+$routes->get('logout', 'Auth\AuthController::logout');
 
 
 //SETTINGS
-$routes->get('settings', 'SettingsController::index');
+$routes->get('settings', 'Settings\SettingsController::index');
 $routes->get('settings/locations', 'Settings\LocationController::index');
 $routes->get('settings/payment-plans', 'Settings\PaymentPlansController::index');
 $routes->get('settings/currencies', 'Settings\CurrenciesController::index');
@@ -60,11 +60,3 @@ $routes->post('settings/employees', 'Settings\EmployeesController::handleEmploye
 //PROFILE
 $routes->get('profile', 'Profile\ProfileController::index');
 $routes->post('profile', 'Profile\ProfileController::updateProfile');
-
-
-
-
-
-
-
-
