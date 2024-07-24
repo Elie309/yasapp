@@ -3,8 +3,7 @@
 namespace App\Controllers\Profile;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
-use App\Models\EmployeeModel; // Add this line to import the EmployeeModel class
+use App\Models\Settings\EmployeeModel; // Add this line to import the EmployeeModel class
 
 class ProfileController extends BaseController
 {

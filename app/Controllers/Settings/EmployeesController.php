@@ -3,7 +3,7 @@
 namespace App\Controllers\Settings;
 
 use App\Controllers\BaseController;
-use App\Models\EmployeeModel;
+use App\Models\Settings\EmployeeModel;
 
 class EmployeesController extends BaseController
 {
