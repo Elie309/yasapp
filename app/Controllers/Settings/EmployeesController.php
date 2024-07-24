@@ -22,6 +22,7 @@ class EmployeesController extends BaseController
 
     public function handleEmployeeForm()
     {
+        $session = service('session');
         $employeeModel = new EmployeeModel();
 
         $employeeData = [
@@ -62,10 +63,19 @@ class EmployeesController extends BaseController
                 unset($employeeData['employee_phone']);
             }
 
-
+            $currentEmployee = $employeeModel->where('employee_name', $session->get('name'))->where('employee_status', 'active')->first();
 
             // Update the employee
             if($employeeModel->update($employeeData['employee_id'], $employeeData)){
+
+                if($employeeData['employee_id'] == $currentEmployee->employee_id ){
+                    $newData = [
+                        'name' => $employeeData['employee_name'],
+                        'role' => $employeeData['employee_role'],
+                    ];
+                    $session->set($newData);
+                }
+
                 return redirect()->to('/settings/employees')->with('success', 'Employee updated successfully');
             }else{
                 return redirect()->to('/settings/employees')->with('errors', $employeeModel->errors());
