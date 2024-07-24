@@ -27,11 +27,11 @@ class EmployeeModel extends Model
      // Validation
      protected $validationRules      = [
         'employee_id' => 'permit_empty|numeric',
-        'employee_name' => 'required|string|max_length[100]',
+        'employee_name' => 'required|string|max_length[100]|is_unique[employees.employee_name,employee_id,{employee_id}]',
         'employee_password' => 'required',
         'employee_role' => 'required|in_list[admin,manager,user]',
-        'employee_email' => 'valid_email|is_unique[employees.employee_email,employee_id,{employee_id}]',
-        'employee_phone' => 'numeric|is_unique[employees.employee_phone,employee_id,{employee_id}]',
+        'employee_email' => 'required|valid_email|is_unique[employees.employee_email,employee_id,{employee_id}]',
+        'employee_phone' => 'required|numeric|is_unique[employees.employee_phone,employee_id,{employee_id}]',
         'employee_birthday' => 'permit_empty|valid_date',
         'employee_address' => 'permit_empty|string',
         'employee_status' => 'required|in_list[active,inactive]',
@@ -44,6 +44,7 @@ class EmployeeModel extends Model
             'required' => 'Employee name is required.',
             'string' => 'Employee name must be a string.',
             'max_length' => 'Employee name cannot exceed 100 characters.',
+            'is_unique' => 'Employee name must be unique.',
         ],
         'employee_password' => [
             'required' => 'Employee password is required.',
@@ -56,10 +57,12 @@ class EmployeeModel extends Model
         'employee_email' => [
             'valid_email' => 'Employee email must be a valid email address.',
             'is_unique' => 'Employee email must be unique.',
+            'required' => 'Employee email is required.',
         ],
         'employee_phone' => [
             'numeric' => 'Employee phone must be a number.',
             'is_unique' => 'Employee phone must be unique.',
+            'required' => 'Employee phone is required.',
         ],
         'employee_birthday' => [
             'valid_date' => 'Employee birthday must be a valid date.',
