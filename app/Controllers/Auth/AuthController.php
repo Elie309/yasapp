@@ -36,6 +36,7 @@ class AuthController extends BaseController
              $newData = [
                 'name' => $name,
                 'role' => $employee->employee_role,
+                'id' => $employee->employee_id
              ];
     
              $session->set($newData);
