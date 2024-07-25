@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Database\Seeds;
+namespace App\Database\Seeds\Settings;
 
 use CodeIgniter\Database\Seeder;
 use App\Models\Settings\Location\CountryModel;

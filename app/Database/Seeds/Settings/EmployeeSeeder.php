@@ -36,6 +36,9 @@ class EmployeeSeeder extends Seeder
 
             ],
         ];
+
+        $this->db->table('employees')->insertBatch($data);
+
     }
 }
 
