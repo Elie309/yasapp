@@ -19,11 +19,22 @@ CREATE TABLE IF NOT EXISTS Employees (
 );
 
 
--- Users TABLE 
-CREATE TABLE IF NOT EXISTS Users (
-    user_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name  VARCHAR(255) NOT NULL
+-- Clients TABLE 
+CREATE TABLE IF NOT EXISTS Clients (
+    client_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    client_firstname VARCHAR(255) NOT NULL,
+    client_lastname  VARCHAR(255) NOT NULL,
+    client_email VARCHAR(255) NULL,
+
+    employee_id INT UNSIGNED NOT NULL,
+
+    client_visibility ENUM('public', 'private') NOT NULL DEFAULT 'public',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
+
 );
 
 -- Countries TABLE 
@@ -35,12 +46,14 @@ CREATE TABLE IF NOT EXISTS Countries (
 
 -- Phones TABLE 
 CREATE TABLE IF NOT EXISTS Phones (
+
     phone_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user_id INT UNSIGNED NOT NULL,
+    client_id INT UNSIGNED NOT NULL,
     country_id INT UNSIGNED NOT NULL,
-    phone_number VARCHAR(20) NOT NULL UNIQUE,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    phone_number VARCHAR(20) NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES Clients(client_id),
     FOREIGN KEY (country_id) REFERENCES Countries(country_id)
+
 );
 
 
@@ -98,7 +111,7 @@ CREATE TABLE IF NOT EXISTS Currencies (
 CREATE TABLE IF NOT EXISTS Requests (
     request_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
-    user_id INT UNSIGNED NOT NULL,
+    client_id INT UNSIGNED NOT NULL,
     location_id INT UNSIGNED NOT NULL,
     payment_plan_id INT UNSIGNED NOT NULL,
     currency_id INT UNSIGNED NOT NULL,
@@ -113,7 +126,7 @@ CREATE TABLE IF NOT EXISTS Requests (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
 
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (client_id) REFERENCES Clients(client_id),
     FOREIGN KEY (location_id) REFERENCES Locations(location_id),
     FOREIGN KEY (payment_plan_id) REFERENCES PaymentPlans(payment_plan_id),
     FOREIGN KEY (currency_id) REFERENCES Currencies(currency_id),

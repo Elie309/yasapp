@@ -11,5 +11,6 @@ class MainSeeder extends Seeder
         $this->call('App\Database\Seeds\Settings\CurrenciesSeeder');
         $this->call('App\Database\Seeds\Settings\EmployeeSeeder');
         $this->call('App\Database\Seeds\Settings\LocationSeeder');
+        $this->call('App\Database\Seeds\Settings\PaymentPlansSeeder');
     }
 }
