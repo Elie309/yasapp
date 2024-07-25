@@ -38,7 +38,7 @@
     }
 
     .container-main {
-        @apply container mx-auto w-full bg-gray-100 min-h-full flex flex-col mt-5;
+        @apply container mx-auto px-3 w-full bg-gray-100 min-h-full flex flex-col mt-5;
     }
 
     

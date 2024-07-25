@@ -32,13 +32,14 @@
             </div>
             <nav>
                 <ul class="font-bold text-center md:text-start">
+                    <li class="mb-4"><a href="/clients" class="block p-4 rounded hover:bg-red-800">Clients</a></li>
                     <li class="mb-4"><a href="/listings" class="block p-4 rounded hover:bg-red-800">Listings</a></li>
                     <li class="mb-4"><a href="/requests" class="block p-4 rounded hover:bg-red-800">Requests</a></li>
                     <li class="mb-4"><a href="/profile" class="block p-4 rounded hover:bg-red-800">Profile</a></li>
 
-                    <?php 
-                    
-                    if($role === 'admin' ){
+                    <?php
+
+                    if ($role === 'admin') {
                         echo '<li class="mb-4"><a href="/settings" class="block p-4 rounded hover:bg-red-800">Settings</a></li>';
                     }
 

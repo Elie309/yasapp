@@ -60,3 +60,12 @@ $routes->post('settings/employees', 'Settings\EmployeesController::handleEmploye
 //PROFILE
 $routes->get('profile', 'Profile\ProfileController::index');
 $routes->post('profile', 'Profile\ProfileController::updateProfile');
+
+
+//CLIENTS
+$routes->get('clients', 'Clients\ClientsController::index');
+$routes->get('clients/add', 'Clients\ClientsController::add');
+$routes->post('clients/add', 'Clients\ClientsController::addClient');
+$routes->get('clients/edit/(:num)', 'Clients\ClientsController::edit/$1');
+$routes->post('clients/edit/(:num)', 'Clients\ClientsController::updateClient/$1');
+$routes->get('clients/delete/(:num)', 'Clients\ClientsController::delete/$1');

@@ -48,9 +48,11 @@ CREATE TABLE IF NOT EXISTS Countries (
 CREATE TABLE IF NOT EXISTS Phones (
 
     phone_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
     client_id INT UNSIGNED NOT NULL,
     country_id INT UNSIGNED NOT NULL,
     phone_number VARCHAR(20) NOT NULL,
+    
     FOREIGN KEY (client_id) REFERENCES Clients(client_id),
     FOREIGN KEY (country_id) REFERENCES Countries(country_id)
 
