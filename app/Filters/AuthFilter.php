@@ -47,7 +47,7 @@ class AuthFilter implements FilterInterface
             $allowedLinksForNonUsers = ["login", "login/acceptdata"];
 
             if(!in_array($currentUri, $allowedLinksForNonUsers)){
-                return redirect("AuthController::login");
+                return redirect("Auth\AuthController::login");
             }
 
         }
