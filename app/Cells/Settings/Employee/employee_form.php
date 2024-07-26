@@ -4,10 +4,10 @@
 
         <input type="hidden" name="employee_id" id="employee_id">
 
-        <label for="employee_name" class="main-label">Name</label>
+        <label for="employee_name" class="main-label">Name<span class="text-red-800">*</span></label>
         <input type="text" class="main-input" id="employee_name" class="main-input" name="employee_name" required>
 
-        <label for="employee_email" class="main-label">Email</label>
+        <label for="employee_email" class="main-label">Email<span class="text-red-800">*</span></label>
         <input type="email" id="employee_email" class="main-input" name="employee_email" required>
 
         <label for="employee_password" class="main-label">Password</label>
@@ -15,19 +15,19 @@
         <p class="text-red-500 text-sm font-semibold italic">To set a new password only </p>
         <input type="password" id="employee_password" class="main-input" name="employee_password" autocomplete="off">
 
-        <label for="employee_phone" class="main-label">Phone</label>
+        <label for="employee_phone" class="main-label">Phone<span class="text-red-800">*</span></label>
         <input type="text" id="employee_phone" class="main-input" name="employee_phone" required>
 
         <label for="employee_role" class="main-label">Role</label>
         <select id="employee_role" class="main-input" name="employee_role">
-            <option value="user">User</option>
+            <option selected value="user">User</option>
             <option value="manager">Manager</option>
             <option value="admin">Admin</option>
         </select>
 
         <label for="employee_status" class="main-label">Status</label>
         <select id="employee_status" class="main-input" name="employee_status">
-            <option value="active" default>Active</option>
+            <option value="active" selected>Active</option>
             <option value="inactive">Inactive</option>
         </select>
 

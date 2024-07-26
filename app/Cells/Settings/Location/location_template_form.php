@@ -9,7 +9,7 @@
         <?php if (strtolower($title) === "country") { ?>
 
             <div class="mb-4">
-                <label for="country_code" class="main-label">Country Code</label>
+                <label for="country_code" class="main-label">Country Code<span class="text-red-800">*</span></label>
                 <input type="text" id="country_code" name="country_code" class="main-input" required>
             </div>
 

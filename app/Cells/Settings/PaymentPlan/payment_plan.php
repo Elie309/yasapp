@@ -8,7 +8,7 @@
         <form action="<?= $linkPostAdd ?>" method="POST" class="mx-auto my-3 w-5/6">
 
             <div class="mb-4">
-                <label for="<?= $inputFormName ?>" class="main-label"><?php echo $title ?></label>
+                <label for="<?= $inputFormName ?>" class="main-label"><?php echo $title ?><span class="text-red-800">*</span></label>
                 <input type="text" id="add_<?= $inputFormName ?>" placeholder="<?= $title ?> name" name="<?= $inputFormName ?>" class="main-input" required>
             </div>
 

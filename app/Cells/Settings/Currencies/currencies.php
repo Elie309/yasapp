@@ -4,13 +4,13 @@
 
         <form id="add_currency" action="<?= $linkPostAdd ?>" method="POST" class="mx-auto my-3 w-5/6">
 
-            <label for="add_currency_name" class="main-label"><?php echo $title ?> Name</label>
+            <label for="add_currency_name" class="main-label"><?php echo $title ?> Name<span class="text-red-800">*</span></label>
             <input type="text" name="currency_name" id="add_currency_name" class="main-input" required>
 
-            <label for="add_currency_code" class="main-label"><?php echo $title ?> Code</label>
+            <label for="add_currency_code" class="main-label"><?php echo $title ?> Code<span class="text-red-800">*</span></label>
             <input type="text" name="currency_code" id="add_currency_code" class="main-input" required>
 
-            <label for="add_currency_symbol" class="main-label"><?php echo $title ?> Symbol</label>
+            <label for="add_currency_symbol" class="main-label"><?php echo $title ?> Symbol<span class="text-red-800">*</span></label>
             <input type="text" name="currency_symbol" id="add_currency_symbol" class="main-input" required>
 
 
