@@ -26,7 +26,6 @@ class ClientModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'client_id' => 'is_natural_no_zero',
         'client_firstname' => 'required|string|max_length[255]',
         'client_lastname' => 'required|string|max_length[255]',
         'client_email' => 'valid_email',
@@ -34,9 +33,6 @@ class ClientModel extends Model
         'employee_id' => 'required|is_natural_no_zero',
     ];
     protected $validationMessages   = [
-        'client_id' => [
-            'is_natural_no_zero' => 'The client id must be a natural number greater than zero.',
-        ],
         'client_firstname' => [
             'required' => 'The client first name is required.',
             'string' => 'The client first name must be a valid string.',

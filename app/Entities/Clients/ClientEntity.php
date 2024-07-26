@@ -16,4 +16,25 @@ class ClientEntity extends Entity
         'client_email' => 'string',
         'client_visibility' => 'string',
     ];
+
+    //Get phone numbers
+    public function getPhones()
+    {
+        $phoneModel = new \App\Models\Clients\PhoneModel();
+
+
+        $phones = $phoneModel->select('phones.*, countries.country_code')
+        ->join('countries', 'countries.country_id = phones.country_id', 'left')
+        ->where('phones.client_id', $this->client_id)
+        ->findAll();
+
+        
+        $phoneList = [];
+
+        foreach ($phones as $phone) {
+            $phoneList[] = $phone->country_code . ' ' . $phone->phone_number;
+        }
+
+        return $phoneList;
+    }
 }

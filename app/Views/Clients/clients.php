@@ -3,10 +3,11 @@
     <div class="mt-8 bg-white p-10 shadow-md rounded-md">
         <?php $tableHeaders = [
             'client_id' => 'ID',
-            'client_firstname' => 'FirstName',
-            'client_lastname' => 'Lastname',
+            'client_firstname' => 'First Name',
+            'client_lastname' => 'Last Name',
             'client_email' => 'Email',
             'client_visibility' => 'Visibility',
+            'phones' => 'Phones',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
 
@@ -21,7 +22,8 @@
                 'tableId' => 'client_table',
                 'tableHeaders' => $tableHeaders,
                 'tableData' => $clients,
-                'addButtonModelId' => 'ClientForm',
+                'addButtonModelId' => '',
+                'addButtonRedirectLink' => 'clients/add',
                 'AddButtonName' => 'Add Client',
                 'modelIdOnClickRow' => '',
                 'JSFunctionToRunOnClickRow' => '',
@@ -32,9 +34,3 @@
         ) ?>
     </div>
 </div>
-
-<?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
-    'modalId' => 'ClientForm',
-    'modalTitle' => 'Add Client',
-    'modalBody' => view_cell('App\Cells\Clients\ClientFormCell::render', ['employee_id' => $employee_id, 'countries' => $countries]),
-]) ?>
