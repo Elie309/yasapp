@@ -16,6 +16,7 @@ class PowergridCell extends Cell
     // Button details
     public $AddButtonName;
     public $addButtonModelId;
+    public $addButtonRedirectLink;
     public $addButtonModelAdditionalFn;
 
     public $isOnClickRowActive;

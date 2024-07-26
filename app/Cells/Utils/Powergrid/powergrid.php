@@ -6,9 +6,15 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
             </svg>
         </button>
-        <button onclick="openModal('<?= $addButtonModelId ?>'); <?= isset($addButtonModelAdditionalFn) ? $addButtonModelAdditionalFn : ''  ?>" class="secondary-btn mx-2">
-            <?= $AddButtonName ?>
-        </button>
+        <?php if (isset($addButtonRedirectLink)) : ?>
+            <a href="<?= $addButtonRedirectLink ?>" class="secondary-btn mx-2">
+                <?= $AddButtonName ?>
+            </a>
+        <?php else : ?>
+            <button onclick="openModal('<?= $addButtonModelId ?>'); <?= isset($addButtonModelAdditionalFn) ? $addButtonModelAdditionalFn : ''  ?>" class="secondary-btn mx-2">
+                <?= $AddButtonName ?>
+            </button>
+        <?php endif; ?>
     </div>
 
     <div class="my-4 w-full grid grid-cols-2 gap-10 justify-around ">
@@ -45,7 +51,11 @@
 
                     echo "<tr class='clickable-row " . (isset($classOnClickRow) ? $classOnClickRow : ' ') . "' data-row-data='" . htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8') . "'>";
                     foreach ($tableHeaders as $key => $value) {
-                        echo "<td class=''>" . $data->$key . "</td>";
+                        $cellData = $data->$key;
+                        if (is_array($cellData)) {
+                            $cellData = implode('; ', $cellData);
+                        }
+                        echo "<td class=''>" . $cellData . "</td>";
                     }
 
                     $data = htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8');
