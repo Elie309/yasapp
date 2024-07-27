@@ -9,7 +9,7 @@
     }
 
     .secondary-btn {
-        @apply border border-gray-700 text-gray-700 p-2 rounded transition-colors ease-in-out hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-900;
+        @apply border border-gray-700 text-gray-700 p-2 rounded transition-colors ease-in-out hover:text-white hover:bg-gray-700;
     }
     .success-div {
         @apply text-sm my-2 bg-green-100 border border-green-800 text-green-800 text-center px-4 py-3 rounded relative;
@@ -23,23 +23,46 @@
     }
 
     .main-input {
-        @apply w-full p-2 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none;
+        @apply w-full p-2 border border-gray-300 focus:border-red-800 rounded outline-none;
     }
     .main-input-readonly {
-        @apply w-full p-2 border border-gray-300 bg-gray-300 select-none rounded mt-1 outline-none;
+        @apply w-full p-2 border border-gray-300 bg-gray-300 select-none rounded outline-none;
+    }
+
+    .secondary-input {
+        @apply w-full p-2 border border-gray-300 focus:border-gray-700 rounded outline-none;
     }
 
     .main-label {
-        @apply mt-2 block text-sm font-medium text-gray-700;
+        @apply my-1 block text-sm font-medium text-gray-700;
     }
 
     .main-select {
-        @apply w-full px-2 py-1 border border-gray-300 focus:border-red-800 rounded mt-1 outline-none;
+        @apply w-full px-2 py-1 border border-gray-300 focus:border-red-800 rounded outline-none;
     }
 
     .container-main {
         @apply container mx-auto px-3 w-full bg-gray-100 min-h-full flex flex-col mt-5;
     }
+
+
+    .pagination-container ul {
+        @apply mt-4 flex flex-row items-center justify-center;
+    }
+
+   .pagination-container ul > li {
+        @apply px-3 py-2 border border-gray-700 rounded mx-1;
+    }
+
+    .pagination-container ul > li:hover {
+        @apply px-3 py-2 border border-gray-700 bg-gray-700 cursor-pointer text-white rounded mx-1;
+    }
+
+    .pagination-container ul .active {
+        @apply px-3 py-2 border border-gray-700 rounded mx-1 bg-gray-700 text-white;
+    }
+
+   
 
     
 }

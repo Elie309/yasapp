@@ -1,13 +1,14 @@
 <div class="container-main">
     <h2 class="main-title-page">Clients List</h2>
     <div class="mt-8 bg-white p-10 shadow-md rounded-md">
+
         <?php $tableHeaders = [
             'client_id' => 'ID',
             'client_firstname' => 'First Name',
             'client_lastname' => 'Last Name',
             'client_email' => 'Email',
             'client_visibility' => 'Visibility',
-            'phones' => 'Phones',
+            'phone_numbers' => 'Phones',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
 
@@ -29,8 +30,17 @@
                 'JSFunctionToRunOnClickRow' => '',
                 'classOnClickRow' => '',
                 'actions' => $actions,
+                'rowsPerPageActive' => true,
+                'searchParamActive' => true
 
             ]
         ) ?>
+
+        <?php if (isset($pager)) : ?>
+            <div class="pagination-container">
+                <?= $pager->links() ?>
+            </div>
+        <?php endif; ?>
+
     </div>
 </div>

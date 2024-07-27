@@ -18,28 +18,34 @@ class ClientsController extends BaseController
 
         $clientModel = new ClientModel();
 
-        $clients = $clientModel->select('clients.*, countries.country_code, phones.phone_number')
+        $rowsPerPage = $this->request->getVar('rowsPerPage') ?? 5;
+
+        $search = $this->request->getVar('search');
+
+        if (isset($search) && !empty($search)) {
+            $clients = $clientModel->select('clients.*, GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers')
             ->join('phones', 'phones.client_id = clients.client_id', 'left')
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
-            ->where('clients.employee_id', $id)
-            ->orWhere('clients.client_visibility', 'public')
-            ->findAll();
+            ->where('(clients.employee_id = ' . $id . ' OR clients.client_visibility = "public")')
+            ->like('clients.client_firstname', $search)
+            ->groupBy('clients.client_id')
+            ->paginate($rowsPerPage);
+        } else {
+            $clients = $clientModel->select('clients.*, GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers')
+                ->join('phones', 'phones.client_id = clients.client_id', 'left')
+                ->join('countries', 'countries.country_id = phones.country_id', 'left')
+                ->where('clients.employee_id', $id)
+                ->orWhere('clients.client_visibility', 'public')
+                ->groupBy('clients.client_id')
+                ->paginate($rowsPerPage);
+        }
+        $pager = $clientModel->pager;
 
-            $clientsGrouped = [];
 
-            foreach ($clients as $client) {
-                if (!isset($clientsGrouped[$client->client_id])) {
-                    $clientsGrouped[$client->client_id] = $client;
-                    $clientsGrouped[$client->client_id]->phones = [];
-                }
-                $clientsGrouped[$client->client_id]->phones = $client->country_code . ' ' . $client->phone_number;
-            }
-            
-            // Convert the associative array back to a numeric array
-            $clients = array_values($clientsGrouped);
-
-        return view('template/header', ['role' => $role]) . view('Clients/clients', ['employee_id' => $id, 'clients' => $clients]) . view('template/footer');
+        return view('template/header', ['role' => $role]) . view('Clients/clients', ['employee_id' => $id, 'clients' => $clients, 'pager' => $pager]) . view('template/footer');
     }
+
+
 
     public function add()
     {
@@ -48,9 +54,9 @@ class ClientsController extends BaseController
         $role = $session->get('role');
         $id = $session->get('id');
 
-        $countries = new CountryModel();
-        $countries = $countries->findAll();
-
+        // TODO: Change the way we access the countries
+        $countriesModel = new CountryModel();
+        $countries = $countriesModel->findAll();
 
         return view('template/header', ['role' => $role]) . view('Clients/addClient', ['employee_id' => $id, 'countries' => $countries]) . view('template/footer');
     }
