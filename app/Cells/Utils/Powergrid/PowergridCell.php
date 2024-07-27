@@ -25,6 +25,11 @@ class PowergridCell extends Cell
     public $classOnClickRow;
 
     public $actions = [];
+
+    public $rowsPerPageActive;
+    public $searchParamActive;
+
+    public $isStyleOnHoverDisabled;
     
 
 }
