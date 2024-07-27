@@ -21,26 +21,14 @@ class LocationController extends BaseController
         // Load model
         $countryModel = new CountryModel();
 
-        // Fetch data
-        $countries = $countryModel->findAll();
+        // Fetch all countries and all children regions and subregions and cities
 
-        // Format data
-        foreach ($countries as $country) {
-            $regions = $country->getRegions();
-
-            foreach ($regions as $region) {
-                $subregions = $region->getSubregions();
-
-                foreach ($subregions as $subregion) {
-                    $cities = $subregion->getCities();
-                    $subregion->cities = $cities;
-                }
-
-                $region->subregions = $subregions;
-            }
-
-            $country->regions = $regions;
-        }
+        $countries = $countryModel->select('countries.country_id, countries.country_name, countries.country_code, regions.region_name, subregions.subregion_name, GROUP_CONCAT(cities.city_name SEPARATOR ", ") as city_names')
+            ->join('regions', 'regions.country_id = countries.country_id')
+            ->join('subregions', 'subregions.region_id = regions.region_id')
+            ->join('cities', 'cities.subregion_id = subregions.subregion_id')
+            ->groupBy(['countries.country_id', 'regions.region_id', 'subregions.subregion_id'])
+            ->findAll();
 
 
         return view("template/header", ['role' => $session->get('role')]) .
@@ -234,7 +222,6 @@ class LocationController extends BaseController
             return redirect()->to($this->link_back)->with('success', 'Subregion deleted successfully');
         } catch (DatabaseException $e) {
             return redirect()->back()->with('errors', ['Subregion cannot be deleted']);
-
         }
     }
     public function deleteRegion()

@@ -13,10 +13,4 @@ class SubregionEntity extends Entity
         'region_id' => 'integer',
         'subregion_name' => 'string',
     ];
-
-    public function getCities()
-    {
-        $cityModel = new \App\Models\Settings\Location\CityModel();
-        return $cityModel->where('subregion_id', $this->subregion_id)->findAll();
-    }
 }
