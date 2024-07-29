@@ -28,7 +28,8 @@ class PowergridCell extends Cell
 
     public $rowsPerPageActive;
     public $searchParamActive;
-
+    public $searchParam;
+    
     public $isStyleOnHoverDisabled;
     
 
