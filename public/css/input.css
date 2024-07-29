@@ -50,16 +50,16 @@
         @apply mt-4 flex flex-row items-center justify-center;
     }
 
-   .pagination-container ul > li {
+   .pagination-container ul > li a {
         @apply px-3 py-2 border border-gray-700 rounded mx-1;
     }
 
-    .pagination-container ul > li:hover {
+    .pagination-container ul > li a:hover {
         @apply px-3 py-2 border border-gray-700 bg-gray-700 cursor-pointer text-white rounded mx-1;
     }
 
-    .pagination-container ul .active {
-        @apply px-3 py-2 border border-gray-700 rounded mx-1 bg-gray-700 text-white;
+    .pagination-container ul .active a {
+        @apply bg-gray-700 rounded mx-1 text-white;
     }
 
    
