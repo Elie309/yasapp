@@ -22,6 +22,10 @@
         @apply w-full my-8 text-3xl font-bold text-center;
     }
 
+    .secondary-title {
+        @apply w-full my-4 text-2xl font-semibold ;
+    }
+
     .main-input {
         @apply w-full p-2 border border-gray-300 focus:border-red-800 rounded outline-none;
     }

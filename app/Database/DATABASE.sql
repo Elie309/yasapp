@@ -120,12 +120,16 @@ CREATE TABLE IF NOT EXISTS Requests (
 
     employee_id INT UNSIGNED NOT NULL,
 
-    budget DECIMAL(10, 2) NOT NULL,
+    request_budget DECIMAL(10, 2) NOT NULL,
+    request_state ENUM('pending', 'fulfilled', 'rejected', 'cancelled') NOT NULL DEFAULT 'pending',
+    request_priority ENUM('low', 'medium', 'high') NOT NULL DEFAULT 'medium',
+    request_type ENUM('normal', 'urgent') NOT NULL DEFAULT 'normal',
     
     comments TEXT,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
 
 
     FOREIGN KEY (client_id) REFERENCES Clients(client_id),

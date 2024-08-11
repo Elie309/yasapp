@@ -69,3 +69,14 @@ $routes->post('clients/add', 'Clients\ClientsController::addClient');
 $routes->get('clients/edit/(:num)', 'Clients\ClientsController::edit/$1');
 $routes->post('clients/edit/(:num)', 'Clients\ClientsController::updateClient/$1');
 $routes->get('clients/delete/(:num)', 'Clients\ClientsController::delete/$1');
+
+//TODO: Page for the actual client and their requests or listings
+// $routes->get('clients/(:num)', 'Clients\ClientsController::view/$1');
+
+//REQUESTS
+$routes->get('requests', 'Requests\RequestController::index');
+$routes->get('requests/add', 'Requests\RequestController::add');
+$routes->post('requests/add', 'Requests\RequestController::addRequest');
+$routes->get('requests/edit/(:num)', 'Requests\RequestController::edit/$1');
+$routes->post('requests/edit/(:num)', 'Requests\RequestController::updateRequest/$1');
+$routes->get('requests/delete/(:num)', 'Requests\RequestController::delete/$1');
