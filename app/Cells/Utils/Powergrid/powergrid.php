@@ -50,8 +50,10 @@
         <?php if (isset($searchParamActive) && $searchParamActive) : ?>
 
             <form class="w-full flex flex-col sm:flex-row" onsubmit="searchParam()" method="GET">
+                <!-- SELECT INPUT FIELD -->
                 <select id="columnSelect_<?= $tableId ?>" name="searchParam" class="secondary-btn w-full my-2 sm:my-0 sm:w-2/12 mr-2">
-                <?php $searchParamInLink = isset($_GET['searchParam']) ? $_GET['searchParam'] : 'firstname'; ?>
+                    <?php $searchParamInLink = isset($_GET['searchParam']) ? $_GET['searchParam'] : 'firstname'; ?>
+                    
                     <?php if (isset($searchParam) && $searchParam != '') : ?>
                         <?php foreach ($searchParam as $key => $value) : ?>
                             <option value='<?= $key ?>' <?= $key == $searchParamInLink ? 'selected' : '' ?>><?= $value ?></option>
@@ -61,6 +63,8 @@
                     <?php endif; ?>
 
                 </select>
+
+                <!-- Search INPUT FIELD -->
                 <input type="text" name="search" placeholder="Search" class="secondary-input">
                 <div class="mx-auto my-2 sm:my-0 sm:mx-2">
                     <button type="submit" class="secondary-btn h-full size-12">
@@ -83,7 +87,7 @@
 
         <?php else : ?>
 
-            <select id="columnSelect_<?= $tableId ?>" class="secondary-btn w-2/12 mx-2">
+            <select id="columnSelect_<?= $tableId ?>" class="secondary-btn w-1/2 sm:w-2/12 my-2 sm:my-0 mx-auto sm:mx-2">
                 <?php foreach ($tableHeaders as $key => $value) : ?>
                     <option value='<?= $value ?>'><?= $value ?></option>
                 <?php endforeach; ?>
