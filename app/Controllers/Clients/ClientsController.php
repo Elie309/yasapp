@@ -18,7 +18,7 @@ class ClientsController extends BaseController
 
         $clientModel = new ClientModel();
 
-        $rowsPerPage = esc($this->request->getVar('rowsPerPage')) ?? 5;
+        $rowsPerPage = esc($this->request->getVar('rowsPerPage')) ?? 10;
 
         $search = esc($this->request->getVar('search'));
         $search = trim($search);
