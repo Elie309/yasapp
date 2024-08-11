@@ -10,9 +10,8 @@
                 <label for="rowPerPage_<?= $tableId ?>" class="main-label ">Rows per page:</label>
                 <select id="rowPerPage_<?= $tableId ?>" <?= $emptyTable == true ? 'disabled' : '' ?> class="secondary-btn mx-2">
                     <!-- Get rowsPerPage using the link -->
-                    <?php $rowsPerPage = isset($_GET['rowsPerPage']) ? $_GET['rowsPerPage'] : 5; ?>
+                    <?php $rowsPerPage = isset($_GET['rowsPerPage']) ? $_GET['rowsPerPage'] : 10; ?>
                     <!-- Set the selected depending on the link -->
-                    <option value="5" <?= isset($rowsPerPage) && $rowsPerPage == 5 ? 'selected' : '' ?>>5</option>
                     <option value="10" <?= isset($rowsPerPage) && $rowsPerPage == 10 ? 'selected' : '' ?>>10</option>
                     <option value="25" <?= isset($rowsPerPage) && $rowsPerPage == 25 ? 'selected' : '' ?>>25</option>
                     <option value="50" <?= isset($rowsPerPage) && $rowsPerPage == 50 ? 'selected' : '' ?>>50</option>
