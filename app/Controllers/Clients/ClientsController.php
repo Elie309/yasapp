@@ -160,9 +160,6 @@ class ClientsController extends BaseController
 
     public function updateClient($id)
     {
-        $session = service('session');
-
-        $employee_id = $session->get('id');
 
         $firstname = $this->request->getPost('client_firstname');
         $lastname = $this->request->getPost('client_lastname');
@@ -182,6 +179,7 @@ class ClientsController extends BaseController
         ];
 
         if ($clientModel->update($id, $clientData)) {
+            //The where will get all the phone numbers for the client and delete them
             $phoneModel->where('client_id', $id)->delete();
 
             // Ensure $phones is an array before using it in the foreach loop
@@ -199,9 +197,10 @@ class ClientsController extends BaseController
                 }
 
                 return redirect()->back()->with('success', 'Client updated successfully');
-            } else {
-                return redirect()->back()->with('errors', ['Phone numbers are not provided correctly.']);
             }
+
+            return redirect()->back()->with('success', 'Client updated successfully, with no phone number');
+
         } else {
             return redirect()->back()->with('errors', $clientModel->errors());
         }

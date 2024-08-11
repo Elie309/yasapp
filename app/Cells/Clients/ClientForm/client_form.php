@@ -2,7 +2,7 @@
 
     <div class="flex flex-row ">
 
-    <!-- Return back in history -->
+        <!-- Return back in history -->
         <a href="/clients" class="my-auto cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
@@ -108,11 +108,12 @@
 
             setData();
 
+            
             function setData() {
-                var client = JSON.parse('<?php echo json_encode($client) ?>');
-                var phones = JSON.parse('<?php echo json_encode($phones) ?>');
-                var countries = JSON.parse('<?php echo json_encode($countries) ?>');
 
+                var client = JSON.parse("<?php echo addslashes(json_encode($client)) ?>");
+                var phones = JSON.parse('<?php echo addslashes(json_encode($phones)) ?>');
+                var countries = JSON.parse('<?php echo  addslashes(json_encode($countries)) ?>');
 
 
                 document.getElementById('client_firstname').value = client.client_firstname;
@@ -144,7 +145,5 @@
             }
 
         <?php endif; ?>
-
-        
     </script>
 </div>
