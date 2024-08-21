@@ -71,8 +71,6 @@
             </div>
             <div id="phone-section">
 
-                <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries]) ?>
-
             </div>
 
         </div>

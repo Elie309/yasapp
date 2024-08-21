@@ -112,7 +112,9 @@ class ClientsController extends BaseController
             $client_id = $clientModel->insertID();
 
             // Ensure $phones is an array before using it in the foreach loop
-            if (is_array($phones)) {
+            if (is_array($phones) && is_array($countries) && count($phones) == count($countries) 
+                && count($phones) > 0 && count($countries) > 0
+                ) {
                 foreach ($phones as $key => $phone) {
                     $phoneData = [
                         'client_id' => $client_id,
@@ -127,9 +129,7 @@ class ClientsController extends BaseController
 
                     }
                 }
-            } else {
-                return redirect()->back()->with('errors', ['Phone numbers are not provided correctly.']);
-            }
+            }//No need to check if it is empty or anything, the validation will take care of it
 
 
             return redirect()->back()->with('success', 'Client added successfully');
