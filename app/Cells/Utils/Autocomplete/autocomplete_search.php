@@ -1,38 +1,38 @@
 <div class="container w-full my-2">
     <div class="container relative">
-        <input type="text" id="search_<?= $selectedName ?>" name="dump_info" class="select-all main-input" placeholder="<?= $placeholder ?>" autocomplete="off" required>
+        <input type="text" id="search_<?= $selectedId ?>" name="dump_info" class="select-all main-input" placeholder="<?= $placeholder ?>" autocomplete="off" required>
         
         <!-- THIS INPUT WILL BE TAKEN TO THE FORM SUBMIT -->
-        <input type="hidden" id="result_id_<?= $selectedName ?>" name="<?= $selectedId ?>" value="0" />
-        <div id="result_<?= $selectedName ?>" class=" max-h-80 overflow-y-auto absolute z-50 mt-2 bg-white shadow-md w-full rounded-lg">
+        <input type="hidden" id="result_id_<?= $selectedId ?>" name="<?= $selectedId ?>" value="0" />
+        <div id="result_<?= $selectedId ?>" class=" max-h-80 overflow-y-auto absolute z-50 mt-2 bg-white shadow-md w-full rounded-lg">
 
         </div>
     </div>
 
     <script>
-        <?php echo 'var items_' . $selectedName . ' = ' .   json_encode($data); ?>;
-        var selectedName_<?= $selectedName  ?> = '<?= $selectedName ?>';
+        <?php echo 'var items_' . $selectedId . ' = ' .   json_encode($data); ?>;
+        var selectedName_<?= $selectedId  ?> = '<?= $selectedId ?>';
 
-        function setSearchResult_<?= $selectedName  ?>(item, id) {
-            const search = document.getElementById('search_' + selectedName_<?= $selectedName  ?>);
-            const result_id = document.getElementById('result_id_' + selectedName_<?= $selectedName  ?>);
+        function setSearchResult_<?= $selectedId  ?>(item, id) {
+            const search = document.getElementById('search_' + selectedName_<?= $selectedId  ?>);
+            const result_id = document.getElementById('result_id_' + selectedName_<?= $selectedId  ?>);
 
             search.value = item;
             result_id.value = id;
-            const result = document.getElementById('result_' + selectedName_<?= $selectedName  ?>);
+            const result = document.getElementById('result_' + selectedName_<?= $selectedId  ?>);
             result.innerHTML = ''
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const search = document.getElementById('search_' + selectedName_<?= $selectedName  ?>);
-            const result = document.getElementById('result_' + selectedName_<?= $selectedName  ?>);
+            const search = document.getElementById('search_' + selectedName_<?= $selectedId  ?>);
+            const result = document.getElementById('result_' + selectedName_<?= $selectedId  ?>);
 
             search.addEventListener('input', function() {
 
                 const query = search.value.toLowerCase();
 
                 if (query !== '') {
-                    let filteredArray = <?= 'items_' . $selectedName  ?>.filter(item => item['name'].toLowerCase().includes(query));
+                    let filteredArray = <?= 'items_' . $selectedId  ?>.filter(item => item['name'].toLowerCase().includes(query));
 
                     let output = '<ul class="py-4 px-2">';
                     filteredArray.forEach(item => {
@@ -42,7 +42,7 @@
                                 hover:text-white hover:bg-red-800 
                                 w-full"
 
-                                onclick="setSearchResult_<?= $selectedName  ?>('${item['name']}', '${item['id']}')">
+                                onclick="setSearchResult_<?= $selectedId  ?>('${item['name']}', '${item['id']}')">
                                 ${item['name']}
                             </button></li>`;
                     });
