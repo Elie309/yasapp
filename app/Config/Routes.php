@@ -80,3 +80,10 @@ $routes->post('requests/add', 'Requests\RequestController::addRequest');
 $routes->get('requests/edit/(:num)', 'Requests\RequestController::edit/$1');
 $routes->post('requests/edit/(:num)', 'Requests\RequestController::updateRequest/$1');
 $routes->get('requests/delete/(:num)', 'Requests\RequestController::delete/$1');
+
+
+
+//API
+
+$routes->get('/api/clients/search', 'API\ClientAPIController::search');
+$routes->get('/api/locations/search', 'API\LocationAPIController::search');
