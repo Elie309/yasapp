@@ -57,13 +57,14 @@ class RequestController extends BaseController
 
         $role = $session->get('role');
         $employee_id = $session->get('id');
+        $name = $session->get('name');
 
         $currencyModel = new CurrenciesModel();
         $currencies = $currencyModel->findAll();
 
 
         return view('template/header', ['role' => $role])
-        . view('requests/addRequest', ['employee_id' => $employee_id, 'currencies' => $currencies])
+        . view('requests/addRequest', ['employee_id' => $employee_id, 'employee_name' => $name, 'currencies' => $currencies])
         . view('template/footer');
     }
 }

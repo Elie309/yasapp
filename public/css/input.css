@@ -5,15 +5,17 @@
 
 @layer components {
     .main-btn {
-        @apply bg-red-800 border border-red-800 text-white p-2  rounded transition-colors ease-in-out hover:border-red-800 hover:bg-red-900 focus:outline-none focus:bg-red-900;
+        @apply bg-red-800 border border-red-800 text-white p-2 rounded transition-colors ease-in-out hover:border-red-800 hover:bg-red-900 focus:outline-none focus:bg-red-900;
     }
 
     .secondary-btn {
         @apply border border-gray-700 text-gray-700 p-2 rounded transition-colors ease-in-out hover:text-white hover:bg-gray-700;
     }
+
     .success-div {
         @apply text-sm my-2 bg-green-100 border border-green-800 text-green-800 text-center px-4 py-3 rounded relative;
     }
+
     .error-div {
         @apply text-sm my-4 bg-red-100 border border-red-800 text-red-800 text-center px-4 py-3 rounded relative;
     }
@@ -23,12 +25,13 @@
     }
 
     .secondary-title {
-        @apply w-full my-4 text-2xl font-semibold ;
+        @apply w-full my-4 text-2xl font-semibold;
     }
 
     .main-input {
         @apply w-full p-2 border border-gray-300 focus:border-red-800 rounded outline-none;
     }
+
     .main-input-readonly {
         @apply w-full p-2 border border-gray-300 bg-gray-300 select-none rounded outline-none;
     }
@@ -54,11 +57,11 @@
         @apply mt-4 flex flex-row items-center justify-center;
     }
 
-   .pagination-container ul > li a {
+    .pagination-container ul>li a {
         @apply px-3 py-2 border border-gray-700 rounded mx-1;
     }
 
-    .pagination-container ul > li a:hover {
+    .pagination-container ul>li a:hover {
         @apply px-3 py-2 border border-gray-700 bg-gray-700 cursor-pointer text-white rounded mx-1;
     }
 
@@ -66,7 +69,52 @@
         @apply bg-gray-700 rounded mx-1 text-white;
     }
 
-   
+    /* Popover backdrop */
 
-    
+    [popover]::backdrop {
+        @apply fixed inset-0 bg-black bg-opacity-50;
+    }
+
+
+    /* HTML: <div class="loader"></div> */
+    .loader {
+        width: 60px;
+        aspect-ratio: 1;
+        --_g: no-repeat radial-gradient(farthest-side, #374151  90%, #00000000);
+        background: var(--_g), var(--_g), var(--_g);
+        background-size: 25% 25%;
+        animation: l17 1s infinite;
+    }
+
+    @keyframes l17 {
+        0% {
+            background-position: 0% -100%, 50% -100%, 100% -100%
+        }
+
+        16.67% {
+            background-position: 0% 50%, 50% -100%, 100% -100%
+        }
+
+        33.33% {
+            background-position: 0% 50%, 50% 50%, 100% -100%
+        }
+
+        45%,
+        55% {
+            background-position: 0% 50%, 50% 50%, 100% 50%
+        }
+
+        66.67% {
+            background-position: 0% 200%, 50% 50%, 100% 50%
+        }
+
+        83.33% {
+            background-position: 0% 200%, 50% 200%, 100% 50%
+        }
+
+        100% {
+            background-position: 0% 200%, 50% 200%, 100% 200%
+        }
+    }
+
 }

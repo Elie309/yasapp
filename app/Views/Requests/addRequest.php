@@ -17,7 +17,10 @@
                     <input type="text" class="main-input-readonly mx-2" placeholder="Phone" readonly name="client_phone" id="client_phone" required>
                 </div>
                 <div class="w-full my-2 flex flex-row justify-center">
-                    <button type="button" class="secondary-btn mx-auto w-5/12" onclick="openModal('client')">Select Client</button>
+                    <button type="button" class="secondary-btn mx-auto w-5/12"
+                        popovertarget="client-popover">
+                        Select Client
+                    </button>
                 </div>
 
             </div>
@@ -30,15 +33,15 @@
 
                 <div class="flex flex-col w-full mb-4">
                     <div class="w-full flex flex-row my-2">
-                        <input type="text" class="main-input-readonly mx-2" placeholder="Country" readonly name="location_country" id="location_country" required>
-                        <input type="text" class="main-input-readonly mx-2" placeholder="City" readonly name="location_city" id="location_city" required>
+                        <input type="text" class="main-input-readonly mx-2" placeholder="Country" readonly name="country" id="country" required>
+                        <input type="text" class="main-input-readonly mx-2" placeholder="Region" readonly name="region" id="region" required>
                     </div>
                     <div class="w-full flex flex-row my-2">
-                        <input type="text" class="main-input-readonly mx-2" placeholder="Street" readonly name="location_street" id="location_street" required>
-                        <input type="text" class="main-input-readonly mx-2" placeholder="Zip Code" readonly name="location_zip_code" id="location_zip_code" required>
+                        <input type="text" class="main-input-readonly mx-2" placeholder="Subregion" readonly name="subregion" id="subregion" required>
+                        <input type="text" class="main-input-readonly mx-2" placeholder="City" readonly name="city" id="city" required>
                     </div>
                     <div class="w-full my-2 flex flex-row justify-center">
-                        <button type="button" class="secondary-btn mx-auto w-5/12" onclick="openModal('location')">Select Location</button>
+                        <button type="button"  popovertarget="location-popover" class="secondary-btn mx-auto w-5/12">Select Location</button>
                     </div>
 
                 </div>
@@ -66,8 +69,8 @@
 
             <div class="flex flex-col w-full mb-4">
                 <h3 class="secondary-title">Employee</h3>
-                <input type="hidden" name="employee_id" id="employee_id" required><br>
-                <input type="text" class="main-input-readonly" readonly name="employee_name" id="employee_name" required><br>
+                <input type="hidden" name="employee_id" id="employee_id" value="<?= $employee_id ?>" required><br>
+                <input type="text" class="main-input-readonly" readonly name="employee_name" id="employee_name" value="<?= $employee_name ?>" required><br>
             </div>
 
             <hr class="mx-2" />
@@ -95,7 +98,7 @@
             <hr class="mx-2" />
 
             <div class="mt-4">
-            <h3 class="secondary-title my-2">Statuses</h3>
+                <h3 class="secondary-title my-2">Statuses</h3>
 
                 <div class="my-4">
                     <label class="main-label">Priority</label>
@@ -141,4 +144,74 @@
 
 
     </div>
+
+    <div popover id="client-popover" class="w-full px-8 sm:px-2 sm:3/4 md:w-1/2 max-h-screen overflow-auto">
+        <?= view_cell('\App\Cells\Utils\Search\SearchCell::render', [
+            'title' => 'Client',
+            'tableHeaders' => [
+                'client_firstname' => 'Firstname',
+                'client_lastname' => 'Lastname',
+                'client_email' => 'Email',
+                'phone_numbers' => 'Phone'
+            ],
+            'onSelect' => 'onSelectClient()',
+            'url' => '/api/clients/search?search='
+        ]) ?>
+    </div>
+
+    <div popover id="location-popover" class="w-full px-8 sm:px-2 sm:3/4 md:w-1/2 max-h-screen overflow-auto">
+        <?= view_cell('\App\Cells\Utils\Search\SearchCell::render', [
+            'title' => 'Location',
+            'tableHeaders' => [
+                'country_name' => 'Country',
+                'region_name' => 'Region',
+                'subregion_name' => 'Subregion',
+                'city_name' => 'City'
+            ],
+            'onSelect' => 'onSelectLocation()',
+            'url' => '/api/locations/search?search='
+        ]) ?>
+
+    </div>
 </div>
+
+<script>
+
+    function onSelectClient(){
+        //Close the popover
+        closePopover('client-popover');
+
+        const selectedRow = document.querySelector('.selected-row');
+
+        if (selectedRow) {
+            const data = JSON.parse(selectedRow.dataset.data);
+            document.getElementById('client_id').value = data.client_id;
+            document.getElementById('client_firstname').value = data.client_firstname;
+            document.getElementById('client_lastname').value = data.client_lastname;
+            document.getElementById('client_email').value = data.client_email;
+            document.getElementById('client_phone').value = data.phone_numbers;
+        }
+    }
+
+    function onSelectLocation(){
+        //Close the popover
+        closePopover('location-popover');
+
+        const selectedRow = document.querySelector('.selected-row');
+
+        if (selectedRow) {
+            const data = JSON.parse(selectedRow.dataset.data);
+            document.getElementById('location_id').value = data.city_id;
+            document.getElementById('country').value = data.country_name;
+            document.getElementById('region').value = data.region_name;
+            document.getElementById('subregion').value = data.subregion_name;
+            document.getElementById('city').value = data.city_name;
+        }
+    }
+
+    function closePopover(popoverId) {
+        const popover = document.getElementById(popoverId);
+
+        popover.hidePopover();
+    }
+</script>
