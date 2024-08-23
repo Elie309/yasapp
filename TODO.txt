@@ -2,3 +2,7 @@
 -> Update location CRUD 
 -> Update client edit and save to one file and remove it from cell
 -> Replace the model with the pop over feature
+
+-> redo back with input from other controllers
+
+-> modify the entity and model to fill and validate separately VERY IMPORTANT
