@@ -3,7 +3,7 @@
     <h3 class="secondary-title text-center">Search <?= $title ?></h3>
     <input type="text" placeholder="Search for <?= $title ?>" autocomplete="off"
         class="main-input" id="search_<?= $title ?>" name="search" required
-        onkeyup="search('<?= $url ?>', 'search_<?= $title ?>', 'search-results_<?= $title ?>')" />
+        onkeyup="search_<?= $title ?>('<?= $url ?>', 'search_<?= $title ?>', 'search-results_<?= $title ?>')" />
 
     <div class="flex flex-col w-full my-4 overflow-auto ">
         <table class="table-auto w-full">
@@ -22,14 +22,14 @@
 </div>
 
 <script>
-    function search(url, search, searchResults) {
+    function search_<?= $title ?>(url, search, searchResults) {
         var search = document.getElementById(search).value;
         var searchResults = document.getElementById(searchResults);
 
         //Loading sign
         searchResults.innerHTML = `
             <tr>
-                <td colspan="<?= count($tableHeaders) + 1 ?>" class="text-center">
+                <td colspan="<?= count($tableHeaders) ?>" class="text-center">
                     <div class="loader mx-auto my-2"></div>
                 </td>
             </tr>
@@ -53,17 +53,17 @@
                         tr.dataset.data = JSON.stringify(element);
                         tr.innerHTML = `
                             <?php foreach ($tableHeaders as $key => $header) : ?>
-                                <td class="p-2">${element['<?= $key ?>']}</td>
+                              <td class="p-2 truncate overflow-hidden whitespace-nowrap text-ellipsis">${element['<?= $key ?>'] === null ? '' : element['<?= $key ?>']}</td>
                             <?php endforeach; ?>
                         `;
                         searchResults.appendChild(tr);
                         tr.addEventListener('click', function() {
-                            var selectedRow = document.querySelector('.selected-row');
+                            var selectedRow = document.querySelector("<?= $selectedClassName ?>");
                             if (selectedRow) {
-                                selectedRow.classList.remove('selected-row');
+                                selectedRow.classList.remove("<?= $selectedClassName ?>");
                             }
 
-                            this.classList.add('selected-row');
+                            this.classList.add("<?= $selectedClassName ?>");
 
                             <?php if (isset($onSelect)) : ?>
                                 <?= $onSelect ?>

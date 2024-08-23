@@ -14,6 +14,8 @@ class SearchCell extends Cell
 
     public $onSelect;
 
+    public $selectedClassName;
+
 
 
   
