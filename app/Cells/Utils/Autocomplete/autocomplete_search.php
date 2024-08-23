@@ -14,18 +14,18 @@
         var selectedName_<?= $selectedId  ?> = '<?= $selectedId ?>';
 
         function setSearchResult_<?= $selectedId  ?>(item, id) {
-            const search = document.getElementById('search_' + selectedName_<?= $selectedId  ?>);
-            const result_id = document.getElementById('result_id_' + selectedName_<?= $selectedId  ?>);
+            const search = document.getElementById('search_<?= $selectedId  ?>');
+            const result_id = document.getElementById('result_id_<?= $selectedId  ?>');
 
             search.value = item;
             result_id.value = id;
-            const result = document.getElementById('result_' + selectedName_<?= $selectedId  ?>);
+            const result = document.getElementById('result_<?= $selectedId  ?>');
             result.innerHTML = ''
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const search = document.getElementById('search_' + selectedName_<?= $selectedId  ?>);
-            const result = document.getElementById('result_' + selectedName_<?= $selectedId  ?>);
+            const search = document.getElementById('search_<?= $selectedId  ?>');
+            const result = document.getElementById('result_<?= $selectedId  ?>');
 
             search.addEventListener('input', function() {
 
