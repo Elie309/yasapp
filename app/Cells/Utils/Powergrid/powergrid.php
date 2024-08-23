@@ -64,7 +64,7 @@
                 </select>
 
                 <!-- Search INPUT FIELD -->
-                <input type="text" name="search" placeholder="Search" class="secondary-input">
+                <input type="text" name="search" placeholder="Search" value="<?= isset($_GET['search']) ? $_GET['search'] : "" ?>" class="secondary-input">
                 <div class="mx-auto my-2 sm:my-0 sm:mx-2">
                     <button type="submit" class="secondary-btn h-full size-12">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-full" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -132,7 +132,7 @@
                             if (is_array($cellData)) {
                                 $cellData = implode('; ', $cellData);
                             }
-                            echo "<td class=''>" . $cellData . "</td>";
+                            echo "<td class='truncate overflow-hidden whitespace-nowrap text-ellipsis'>" . $cellData . "</td>";
                         }
 
                         $data = htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8');
@@ -311,7 +311,6 @@
                     //Add to the URL the number of rows per page
                     updateURLParameter('rowsPerPage', rowsPerPage);
                 });
-
 
             });
         <?php endif; ?>
