@@ -158,7 +158,7 @@ class LocationSeeder extends Seeder
                     ],
                     [
                         'subregion_name' => 'Chouf', 'cities' => [
-                            'Ainbal', 'Ain Zhalta', 'Ammatour', 'Aanouth', 'Baadarâne', 'Baakline', 'Barja', 'Barouk', 'Batloun', 'Beitedine', 'Bourjain', 'Brih', 'Bsaba', 'Chhime', 'Dahr El Maghara', 'Damour', 'Daraya', 'Deir el Qamar', 'Dibbiyeh', 'Gharife', 'Haret Jandal', 'Fouara', 'Jahlieh', 'Jdaideh', 'Jiyyeh', 'Joun', 'Kahlouniye', 'Kfarfakoud', 'Moukhtara', 'Na\'ameh', 'Niha Chouf', 'Rmeileh', 'Serjbel', 'Shheem', 'Zaarourieh'
+                            'Ainbal', 'Ain Zhalta', 'Ammatour', 'Aanouth', 'Baadarâne', 'Baakline', 'Barja', 'Barouk', 'Batloun', 'Beitedine', 'Bourjain', 'Brih', 'Bsaba', 'Chhime', 'Dahr El Maghara', 'Damour', 'Daraya', 'Deir el Qamar', 'Dibbiyeh', 'Gharife', 'Haret Jandal', 'Fouara', 'Jahlieh', 'Jdaideh', 'Jiyyeh', 'Jounieh', 'Kahlouniye', 'Kfarfakoud', 'Moukhtara', 'Na\'ameh', 'Niha Chouf', 'Rmeileh', 'Serjbel', 'Shheem', 'Zaarourieh'
                         ]
                     ],
                     [
