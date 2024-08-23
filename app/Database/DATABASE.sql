@@ -83,17 +83,6 @@ CREATE TABLE IF NOT EXISTS Cities (
     FOREIGN KEY (subregion_id) REFERENCES Subregions(subregion_id)
 );
 
-
--- Locations TABLE 
-CREATE TABLE IF NOT EXISTS Locations (
-    location_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    city_id INT UNSIGNED NOT NULL,
-    location_details TEXT DEFAULT NULL,
-    FOREIGN KEY (city_id) REFERENCES Cities(city_id)
-
-);
-
-
 -- PaymentPlans TABLE
 CREATE TABLE IF NOT EXISTS PaymentPlans (
     payment_plan_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -114,7 +103,7 @@ CREATE TABLE IF NOT EXISTS Requests (
     request_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     client_id INT UNSIGNED NOT NULL,
-    location_id INT UNSIGNED NOT NULL,
+    city_id INT UNSIGNED NOT NULL,
     payment_plan_id INT UNSIGNED NOT NULL,
     currency_id INT UNSIGNED NOT NULL,
 
@@ -133,7 +122,7 @@ CREATE TABLE IF NOT EXISTS Requests (
 
 
     FOREIGN KEY (client_id) REFERENCES Clients(client_id),
-    FOREIGN KEY (location_id) REFERENCES Locations(location_id),
+    FOREIGN KEY (city_id) REFERENCES Cities(city_id),
     FOREIGN KEY (payment_plan_id) REFERENCES PaymentPlans(payment_plan_id),
     FOREIGN KEY (currency_id) REFERENCES Currencies(currency_id),
 
