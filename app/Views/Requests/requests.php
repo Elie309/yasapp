@@ -3,12 +3,9 @@
     <div class="mt-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
 
         <?php $tableHeaders = [
-            'request_id' => 'ID',
-            'client_id' => 'Client ID',
-            'location_id' => 'Location ID',
-            'payment_plan_id' => 'Payment Plan ID',
-            'currency_id' => 'Currency ID',
-            'employee_id' => 'Employee ID',
+            'client_name' => 'Client',
+            'city_name' => 'City',
+            'payment_plan_name' => 'Payment Plan',
             'request_budget' => 'Budget',
             'request_state' => 'State',
             'request_priority' => 'Priority',
@@ -47,11 +44,9 @@
                 'rowsPerPageActive' => true,
                 'searchParamActive' => true,
                 'searchParam' => [
-                    'client_id' => 'Client ID',
-                    'location_id' => 'Location ID',
-                    'payment_plan_id' => 'Payment Plan ID',
-                    'currency_id' => 'Currency ID',
-                    'employee_id' => 'Employee ID',
+                    'client_name' => 'Client Name',
+                    'city_name' => 'City Name',
+                    'plan_name' => 'Payment Plan',
                     'request_budget' => 'Budget',
                     'request_state' => 'State',
                     'request_priority' => 'Priority',

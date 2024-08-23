@@ -14,7 +14,7 @@ class RequestModel extends Model
     protected $protectFields    = true;
     protected $allowedFields = [
         'client_id',
-        'location_id',
+        'city_id',
         'payment_plan_id',
         'currency_id',
         'employee_id',
@@ -31,15 +31,11 @@ class RequestModel extends Model
     protected array $casts = [
         'request_id' => 'integer',
         'client_id' => 'integer',
-        'location_id' => 'integer',
+        'city_id' => 'integer',
         'payment_plan_id' => 'integer',
         'currency_id' => 'integer',
         'employee_id' => 'integer',
         'request_budget' => 'float',
-        'request_state' => 'string',
-        'request_priority' => 'string',
-        'request_type' => 'string',
-        'comments' => 'string',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime'
@@ -57,7 +53,7 @@ class RequestModel extends Model
     // Validation
     protected $validationRules      = [
         'client_id' => 'required|integer',
-        'location_id' => 'integer',
+        'city_id' => 'integer',
         'payment_plan_id' => 'required|integer',
         'currency_id' => 'required|integer',
         'employee_id' => 'required|integer',
@@ -69,23 +65,23 @@ class RequestModel extends Model
     ];
     protected $validationMessages   = [
         'client_id' => [
-            'required' => 'Client ID is required',
-            'integer' => 'Client ID must be an integer'
+            'required' => 'Client is required',
+            'integer' => 'Client is invalid'
         ],
-        'location_id' => [
-            'integer' => 'Location ID must be an integer'
+        'city_id' => [
+            'integer' => 'City is invalid'
         ],
         'payment_plan_id' => [
-            'required' => 'Payment Plan ID is required',
-            'integer' => 'Payment Plan ID must be an integer'
+            'required' => 'Payment Plan is required',
+            'integer' => 'Payment Plan is invalid'
         ],
         'currency_id' => [
-            'required' => 'Currency ID is required',
-            'integer' => 'Currency ID must be an integer'
+            'required' => 'Currency is required',
+            'integer' => 'Currency is invalid'
         ],
         'employee_id' => [
-            'required' => 'Employee ID is required',
-            'integer' => 'Employee ID must be an integer'
+            'required' => 'Employee is required',
+            'integer' => 'Employee is invalid'
         ],
         'request_budget' => [
             'required' => 'Request Budget is required',
