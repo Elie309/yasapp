@@ -157,7 +157,6 @@
                                 echo "<button ";
                                 echo "class='actionsBtn " . ($action['class'] ?? '') . "' ";
                                 echo 'onclick="actionStoreDataOnClickEvent(' . $data . '); ' . $action['functions'] .  ' "';
-                                // echo "data-row-data='" . $data ."'";
                                 echo ">";
                                 echo isset($action['img']) ? ($action['img']) : ($action['name']);
 
