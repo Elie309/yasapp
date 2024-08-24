@@ -2,6 +2,20 @@
 
     <?php $emptyTable = ($tableData == null || count($tableData) == 0) ?>
 
+    <?php $nonCheckedCols = isset($_GET['nonCheckedCols']) ? explode(',', $_GET['nonCheckedCols']) : null; 
+    
+    //duplicate the array tableheaders
+    $initialCols = $tableHeaders;
+
+    //remove the col from the headers
+        if($nonCheckedCols != null){
+            foreach($nonCheckedCols as $col){
+                $key = str_replace('_col', '', $col);
+                unset($tableHeaders[$key]);
+            }
+        }
+    ?>
+
 
     <div class="flex flex-col justify-center sm:flex-row sm:justify-between mb-6">
         <div class="flex flex-row justify-center align-middle mx-2 my-2 sm:my-0">
@@ -48,11 +62,11 @@
     <div class="my-4 w-full flex flex-col sm:flex-row justify-start">
         <?php if (isset($searchParamActive) && $searchParamActive) : ?>
 
-            <form class="w-full flex flex-col sm:flex-row" onsubmit="searchParam()" method="GET">
+            <div class="w-full flex flex-col sm:flex-row">
                 <!-- SELECT INPUT FIELD -->
                 <select id="columnSelect_<?= $tableId ?>" name="searchParam" class="secondary-btn w-full my-2 sm:my-0 sm:w-2/12 mr-2">
                     <?php $searchParamInLink = isset($_GET['searchParam']) ? $_GET['searchParam'] : 'firstname'; ?>
-                    
+
                     <?php if (isset($searchParam) && $searchParam != '') : ?>
                         <?php foreach ($searchParam as $key => $value) : ?>
                             <option value='<?= $key ?>' <?= $key == $searchParamInLink ? 'selected' : '' ?>><?= $value ?></option>
@@ -64,23 +78,21 @@
                 </select>
 
                 <!-- Search INPUT FIELD -->
-                <input type="text" name="search" placeholder="Search" value="<?= isset($_GET['search']) ? $_GET['search'] : "" ?>" class="secondary-input">
+                <input type="text" id="search_<?= $tableId ?>" onkeypress="onEnterButtonPress()" name="search_<?= $tableId ?>" placeholder="Search" value="<?= isset($_GET['search']) ? $_GET['search'] : "" ?>" class="secondary-input">
                 <div class="mx-auto my-2 sm:my-0 sm:mx-2">
-                    <button type="submit" class="secondary-btn h-full size-12">
+                    <button onclick="searchAndSearchParamURLSetters()"  class="secondary-btn h-full size-12">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-full" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
-
                     </button>
                 </div>
 
-            </form>
+            </div>
             <div class="mx-auto my-2 sm:my-0 sm:mx-2">
-                <button onclick="" class="secondary-btn h-full size-12">
+                <button popovertarget="visible-columns" onclick="" class="secondary-btn h-full text-center p-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" />
                     </svg>
-
                 </button>
             </div>
 
@@ -109,6 +121,7 @@
 
                 <thead class="table-header-group">
                     <tr class="border border-gray-300">
+
                         <?php foreach ($tableHeaders as $key => $value) : ?>
                             <th class="bg-gray-200 text-center ">
                                 <?= $value ?>
@@ -163,188 +176,239 @@
             </table>
         <?php endif; ?>
 
+
+        <div popover id="visible-columns">
+            <div class="flex flex-col p-4">
+
+                <div class="grid grid-cols-8 gap-4 items-center">
+                    <h1 class="secondary-title col-span-7">Visible Columns</h1>
+                    <button class="secondary-btn h-fit" onclick="closePopover('visible-columns')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <ul class="">
+                    <?php foreach ($initialCols as $key => $value) : ?>
+                        <li class="w-full my-2 rounded-t-lg">
+                            <input  
+                                <?php if (!isset($nonCheckedCols) || !in_array($key . "_col", $nonCheckedCols)) : ?> checked <?php endif; ?>
+                                id="<?= $key ?>_col" 
+                                type="checkbox" 
+                                value="" 
+                                class="cols-tag w-4 h-4 main-checkbox"
+                                >
+                            <label for="<?= $key ?>_col" class="w-full py-3 ms-2 text-lg font-medium"><?= $value ?></label>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+
+                <div class="flex flex-row justify-center mt-4 mb-2 w-full">
+                    <button onclick="removedColumns()" class="secondary-btn w-1/2">Apply</button>
+                </div>
+
+            </div>
+        </div>
+
     </div>
+</div>
 
 
-    <!-- Styles even and odd rows -->
-    <style>
-        <?= '#' . $tableId . ' ' ?>tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+<!-- Styles even and odd rows -->
+<style>
+    <?= '#' . $tableId . ' ' ?>tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
 
-        <?php if (!$isStyleOnHoverDisabled) : ?><?= '#' . $tableId . ' ' ?>tbody tr:hover {
-            background-color: #1f2937;
-            color: white;
-        }
+    <?php if (!$isStyleOnHoverDisabled) : ?><?= '#' . $tableId . ' ' ?>tbody tr:hover {
+        background-color: #1f2937;
+        color: white;
+    }
 
-        <?php endif; ?><?= '#' . $tableId . ' ' ?>th,
-        <?= '#' . $tableId . ' ' ?>td {
-            padding: 8px;
-        }
+    <?php endif; ?><?= '#' . $tableId . ' ' ?>th,
+    <?= '#' . $tableId . ' ' ?>td {
+        padding: 8px;
+    }
 
-        <?= '#' . $tableId . ' ' ?>th {
-            background-color: #f2f2f2;
-        }
+    <?= '#' . $tableId . ' ' ?>th {
+        background-color: #f2f2f2;
+    }
 
-        <?= '#' . $tableId . ' ' ?>td {
-            border: 1px solid #ddd;
-        }
-    </style>
+    <?= '#' . $tableId . ' ' ?>td {
+        border: 1px solid #ddd;
+    }
+</style>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
-    <script>
-        function filterTable(columnKey, searchValue) {
-            let td, i, txtValue;
-            let <?= $tableId ?>_table = document.getElementById("<?= $tableId ?>"); // Make sure to replace 'yourTableId' with the actual ID of your table
-            let tr = <?= $tableId ?>_table.getElementsByTagName("tr");
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+<script>
+    function removedColumns() {
 
-            let columnIndex = -1;
+        const colsTag = document.querySelectorAll('.cols-tag');
 
-            // First, find the index of the column to filter on by matching it with the header row's cells
-            let headers = tr[0].getElementsByTagName("th");
-            for (let i = 0; i < headers.length; i++) {
-                if (headers[i].textContent.trim().toUpperCase() === columnKey.toUpperCase()) {
-                    columnIndex = i;
-                    break;
-                }
+        let nonCheckedCols = [];
+
+
+        colsTag.forEach(col => {
+            if (!col.checked) {
+                nonCheckedCols.push(col.id);
             }
+        });
 
-            // If the column was found, proceed with filtering
-            if (columnIndex !== -1) {
-                for (let i = 1; i < tr.length; i++) { // Start from 1 to skip the header row
-                    let td = tr[i].getElementsByTagName("td")[columnIndex];
-                    if (td) {
-                        let txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(searchValue.toUpperCase()) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
-                        }
+        updateURLParameter('nonCheckedCols', nonCheckedCols.join(','));
+    }
+
+    function filterTable(columnKey, searchValue) {
+        let td, i, txtValue;
+        let <?= $tableId ?>_table = document.getElementById("<?= $tableId ?>"); // Make sure to replace 'yourTableId' with the actual ID of your table
+        let tr = <?= $tableId ?>_table.getElementsByTagName("tr");
+
+        let columnIndex = -1;
+
+        // First, find the index of the column to filter on by matching it with the header row's cells
+        let headers = tr[0].getElementsByTagName("th");
+        for (let i = 0; i < headers.length; i++) {
+            if (headers[i].textContent.trim().toUpperCase() === columnKey.toUpperCase()) {
+                columnIndex = i;
+                break;
+            }
+        }
+
+        // If the column was found, proceed with filtering
+        if (columnIndex !== -1) {
+            for (let i = 1; i < tr.length; i++) { // Start from 1 to skip the header row
+                let td = tr[i].getElementsByTagName("td")[columnIndex];
+                if (td) {
+                    let txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(searchValue.toUpperCase()) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
                     }
                 }
             }
         }
+    }
 
-        function fnExcelReport() {
-            var tab = document.getElementById('<?= $tableId ?>'); // id of table
-            var wb = XLSX.utils.table_to_book(tab, {
-                sheet: "Sheet JS"
-            });
-            var wbout = XLSX.write(wb, {
-                bookType: 'xlsx',
-                bookSST: true,
-                type: 'binary'
-            });
+    function fnExcelReport() {
+        var tab = document.getElementById('<?= $tableId ?>'); // id of table
+        var wb = XLSX.utils.table_to_book(tab, {
+            sheet: "Sheet JS"
+        });
+        var wbout = XLSX.write(wb, {
+            bookType: 'xlsx',
+            bookSST: true,
+            type: 'binary'
+        });
 
-            function s2ab(s) {
-                var buf = new ArrayBuffer(s.length);
-                var view = new Uint8Array(buf);
-                for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-                return buf;
-            }
-
-            saveAs(new Blob([s2ab(wbout)], {
-                type: "application/octet-stream"
-            }), 'Report.xlsx');
+        function s2ab(s) {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
         }
 
-
-        function actionStoreDataOnClickEvent(data) {
-
-            sessionStorage.setItem('tempTableData', JSON.stringify(data));
-            setTimeout(() => {
-                sessionStorage.removeItem('tempTableData');
-            }, 5000);
-        }
-
-        <?php if (isset($isOnClickRowActive) && $isOnClickRowActive) : ?>
-
-            document.querySelectorAll('.clickable-row').forEach(function(row) {
-                row.addEventListener('click', function() {
-                    var rowData = JSON.parse(this.getAttribute('data-row-data'));
-
-                    sessionStorage.setItem('tempTableData', JSON.stringify(rowData));
-
-                    openModal('<?= isset($modelIdOnClickRow) ? $modelIdOnClickRow : $addButtonModelId ?>');
-                    <?= isset($JSFunctionToRunOnClickRow) ? $JSFunctionToRunOnClickRow : '' ?>
-
-                    setTimeout(() => {
-                        sessionStorage.removeItem('tempTableData');
-                    }, 5000);
-
-                });
-            });
-
-        <?php endif; ?>
+        saveAs(new Blob([s2ab(wbout)], {
+            type: "application/octet-stream"
+        }), 'Report.xlsx');
+    }
 
 
-        function printTable() {
-            var table = document.getElementById("<?= $tableId ?>").outerHTML;
-            var newWindow = window.open('', '', '');
-            newWindow.document.write('<html><head><title>Print Table</title>');
-            newWindow.document.write('<style>');
-            newWindow.document.write('body { font-family: Arial, sans-serif; margin: 20px; }');
-            newWindow.document.write('table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }');
-            newWindow.document.write('th, td { padding: 5px; border: 1px solid #ddd; text-align: left; }');
-            newWindow.document.write('th { background-color: #f2f2f2; font-weight: bold; }');
-            newWindow.document.write('tr:nth-child(even) { background-color: #f9f9f9; }');
-            newWindow.document.write('tr:hover { background-color: #f1f1f1; }');
-            newWindow.document.write('.clickable-row { cursor: pointer; }');
-            newWindow.document.write('</style>');
-            newWindow.document.write('</head><body>');
-            newWindow.document.write(table);
-            newWindow.document.write('</body></html>');
-            newWindow.document.close();
-            newWindow.print();
-        }
+    function actionStoreDataOnClickEvent(data) {
 
-        <?php if (isset($rowsPerPageActive) && $rowsPerPageActive) : ?>
+        sessionStorage.setItem('tempTableData', JSON.stringify(data));
+        setTimeout(() => {
+            sessionStorage.removeItem('tempTableData');
+        }, 5000);
+    }
 
-            document.addEventListener('DOMContentLoaded', function() {
-                const tableId = '<?= $tableId ?>';
-                const rowPerPageSelect = document.getElementById(`rowPerPage_${tableId}`);
+    <?php if (isset($isOnClickRowActive) && $isOnClickRowActive) : ?>
 
-                rowPerPageSelect.addEventListener('change', function() {
-                    const rowsPerPage = this.value;
-                    //Add to the URL the number of rows per page
-                    updateURLParameter('rowsPerPage', rowsPerPage);
-                });
+        document.querySelectorAll('.clickable-row').forEach(function(row) {
+            row.addEventListener('click', function() {
+                var rowData = JSON.parse(this.getAttribute('data-row-data'));
+
+                sessionStorage.setItem('tempTableData', JSON.stringify(rowData));
+
+                openModal('<?= isset($modelIdOnClickRow) ? $modelIdOnClickRow : $addButtonModelId ?>');
+                <?= isset($JSFunctionToRunOnClickRow) ? $JSFunctionToRunOnClickRow : '' ?>
+
+                setTimeout(() => {
+                    sessionStorage.removeItem('tempTableData');
+                }, 5000);
 
             });
-        <?php endif; ?>
+        });
+
+    <?php endif; ?>
 
 
-        <?php if (isset($searchParamActive) && $searchParamActive) : ?>
+    function printTable() {
+        var table = document.getElementById("<?= $tableId ?>").outerHTML;
+        var newWindow = window.open('', '', '');
+        newWindow.document.write('<html><head><title>Print Table</title>');
+        newWindow.document.write('<style>');
+        newWindow.document.write('body { font-family: Arial, sans-serif; margin: 20px; }');
+        newWindow.document.write('table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }');
+        newWindow.document.write('th, td { padding: 5px; border: 1px solid #ddd; text-align: left; }');
+        newWindow.document.write('th { background-color: #f2f2f2; font-weight: bold; }');
+        newWindow.document.write('tr:nth-child(even) { background-color: #f9f9f9; }');
+        newWindow.document.write('tr:hover { background-color: #f1f1f1; }');
+        newWindow.document.write('.clickable-row { cursor: pointer; }');
+        newWindow.document.write('</style>');
+        newWindow.document.write('</head><body>');
+        newWindow.document.write(table);
+        newWindow.document.write('</body></html>');
+        newWindow.document.close();
+        newWindow.print();
+    }
 
-            function searchParam() {
-                updateURLParameter('search', this.value);
-            }
+    <?php if (isset($rowsPerPageActive) && $rowsPerPageActive) : ?>
 
-        <?php endif; ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableId = '<?= $tableId ?>';
+            const rowPerPageSelect = document.getElementById(`rowPerPage_${tableId}`);
 
-        function updateURLParameter(key, value) {
-            const url = new URL(window.location.href);
-            const params = new URLSearchParams(url.search);
+            rowPerPageSelect.addEventListener('change', function() {
+                const rowsPerPage = this.value;
+                //Add to the URL the number of rows per page
+                updateURLParameter('rowsPerPage', rowsPerPage);
+            });
 
-            // Update or add the parameter
-            params.set(key, value);
+        });
+    <?php endif; ?>
 
-            // Construct the new URL
-            url.search = params.toString();
-            window.location.href = url.toString();
-        }
 
-        function redirectToWithId(base_link) {
-            var data = sessionStorage.getItem('tempTableData');
-            if (data) {
-                var id = JSON.parse(data).client_id;
-                sessionStorage.removeItem('tempTableData');
+    <?php if (isset($searchParamActive) && $searchParamActive) : ?>
 
-                window.location.href = base_link + '/' + id;
+        function onEnterButtonPress() {
+            if (event.key === 'Enter') {
+                searchAndSearchParamURLSetters();
             }
         }
-    </script>
+
+        function searchAndSearchParamURLSetters() {
+
+            let col = document.getElementById('columnSelect_<?= $tableId ?>');
+            let search = document.getElementById('search_<?= $tableId ?>');
+
+            updateURLParameter(['search', 'searchParam'], [search.value, col.options[col.selectedIndex].value]);
+        }
+
+    <?php endif; ?>
+
+
+    function redirectToWithId(base_link) {
+        var data = sessionStorage.getItem('tempTableData');
+        if (data) {
+            var id = JSON.parse(data).client_id;
+            sessionStorage.removeItem('tempTableData');
+
+            window.location.href = base_link + '/' + id;
+        }
+    }
+</script>
 
 </div>
