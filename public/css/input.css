@@ -41,7 +41,7 @@
     }
 
     .main-label {
-        @apply my-1 block text-sm font-medium text-gray-700;
+        @apply my-1 block text-sm font-medium text-gray-700 text-nowrap;
     }
 
     .main-select {
@@ -50,6 +50,10 @@
 
     .container-main {
         @apply container mx-auto px-3 w-full bg-gray-100 min-h-full flex flex-col mt-5;
+    }
+
+    .main-checkbox {
+        @apply w-5 h-5 border focus:border-red-800 border-gray-300 rounded cursor-pointer;
     }
 
 
