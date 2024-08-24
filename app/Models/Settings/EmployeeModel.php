@@ -11,7 +11,7 @@ class EmployeeModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType       = \App\Entities\EmployeeEntity::class;
 
-    protected $allowedFields    = ["employee_name", "employee_password", "employee_role", 
+    protected $allowedFields    = ['employee_id',"employee_name", "employee_password", "employee_role", 
             'employee_email', 'employee_phone', 'employee_birthday' , 'employee_address', 'employee_status'];
 
     protected bool $allowEmptyInserts = false;
