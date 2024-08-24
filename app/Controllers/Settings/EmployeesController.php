@@ -3,6 +3,7 @@
 namespace App\Controllers\Settings;
 
 use App\Controllers\BaseController;
+use App\Entities\EmployeeEntity;
 use App\Models\Settings\EmployeeModel;
 
 class EmployeesController extends BaseController
@@ -70,8 +71,9 @@ class EmployeesController extends BaseController
 
                 if($employeeData['employee_id'] == $currentEmployee->employee_id ){
                     $newData = [
-                        'name' => $employeeData['employee_name'],
-                        'role' => $employeeData['employee_role'],
+                        'name' => $currentEmployee->employee_name,
+                        'role' => $currentEmployee->employee_role,
+                        'id' => $currentEmployee->employee_id
                     ];
                     $session->set($newData);
                 }
