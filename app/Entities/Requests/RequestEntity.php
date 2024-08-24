@@ -64,7 +64,7 @@ class RequestEntity extends Entity
             $errors[] = 'Request type is invalid';
         }
 
-        if (empty($this->comments) || !is_string($this->comments)) {
+        if (!is_string($this->comments)) {
             $errors[] = 'Comments are invalid';
         }
 

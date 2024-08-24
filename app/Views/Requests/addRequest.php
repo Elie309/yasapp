@@ -310,12 +310,6 @@
         }
     }
 
-    function closePopover(popoverId) {
-        const popover = document.getElementById(popoverId);
-
-        popover.hidePopover();
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
         const displayInput = document.getElementById('request_budget_display');
         const hiddenInput = document.getElementById('request_budget');

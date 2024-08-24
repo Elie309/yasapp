@@ -27,22 +27,33 @@ class RequestController extends BaseController
         $searchParam = esc($this->request->getVar('searchParam'));
         $searchParam = trim($searchParam);
 
+        $requestTypeParam = esc($this->request->getVar('requestType'));
+        $requestTypeParam = trim($requestTypeParam);
+
+        $requestStateParam = esc($this->request->getVar('requestState'));
+        $requestStateParam = trim($requestStateParam);
+
+        $requestPriorityParam = esc($this->request->getVar('requestPriority'));
+        $requestPriorityParam = trim($requestPriorityParam);
+
+        $startDateParam = esc($this->request->getVar('startDate'));
+        $startDateParam = trim($startDateParam);
+
+        $endDateParam = esc($this->request->getVar('endDate'));
+        $endDateParam = trim($endDateParam);
+
         $param = [
             'city_name' => 'cities.city_name',
             'client_name' => 'clients.client_firstname',
             'payment_plan_name' => 'paymentplans.payment_plan_name',
-            'currency_id' => 'currencies.currency_id',
             'employee_name' => 'employees.employee_name',
             'request_budget' => 'requests.request_budget',
-            'request_state' => 'requests.request_state',
-            'request_priority' => 'requests.request_priority',
-            'request_type' => 'requests.request_type',
             'comments' => 'requests.comments'
         ];
 
         $requestModel = new RequestModel();
 
-        $request = $requestModel->select('requests.request_id, requests.client_id, CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name,, requests.city_id, cities.city_name, requests.payment_plan_id, paymentplans.payment_plan_name, requests.currency_id, currencies.currency_code, requests.employee_id, employees.employee_name, requests.request_budget, requests.request_state, requests.request_priority, requests.request_type, requests.comments, requests.created_at, requests.updated_at')
+        $request = $requestModel->select('requests.request_id, requests.client_id, CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, requests.city_id, cities.city_name, requests.payment_plan_id, paymentplans.payment_plan_name, requests.currency_id, CONCAT(requests.request_budget, " ", currencies.currency_symbol) AS request_fees, requests.employee_id, employees.employee_name, requests.request_state, requests.request_priority, requests.request_type, requests.comments, requests.created_at, requests.updated_at')
             ->join('clients', 'requests.client_id = clients.client_id')
             ->join('cities', 'requests.city_id = cities.city_id')
             ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
@@ -61,14 +72,45 @@ class RequestController extends BaseController
             }
         }
 
+        if (!empty($requestTypeParam)) {
+            $request = $request->where('requests.request_type', $requestTypeParam);
+        }
+
+        if (!empty($requestStateParam)) {
+            $request = $request->where('requests.request_state', $requestStateParam);
+        }
+
+        if (!empty($requestPriorityParam)) {
+            $request = $request->where('requests.request_priority', $requestPriorityParam);
+        }
+
+        if (!empty($startDateParam)) {
+            $request = $request->where('requests.created_at >=', $startDateParam);
+        }
+
+        if (!empty($endDateParam)) {
+            $request = $request->where('requests.created_at <=', $endDateParam);
+        }
+        
+
         $request = $request->paginate($rowsPerPage);
 
         $pager = $requestModel->pager;
 
+        $requestTypes = ['normal', 'urgent'];
+        $requestStates = ['pending', 'fulfilled', 'rejected', 'cancelled'];
+        $requestPriorities = ['low', 'medium', 'high'];
 
 
         return view('template/header', ['role' => $role])
-            . view('requests/requests', ['employee_id' => $employee_id, 'requests' => $request, 'pager' => $pager])
+            . view('requests/requests', [
+                'employee_id' => $employee_id,
+                'requests' => $request,
+                'requestTypes' => $requestTypes,
+                'requestStates' => $requestStates,
+                'requestPriorities' => $requestPriorities,
+                'pager' => $pager
+                ])
             . view('template/footer');
     }
 
@@ -108,8 +150,6 @@ class RequestController extends BaseController
     public function addRequest()
     {
 
-        // Get posts element
-
         $session = service('session');
 
         $employee_id = $session->get('id');
@@ -117,27 +157,28 @@ class RequestController extends BaseController
         $requestModel = new RequestModel();
         $requestEntity = new RequestEntity();
 
-        try{
+        try {
 
 
-        $requestEntity->fill($this->request->getPost());
-        $requestEntity->employee_id = $employee_id;
+            $requestEntity->fill($this->request->getPost());
+            $requestEntity->employee_id = $employee_id;
 
 
-        $isValid = $requestEntity->isValid();
-        if ($isValid !== true) {
-            return redirect()->back()->withInput()->with('errors', [$isValid->getMessage()]);
-        }
+            $isValid = $requestEntity->isValid();
+            if ($isValid !== true) {
+                return redirect()->back()->withInput()->with('errors', [$isValid->getMessage()]);
+            }
 
 
-        if ($requestModel->save($requestEntity)) {
-            return redirect()->to('/requests');
-        } else {
-            return redirect()->back()->withInput()->with('errors', $requestModel->errors());
-        }
+            if ($requestModel->save($requestEntity)) {
+                return redirect()->to('/requests');
+            } else {
+                return redirect()->back()->withInput()->with('errors', $requestModel->errors());
+            }
+
+
 
         } catch (\Exception $e) {
-            log_message('error', $e->getMessage());
             return redirect()->back()->withInput()->with('errors', ['An error occurred']);
         }
     }
