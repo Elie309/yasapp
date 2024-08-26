@@ -75,6 +75,7 @@ $routes->get('clients/delete/(:num)', 'Clients\ClientsController::delete/$1');
 
 //REQUESTS
 $routes->get('requests', 'Requests\RequestController::index');
+$routes->get('requests/(:num)', 'Requests\RequestController::view/$1');
 $routes->get('requests/add', 'Requests\RequestController::add');
 $routes->post('requests/add', 'Requests\RequestController::addRequest');
 $routes->get('requests/edit/(:num)', 'Requests\RequestController::edit/$1');

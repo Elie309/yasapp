@@ -7,8 +7,6 @@ use App\Entities\Requests\RequestEntity;
 use App\Models\Requests\RequestModel;
 use App\Models\Settings\CurrenciesModel;
 use App\Models\Settings\PaymentPlansModel;
-use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Log\Logger;
 
 class RequestController extends BaseController
 {
@@ -22,25 +20,18 @@ class RequestController extends BaseController
         $rowsPerPage = esc($this->request->getVar('rowsPerPage')) ?? 10;
 
         $search = esc($this->request->getVar('search'));
-        $search = trim($search);
 
         $searchParam = esc($this->request->getVar('searchParam'));
-        $searchParam = trim($searchParam);
 
         $requestTypeParam = esc($this->request->getVar('requestType'));
-        $requestTypeParam = trim($requestTypeParam);
 
         $requestStateParam = esc($this->request->getVar('requestState'));
-        $requestStateParam = trim($requestStateParam);
 
         $requestPriorityParam = esc($this->request->getVar('requestPriority'));
-        $requestPriorityParam = trim($requestPriorityParam);
 
         $startDateParam = esc($this->request->getVar('startDate'));
-        $startDateParam = trim($startDateParam);
 
         $endDateParam = esc($this->request->getVar('endDate'));
-        $endDateParam = trim($endDateParam);
 
         $param = [
             'city_name' => 'cities.city_name',
@@ -64,7 +55,6 @@ class RequestController extends BaseController
         if (!empty($search) && !empty($searchParam) && isset($param[$searchParam])) {
 
             if ($searchParam === 'client_name') {
-                log_message('error', 'Searching by client name');
                 $request = $request->like('clients.client_firstname', $search)
                     ->orLike('clients.client_lastname', $search);
             } else {
@@ -91,7 +81,7 @@ class RequestController extends BaseController
         if (!empty($endDateParam)) {
             $request = $request->where('requests.created_at <=', $endDateParam);
         }
-        
+
 
         $request = $request->paginate($rowsPerPage);
 
@@ -110,7 +100,7 @@ class RequestController extends BaseController
                 'requestStates' => $requestStates,
                 'requestPriorities' => $requestPriorities,
                 'pager' => $pager
-                ])
+            ])
             . view('template/footer');
     }
 
@@ -175,11 +165,57 @@ class RequestController extends BaseController
             } else {
                 return redirect()->back()->withInput()->with('errors', $requestModel->errors());
             }
-
-
-
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('errors', ['An error occurred']);
         }
+    }
+
+    public function view($id)
+    {
+        $session = service('session');
+
+        $role = $session->get('role');
+        $employee_id = $session->get('id');
+
+        $requestModel = new RequestModel();
+
+        $request = $requestModel->select(
+            'requests.request_id, requests.client_id, 
+            CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
+            clients.client_email,
+            requests.city_id, cities.city_name, requests.payment_plan_id, 
+            paymentplans.payment_plan_name, requests.currency_id, 
+            CONCAT(requests.request_budget, " ", currencies.currency_symbol) AS request_fees,
+            requests.employee_id, employees.employee_name, requests.request_state, 
+            requests.request_priority, requests.request_type, requests.comments, 
+            requests.created_at, requests.updated_at, 
+            GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers'
+        )
+            ->join('clients', 'requests.client_id = clients.client_id')
+            ->join('phones', 'clients.client_id = phones.client_id')
+            ->join('countries', 'countries.country_id = phones.country_id')
+            ->join('cities', 'requests.city_id = cities.city_id')
+            ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
+            ->join('currencies', 'requests.currency_id = currencies.currency_id')
+            ->join('employees', 'requests.employee_id = employees.employee_id')
+            ->where('requests.request_id', $id);
+
+        $request = $request->first();
+        
+        if (!$request) {
+            return redirect()->to('/requests');
+        }
+
+
+        if ($request->employee_id !== $employee_id) {
+            return redirect()->to('/requests');
+        }
+
+        return view('template/header', ['role' => $role])
+            . view('requests/viewRequest', [
+                'employee_id' => $employee_id,
+                'request' => $request,
+            ])
+            . view('template/footer');
     }
 }
