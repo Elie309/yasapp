@@ -128,7 +128,8 @@ class RequestController extends BaseController
 
 
         return view('template/header', ['role' => $role])
-            . view('requests/addRequest', [
+            . view('requests/saveRequest', [
+                'method' => 'NEW_REQUEST',
                 'employee_id' => $employee_id,
                 'employee_name' => $name,
                 'currencies' => $currencies,
@@ -179,6 +180,10 @@ class RequestController extends BaseController
 
         $requestModel = new RequestModel();
 
+        if (empty($id) || empty($employee_id)) {
+            return redirect()->back();
+        }
+
         $request = $requestModel->select(
             'requests.request_id, requests.client_id, 
             CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
@@ -198,23 +203,84 @@ class RequestController extends BaseController
             ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
-            ->where('requests.request_id', $id);
+            ->groupStart()
+            ->where('requests.request_id', $id)
+            ->where('requests.employee_id', $employee_id)
+            ->groupEnd()
+            ->groupBy('requests.request_id')
+            ->first();
 
-        $request = $request->first();
-        
         if (!$request) {
-            return redirect()->to('/requests');
-        }
-
-
-        if ($request->employee_id !== $employee_id) {
-            return redirect()->to('/requests');
+            return redirect()->back();
         }
 
         return view('template/header', ['role' => $role])
             . view('requests/viewRequest', [
                 'employee_id' => $employee_id,
                 'request' => $request,
+            ])
+            . view('template/footer');
+    }
+
+
+
+
+    public function edit($id)
+    {
+
+        $session = service('session');
+
+        $role = $session->get('role');
+        $employee_id = $session->get('id');
+        $name = $session->get('name');
+
+        $id = esc($id);
+
+        $requestModel = new RequestModel();
+
+        $request = $requestModel->select(
+            'requests.*, clients.*,
+            cities.city_name,
+            GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as client_phone,
+            paymentplans.payment_plan_name,
+            currencies.currency_symbol,
+            employees.employee_name
+            '
+        )
+            ->join('clients', 'requests.client_id = clients.client_id')
+            ->join('cities', 'requests.city_id = cities.city_id')
+            ->join('phones', 'clients.client_id = phones.client_id')
+            ->join('countries', 'countries.country_id = phones.country_id')
+            ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
+            ->join('currencies', 'requests.currency_id = currencies.currency_id')
+            ->join('employees', 'requests.employee_id = employees.employee_id')
+            ->groupStart()
+            ->where('requests.request_id', $id)
+            ->where('requests.employee_id', $employee_id)
+            ->groupEnd()
+            ->groupBy('requests.request_id')
+            ->first();
+
+
+        if (!$request) {
+            return redirect()->back();
+        }
+
+
+        $currencyModel = new CurrenciesModel();
+        $currencies = $currencyModel->findAll();
+
+        $paymentPlans = new PaymentPlansModel();
+        $paymentPlans = $paymentPlans->findAll();
+
+        return view('template/header', ['role' => $role])
+            . view('requests/saveRequest', [
+                'method' => 'UPDATE_REQUEST',
+                'employee_id' => $employee_id,
+                'employee_name' => $name,
+                'request' => $request,
+                'currencies' => $currencies,
+                'paymentPlans' => $paymentPlans
             ])
             . view('template/footer');
     }
