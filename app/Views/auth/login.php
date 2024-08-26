@@ -32,7 +32,7 @@
                 <form action="<?= base_url('login/acceptdata') ?>" method="POST">
                     <div class="mb-4">
 
-                        <label for="name" class="main-label">Email</label>
+                        <label for="name" class="main-label">Employee Name</label>
 
                         <input type="text" id="name" name="name" class="main-input" required>
 
