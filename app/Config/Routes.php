@@ -64,14 +64,12 @@ $routes->post('profile', 'Profile\ProfileController::updateProfile');
 
 //CLIENTS
 $routes->get('clients', 'Clients\ClientsController::index');
+$routes->get('clients/(:num)', 'Clients\ClientsController::view/$1');
 $routes->get('clients/add', 'Clients\ClientsController::add');
 $routes->post('clients/add', 'Clients\ClientsController::addClient');
 $routes->get('clients/edit/(:num)', 'Clients\ClientsController::edit/$1');
 $routes->post('clients/edit/(:num)', 'Clients\ClientsController::updateClient/$1');
 $routes->get('clients/delete/(:num)', 'Clients\ClientsController::delete/$1');
-
-//TODO: Page for the actual client and their requests or listings
-// $routes->get('clients/(:num)', 'Clients\ClientsController::view/$1');
 
 //REQUESTS
 $routes->get('requests', 'Requests\RequestController::index');

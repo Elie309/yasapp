@@ -207,8 +207,26 @@ class ClientsController extends BaseController
         }
     }
 
-    public function delete()
+    public function view($id)
     {
-        //
+        $session = service('session');
+
+        $role = $session->get('role');
+        $employee_id = $session->get('id');
+
+
+        $clientModel = new ClientModel();
+        $phoneModel = new PhoneModel();
+
+        $client = $clientModel->select('clients.*, employees.employee_name')
+            ->join('employees', 'employees.employee_id = clients.employee_id')
+            ->where('clients.client_id', $id)
+            ->first();
+        $phones = $phoneModel->select('phones.*, countries.country_code')
+            ->join('countries', 'countries.country_id = phones.country_id')
+            ->where('phones.client_id', $id)
+            ->findAll();
+
+        return view('template/header', ['role' => $role]) . view('Clients/viewClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id]) . view('template/footer');
     }
 }
