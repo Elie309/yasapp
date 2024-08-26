@@ -2,18 +2,18 @@
 
     <?php $emptyTable = ($tableData == null || count($tableData) == 0) ?>
 
-    <?php $nonCheckedCols = isset($_GET['nonCheckedCols']) ? explode(',', $_GET['nonCheckedCols']) : null; 
-    
+    <?php $nonCheckedCols = isset($_GET['nonCheckedCols']) ? explode(',', $_GET['nonCheckedCols']) : null;
+
     //duplicate the array tableheaders
     $initialCols = $tableHeaders;
 
     //remove the col from the headers
-        if($nonCheckedCols != null){
-            foreach($nonCheckedCols as $col){
-                $key = str_replace('_col', '', $col);
-                unset($tableHeaders[$key]);
-            }
+    if ($nonCheckedCols != null) {
+        foreach ($nonCheckedCols as $col) {
+            $key = str_replace('_col', '', $col);
+            unset($tableHeaders[$key]);
         }
+    }
     ?>
 
 
@@ -80,7 +80,7 @@
                 <!-- Search INPUT FIELD -->
                 <input type="text" id="search_<?= $tableId ?>" onkeypress="onEnterButtonPress()" name="search_<?= $tableId ?>" placeholder="Search" value="<?= isset($_GET['search']) ? $_GET['search'] : "" ?>" class="secondary-input">
                 <div class="mx-auto my-2 sm:my-0 sm:mx-2">
-                    <button onclick="searchAndSearchParamURLSetters()"  class="secondary-btn h-full size-12">
+                    <button onclick="searchAndSearchParamURLSetters()" class="secondary-btn h-full size-12">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-full" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
@@ -191,13 +191,12 @@
                 <ul class="">
                     <?php foreach ($initialCols as $key => $value) : ?>
                         <li class="w-full my-2 rounded-t-lg">
-                            <input  
+                            <input
                                 <?php if (!isset($nonCheckedCols) || !in_array($key . "_col", $nonCheckedCols)) : ?> checked <?php endif; ?>
-                                id="<?= $key ?>_col" 
-                                type="checkbox" 
-                                value="" 
-                                class="cols-tag w-4 h-4 main-checkbox"
-                                >
+                                id="<?= $key ?>_col"
+                                type="checkbox"
+                                value=""
+                                class="cols-tag w-4 h-4 main-checkbox">
                             <label for="<?= $key ?>_col" class="w-full py-3 ms-2 text-lg font-medium"><?= $value ?></label>
                         </li>
                     <?php endforeach; ?>
@@ -331,7 +330,15 @@
 
                 sessionStorage.setItem('tempTableData', JSON.stringify(rowData));
 
-                openModal('<?= isset($modelIdOnClickRow) ? $modelIdOnClickRow : $addButtonModelId ?>');
+                <?php
+                if (isset($modelIdOnClickRow) && $modelIdOnClickRow != '') {
+                    echo 'openModal("' . $modelIdOnClickRow . '");';
+                }
+                if (isset($addButtonModelId) && $addButtonModelId != '') {
+                    echo 'openModal("' . $addButtonModelId . '");';
+                }
+                ?>
+
                 <?= isset($JSFunctionToRunOnClickRow) ? $JSFunctionToRunOnClickRow : '' ?>
 
                 setTimeout(() => {
@@ -399,10 +406,10 @@
     <?php endif; ?>
 
 
-    function redirectToWithId(base_link) {
+    function redirectToWithId(base_link, id) {
         var data = sessionStorage.getItem('tempTableData');
         if (data) {
-            var id = JSON.parse(data).client_id;
+            var id = JSON.parse(data)[id];
             sessionStorage.removeItem('tempTableData');
 
             window.location.href = base_link + '/' + id;
