@@ -43,3 +43,7 @@ function closePopover(popoverId) {
 
     popover.hidePopover();
 }
+
+function resetURL(url) {
+    window.location.href = url;
+}

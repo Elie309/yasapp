@@ -4,7 +4,7 @@
 
 
         <span class="flex flex-row justify-end">
-            <button class="secondary-btn " onclick='resetURL()'>Clear Filter</button>
+            <button class="secondary-btn " onclick='resetURL("requests")'>Clear Filter</button>
         </span>
         <div class="flex flex-col">
 
@@ -136,7 +136,5 @@
         });
     });
 
-    function resetURL() {
-        window.location.href = '<?= base_url('requests') ?>';
-    }
+    
 </script>
