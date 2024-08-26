@@ -63,19 +63,22 @@
         <?php if (isset($searchParamActive) && $searchParamActive) : ?>
 
             <div class="w-full flex flex-col sm:flex-row">
-                <!-- SELECT INPUT FIELD -->
-                <select id="columnSelect_<?= $tableId ?>" name="searchParam" class="secondary-btn w-full my-2 sm:my-0 sm:w-2/12 mr-2">
-                    <?php $searchParamInLink = isset($_GET['searchParam']) ? $_GET['searchParam'] : 'firstname'; ?>
 
-                    <?php if (isset($searchParam) && $searchParam != '') : ?>
-                        <?php foreach ($searchParam as $key => $value) : ?>
-                            <option value='<?= $key ?>' <?= $key == $searchParamInLink ? 'selected' : '' ?>><?= $value ?></option>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <option value='<?= $searchParam ?>'><?= $searchParam ?></option>
-                    <?php endif; ?>
+                <?php if (isset($searchParam) && count($searchParam) > 0) : ?>
+                    <!-- SELECT INPUT FIELD -->
+                    <select id="columnSelect_<?= $tableId ?>" name="searchParam" class="secondary-btn w-full my-2 sm:my-0 sm:w-2/12 mr-2">
+                        <?php $searchParamInLink = isset($_GET['searchParam']) ? $_GET['searchParam'] : 'firstname'; ?>
 
-                </select>
+                        <?php if (isset($searchParam) && $searchParam != '') : ?>
+                            <?php foreach ($searchParam as $key => $value) : ?>
+                                <option value='<?= $key ?>' <?= $key == $searchParamInLink ? 'selected' : '' ?>><?= $value ?></option>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <option value='<?= $searchParam ?>'><?= $searchParam ?></option>
+                        <?php endif; ?>
+
+                    </select>
+                <?php endif; ?>
 
                 <!-- Search INPUT FIELD -->
                 <input type="text" id="search_<?= $tableId ?>" onkeypress="onEnterButtonPress()" name="search_<?= $tableId ?>" placeholder="Search" value="<?= isset($_GET['search']) ? $_GET['search'] : "" ?>" class="secondary-input">
@@ -396,11 +399,16 @@
         }
 
         function searchAndSearchParamURLSetters() {
+            <?php if (isset($searchParam) && count($searchParam) > 0) : ?>
+                let col = document.getElementById('columnSelect_<?= $tableId ?>');
+                let search = document.getElementById('search_<?= $tableId ?>');
 
-            let col = document.getElementById('columnSelect_<?= $tableId ?>');
-            let search = document.getElementById('search_<?= $tableId ?>');
+                updateURLParameter(['search', 'searchParam'], [search.value, col.options[col.selectedIndex].value]);
+            <?php else : ?>
+                let search = document.getElementById('search_<?= $tableId ?>');
+                updateURLParameter('search', search.value);
+            <?php endif; ?>
 
-            updateURLParameter(['search', 'searchParam'], [search.value, col.options[col.selectedIndex].value]);
         }
 
     <?php endif; ?>
