@@ -125,7 +125,7 @@ class ClientsController extends BaseController
                     if (!$phoneModel->save($phoneData)) {
 
                         $clientModel->delete($client_id);
-                        return redirect()->back()->with('errors', $phoneModel->errors());
+                        return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
 
                     }
                 }
@@ -134,7 +134,7 @@ class ClientsController extends BaseController
 
             return redirect()->back()->with('success', 'Client added successfully');
         } else {
-            return redirect()->back()->with('errors', $clientModel->errors());
+            return redirect()->back()->withInput()->with('errors', $clientModel->errors());
         }
     }
 
@@ -192,7 +192,7 @@ class ClientsController extends BaseController
                     ];
 
                     if (!$phoneModel->save($phoneData)) {
-                        return redirect()->back()->with('errors', $phoneModel->errors());
+                        return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
                     }
                 }
 
@@ -202,7 +202,7 @@ class ClientsController extends BaseController
             return redirect()->back()->with('success', 'Client updated successfully, with no phone number');
 
         } else {
-            return redirect()->back()->with('errors', $clientModel->errors());
+            return redirect()->back()->withInput()->with('errors', $clientModel->errors());
         }
     }
 

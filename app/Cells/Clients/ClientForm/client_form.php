@@ -1,5 +1,10 @@
 <div class="container-main">
 
+    <?php
+    $clientDataOnError = session()->get('_ci_old_input');
+
+    ?>
+
     <div class="flex flex-row ">
 
         <!-- Return back in history -->
@@ -102,44 +107,54 @@
         }
 
 
-        <?php if (isset($clientFromRequest) && $clientFromRequest == 'edit') : ?>
+        <?php if ((isset($clientFromRequest) && $clientFromRequest == 'edit') || isset($clientDataOnError)) : ?>
 
             setData();
 
-            
+
             function setData() {
 
-                var client = JSON.parse("<?php echo addslashes(json_encode($client)) ?>");
-                var phones = JSON.parse('<?php echo addslashes(json_encode($phones)) ?>');
-                var countries = JSON.parse('<?php echo  addslashes(json_encode($countries)) ?>');
+                <?php if (isset($clientDataOnError)) : ?>
+                    let data = JSON.parse("<?= addslashes(json_encode($clientDataOnError['post'])) ?>");
+                    var client = data;
+                <?php else : ?>
+                    var client = JSON.parse("<?= addslashes(json_encode($client)) ?>");
+                    var phones = JSON.parse('<?= addslashes(json_encode($phones)) ?>');
+                    var countries = JSON.parse('<?= addslashes(json_encode($countries)) ?>');
+                <?php endif; ?>
 
 
                 document.getElementById('client_firstname').value = client.client_firstname;
                 document.getElementById('client_lastname').value = client.client_lastname;
                 document.getElementById('client_email').value = client.client_email;
                 document.getElementById('client_visibility').value = client.client_visibility;
-                document.getElementById('client_id').value = client.client_id;
 
 
-                var phoneSection = document.getElementById('phone-section');
-                phoneSection.innerHTML = '';
+                <?php if (isset($clientFromRequest) && $clientFromRequest == 'edit') : ?>
+                    document.getElementById('client_id').value = client.client_id;
 
-                phones.forEach(phone => {
-                    var newPhoneInput = document.createElement('div');
-                    newPhoneInput.classList.add('phone-input');
-                    newPhoneInput.classList.add('flex');
-                    newPhoneInput.classList.add('flex-row');
 
-                    newPhoneInput.innerHTML = `
-                <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries]) ?>
-            `;
-                    newPhoneInput.querySelector('.phone-country').value = phone.country_id;
-                    newPhoneInput.querySelector('.phone-number').value = phone.phone_number;
+                    var phoneSection = document.getElementById('phone-section');
+                    phoneSection.innerHTML = '';
 
-                    phoneSection.appendChild(newPhoneInput);
-                });
+                    phones.forEach(phone => {
+                        var newPhoneInput = document.createElement('div');
+                        newPhoneInput.classList.add('phone-input');
+                        newPhoneInput.classList.add('flex');
+                        newPhoneInput.classList.add('flex-row');
 
-                sessionStorage.removeItem("tempTableData");
+                        newPhoneInput.innerHTML = `
+                        <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries]) ?>
+                        `;
+
+                        newPhoneInput.querySelector('.phone-country').value = phone.country_id;
+                        newPhoneInput.querySelector('.phone-number').value = phone.phone_number;
+
+                        phoneSection.appendChild(newPhoneInput);
+                    });
+
+                <?php endif; ?>
+
             }
 
         <?php endif; ?>
