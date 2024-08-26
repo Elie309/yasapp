@@ -35,6 +35,17 @@ class EmployeeSeeder extends Seeder
                 'employee_status'    => 'active',
 
             ],
+            [
+                'employee_name'   => 'Thomas',
+                'employee_password'   => password_hash('123', PASSWORD_BCRYPT),
+                'employee_role'       => 'manager',
+                'employee_email'     => 'thomas@thomas.com',
+                'employee_phone'     => '1234560',
+                'employee_birthday'  => $faker->date,
+                'employee_address'   => $faker->address,
+                'employee_status'    => 'active',
+
+            ],
         ];
 
         $this->db->table('employees')->insertBatch($data);

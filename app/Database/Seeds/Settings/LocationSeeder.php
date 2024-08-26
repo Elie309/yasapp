@@ -20,13 +20,11 @@ class LocationSeeder extends Seeder
         $subregionModel = new SubregionModel();
         $cityModel = new CityModel();
 
-        // Check if country exists and insert if not
-        $country = $countryModel->where('country_name', 'Lebanon')->first();
-        if (!$country) {
-            $countryId = $countryModel->insert(['country_name' => 'Lebanon', 'country_code' => '+961']);
-        } else {
-            $countryId = $country->country_id;
-        }
+        $countryId = $countryModel->insert(['country_name' => 'Lebanon', 'country_code' => '+961']);
+        $countryModel->insert(['country_name' => 'United States', 'country_code' => '+1']);
+        $countryModel->insert(['country_name' => 'France', 'country_code' => '+33']);
+        $countryModel->insert(['country_name' => 'Syria', 'country_code' => '+963']);
+
 
         // Regions, Subregions, and Cities Data
         $locations = [
