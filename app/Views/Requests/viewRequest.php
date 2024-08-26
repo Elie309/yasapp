@@ -68,6 +68,10 @@
                     <td><?= $request->created_at ?></td>
                 </tr>
                 <tr>
+                    <td>Updated At:</td>
+                    <td><?= $request->updated_at ?></td>
+                </tr>
+                <tr>
                     <td>Request Description:</td>
                     <td><?= $request->comments ?></td>
                 </tr>
