@@ -38,7 +38,6 @@ class RequestModel extends Model
         'request_budget' => 'float',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'deleted_at' => 'datetime'
     ];
 
     protected array $castHandlers = [];
@@ -61,7 +60,10 @@ class RequestModel extends Model
         'request_state' => 'required|in_list[pending,fulfilled,rejected,cancelled]',
         'request_priority' => 'required|in_list[low,medium,high]',
         'request_type' => 'required|in_list[normal,urgent]',
-        'comments' => 'permit_empty|string'
+        'comments' => 'permit_empty|string',
+        'created_at' => 'permit_empty|valid_date',
+        'updated_at' => 'permit_empty|valid_date',
+        'deleted_at' => 'permit_empty|valid_date'
     ];
     protected $validationMessages   = [
         'client_id' => [
