@@ -21,45 +21,48 @@ class ClientsController extends BaseController
         $rowsPerPage = esc($this->request->getVar('rowsPerPage')) ?? 10;
 
         $search = esc($this->request->getVar('search'));
-        $search = trim($search);
 
-        $searchParam = esc($this->request->getVar('searchParam'));
+        $visibility = esc($this->request->getVar('visibility'));
 
-        $param = [
-            'firstname' => 'clients.client_firstname',
-            'lastname' => 'clients.client_lastname',
-            'email' => 'clients.client_email',
-            'visibility' => 'clients.client_visibility',
-            'phone_number' => 'phones.phone_number'
-        ];
+        $created_at = esc($this->request->getVar('createdAt'));
+
+        $updated_at = esc($this->request->getVar('updatedAt'));
+
+
+        $clients = $clientModel->select('clients.*, CONCAT(clients.client_firstname, " ", clients.client_lastname) as full_name, GROUP_CONCAT(CONCAT(countries.country_code, " " ,phones.phone_number) SEPARATOR ", ") as phone_numbers')
+            ->join('phones', 'phones.client_id = clients.client_id', 'left')
+            ->join('countries', 'countries.country_id = phones.country_id', 'left')
+            ->groupStart()
+            ->where('clients.employee_id', $employee_id)
+            ->orWhere('clients.client_visibility', 'public')
+            ->groupEnd()
+            ->groupBy('clients.client_id');
 
         if (isset($search) && !empty($search)) {
-            if ($searchParam != 'phone_number') {
-                $clients = $clientModel->select('clients.*, GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers')
-                    ->join('phones', 'phones.client_id = clients.client_id', 'left')
-                    ->join('countries', 'countries.country_id = phones.country_id', 'left')
-                    ->where('(clients.employee_id = ' . $employee_id . ' OR clients.client_visibility = "public")')
-                    ->like($param[$searchParam] ?? 'clients.client_firstname', $search)
-                    ->groupBy('clients.client_id')
-                    ->paginate($rowsPerPage);
-            } else {
-                $clients = $clientModel->select('clients.*, GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers')
-                    ->join('phones', 'phones.client_id = clients.client_id', 'left')
-                    ->join('countries', 'countries.country_id = phones.country_id', 'left')
-                    ->where('(clients.employee_id = ' . $employee_id . ' OR clients.client_visibility = "public")')
-                    ->like('phones.phone_number', $search)
-                    ->groupBy('clients.client_id')
-                    ->paginate($rowsPerPage);
-            }
-        } else {
-            $clients = $clientModel->select('clients.*, GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers')
-                ->join('phones', 'phones.client_id = clients.client_id', 'left')
-                ->join('countries', 'countries.country_id = phones.country_id', 'left')
-                ->where('clients.employee_id', $employee_id)
-                ->orWhere('clients.client_visibility', 'public')
-                ->groupBy('clients.client_id')
-                ->paginate($rowsPerPage);
+            $clients->groupStart()
+                ->like('clients.client_firstname', $search)
+                ->orLike('clients.client_lastname', $search)
+                ->orLike('clients.client_email', $search)
+                ->orLike('phones.phone_number', $search)
+                ->groupEnd();
         }
+
+        if (isset($visibility) && !empty($visibility)) {
+            $clients->where('clients.client_visibility', $visibility);
+        }
+
+        if (isset($created_at) && !empty($created_at)) {
+            $clients->where('clients.created_at >=', $created_at . ' 00:00:00')
+                ->orderBy('clients.created_at', 'ASC');
+        }
+
+        if (isset($updated_at) && !empty($updated_at)) {
+            $clients->where('clients.updated_at >=', $updated_at . ' 00:00:00')
+                ->orderBy('clients.updated_at', 'ASC');
+        }
+
+        $clients = $clients->paginate($rowsPerPage);
+
         $pager = $clientModel->pager;
 
 
@@ -95,7 +98,7 @@ class ClientsController extends BaseController
         $phones = $this->request->getPost('phone_number');
         $countries = $this->request->getPost('country_id');
 
-        
+
 
         $clientModel = new ClientModel();
         $phoneModel = new PhoneModel();
@@ -112,9 +115,10 @@ class ClientsController extends BaseController
             $client_id = $clientModel->insertID();
 
             // Ensure $phones is an array before using it in the foreach loop
-            if (is_array($phones) && is_array($countries) && count($phones) == count($countries) 
+            if (
+                is_array($phones) && is_array($countries) && count($phones) == count($countries)
                 && count($phones) > 0 && count($countries) > 0
-                ) {
+            ) {
                 foreach ($phones as $key => $phone) {
                     $phoneData = [
                         'client_id' => $client_id,
@@ -126,10 +130,9 @@ class ClientsController extends BaseController
 
                         $clientModel->delete($client_id);
                         return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
-
                     }
                 }
-            }//No need to check if it is empty or anything, the validation will take care of it
+            } //No need to check if it is empty or anything, the validation will take care of it
 
 
             return redirect()->back()->with('success', 'Client added successfully');
@@ -155,7 +158,6 @@ class ClientsController extends BaseController
         $countries = $countriesModel->findAll();
 
         return view('template/header', ['role' => $role]) . view('Clients/editClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
-        
     }
 
     public function updateClient($id)
@@ -200,7 +202,6 @@ class ClientsController extends BaseController
             }
 
             return redirect()->back()->with('success', 'Client updated successfully, with no phone number');
-
         } else {
             return redirect()->back()->withInput()->with('errors', $clientModel->errors());
         }
