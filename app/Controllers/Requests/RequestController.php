@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Entities\Requests\RequestEntity;
 use App\Models\Requests\RequestModel;
 use App\Models\Settings\CurrenciesModel;
+use App\Models\Settings\Location\CityModel;
 use App\Models\Settings\PaymentPlansModel;
 
 class RequestController extends BaseController
@@ -240,7 +241,6 @@ class RequestController extends BaseController
 
         $request = $requestModel->select(
             'requests.*, clients.*,
-            cities.city_name,
             GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as client_phone,
             paymentplans.payment_plan_name,
             currencies.currency_symbol,
@@ -248,7 +248,6 @@ class RequestController extends BaseController
             '
         )
             ->join('clients', 'requests.client_id = clients.client_id')
-            ->join('cities', 'requests.city_id = cities.city_id')
             ->join('phones', 'clients.client_id = phones.client_id')
             ->join('countries', 'countries.country_id = phones.country_id')
             ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
@@ -260,11 +259,21 @@ class RequestController extends BaseController
             ->groupEnd()
             ->groupBy('requests.request_id')
             ->first();
-
+        
 
         if (!$request) {
             return redirect()->back();
         }
+
+        //Get the country, region and subregion to the city id
+        $cityModel = new CityModel();
+
+        $city = $cityModel->select('cities.*, subregions.subregion_name, regions.region_name, countries.country_name')
+            ->join('subregions', 'cities.subregion_id = subregions.subregion_id')
+            ->join('regions', 'subregions.region_id = regions.region_id')
+            ->join('countries', 'regions.country_id = countries.country_id')
+            ->where('cities.city_id', $request->city_id)
+            ->first();
 
 
         $currencyModel = new CurrenciesModel();
@@ -273,15 +282,50 @@ class RequestController extends BaseController
         $paymentPlans = new PaymentPlansModel();
         $paymentPlans = $paymentPlans->findAll();
 
+        $paymentPlans = array_map(function ($paymentPlan) {
+            return [
+                'id' => $paymentPlan->payment_plan_id,
+                'name' => $paymentPlan->payment_plan_name
+            ];
+        }, $paymentPlans);
+
+
         return view('template/header', ['role' => $role])
             . view('requests/saveRequest', [
                 'method' => 'UPDATE_REQUEST',
                 'employee_id' => $employee_id,
                 'employee_name' => $name,
+                'city' => $city,
                 'request' => $request,
                 'currencies' => $currencies,
                 'paymentPlans' => $paymentPlans
             ])
             . view('template/footer');
+    }
+
+
+    public function updateRequest()
+    {
+
+        $requestModel = new RequestModel();
+        $requestEntity = new RequestEntity();
+
+        try {
+
+            $requestEntity->fill($this->request->getPost());
+
+            $isValid = $requestEntity->isValid();
+            if ($isValid !== true) {
+                return redirect()->back()->withInput()->with('errors', [$isValid->getMessage()]);
+            }
+
+            if ($requestModel->update($requestEntity->request_id, $requestEntity)) {
+                return redirect()->to('/requests');
+            } else {
+                return redirect()->back()->withInput()->with('errors', $requestModel->errors());
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('errors', ['An error occurred']);
+        }
     }
 }

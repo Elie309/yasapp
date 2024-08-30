@@ -164,12 +164,11 @@
                 </div>
 
                 <?php if ($method == 'UPDATE_REQUEST') : ?>
-                    <div class="flex flex-row w-full">
-                        <div class="w-1/2 flex flex-row justify-center">
-                            <!-- TODO: Delete button -->
-                            <button class="secondary-btn my-4 w-full sm:w-5/12 cursor-pointer">Delete</button>
+                    <div class="grid grid-cols-2 gap-4 w-full my-4">
+                        <div class="w-full flex flex-row justify-center">
+                            <button popovertarget="delete-popover" type="button" class="secondary-btn my-4 w-full sm:w-5/12 cursor-pointer">Delete</button>
                         </div>
-                        <div class="w-1/2 flex flex-row justify-center">
+                        <div class="w-full flex flex-row justify-center">
                             <input type="submit" class="main-btn my-4 w-full sm:w-5/12 cursor-pointer" value="submit">
                         </div>
                     </div>
@@ -187,7 +186,7 @@
 
     </div>
 
-    <div popover id="client-popover" class="w-full px-8 sm:px-2 md:w-3/4 max-h-screen overflow-auto">
+    <div popover id="client-popover" class="popover">
         <?= view_cell('\App\Cells\Utils\Search\SearchCell::render', [
             'title' => 'Client',
             'tableHeaders' => [
@@ -202,7 +201,7 @@
         ]) ?>
     </div>
 
-    <div popover id="location-popover" class="w-full px-8 sm:px-2 md:w-3/4 max-h-screen overflow-auto">
+    <div popover id="location-popover" class="popover">
         <?= view_cell('\App\Cells\Utils\Search\SearchCell::render', [
             'title' => 'Location',
             'tableHeaders' => [
@@ -217,152 +216,171 @@
         ]) ?>
 
     </div>
-</div>
 
-<script>
-    <?php
+    <div popover id="delete-popover" class="popover max-w-md">
+        <div class="flex flex-col w-full justify-center">
+            <h3 class="secondary-title text-center">Are you sure you want to delete this request?</h3>
+            <div class="grid grid-cols-2 gap-4 w-full my-4">
+                <div class=" w-full">
+                    <button type="button" class="primary-btn w-full cursor-pointer" onclick="closePopover('delete-popover')">Cancel</button>
+                </div>
+                <div class="w-full">
+                    <button onclick="window.location.href='/requests/delete/<?= $request->request_id ?>'"
+                        class="secondary-btn w-full cursor-pointer text-center">
+                        Confirm
+                    </button>
+                </div>
 
-    $session = service('session');
+            </div>
+        </div>
+    </div>
 
-    $data = $session->get('_ci_old_input');
+    <script>
+        <?php
 
-    if (isset($data)) {
-        echo "var data = " . json_encode($data['post']) . ";";
+        $session = service('session');
 
-        echo "populateFields(data);";
-    }
+        $data = $session->get('_ci_old_input');
 
-    if ($method == 'UPDATE_REQUEST') {
-        echo "var data = " . json_encode($request) . ";";
-        echo "populateFields(data);";
-        echo "console.log(data);";
-    }
+        if (isset($data)) {
+            echo "var data = " . json_encode($data['post']) . ";";
 
-    ?>
-
-
-    function populateFields(data) {
-
-        if (data.client_id) {
-            document.getElementById('client_id').value = data.client_id;
+            echo "populateFields(data);";
         }
 
-        if (data.client_firstname) {
-            document.getElementById('client_firstname').value = data.client_firstname;
+        if ($method == 'UPDATE_REQUEST') {
+            echo "var data = " . json_encode($request) . ";";
+            echo "var city = " . json_encode($city) . ";";
+            echo "populateFields(data);";
         }
 
-        if (data.client_lastname) {
-            document.getElementById('client_lastname').value = data.client_lastname;
-        }
-
-        if (data.client_email) {
-            document.getElementById('client_email').value = data.client_email;
-        }
-
-        if (data.client_phone) {
-            document.getElementById('client_phone').value = data.client_phone;
-        }
-
-        if (data.city_id) {
-            document.getElementById('city_id').value = data.city_id;
-        }
-
-        if (data.country) {
-            document.getElementById('country').value = data.country;
-        }
-
-        if (data.region) {
-            document.getElementById('region').value = data.region;
-        }
-
-        if (data.subregion) {
-            document.getElementById('subregion').value = data.subregion;
-        }
-
-        if (data.city) {
-            document.getElementById('city').value = data.city;
-        }
-
-        if (data.payment_plan_id && data.payment_plan_name) {
-            document.getElementById('result_id_payment_plan_id').value = data.payment_plan_id;
-            document.getElementById('search_payment_plan_id').value = data.payment_plan_name;
-
-        }
-
-        if (data.currency_id) {
-            document.getElementById('currency_id').value = data.currency_id;
-        }
-
-        if (data.request_budget) {
-            document.getElementById('request_budget').value = data.request_budget;
-            document.getElementById('request_budget_display').value = parseFloat(data.request_budget).toLocaleString();
-        }
-
-        if (data.request_priority) {
-            document.getElementById('request_priority').value = data.request_priority;
-        }
-
-        if (data.request_state) {
-            document.getElementById('request_state').value = data.request_state;
-        }
-
-        if (data.request_type) {
-            document.getElementById('request_type').value = data.request_type;
-        }
-
-        if (data.comments) {
-            document.getElementById('comments').value = data.comments;
-        }
+        ?>
 
 
-    }
+        function populateFields(data) {
 
-    function onSelectClient() {
-        //Close the popover
-        closePopover('client-popover');
-
-        const selectedRow = document.querySelector('.selected-row-client');
-
-        if (selectedRow) {
-            const data = JSON.parse(selectedRow.dataset.data);
-            document.getElementById('client_id').value = data.client_id;
-            document.getElementById('client_firstname').value = data.client_firstname;
-            document.getElementById('client_lastname').value = data.client_lastname;
-            document.getElementById('client_email').value = data.client_email;
-            document.getElementById('client_phone').value = data.phone_numbers;
-        }
-    }
-
-    function onSelectLocation() {
-        //Close the popover
-        closePopover('location-popover');
-
-        const selectedRow = document.querySelector('.selected-row-location');
-
-        if (selectedRow) {
-            const data = JSON.parse(selectedRow.dataset.data);
-            document.getElementById('city_id').value = data.city_id;
-            document.getElementById('country').value = data.country_name;
-            document.getElementById('region').value = data.region_name;
-            document.getElementById('subregion').value = data.subregion_name;
-            document.getElementById('city').value = data.city_name;
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const displayInput = document.getElementById('request_budget_display');
-        const hiddenInput = document.getElementById('request_budget');
-
-        displayInput.addEventListener('input', function(e) {
-            let value = e.target.value;
-            value = value.replace(/,/g, ''); // Remove existing commas
-            if (!isNaN(value) && value !== '') {
-                hiddenInput.value = value; // Update hidden input with numeric value
-                value = parseFloat(value).toLocaleString(); // Format value with commas
-            } else {
-                hiddenInput.value = ''; // Clear hidden input if value is not a number
+            if (data.client_id) {
+                document.getElementById('client_id').value = data.client_id;
             }
-            e.target.value = value;
+
+            if (data.client_firstname) {
+                document.getElementById('client_firstname').value = data.client_firstname;
+            }
+
+            if (data.client_lastname) {
+                document.getElementById('client_lastname').value = data.client_lastname;
+            }
+
+            if (data.client_email) {
+                document.getElementById('client_email').value = data.client_email;
+            }
+
+            if (data.client_phone) {
+                document.getElementById('client_phone').value = data.client_phone;
+            }
+
+            if (city) {
+                document.getElementById('city_id').value = city.city_id;
+
+                if (city.country_name) {
+                    document.getElementById('country').value = city.country_name;
+                }
+
+                if (city.region_name) {
+                    document.getElementById('region').value = city.region_name;
+                }
+
+                if (city.subregion_name) {
+                    document.getElementById('subregion').value = city.subregion_name;
+                }
+
+                if (city.city_name) {
+                    document.getElementById('city').value = city.city_name;
+                }
+            }
+
+
+
+            if (data.payment_plan_id && data.payment_plan_name) {
+                document.getElementById('result_id_payment_plan_id').value = data.payment_plan_id;
+                document.getElementById('search_payment_plan_id').value = data.payment_plan_name;
+
+            }
+
+            if (data.currency_id) {
+                document.getElementById('currency_id').value = data.currency_id;
+            }
+
+            if (data.request_budget) {
+                document.getElementById('request_budget').value = data.request_budget;
+                document.getElementById('request_budget_display').value = parseFloat(data.request_budget).toLocaleString();
+            }
+
+            if (data.request_priority) {
+                document.getElementById('request_priority').value = data.request_priority;
+            }
+
+            if (data.request_state) {
+                document.getElementById('request_state').value = data.request_state;
+            }
+
+            if (data.request_type) {
+                document.getElementById('request_type').value = data.request_type;
+            }
+
+            if (data.comments) {
+                document.getElementById('comments').value = data.comments;
+            }
+
+
+        }
+
+        function onSelectClient() {
+            //Close the popover
+            closePopover('client-popover');
+
+            const selectedRow = document.querySelector('.selected-row-client');
+
+            if (selectedRow) {
+                const data = JSON.parse(selectedRow.dataset.data);
+                document.getElementById('client_id').value = data.client_id;
+                document.getElementById('client_firstname').value = data.client_firstname;
+                document.getElementById('client_lastname').value = data.client_lastname;
+                document.getElementById('client_email').value = data.client_email;
+                document.getElementById('client_phone').value = data.phone_numbers;
+            }
+        }
+
+        function onSelectLocation() {
+            //Close the popover
+            closePopover('location-popover');
+
+            const selectedRow = document.querySelector('.selected-row-location');
+
+            if (selectedRow) {
+                const data = JSON.parse(selectedRow.dataset.data);
+                document.getElementById('city_id').value = data.city_id;
+                document.getElementById('country').value = data.country_name;
+                document.getElementById('region').value = data.region_name;
+                document.getElementById('subregion').value = data.subregion_name;
+                document.getElementById('city').value = data.city_name;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const displayInput = document.getElementById('request_budget_display');
+            const hiddenInput = document.getElementById('request_budget');
+
+            displayInput.addEventListener('input', function(e) {
+                let value = e.target.value;
+                value = value.replace(/,/g, ''); // Remove existing commas
+                if (!isNaN(value) && value !== '') {
+                    hiddenInput.value = value; // Update hidden input with numeric value
+                    value = parseFloat(value).toLocaleString(); // Format value with commas
+                } else {
+                    hiddenInput.value = ''; // Clear hidden input if value is not a number
+                }
+                e.target.value = value;
+            });
         });
-    });
-</script>
+    </script>
