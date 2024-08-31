@@ -3,9 +3,9 @@
     <div class="mt-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
 
 
-        <span class="flex flex-row justify-end">
+        <div class="flex flex-row justify-end my-2">
             <button class="secondary-btn " onclick='resetURL("requests")'>Clear Filter</button>
-        </span>
+        </div>
         <div class="flex flex-col">
 
             <div class="flex flex-row mb-4 w-full justify-center">

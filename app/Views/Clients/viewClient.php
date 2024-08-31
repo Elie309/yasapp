@@ -20,7 +20,7 @@
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
         <div class="flex flex-col w-full">
-            <table id="request_personal_table">
+            <table id="client_personal_table">
                 <tr>
                     <td>Firstname:</td>
                     <td><?= $client->client_firstname ?></td>
@@ -65,26 +65,26 @@
 </div>
 
 <style>
-    #request_personal_table {
+    #client_personal_table {
         width: 100%;
         border-collapse: collapse;
     }
 
-    #request_personal_table td {
+    #client_personal_table td {
         border: 1px solid lightgray;
         padding: 8px;
         text-align: left;
     }
 
-    #request_personal_table tr:nth-child(even) {
+    #client_personal_table tr:nth-child(even) {
         background-color: #f9f9f9;
     }
 
-    #request_personal_table tr:hover {
+    #client_personal_table tr:hover {
         background-color: #f1f1f1;
     }
 
-    #request_personal_table th {
+    #client_personal_table th {
         border: 1px solid lightgray;
         padding: 8px;
         text-align: left;
