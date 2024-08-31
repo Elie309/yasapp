@@ -153,7 +153,18 @@ class ClientsController extends BaseController
         $phoneModel = new PhoneModel();
         $countriesModel = new CountryModel();
 
-        $client = $clientModel->find($id);
+        $client = $clientModel->select('clients.*')
+            ->groupStart()
+            ->where('clients.client_id', $id)
+            ->where('clients.employee_id', $employee_id)
+            ->groupEnd()
+            ->groupBy('clients.client_id')
+            ->first();
+
+        if (!$client) {
+            return redirect()->back();
+        }
+
         $phones = $phoneModel->where('client_id', $id)->findAll();
         $countries = $countriesModel->findAll();
 
@@ -162,6 +173,10 @@ class ClientsController extends BaseController
 
     public function updateClient($id)
     {
+
+        $session = service('session');
+
+        $employee_id = $session->get('id');
 
         $firstname = $this->request->getPost('client_firstname');
         $lastname = $this->request->getPost('client_lastname');
@@ -179,6 +194,16 @@ class ClientsController extends BaseController
             'client_email' => $email,
             'client_visibility' => $visibility,
         ];
+
+        $client = $clientModel->find($id);
+
+        if (!$client) {
+            return redirect()->back();
+        }
+
+        if($client->employee_id != $employee_id || $client->client_visibility != 'public'){
+            return redirect()->back();
+        }
 
         if ($clientModel->update($id, $clientData)) {
             //The where will get all the phone numbers for the client and delete them
