@@ -60,9 +60,12 @@
         @apply w-5 h-5 border focus:border-red-800 border-gray-300 rounded cursor-pointer;
     }
 
+    .pagination-container {
+        @apply mb-8 w-full;
+    }
 
     .pagination-container ul {
-        @apply mt-4 flex flex-row items-center justify-center;
+        @apply flex flex-row items-center justify-center;
     }
 
     .pagination-container ul>li a {
