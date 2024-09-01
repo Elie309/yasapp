@@ -1,8 +1,8 @@
--> CACHE LOCATION ANSWERS LATER and TABLE
--> Update location CRUD 
 -> api download excel sheets for all requests and all users etc...
 -> modify the entity and model to fill and validate separately VERY IMPORTANT
 -> add listing and requests for client
+->Create dashboard with new requests and new public clients
+
 
 
 
