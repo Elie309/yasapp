@@ -21,6 +21,7 @@ $routes->get('logout', 'Auth\AuthController::logout');
 //SETTINGS
 $routes->get('settings', 'Settings\SettingsController::index');
 $routes->get('settings/locations', 'Settings\LocationController::index');
+$routes->get('settings/locations/add', 'Settings\LocationController::addLocation');
 $routes->get('settings/payment-plans', 'Settings\PaymentPlansController::index');
 $routes->get('settings/currencies', 'Settings\CurrenciesController::index');
 $routes->get('settings/employees', 'Settings\EmployeesController::index');
@@ -85,3 +86,7 @@ $routes->get('requests/delete/(:num)', 'Requests\RequestController::delete/$1');
 
 $routes->get('/api/clients/search', 'API\ClientAPIController::search');
 $routes->get('/api/locations/search', 'API\LocationAPIController::search');
+$routes->get('/api/locations/get-cities', 'API\LocationAPIController::getCities');
+$routes->get('/api/locations/get-subregions', 'API\LocationAPIController::getSubregions');
+$routes->get('/api/locations/get-regions', 'API\LocationAPIController::getRegions');
+$routes->get('/api/locations/get-countries', 'API\LocationAPIController::getCountries');

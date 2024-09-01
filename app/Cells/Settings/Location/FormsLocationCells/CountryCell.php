@@ -22,5 +22,6 @@ class CountryCell extends LocationTemplateFormCell
 
     protected string $view = APPPATH. "Cells/Settings/Location/location_template_form.php";
 
+    public $searchLink = "/api/locations/get-countries";
 
 }

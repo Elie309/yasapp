@@ -18,9 +18,9 @@
 
             <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
                 'placeholder' => 'Search ' . $selectFormName,
-                'data' => $selectOptionsParent,
                 'selectedId' => $selectFormId,
-                'selectedName' => $selectFormId
+                'selectedName' => $selectFormId,
+                'searchLink' => $searchParentLink
             ]) ?>
 
         <?php } ?>
@@ -45,10 +45,12 @@
 
             <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
                 'placeholder' => 'Search ' . $title,
-                'data' => $selectedOptionsCurrent,
                 'selectedId' => $inputFormId,
-                'selectedName' => $inputFormName . '_edit'
+                'selectedName' => $selectFormName . '_edit',
+                'searchLink' => $searchLink
+
             ]) ?>
+
 
             <div class="my-4">
                 <label for="country_code" class="main-label">Country Code</label>
@@ -60,9 +62,9 @@
 
             <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
                 'placeholder' => 'Search ' . $title,
-                'data' => $selectedOptionsCurrent,
                 'selectedId' => $inputFormId,
-                'selectedName' => $inputFormName . '_edit'
+                'selectedName' => $inputFormName . '_edit',
+                'searchLink' => $searchLink
             ]) ?>
 
         <?php } ?>
@@ -81,15 +83,15 @@
 
     <h1 class="text-2xl font-bold text-center mb-8">Delete <?php echo $title ?></h1>
 
-     <form action="<?= $linkPostDelete ?>" method="POST" class="mx-auto my-3 w-5/6">
+    <form action="<?= $linkPostDelete ?>" method="POST" class="mx-auto my-3 w-5/6">
 
 
-            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                'placeholder' => 'Search ' . $title,
-                'data' => $selectedOptionsCurrent,
-                'selectedId' => $inputFormId,
-                'selectedName' => $inputFormName . '_delete'
-            ]) ?>
+        <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+            'placeholder' => 'Search ' . $title,
+            'selectedId' => $inputFormId,
+            'selectedName' => $inputFormName . '_delete',
+            'searchLink' => $searchLink
+        ]) ?>
 
         <button type="submit" class="mt-2 w-full main-btn">Delete <?php echo $title ?></button>
     </form>

@@ -10,4 +10,6 @@ class AutocompleteSearchCell extends Cell
     public $selectedId;
     public $selectedName;
     public $placeholder ='none';
+
+    public $searchLink;
 }

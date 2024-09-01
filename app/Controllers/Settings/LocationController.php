@@ -35,6 +35,13 @@ class LocationController extends BaseController
             view("template/footer");
     }
 
+    public function addLocation()
+    {
+        return view("template/header") .
+            view('settings/edit-location') .
+            view("template/footer");
+    }
+
     public function addCity()
     {
 

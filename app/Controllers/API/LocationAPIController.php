@@ -28,4 +28,58 @@ class LocationAPIController extends BaseController
 
         return $this->response->setJSON($city);
     }
+
+    public function getCities()
+    {
+        $search = esc($this->request->getGet('search'));
+
+        $cityModel = new CityModel();
+
+        $cities = $cityModel->select('cities.city_id as id, cities.city_name as name')
+            ->like('cities.city_name', $search)
+            ->findAll();
+
+        return $this->response->setJSON($cities);
+    }
+
+    public function getSubregions()
+    {
+        $search = esc($this->request->getGet('search'));
+
+        $subregion = new \App\Models\Settings\Location\SubregionModel();
+
+        $subregions = $subregion->select('subregions.subregion_id as id, subregions.subregion_name as name')
+            ->like('subregions.subregion_name', $search)
+            ->findAll();
+
+        return $this->response->setJSON($subregions);
+    }
+
+    public function getRegions()
+    {
+        $search = esc($this->request->getGet('search'));
+        
+        $region = new \App\Models\Settings\Location\RegionModel();
+
+        $regions = $region->select('regions.region_id as id, regions.region_name as name')
+            ->like('regions.region_name', $search)
+            ->findAll();
+        
+
+        return $this->response->setJSON($regions);
+    }
+
+    public function getCountries()
+    {
+        $search = esc($this->request->getGet('search'));
+        $country = new \App\Models\Settings\Location\CountryModel();
+
+        $countries = $country->select('countries.country_id as id, countries.country_name as name')
+            ->like('countries.country_name', $search)
+            ->findAll();
+
+        return $this->response->setJSON($countries);
+    }
+
+
 }

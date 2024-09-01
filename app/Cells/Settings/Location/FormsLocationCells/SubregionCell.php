@@ -23,5 +23,6 @@ class SubregionCell extends LocationTemplateFormCell
 
     protected string $view = APPPATH . "Cells/Settings/Location/location_template_form.php";
 
-
+    public $searchParentLink = "/api/locations/get-regions";
+    public $searchLink = "/api/locations/get-subregions";
 }
