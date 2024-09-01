@@ -90,7 +90,7 @@
                             'placeholder' => 'Search Payment Plan',
                             'data' => $paymentPlans,
                             'selectedId' => "payment_plan_id",
-                            'selectedName' => 'Payment Plan'
+                            'selectedName' => 'PaymentPlan'
                         ]) ?>
                     </div>
                 </div>
