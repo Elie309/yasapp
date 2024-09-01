@@ -36,8 +36,25 @@ class AuthFilter implements FilterInterface
                 return redirect("HomeController::index");
             }
 
-            $allowedRoles = ["admin", "manager"];
+
+            if (str_contains($currentUri, "employee") && !in_array($role, ["admin"])) {
+                return redirect("Settings\SettingsController::index")->with("errors", ["Unauthorized access"]);
+            }
+
+            if(str_contains($currentUri, "locations/add") && !in_array($role, ["admin", "manager"])){
+                return redirect("Settings\LocationController::index")->with("errors", ["Unauthorized access"]);
+            }
+
+            if(str_contains($currentUri, "payment-plans") && !in_array($role, ["admin"])){
+                return redirect("Settings\SettingsController::index")->with("errors", ["Unauthorized access"]);
+            }
+
+            if(str_contains($currentUri, "currencies") && !in_array($role, ["admin"])){
+                return redirect("Settings\SettingsController::index")->with("errors", ["Unauthorized access"]);
+            }
             
+
+
             
         }else{
 

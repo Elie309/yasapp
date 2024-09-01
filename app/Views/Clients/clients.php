@@ -1,6 +1,6 @@
 <div class="container-main">
     <h2 class="main-title-page">Clients List</h2>
-    <div class="mt-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
+    <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
 
         <?php $tableHeaders = [
             'full_name' => 'Full Name',

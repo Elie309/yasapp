@@ -3,7 +3,7 @@
 
     <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
-    <div class="mt-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
+    <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
 
 
         <div class="flex flex-row justify-end my-2">
@@ -99,7 +99,7 @@
                 'modelIdOnClickRow' => '',
                 'JSFunctionToRunOnClickRow' => 'redirectToWithId("requests", "request_id");',
                 'classOnClickRow' => 'cursor-pointer',
-                // 'actions' => $actions,
+                'exportToExcelLink' => 'requests/export',
                 'isOnClickRowActive' => true,
                 'rowsPerPageActive' => true,
                 'searchParamActive' => true,

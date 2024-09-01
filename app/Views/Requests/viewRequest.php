@@ -15,7 +15,7 @@
         </a>
 
     </div>
-    <div class="mt-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto text-lg">
+    <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto text-lg">
 
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 

@@ -9,7 +9,7 @@
 
     <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
-    <div class="mt-8 bg-white p-10 shadow-md rounded-md w-full overflow-auto">
+    <div class="my-8 bg-white p-10 shadow-md rounded-md w-full overflow-auto">
         <?php $tableHeaders = [ // Corrected variable name
             'country_name' => 'Country Name',
             'region_name' => 'Region Name',
@@ -25,7 +25,7 @@
                 'tableData' => $data_location,
                 'addButtonModelId' => '',
                 'AddButtonName' => 'Add Location',
-                'addButtonRedirectLink' => 'location/add',
+                'addButtonRedirectLink' => 'locations/add',
                 'isOnClickRowActive' => false,
                 'modelIdOnClickRow' => '',
                 'addButtonModelAdditionalFn' => '',
