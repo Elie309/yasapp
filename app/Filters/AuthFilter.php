@@ -38,9 +38,6 @@ class AuthFilter implements FilterInterface
 
             $allowedRoles = ["admin", "manager"];
             
-            if (str_contains($currentUri, "settings") && !in_array($role, $allowedRoles)) {
-                return redirect("HomeController::index");
-            }
             
         }else{
 

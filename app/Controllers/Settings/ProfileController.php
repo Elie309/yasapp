@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controllers\Profile;
+namespace App\Controllers\Settings;
 
 use App\Controllers\BaseController;
-use App\Models\Settings\EmployeeModel; // Add this line to import the EmployeeModel class
+use App\Models\Settings\EmployeeModel;
 
 class ProfileController extends BaseController
 {
@@ -17,7 +17,7 @@ class ProfileController extends BaseController
         $employee = $employeeModel->where('employee_name', $session->get('name'))->where('employee_status', 'active')->first();
 
 
-        return view("template/header", ['role' => session('role')]) . view('profile/profile', ['employee' => $employee]) . view("template/footer");
+        return view("template/header", ['role' => session('role')]) . view('Settings/profile', ['employee' => $employee]) . view("template/footer");
     }
 
 
@@ -25,16 +25,19 @@ class ProfileController extends BaseController
     {
         $session = service('session');
 
+        $employee_id = $session->get('id');
+
         $employeeModel = new EmployeeModel();
 
         $employeeData = [
-            'employee_id' => $this->request->getPost('employee_id'),
             'employee_name' => $this->request->getPost('employee_name'),
             'employee_email' => $this->request->getPost('employee_email'),
             'employee_phone' => $this->request->getPost('employee_phone'),
             'employee_address' => $this->request->getPost('employee_address'),
             'employee_birthday' => $this->request->getPost('employee_birthday'),
         ];
+
+        $employeeData['employee_id'] = $employee_id;
 
         // Handler for password
         $employee_password = $this->request->getPost('employee_password');
@@ -70,12 +73,12 @@ class ProfileController extends BaseController
                 if (isset($employeeData['employee_name'])) {
                     $session->set('name', $employeeData['employee_name']);
                 }
-                return redirect()->to('/profile')->with('success', 'Employee updated successfully');
+                return redirect()->to('settings/profile')->with('success', 'Employee updated successfully');
             } else {
-                return redirect()->to('/profile')->with('errors', $employeeModel->errors());
+                return redirect()->to('settings/profile')->with('errors', $employeeModel->errors());
             }
         }
 
-        return redirect()->to('/profile')->with('errors', 'Employee ID not found');
+        return redirect()->to('settings/profile')->with('errors', 'Employee ID not found');
     }
 }

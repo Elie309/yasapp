@@ -1,6 +1,10 @@
-<div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+<div class="w-full flex flex-row flex-wrap justify-center">
     <?php foreach ($settings as $setting) : ?>
-        <a href="<?= $setting['url'] ?>" class="block bg-white rounded-lg r shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
+
+        <?php if (isset($setting['role']) && !in_array($this->getRole(), $setting['role'])) {
+            continue;
+        } ?>
+        <a href="<?= $setting['url'] ?>" class="block mx-4 my-2 min-w-80 max-w-80 bg-white rounded-lg r shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
             <img src="<?= $setting['img'] ?>" alt="<?= $setting['title'] ?> Settings" 
                 class="w-full h-32 object-contain shadow-sm ">
             <div class="p-4 pt-2">

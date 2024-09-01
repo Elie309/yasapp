@@ -69,12 +69,15 @@ class EmployeesController extends BaseController
             if($employeeModel->update($employeeData['employee_id'], $employeeData)){
 
                 if($employeeData['employee_id'] == $currentEmployee->employee_id ){
-                    $newData = [
-                        'name' => $currentEmployee->employee_name,
-                        'role' => $currentEmployee->employee_role,
-                        'id' => $currentEmployee->employee_id
-                    ];
-                    $session->set($newData);
+
+
+                    if(isset($employeeData['employee_name'])){
+                        $session->set('name', $employeeData['employee_name']);
+                    } 
+                    
+                    if(isset($employeeData['employee_role'])){
+                        $session->set('role', $employeeData['employee_role']);
+                    }
                 }
 
                 return redirect()->to('/settings/employees')->with('success', 'Employee updated successfully');
