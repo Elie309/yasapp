@@ -1,7 +1,12 @@
 -> CACHE LOCATION ANSWERS LATER and TABLE
 -> Update location CRUD 
--> Update client edit and save to one file and remove it from cell
--> Replace the model with the pop over feature
 -> api download excel sheets for all requests and all users etc...
 -> modify the entity and model to fill and validate separately VERY IMPORTANT
 -> add listing and requests for client
+
+
+
+DONE:
+
+-> Replace the model with the pop over feature
+-> Update client edit and save to one file and remove it from cell
