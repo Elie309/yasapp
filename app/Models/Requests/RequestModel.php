@@ -18,6 +18,8 @@ class RequestModel extends Model
         'payment_plan_id',
         'currency_id',
         'employee_id',
+        'request_visibility',
+        'request_location',
         'request_budget',
         'request_state',
         'request_priority',
@@ -56,7 +58,9 @@ class RequestModel extends Model
         'payment_plan_id' => 'required|integer',
         'currency_id' => 'required|integer',
         'employee_id' => 'required|integer',
-        'request_budget' => 'required|decimal',
+        'request_visibility' => 'required|in_list[public,private]',
+        'request_location' => 'permit_empty|string',
+        'request_budget' => 'required|integer',
         'request_state' => 'required|in_list[pending,fulfilled,rejected,cancelled]',
         'request_priority' => 'required|in_list[low,medium,high]',
         'request_type' => 'required|in_list[normal,urgent]',
@@ -85,9 +89,16 @@ class RequestModel extends Model
             'required' => 'Employee is required',
             'integer' => 'Employee is invalid'
         ],
+        'request_visibility' => [
+            'required' => 'Request Visibility is required',
+            'in_list' => 'Request Visibility must be one of: public, private'
+        ],
+        'request_location' => [
+            'string' => 'Request Location must be a string'
+        ],
         'request_budget' => [
             'required' => 'Request Budget is required',
-            'decimal' => 'Request Budget must be a decimal'
+            'integer' => 'Request Budget must be a integer'
         ],
         'request_state' => [
             'required' => 'Request State is required',

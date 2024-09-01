@@ -48,6 +48,14 @@ class RequestEntity extends Entity
             $errors[] = 'Employee is invalid';
         }
 
+        if (empty($this->request_visibility) || !is_string($this->request_visibility)) {
+            $errors[] = 'Request visibility is invalid';
+        }
+
+        if(!is_string($this->request_location)) {
+            $errors[] = 'Request location is invalid';
+        }
+
         if (empty($this->request_budget) || !is_float($this->request_budget)) {
             $errors[] = 'Request budget is invalid';
         }

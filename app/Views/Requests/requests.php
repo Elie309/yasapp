@@ -1,5 +1,8 @@
 <div class="container-main">
     <h2 class="main-title-page">Request</h2>
+
+    <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
+
     <div class="mt-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
 
 
@@ -54,6 +57,17 @@
                         value="<?= isset($_GET['endDate']) ? $_GET['endDate'] : '' ?>"
                         class="secondary-input">
                 </div>
+                <div class="flex flex-row ml-4">
+                  <!-- Request Visiblity -->
+                    <label for="request_visibility" class="main-label mr-2">Request Visibility:</label>
+                    <select name="request_visibility" id="request_visibility" class="secondary-input">
+                        <option value="" <?= isset($_GET['requestVisibility']) ? '' : 'selected' ?>>All</option>
+                        <?php foreach ($requestVisibilities as $requestVisibility): ?>
+                            <option value="<?= $requestVisibility ?>"
+                                <?= isset($_GET['requestVisibility']) && $_GET['requestVisibility'] === $requestVisibility ? 'selected' : '' ?>><?= $requestVisibility ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -61,6 +75,8 @@
             'client_name' => 'Client',
             'city_name' => 'City',
             'payment_plan_name' => 'Payment Plan',
+            'employee_name' => 'Employee',
+            'request_visibility' => 'Visibility',
             'request_fees' => 'Budget',
             'request_state' => 'State',
             'request_priority' => 'Priority',
@@ -114,6 +130,8 @@
         const requestPriority = document.getElementById('request_priority');
         const startDate = document.getElementById('start_date');
         const endDate = document.getElementById('end_date');
+        const requestVisibility = document.getElementById('request_visibility');
+
 
         requestType.addEventListener('change', function() {
             updateURLParameter('requestType', requestType.value);
@@ -133,6 +151,10 @@
 
         endDate.addEventListener('change', function() {
             updateURLParameter('endDate', endDate.value);
+        });
+
+        requestVisibility.addEventListener('change', function() {
+            updateURLParameter('requestVisibility', requestVisibility.value);
         });
     });
 

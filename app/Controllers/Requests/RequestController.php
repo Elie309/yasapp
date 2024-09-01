@@ -11,6 +11,12 @@ use App\Models\Settings\PaymentPlansModel;
 
 class RequestController extends BaseController
 {
+
+    private $requestTypes = ['normal', 'urgent'];
+    private $requestStates = ['pending', 'fulfilled', 'rejected', 'cancelled'];
+    private $requestPriorities = ['low', 'medium', 'high'];
+    private $requestVisibilities = ['public', 'private'];
+
     public function index()
     {
         $session = service('session');
@@ -34,6 +40,8 @@ class RequestController extends BaseController
 
         $endDateParam = esc($this->request->getVar('endDate'));
 
+        $requestVisibilityParam = esc($this->request->getVar('requestVisibility'));
+
         $param = [
             'city_name' => 'cities.city_name',
             'client_name' => 'clients.client_firstname',
@@ -45,19 +53,39 @@ class RequestController extends BaseController
 
         $requestModel = new RequestModel();
 
-        $request = $requestModel->select('requests.request_id, requests.client_id, CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, requests.city_id, cities.city_name, requests.payment_plan_id, paymentplans.payment_plan_name, requests.currency_id, CONCAT(requests.request_budget, " ", currencies.currency_symbol) AS request_fees, requests.employee_id, employees.employee_name, requests.request_state, requests.request_priority, requests.request_type, requests.comments, requests.created_at, requests.updated_at')
+        $request = $requestModel->select('requests.*,
+                    CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
+                    cities.city_name, 
+                    paymentplans.payment_plan_name, 
+                    CONCAT(FORMAT(requests.request_budget, 0), " ", currencies.currency_symbol) AS request_fees,
+                    employees.employee_name
+                    ')
             ->join('clients', 'requests.client_id = clients.client_id')
             ->join('cities', 'requests.city_id = cities.city_id')
             ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
-            ->where('requests.employee_id', $employee_id);
+            ->groupStart()
+            ->where('requests.employee_id', $employee_id)
+            ->orWhere('requests.request_visibility', 'public')
+            ->groupEnd()
+            ->groupBy('requests.request_id');
+
 
         if (!empty($search) && !empty($searchParam) && isset($param[$searchParam])) {
 
             if ($searchParam === 'client_name') {
                 $request = $request->like('clients.client_firstname', $search)
                     ->orLike('clients.client_lastname', $search);
+            } else if ($searchParam === 'request_budget') {
+                $search = str_replace(',', '', $search);
+                $search = str_replace(' ', '', $search);
+
+                if (!is_numeric($search)) {
+                    return redirect()->back()->withInput()->with('errors', ['Invalid search value']);
+                }
+
+                $request = $request->where('requests.request_budget >=', $search);
             } else {
                 $request->like($param[$searchParam], $search);
             }
@@ -83,23 +111,23 @@ class RequestController extends BaseController
             $request = $request->where('requests.created_at <=', $endDateParam);
         }
 
+        if (!empty($requestVisibilityParam)) {
+            $request = $request->where('requests.request_visibility', $requestVisibilityParam);
+        }
+
 
         $request = $request->paginate($rowsPerPage);
 
         $pager = $requestModel->pager;
 
-        $requestTypes = ['normal', 'urgent'];
-        $requestStates = ['pending', 'fulfilled', 'rejected', 'cancelled'];
-        $requestPriorities = ['low', 'medium', 'high'];
-
-
         return view('template/header', ['role' => $role])
             . view('requests/requests', [
                 'employee_id' => $employee_id,
                 'requests' => $request,
-                'requestTypes' => $requestTypes,
-                'requestStates' => $requestStates,
-                'requestPriorities' => $requestPriorities,
+                'requestTypes' => $this->requestTypes,
+                'requestStates' => $this->requestStates,
+                'requestPriorities' => $this->requestPriorities,
+                'requestVisibilities' => $this->requestVisibilities,
                 'pager' => $pager
             ])
             . view('template/footer');
@@ -134,7 +162,11 @@ class RequestController extends BaseController
                 'employee_id' => $employee_id,
                 'employee_name' => $name,
                 'currencies' => $currencies,
-                'paymentPlans' => $paymentPlans
+                'paymentPlans' => $paymentPlans,
+                'requestTypes' => $this->requestTypes,
+                'requestStates' => $this->requestStates,
+                'requestPriorities' => $this->requestPriorities,
+                'requestVisibilities' => $this->requestVisibilities,
             ])
             . view('template/footer');
     }
@@ -150,7 +182,6 @@ class RequestController extends BaseController
         $requestEntity = new RequestEntity();
 
         try {
-
 
             $requestEntity->fill($this->request->getPost());
             $requestEntity->employee_id = $employee_id;
@@ -182,19 +213,17 @@ class RequestController extends BaseController
         $requestModel = new RequestModel();
 
         if (empty($id) || empty($employee_id)) {
-            return redirect()->back();
+            return redirect()->back()->with('errors', ['Invalid request']);
         }
 
         $request = $requestModel->select(
-            'requests.request_id, requests.client_id, 
+            'requests.*,  clients.*,
             CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
-            clients.client_email,
-            requests.city_id, cities.city_name, requests.payment_plan_id, 
-            paymentplans.payment_plan_name, requests.currency_id, 
+            cities.city_name,
+            paymentplans.payment_plan_name,
             CONCAT(requests.request_budget, " ", currencies.currency_symbol) AS request_fees,
-            requests.employee_id, employees.employee_name, requests.request_state, 
-            requests.request_priority, requests.request_type, requests.comments, 
-            requests.created_at, requests.updated_at, 
+            employees.employee_id,
+            employees.employee_name,
             GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers'
         )
             ->join('clients', 'requests.client_id = clients.client_id')
@@ -204,16 +233,21 @@ class RequestController extends BaseController
             ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
-            ->groupStart()
-            ->where('requests.request_id', $id)
-            ->where('requests.employee_id', $employee_id)
-            ->groupEnd()
-            ->groupBy('requests.request_id')
-            ->first();
+            ->where('requests.request_id', $id);
 
+        $request = $request->groupBy('requests.request_id')->first();
         if (!$request) {
-            return redirect()->back();
+            return redirect()->back()->with('errors', ['You are not allowed to view this request']);
         }
+
+        // Check if the visibility is public
+        if ($request->request_visibility !== 'public') {
+            if($request->employee_id !== $employee_id){
+                //Redirect to requests page
+                return redirect()->to('/requests')->with('errors', ['You are not allowed to view this request']);
+            }
+        }
+
 
         return view('template/header', ['role' => $role])
             . view('requests/viewRequest', [
@@ -244,6 +278,7 @@ class RequestController extends BaseController
             GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as client_phone,
             paymentplans.payment_plan_name,
             currencies.currency_symbol,
+            employees.employee_id,
             employees.employee_name
             '
         )
@@ -259,10 +294,10 @@ class RequestController extends BaseController
             ->groupEnd()
             ->groupBy('requests.request_id')
             ->first();
-        
+
 
         if (!$request) {
-            return redirect()->back();
+            return redirect()->back()->with('errors', ['You are not allowed to edit this request']);
         }
 
         //Get the country, region and subregion to the city id
@@ -298,20 +333,23 @@ class RequestController extends BaseController
                 'city' => $city,
                 'request' => $request,
                 'currencies' => $currencies,
-                'paymentPlans' => $paymentPlans
+                'paymentPlans' => $paymentPlans,
+                'requestTypes' => $this->requestTypes,
+                'requestStates' => $this->requestStates,
+                'requestPriorities' => $this->requestPriorities,
+                'requestVisibilities' => $this->requestVisibilities,
             ])
             . view('template/footer');
     }
 
 
-    public function updateRequest()
+    public function updateRequest($id)
     {
 
         $requestModel = new RequestModel();
         $requestEntity = new RequestEntity();
 
         try {
-
             $requestEntity->fill($this->request->getPost());
 
             $isValid = $requestEntity->isValid();
@@ -319,7 +357,7 @@ class RequestController extends BaseController
                 return redirect()->back()->withInput()->with('errors', [$isValid->getMessage()]);
             }
 
-            if ($requestModel->update($requestEntity->request_id, $requestEntity)) {
+            if ($requestModel->update($id, $requestEntity)) {
                 return redirect()->to('/requests');
             } else {
                 return redirect()->back()->withInput()->with('errors', $requestModel->errors());

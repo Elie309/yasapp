@@ -109,7 +109,9 @@ CREATE TABLE IF NOT EXISTS Requests (
 
     employee_id INT UNSIGNED NOT NULL,
 
-    request_budget DECIMAL(10, 2) NOT NULL,
+    request_location TEXT,
+    request_budget INT NOT NULL,
+    request_visibility ENUM('public', 'private') NOT NULL DEFAULT 'public',
     request_state ENUM('pending', 'fulfilled', 'rejected', 'cancelled') NOT NULL DEFAULT 'pending',
     request_priority ENUM('low', 'medium', 'high') NOT NULL DEFAULT 'medium',
     request_type ENUM('normal', 'urgent') NOT NULL DEFAULT 'normal',

@@ -27,6 +27,8 @@ class RequestSeeder extends Seeder
                 'payment_plan_id' => $faker->randomElement($paymentPlanIds)['payment_plan_id'],
                 'currency_id' => $faker->randomElement($currencyIds)['currency_id'],
                 'employee_id' => $faker->randomElement($employeeIds)['employee_id'],
+                'request_location' => $faker->address,
+                'request_visibility' => $faker->randomElement(['public', 'private']),
                 'request_budget' => $faker->randomFloat(2, 10000, 1000000),
                 'request_state' => $faker->randomElement(['pending', 'fulfilled', 'rejected', 'cancelled']),
                 'request_priority' => $faker->randomElement(['low', 'medium', 'high']),

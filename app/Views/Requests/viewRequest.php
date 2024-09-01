@@ -38,12 +38,19 @@
                     <td><?= $request->employee_name ?></td>
                 </tr>
                 <tr>
+                    <td>Request Visibility:</td>
+                    <td><?= $request->request_visibility ?></td>
+                <tr>
                     <td>Payment Plan:</td>
                     <td><?= $request->payment_plan_name ?></td>
                 </tr>
                 <tr>
                     <td>City:</td>
                     <td><?= $request->city_name ?></td>
+                </tr>
+                <tr>
+                    <td>Location Details</td>
+                    <td><?= $request->request_location ?></td>
                 </tr>
                 <tr>
                     <td>Request Fees:</td>

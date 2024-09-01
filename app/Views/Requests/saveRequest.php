@@ -63,8 +63,15 @@
                             <input type="text" class="main-input-readonly mx-2" placeholder="Subregion" readonly name="subregion" id="subregion" required>
                             <input type="text" class="main-input-readonly mx-2" placeholder="City" readonly name="city" id="city" required>
                         </div>
+
                         <div class="w-full my-2 flex flex-row justify-center">
                             <button type="button" popovertarget="location-popover" onclick="document.getElementById('search_Location').focus()" class="secondary-btn mx-auto w-5/12">Select Location</button>
+                        </div>
+
+                        <div>
+                            <label class="main-label" for="request_location">Location Details:</label>
+                            <textarea class="main-input mx-2" placeholder="Location address"
+                                name="request_location" id="request_location" required></textarea>
                         </div>
 
                     </div>
@@ -99,6 +106,19 @@
                         <input type="hidden" name="employee_id" id="employee_id" value="<?= $request->employee_id ?>" required><br>
                         <input type="text" class="main-input-readonly" readonly name="employee_name" id="employee_name" value="<?= $request->employee_name ?>" required><br>
                     <?php endif; ?>
+
+                    <div>
+                        <label class="main-label" for="request_visibility">Request Visibility:</label>
+                        <select class="secondary-input" name="request_visibility" id="request_visibility" required>
+                            <?php foreach ($requestVisibilities as $requestVisibility) : ?>
+                                <?php if ($requestVisibility == 'public') : ?>
+                                    <option value="<?= $requestVisibility ?>" selected><?= ucfirst($requestVisibility) ?></option>
+                                <?php else : ?>
+                                    <option value="<?= $requestVisibility ?>"><?= ucfirst($requestVisibility) ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select><br>
+                    </div>
                 </div>
 
                 <hr class="mx-2" />
@@ -132,25 +152,37 @@
                     <div class="my-4">
                         <label class="main-label">Priority</label>
                         <select class="secondary-input" name="request_priority" id="request_priority" required>
-                            <option value="low">Low</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="high">High</option>
+                            <?php foreach ($requestPriorities as $requestPriority) : ?>
+                                <?php if ($requestPriority == 'low') : ?>
+                                    <option value="<?= $requestPriority ?>" selected><?= ucfirst($requestPriority) ?></option>
+                                <?php else : ?>
+                                    <option value="<?= $requestPriority ?>"><?= ucfirst($requestPriority) ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </select><br>
                     </div>
                     <div class="my-4">
                         <label class="main-label">Type</label>
                         <select class="secondary-input" name="request_type" id="request_type" required>
-                            <option value="normal" selected>Normal</option>
-                            <option value="urgent">Urgent</option>
+                            <?php foreach ($requestTypes as $requestType) : ?>
+                                <?php if ($requestType == 'normal') : ?>
+                                    <option value="<?= $requestType ?>" selected><?= ucfirst($requestType) ?></option>
+                                <?php else : ?>
+                                    <option value="<?= $requestType ?>"><?= ucfirst($requestType) ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </select><br>
                     </div>
                     <div class="my-4">
                         <label class="main-label">Status</label>
                         <select class="secondary-input" name="request_state" id="request_state" required>
-                            <option value="pending" selected>Pending</option>
-                            <option value="fulfilled">Fulfilled</option>
-                            <option value="rejected">Rejected</option>
-                            <option value="cancelled">Cancelled</option>
+                            <?php foreach ($requestStates as $requestState) : ?>
+                                <?php if ($requestState == 'pending') : ?>
+                                    <option value="<?= $requestState ?>" selected><?= ucfirst($requestState) ?></option>
+                                <?php else : ?>
+                                    <option value="<?= $requestState ?>"><?= ucfirst($requestState) ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </select><br>
                     </div>
                 </div>
@@ -217,6 +249,7 @@
 
     </div>
 
+    <?php if($method === 'UPDATE_REQUEST') : ?>
     <div popover id="delete-popover" class="popover max-w-md">
         <div class="flex flex-col w-full justify-center">
             <h3 class="secondary-title text-center">Are you sure you want to delete this request?</h3>
@@ -234,6 +267,7 @@
             </div>
         </div>
     </div>
+    <?php endif; ?>
 
     <script>
         <?php
@@ -248,7 +282,7 @@
             echo "populateFields(data);";
         }
 
-        if ($method == 'UPDATE_REQUEST') {
+        if ($method === 'UPDATE_REQUEST') {
             echo "var data = " . json_encode($request) . ";";
             echo "var city = " . json_encode($city) . ";";
             echo "populateFields(data);";
@@ -299,6 +333,10 @@
                 }
             }
 
+            if (data.request_location) {
+                document.getElementById('request_location').value = data.request_location;
+            }
+
 
 
             if (data.payment_plan_id && data.payment_plan_name) {
@@ -318,6 +356,10 @@
 
             if (data.request_priority) {
                 document.getElementById('request_priority').value = data.request_priority;
+            }
+
+            if(data.request_visibility) {
+                document.getElementById('request_visibility').value = data.request_visibility;
             }
 
             if (data.request_state) {
