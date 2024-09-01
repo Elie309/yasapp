@@ -31,6 +31,9 @@ class PowergridCell extends Cell
     public $searchParam;
     
     public $isStyleOnHoverDisabled;
+
+
+    public $exportToExcelLink;
     
 
 }

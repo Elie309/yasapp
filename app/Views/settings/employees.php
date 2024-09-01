@@ -29,10 +29,10 @@
                 'tableId' => 'employee_table',
                 'tableHeaders' => $tableHeaders,
                 'tableData' => $employeeData,
-                'addButtonModelId' => 'EditEmployee',
+                'addButtonModelId' => 'AddEmployee',
                 'AddButtonName' => 'Add Employee',
                 'isOnClickRowActive' => true,
-                'modelIdOnClickRow' => 'EditEmployee',
+                'modelIdOnClickRow' => 'AddEmployee',
                 'addButtonModelAdditionalFn' => 'clearFormDetails();',
                 'JSFunctionToRunOnClickRow' => 'setFormDetails();', //This function is present on the EditEmployee modal
                 'classOnClickRow' => 'cursor-pointer',
@@ -41,8 +41,6 @@
     </div>
 </div>
 
-<?= view_cell('App\Cells\Utils\Modal\ModalCell::render', [
-    'modalId' => 'EditEmployee',
-    'modalTitle' => 'Edit Employee',
-    'modalBody' => view_cell('App\Cells\Settings\Employee\EmployeeFormCell::render')
-]) ?>
+<div popover class="popover max-w-2xl" id="AddEmployee">
+    <?= view_cell('App\Cells\Settings\Employee\EmployeeFormCell::render') ?>
+</div>

@@ -55,7 +55,7 @@
                 'addButtonRedirectLink' => 'clients/add',
                 'AddButtonName' => 'Add Client',
                 'modelIdOnClickRow' => '',
-                'JSFunctionToRunOnClickRow' => 'redirectToWithId("clients", "client_id")',
+                'JSFunctionToRunOnClickRow' => 'redirectToWithId("clients", "client_id");',
                 'classOnClickRow' => 'cursor-pointer',
                 'isOnClickRowActive' => true,
                 'rowsPerPageActive' => true,

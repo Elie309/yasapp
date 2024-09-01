@@ -35,22 +35,29 @@
         </div>
 
         <div class="grid grid-rows-3 w-full px-5 gap-3 sm:mx-0 sm:w-fit sm:flex sm:flex-row sm:justify-end align-middle">
-            <button onclick="printTable()" <?= $emptyTable == true ? 'disabled' : '' ?> class="secondary-btn mx-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
-                </svg>
-            </button>
-            <button id="download-xlsx" <?= $emptyTable == true ? 'disabled' : '' ?> onclick="fnExcelReport()" class="secondary-btn mx-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-            </button>
+
+            <!-- EXCEL BUTTON -->
+            <?php if (!isset($exportToExcelLink)) : ?>
+                <button id="download-xlsx" <?= $emptyTable == true ? 'disabled' : '' ?> onclick="fnExcelReport()" class="secondary-btn mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                    </svg>
+                </button>
+            <?php else : ?>
+                <a href="<?= $exportToExcelLink ?>" class="secondary-btn mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                    </svg>
+                </a>
+            <?php endif; ?>
+
+            <!-- ADD REQUEST BUTTON -->
             <?php if (isset($addButtonRedirectLink)) : ?>
                 <a href="<?= $addButtonRedirectLink ?>" class="secondary-btn mx-auto">
                     <?= $AddButtonName ?>
                 </a>
             <?php else : ?>
-                <button onclick="openModal('<?= $addButtonModelId ?>'); <?= isset($addButtonModelAdditionalFn) ? $addButtonModelAdditionalFn : ''  ?>" class="secondary-btn mx-auto">
+                <button popovertarget="<?= $addButtonModelId ?>" id="addBttnPopover" class="secondary-btn mx-auto">
                     <?= $AddButtonName ?>
                 </button>
             <?php endif; ?>
@@ -159,7 +166,8 @@
                             foreach ($actions as $action) {
                                 echo "<button ";
                                 echo "class='actionsBtn " . ($action['class'] ?? '') . "' ";
-                                echo 'onclick="actionStoreDataOnClickEvent(' . $data . '); ' . $action['functions'] .  ' "';
+                                echo 'popovertarget="' . $action['popovertarget'] . '" ';
+                                echo "data-row-data='" . $data . "' ";
                                 echo ">";
                                 echo isset($action['img']) ? ($action['img']) : ($action['name']);
 
@@ -241,9 +249,12 @@
     }
 </style>
 
+<?php if (!isset($exportToExcelLink)) : ?>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+
+<?php endif; ?>
 <script>
     function removedColumns() {
 
@@ -293,37 +304,48 @@
         }
     }
 
-    function fnExcelReport() {
-        var tab = document.getElementById('<?= $tableId ?>'); // id of table
-        var wb = XLSX.utils.table_to_book(tab, {
-            sheet: "Sheet JS"
-        });
-        var wbout = XLSX.write(wb, {
-            bookType: 'xlsx',
-            bookSST: true,
-            type: 'binary'
-        });
+    <?php if (!isset($exportToExcelLink)) : ?>
 
-        function s2ab(s) {
-            var buf = new ArrayBuffer(s.length);
-            var view = new Uint8Array(buf);
-            for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-            return buf;
+        function fnExcelReport() {
+            var tab = document.getElementById('<?= $tableId ?>'); // id of table
+            var wb = XLSX.utils.table_to_book(tab, {
+                sheet: "Sheet JS"
+            });
+            var wbout = XLSX.write(wb, {
+                bookType: 'xlsx',
+                bookSST: true,
+                type: 'binary'
+            });
+
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            saveAs(new Blob([s2ab(wbout)], {
+                type: "application/octet-stream"
+            }), 'Report.xlsx');
         }
 
-        saveAs(new Blob([s2ab(wbout)], {
-            type: "application/octet-stream"
-        }), 'Report.xlsx');
-    }
+    <?php endif; ?>
 
 
     function actionStoreDataOnClickEvent(data) {
-
         sessionStorage.setItem('tempTableData', JSON.stringify(data));
         setTimeout(() => {
             sessionStorage.removeItem('tempTableData');
         }, 5000);
     }
+
+    <?php if (!isset($addButtonRedirectLink)) : ?>
+
+        document.getElementById('addBttnPopover').addEventListener('click', function() {
+            <?= isset($addButtonModelAdditionalFn) ? $addButtonModelAdditionalFn : '' ?>
+        });
+
+    <?php endif; ?>
 
     <?php if (isset($isOnClickRowActive) && $isOnClickRowActive) : ?>
 
@@ -335,11 +357,9 @@
 
                 <?php
                 if (isset($modelIdOnClickRow) && $modelIdOnClickRow != '') {
-                    echo 'openModal("' . $modelIdOnClickRow . '");';
+                    echo 'showPopover("' . $modelIdOnClickRow . '");';
                 }
-                if (isset($addButtonModelId) && $addButtonModelId != '') {
-                    echo 'openModal("' . $addButtonModelId . '");';
-                }
+
                 ?>
 
                 <?= isset($JSFunctionToRunOnClickRow) ? $JSFunctionToRunOnClickRow : '' ?>
@@ -353,26 +373,6 @@
 
     <?php endif; ?>
 
-
-    function printTable() {
-        var table = document.getElementById("<?= $tableId ?>").outerHTML;
-        var newWindow = window.open('', '', '');
-        newWindow.document.write('<html><head><title>Print Table</title>');
-        newWindow.document.write('<style>');
-        newWindow.document.write('body { font-family: Arial, sans-serif; margin: 20px; }');
-        newWindow.document.write('table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }');
-        newWindow.document.write('th, td { padding: 5px; border: 1px solid #ddd; text-align: left; }');
-        newWindow.document.write('th { background-color: #f2f2f2; font-weight: bold; }');
-        newWindow.document.write('tr:nth-child(even) { background-color: #f9f9f9; }');
-        newWindow.document.write('tr:hover { background-color: #f1f1f1; }');
-        newWindow.document.write('.clickable-row { cursor: pointer; }');
-        newWindow.document.write('</style>');
-        newWindow.document.write('</head><body>');
-        newWindow.document.write(table);
-        newWindow.document.write('</body></html>');
-        newWindow.document.close();
-        newWindow.print();
-    }
 
     <?php if (isset($rowsPerPageActive) && $rowsPerPageActive) : ?>
 
@@ -410,6 +410,28 @@
             <?php endif; ?>
 
         }
+
+    <?php endif; ?>
+
+    <?php if (isset($actions) && count($actions) > 0) : ?>
+
+        document.querySelectorAll('.actionsBtn').forEach(function(btn) {
+            btn.addEventListener('click', function(event) {
+                var data = JSON.parse(event.currentTarget.getAttribute('data-row-data')); // Use event.currentTarget instead of event.target
+                actionStoreDataOnClickEvent(data);
+
+                <?php echo "var actionsDetails =" . json_encode($actions); ?>;
+
+                actionsDetails.forEach(function(action) {
+                    if (action.popovertarget == event.currentTarget.getAttribute('popovertarget')) {
+                        if (action.functions) {
+                            eval(action.functions);
+                        }
+                    }
+                });
+
+            });
+        });
 
     <?php endif; ?>
 
