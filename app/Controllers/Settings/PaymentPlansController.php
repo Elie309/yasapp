@@ -11,12 +11,10 @@ class PaymentPlansController extends BaseController
 
     public function index()
     {
-        $session = service('session');
-
         $paymentPlansModel = new PaymentPlansModel();
         $paymentPlans = $paymentPlansModel->findAll();
 
-        return view("template/header", ['role' => $session->get('role')]) .
+        return view("template/header") .
             view('settings/payment-plans', ['paymentPlans' => $paymentPlans]) .
             view("template/footer");
     }

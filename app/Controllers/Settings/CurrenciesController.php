@@ -10,12 +10,11 @@ class CurrenciesController extends BaseController
 {
     public function index()
     {
-        $session = service('session');
 
         $currenciesModel = new CurrenciesModel();
         $currencies = $currenciesModel->findAll();
 
-        return view("template/header", ['role' => $session->get('role')]) .
+        return view('template/header') .
             view('settings/currencies', ['currencies' => $currencies]) .
             view("template/footer");
     }

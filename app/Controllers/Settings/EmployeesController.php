@@ -10,19 +10,16 @@ class EmployeesController extends BaseController
 
     public function index()
     {
-        $session = service('session');
-
         $employeeModel = new EmployeeModel();
         $employeeData = $employeeModel->findAll();
 
-        return view("template/header", ['role' => $session->get('role')]) .
+        return view("template/header") .
             view('settings/employees', ['employeeData' => $employeeData]) .
             view("template/footer");
     }
 
     public function handleEmployeeForm()
     {
-        $session = service('session');
         $employeeModel = new EmployeeModel();
 
         $employeeData = [
@@ -63,7 +60,7 @@ class EmployeesController extends BaseController
                 unset($employeeData['employee_phone']);
             }
 
-            $currentEmployee = $employeeModel->where('employee_name', $session->get('name'))->where('employee_status', 'active')->first();
+            $currentEmployee = $employeeModel->where('employee_name', $this->session->get('name'))->where('employee_status', 'active')->first();
 
             // Update the employee
             if($employeeModel->update($employeeData['employee_id'], $employeeData)){
@@ -72,11 +69,11 @@ class EmployeesController extends BaseController
 
 
                     if(isset($employeeData['employee_name'])){
-                        $session->set('name', $employeeData['employee_name']);
+                        $this->session->set('name', $employeeData['employee_name']);
                     } 
                     
                     if(isset($employeeData['employee_role'])){
-                        $session->set('role', $employeeData['employee_role']);
+                        $this->session->set('role', $employeeData['employee_role']);
                     }
                 }
 

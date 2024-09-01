@@ -9,9 +9,8 @@ class ClientAPIController extends BaseController
 {
     public function search()
     {
-        $session = service('session');
 
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
         $clientModel = new ClientModel();
 

@@ -16,7 +16,6 @@ class LocationController extends BaseController
 
     public function index()
     {
-        $session = service('session');
 
         // Load model
         $countryModel = new CountryModel();
@@ -31,14 +30,13 @@ class LocationController extends BaseController
             ->findAll();
 
 
-        return view("template/header", ['role' => $session->get('role')]) .
+        return view("template/header") .
             view('settings/location', ['data_location' => $countries]) .
             view("template/footer");
     }
 
     public function addCity()
     {
-        $session = session();
 
         $cityModel = new CityModel();
 

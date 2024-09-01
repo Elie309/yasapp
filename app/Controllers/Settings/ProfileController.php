@@ -9,23 +9,21 @@ class ProfileController extends BaseController
 {
     public function index()
     {
-        $session = service('session');
 
         $employeeModel = new EmployeeModel();
 
 
-        $employee = $employeeModel->where('employee_name', $session->get('name'))->where('employee_status', 'active')->first();
+        $employee = $employeeModel->where('employee_name', $this->session->get('name'))->where('employee_status', 'active')->first();
 
 
-        return view("template/header", ['role' => session('role')]) . view('Settings/profile', ['employee' => $employee]) . view("template/footer");
+        return view("template/header") . view('Settings/profile', ['employee' => $employee]) . view("template/footer");
     }
 
 
     public function updateProfile()
     {
-        $session = service('session');
 
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
         $employeeModel = new EmployeeModel();
 
@@ -71,7 +69,7 @@ class ProfileController extends BaseController
             // Update the employee
             if ($employeeModel->update($employeeData['employee_id'], $employeeData)) {
                 if (isset($employeeData['employee_name'])) {
-                    $session->set('name', $employeeData['employee_name']);
+                    $this->session->set('name', $employeeData['employee_name']);
                 }
                 return redirect()->to('settings/profile')->with('success', 'Employee updated successfully');
             } else {

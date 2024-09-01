@@ -29,7 +29,6 @@ class AuthController extends BaseController
          $employee = $employeeModel->where('employee_name', $name)->where('employee_status', 'active')->first();
          
         
-         $session = service('session');
 
          if ($employee && $employee->verifyPassword($password)) {
 
@@ -39,13 +38,13 @@ class AuthController extends BaseController
                 'id' => $employee->employee_id
              ];
     
-             $session->set($newData);
+             $this->session->set($newData);
 
              return redirect()->to("/"); 
 
          } else {
 
-            $session->setFlashdata('error', 'Invalid username or password');
+            $this->session->setFlashdata('error', 'Invalid username or password');
 
             return redirect()->back();
          }
@@ -53,10 +52,9 @@ class AuthController extends BaseController
     }
 
     public function logout(){
-        $session = service('session');
 
         $array_items = ['name', 'role'];
-        $session->remove($array_items);
+        $this->session->remove($array_items);
 
         return redirect()->to("login");
     }

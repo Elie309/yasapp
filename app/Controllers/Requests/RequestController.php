@@ -19,10 +19,8 @@ class RequestController extends BaseController
 
     public function index()
     {
-        $session = service('session');
 
-        $role = $session->get('role');
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
         $rowsPerPage = esc($this->request->getVar('rowsPerPage')) ?? 10;
 
@@ -120,7 +118,7 @@ class RequestController extends BaseController
 
         $pager = $requestModel->pager;
 
-        return view('template/header', ['role' => $role])
+        return view('template/header') 
             . view('requests/requests', [
                 'employee_id' => $employee_id,
                 'requests' => $request,
@@ -135,11 +133,10 @@ class RequestController extends BaseController
 
     public function add()
     {
-        $session = service('session');
 
-        $role = $session->get('role');
-        $employee_id = $session->get('id');
-        $name = $session->get('name');
+
+        $employee_id = $this->session->get('id');
+        $name = $this->session->get('name');
 
         $currencyModel = new CurrenciesModel();
         $currencies = $currencyModel->findAll();
@@ -156,7 +153,7 @@ class RequestController extends BaseController
         }, $paymentPlans);
 
 
-        return view('template/header', ['role' => $role])
+        return view('template/header')
             . view('requests/saveRequest', [
                 'method' => 'NEW_REQUEST',
                 'employee_id' => $employee_id,
@@ -174,9 +171,8 @@ class RequestController extends BaseController
     public function addRequest()
     {
 
-        $session = service('session');
 
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
         $requestModel = new RequestModel();
         $requestEntity = new RequestEntity();
@@ -205,10 +201,8 @@ class RequestController extends BaseController
 
     public function view($id)
     {
-        $session = service('session');
 
-        $role = $session->get('role');
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
         $requestModel = new RequestModel();
 
@@ -249,7 +243,7 @@ class RequestController extends BaseController
         }
 
 
-        return view('template/header', ['role' => $role])
+        return view('template/header') 
             . view('requests/viewRequest', [
                 'employee_id' => $employee_id,
                 'request' => $request,
@@ -263,11 +257,9 @@ class RequestController extends BaseController
     public function edit($id)
     {
 
-        $session = service('session');
 
-        $role = $session->get('role');
-        $employee_id = $session->get('id');
-        $name = $session->get('name');
+        $employee_id = $this->session->get('id');
+        $name = $this->session->get('name');
 
         $id = esc($id);
 
@@ -325,7 +317,7 @@ class RequestController extends BaseController
         }, $paymentPlans);
 
 
-        return view('template/header', ['role' => $role])
+        return view('template/header') 
             . view('requests/saveRequest', [
                 'method' => 'UPDATE_REQUEST',
                 'employee_id' => $employee_id,

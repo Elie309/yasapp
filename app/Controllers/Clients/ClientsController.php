@@ -11,10 +11,8 @@ class ClientsController extends BaseController
 {
     public function index()
     {
-        $session = service('session');
 
-        $role = $session->get('role');
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
         $clientModel = new ClientModel();
 
@@ -66,30 +64,26 @@ class ClientsController extends BaseController
         $pager = $clientModel->pager;
 
 
-        return view('template/header', ['role' => $role]) . view('Clients/clients', ['employee_id' => $employee_id, 'clients' => $clients, 'pager' => $pager]) . view('template/footer');
+        return view('template/header') . view('Clients/clients', ['employee_id' => $employee_id, 'clients' => $clients, 'pager' => $pager]) . view('template/footer');
     }
 
 
 
     public function add()
     {
-        $session = service('session');
-
-        $role = $session->get('role');
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
         // TODO: Change the way we access the countries
         $countriesModel = new CountryModel();
         $countries = $countriesModel->findAll();
 
-        return view('template/header', ['role' => $role]) . view('Clients/addClient', ['employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
+         return view('template/header')  . view('Clients/addClient', ['employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
     }
 
     public function addClient()
     {
-        $session = service('session');
 
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
         $firstname = $this->request->getPost('client_firstname');
         $lastname = $this->request->getPost('client_lastname');
@@ -144,10 +138,9 @@ class ClientsController extends BaseController
     public function edit($id)
     {
 
-        $session = service('session');
 
-        $role = $session->get('role');
-        $employee_id = $session->get('id');
+
+        $employee_id = $this->session->get('id');
 
         $clientModel = new ClientModel();
         $phoneModel = new PhoneModel();
@@ -168,15 +161,15 @@ class ClientsController extends BaseController
         $phones = $phoneModel->where('client_id', $id)->findAll();
         $countries = $countriesModel->findAll();
 
-        return view('template/header', ['role' => $role]) . view('Clients/editClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
+        return view('template/header')  . view('Clients/editClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
     }
 
     public function updateClient($id)
     {
 
-        $session = service('session');
+ 
 
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
         $firstname = $this->request->getPost('client_firstname');
         $lastname = $this->request->getPost('client_lastname');
@@ -234,10 +227,8 @@ class ClientsController extends BaseController
 
     public function view($id)
     {
-        $session = service('session');
 
-        $role = $session->get('role');
-        $employee_id = $session->get('id');
+        $employee_id = $this->session->get('id');
 
 
         $clientModel = new ClientModel();
@@ -252,6 +243,6 @@ class ClientsController extends BaseController
             ->where('phones.client_id', $id)
             ->findAll();
 
-        return view('template/header', ['role' => $role]) . view('Clients/viewClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id]) . view('template/footer');
+            return view('template/header') . view('Clients/viewClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id]) . view('template/footer');
     }
 }
