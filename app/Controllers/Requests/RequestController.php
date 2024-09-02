@@ -273,6 +273,28 @@ class RequestController extends BaseController
         }
     }
 
+
+    public function delete($id)
+    {
+        $requestModel = new RequestModel();
+
+        $request = $requestModel->find($id);
+
+        if(!$request){
+            return redirect()->back()->with('errors', ['Request not found']);
+        }
+
+        if($request->employee_id !== $this->session->get('id')){
+            return redirect()->back()->with('errors', ['You are not allowed to delete this request']);
+        }
+
+        if ($requestModel->delete($id)) {
+            return redirect()->to('/requests')->with('success', 'Request deleted successfully');
+        } else {
+            return redirect()->back()->with('errors', $requestModel->errors());
+        }
+    }
+
     public function export()
     {
 

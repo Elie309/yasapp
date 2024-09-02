@@ -1,10 +1,10 @@
 <div class="container-main">
     <h2 class="main-title-page">Request</h2>
 
-    <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
     <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
 
+        <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
         <div class="flex flex-row justify-end my-2">
             <button class="secondary-btn " onclick='resetURL("requests")'>Clear Filter</button>
@@ -58,7 +58,7 @@
                         class="secondary-input">
                 </div>
                 <div class="flex flex-row ml-4">
-                  <!-- Request Visiblity -->
+                    <!-- Request Visiblity -->
                     <label for="request_visibility" class="main-label mr-2">Request Visibility:</label>
                     <select name="request_visibility" id="request_visibility" class="secondary-input">
                         <option value="" <?= isset($_GET['requestVisibility']) ? '' : 'selected' ?>>All</option>
@@ -157,6 +157,4 @@
             updateURLParameter('requestVisibility', requestVisibility.value);
         });
     });
-
-    
 </script>
