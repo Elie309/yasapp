@@ -116,7 +116,7 @@ class ClientsController extends BaseController
             ->first();
 
         if (!$client) {
-            return redirect()->back();
+            return redirect('clients')->with('errors', ['Not allowed to edit this client']);
         }
 
         $phones = $phoneModel->where('client_id', $id)->findAll();
@@ -152,11 +152,11 @@ class ClientsController extends BaseController
         $client = $clientModel->find($id);
 
         if (!$client) {
-            return redirect()->back();
+            return redirect('clients')->with('errors', ['Client not found']);
         }
 
-        if($client->employee_id != $employee_id || $client->client_visibility != 'public'){
-            return redirect()->back();
+        if($client->employee_id != $employee_id){
+            return redirect('clients')->with('errors', ['Not allowed to edit this client']);
         }
 
         if ($clientModel->update($id, $clientData)) {
@@ -199,6 +199,14 @@ class ClientsController extends BaseController
             ->join('employees', 'employees.employee_id = clients.employee_id')
             ->where('clients.client_id', $id)
             ->first();
+
+        if(!$client){
+            return redirect('clients')->with('errors', ['Client not found']);
+        }
+
+        if($client->employee_id != $employee_id && $client->client_visibility != 'public'){
+            return redirect('clients')->with('errors', ['You are not allowed to view this client']);
+        }
         $phones = $phoneModel->select('phones.*, countries.country_code')
             ->join('countries', 'countries.country_id = phones.country_id')
             ->where('phones.client_id', $id)

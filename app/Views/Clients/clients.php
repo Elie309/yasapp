@@ -1,5 +1,8 @@
 <div class="container-main">
     <h2 class="main-title-page">Clients List</h2>
+
+
+
     <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
 
         <?php $tableHeaders = [
@@ -12,6 +15,9 @@
         ];
 
         ?>
+
+        <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
+
 
         <span class="flex flex-row justify-end">
             <button class="secondary-btn " onclick='resetURL("clients")'>Clear Filter</button>
@@ -76,21 +82,20 @@
 </div>
 
 <script>
-
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const visibilitySelect = document.getElementById('visibility_select');
         const createdAtSelect = document.getElementById('createdAt_select');
         const updatedAtSelect = document.getElementById('updatedAt_select');
 
-        visibilitySelect.addEventListener('change', function () {
+        visibilitySelect.addEventListener('change', function() {
             updateURLParameter('visibility', visibilitySelect.value);
         });
 
-        createdAtSelect.addEventListener('change', function () {
+        createdAtSelect.addEventListener('change', function() {
             updateURLParameter('createdAt', createdAtSelect.value);
         });
 
-        updatedAtSelect.addEventListener('change', function () {
+        updatedAtSelect.addEventListener('change', function() {
             updateURLParameter('updatedAt', updatedAtSelect.value);
         });
 
