@@ -18,47 +18,8 @@ class ClientsController extends BaseController
 
         $rowsPerPage = esc($this->request->getVar('rowsPerPage')) ?? 10;
 
-        $search = esc($this->request->getVar('search'));
-
-        $visibility = esc($this->request->getVar('visibility'));
-
-        $created_at = esc($this->request->getVar('createdAt'));
-
-        $updated_at = esc($this->request->getVar('updatedAt'));
-
-
-        $clients = $clientModel->select('clients.*, CONCAT(clients.client_firstname, " ", clients.client_lastname) as full_name, GROUP_CONCAT(CONCAT(countries.country_code, " " ,phones.phone_number) SEPARATOR ", ") as phone_numbers')
-            ->join('phones', 'phones.client_id = clients.client_id', 'left')
-            ->join('countries', 'countries.country_id = phones.country_id', 'left')
-            ->groupStart()
-            ->where('clients.employee_id', $employee_id)
-            ->orWhere('clients.client_visibility', 'public')
-            ->groupEnd()
-            ->groupBy('clients.client_id');
-
-        if (isset($search) && !empty($search)) {
-            $clients->groupStart()
-                ->like('clients.client_firstname', $search)
-                ->orLike('clients.client_lastname', $search)
-                ->orLike('clients.client_email', $search)
-                ->orLike('phones.phone_number', $search)
-                ->groupEnd();
-        }
-
-        if (isset($visibility) && !empty($visibility)) {
-            $clients->where('clients.client_visibility', $visibility);
-        }
-
-        if (isset($created_at) && !empty($created_at)) {
-            $clients->where('clients.created_at >=', $created_at . ' 00:00:00')
-                ->orderBy('clients.created_at', 'ASC');
-        }
-
-        if (isset($updated_at) && !empty($updated_at)) {
-            $clients->where('clients.updated_at >=', $updated_at . ' 00:00:00')
-                ->orderBy('clients.updated_at', 'ASC');
-        }
-
+        $clients = $this->_applyFillters($clientModel, $employee_id);
+        
         $clients = $clients->paginate($rowsPerPage);
 
         $pager = $clientModel->pager;
@@ -244,5 +205,80 @@ class ClientsController extends BaseController
             ->findAll();
 
             return view('template/header') . view('Clients/viewClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id]) . view('template/footer');
+    }
+
+    public function export(){
+        
+        helper('excel');
+
+        $employee_id = $this->session->get('id');
+
+        $clientsModel = new ClientModel();
+
+        $clients = $this->_applyFillters($clientsModel, $employee_id);
+
+        $clients = $clients->findAll();
+
+        $filename = 'clients_export_' . date('Ymd') . '.xlsx';
+        $header =
+        [
+            'client_id' => 'ID',
+            'client_firstname' => 'Firstname',
+            'client_lastname' => 'Lastname',
+            'client_email' => 'Email',
+            'phone_numbers' => 'Phone Numbers',
+            'client_visibility' => 'Visibility',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At'
+        ];
+        export_to_excel($filename, $header, $clients);
+       
+    }
+
+
+    private function _applyFillters($clientModel, $employee_id){
+        $search = esc($this->request->getVar('search'));
+
+        $visibility = esc($this->request->getVar('visibility'));
+
+        $created_at = esc($this->request->getVar('createdAt'));
+
+        $updated_at = esc($this->request->getVar('updatedAt'));
+
+
+        $clients = $clientModel->select('clients.*, CONCAT(clients.client_firstname, " ", clients.client_lastname) as full_name, GROUP_CONCAT(CONCAT(countries.country_code, " " ,phones.phone_number) SEPARATOR ", ") as phone_numbers')
+            ->join('phones', 'phones.client_id = clients.client_id', 'left')
+            ->join('countries', 'countries.country_id = phones.country_id', 'left')
+            ->groupStart()
+            ->where('clients.employee_id', $employee_id)
+            ->orWhere('clients.client_visibility', 'public')
+            ->groupEnd()
+            ->groupBy('clients.client_id');
+
+        if (isset($search) && !empty($search)) {
+            $clients->groupStart()
+                ->like('clients.client_firstname', $search)
+                ->orLike('clients.client_lastname', $search)
+                ->orLike('clients.client_email', $search)
+                ->orLike('phones.phone_number', $search)
+                ->groupEnd();
+        }
+
+        if (isset($visibility) && !empty($visibility)) {
+            $clients->where('clients.client_visibility', $visibility);
+        }
+
+        if (isset($created_at) && !empty($created_at)) {
+            $clients->where('clients.created_at >=', $created_at . ' 00:00:00')
+                ->orderBy('clients.created_at', 'ASC');
+        }
+
+        if (isset($updated_at) && !empty($updated_at)) {
+            $clients->where('clients.updated_at >=', $updated_at . ' 00:00:00')
+                ->orderBy('clients.updated_at', 'ASC');
+        }
+
+        return $clients;
+
     }
 }

@@ -54,6 +54,7 @@
                 'addButtonModelId' => '',
                 'addButtonRedirectLink' => 'clients/add',
                 'AddButtonName' => 'Add Client',
+                'exportToExcelLink' => 'clients/export',
                 'modelIdOnClickRow' => '',
                 'JSFunctionToRunOnClickRow' => 'redirectToWithId("clients", "client_id");',
                 'classOnClickRow' => 'cursor-pointer',
