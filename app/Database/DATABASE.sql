@@ -134,6 +134,17 @@ CREATE TABLE IF NOT EXISTS Requests (
 
 -- LISTINGS
 
+CREATE TABLE property_status (
+    property_status_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    property_status_name VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE property_types (
+    property_type_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    property_type_name VARCHAR(255) NOT NULL UNIQUE
+);
+
+
 CREATE TABLE properties (
     property_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
@@ -142,25 +153,37 @@ CREATE TABLE properties (
     employee_id INT UNSIGNED NOT NULL,
     payment_plan_id INT UNSIGNED NOT NULL,
 
-    city_id INT UNSIGNED NOT NULL,
-    property_location VARCHAR(255) NOT NULL,
 
+    city_id INT UNSIGNED NOT NULL,
+    property_type_id INT UNSIGNED NOT NULL,
+    property_status_id INT UNSIGNED NOT NULL,
+
+    property_location VARCHAR(255),
     property_referral_name VARCHAR(255),
     property_referral_phone VARCHAR(20),
 
-    property_size DECIMAL(10, 2),
-    property_type ENUM('land', 'apartment'),
-    property_rent_or_sale ENUM('rent', 'sale', 'rent_sale'),
+    property_rent_or_sale ENUM('rent', 'sale', 'rent_sale') DEFAULT 'sale',
     property_catch_phrase TEXT,
 
+    property_size DECIMAL(10, 2),
     property_price DECIMAL(15, 2),
+
+
+    property_visibility ENUM('public', 'private') NOT NULL DEFAULT 'public',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
     
 
     FOREIGN KEY (client_id) REFERENCES Clients(client_id),
     FOREIGN KEY (city_id) REFERENCES Cities(city_id),
     FOREIGN KEY (payment_plan_id) REFERENCES PaymentPlans(payment_plan_id),
-    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
+    FOREIGN KEY (property_type_id) REFERENCES property_types(property_type_id),
+    FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id)
 );
+
 
 
 CREATE TABLE land_details (
@@ -168,7 +191,7 @@ CREATE TABLE land_details (
 
     property_id INT UNSIGNED NOT NULL UNIQUE,
 
-    land_type ENUM('residential', 'industrial', 'commercial') DEFAULT 'residential',
+    land_type ENUM('residential', 'industrial', 'commercial', 'agricultural', 'mixed', 'other') DEFAULT 'residential',
     land_zone_first DECIMAL(5, 2),
     land_zone_second DECIMAL(5, 2),
     land_extra_features TEXT,
@@ -176,11 +199,9 @@ CREATE TABLE land_details (
 );
 
 CREATE TABLE apartment_gender (
-    ag_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    apartment_gender VARCHAR(255) NOT NULL
+    apartment_gender_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    apartment_gender_name VARCHAR(255) NOT NULL
 );
-
-
 
 
 CREATE TABLE apartment_details (
@@ -189,27 +210,27 @@ CREATE TABLE apartment_details (
 
     property_id INT UNSIGNED NOT NULL UNIQUE,
 
-    ad_terrace_or_garden BOOLEAN,
-    ad_terrace_area INT,
-    ad_roof BOOLEAN,
-    ad_roof_area INT,
+    ad_terrace BOOLEAN DEFAULT FALSE,
+    ad_terrace_area INT DEFAULT 0,
+    ad_roof BOOLEAN DEFAULT FALSE,
+    ad_roof_area INT DEFAULT 0,
 
     ad_gender_id INT UNSIGNED NOT NULL,
     
-    ad_furnished BOOLEAN,
-    ad_furnished_on_provisions BOOLEAN,
-    ad_elevator BOOLEAN,
+    ad_furnished BOOLEAN DEFAULT FALSE,
+    ad_furnished_on_provisions BOOLEAN DEFAULT FALSE,
+    ad_elevator BOOLEAN DEFAULT FALSE,
 
     ad_status_age VARCHAR(255),
-    ad_floor_level INT,
-    ad_apartments_per_floor INT,
+    ad_floor_level INT DEFAULT 0,
+    ad_apartments_per_floor INT DEFAULT 1,
     ad_view VARCHAR(255),
-    ad_type ENUM('Luxury', 'High-end', 'Bad'),
+    ad_type ENUM('luxury', 'high-end', 'standard', 'bad') DEFAULT 'standard',
     ad_architecture_and_interior TEXT,
     ad_extra_features TEXT,
 
     FOREIGN KEY (property_id) REFERENCES properties(property_id),
-    FOREIGN KEY (ad_gender_id) REFERENCES  apartment_gender(ag_id)
+    FOREIGN KEY (ad_gender_id) REFERENCES  apartment_gender(apartment_gender_id)
 );
 
 
@@ -218,18 +239,18 @@ CREATE TABLE apartment_partition (
 
     apartment_id INT UNSIGNED NOT NULL UNIQUE,
 
-    partition_salon VARCHAR(255),
-    partition_dining VARCHAR(255),
-    partition_kitchen VARCHAR(255),
-    partition_master_bedroom VARCHAR(255),
-    partition_bedroom VARCHAR(255),
-    partition_bathroom VARCHAR(255),
-    partition_maid_room VARCHAR(255),
-    partition_reception_balcony VARCHAR(255),
-    partition_sitting_corner VARCHAR(255),
-    partition_balconies VARCHAR(255),
-    partition_parking VARCHAR(255),
-    partition_storage_room VARCHAR(255),
+    partition_salon VARCHAR(255) DEFAULT '',
+    partition_dining VARCHAR(255) DEFAULT '',
+    partition_kitchen VARCHAR(255) DEFAULT '',
+    partition_master_bedroom VARCHAR(255) DEFAULT '',
+    partition_bedroom VARCHAR(255) DEFAULT '',
+    partition_bathroom VARCHAR(255) DEFAULT '',
+    partition_maid_room VARCHAR(255) DEFAULT '',
+    partition_reception_balcony VARCHAR(255) DEFAULT '',
+    partition_sitting_corner VARCHAR(255) DEFAULT '',
+    partition_balconies VARCHAR(255) DEFAULT '',
+    partition_parking VARCHAR(255) DEFAULT '',
+    partition_storage_room VARCHAR(255) DEFAULT '',
 
     FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
 );
@@ -239,24 +260,25 @@ CREATE TABLE apartment_specifications (
 
     apartment_id INT UNSIGNED NOT NULL UNIQUE,
 
-    spec_heating_system BOOLEAN,
-    spec_heating_system_on_provisions BOOLEAN,
-    spec_ac_system BOOLEAN,
-    spec_ac_system_on_provisions BOOLEAN,
-    spec_double_wall BOOLEAN,
-    spec_double_glazing BOOLEAN,
-    spec_shutters_electrical BOOLEAN,
-    spec_tiles ENUM('European', 'Marble', 'Granite', 'Other'),
-    spec_oak_doors BOOLEAN,
-    spec_chimney BOOLEAN,
-    spec_indirect_light BOOLEAN,
-    spec_wood_panel_decoration BOOLEAN,
-    spec_stone_panel_decoration BOOLEAN,
-    spec_security_door BOOLEAN,
-    spec_alarm_system BOOLEAN,
-    spec_solar_heater BOOLEAN,
-    spec_intercom BOOLEAN,
-    spec_garage BOOLEAN,
+    spec_heating_system BOOLEAN DEFAULT FALSE,
+    spec_heating_system_on_provisions BOOLEAN DEFAULT FALSE,
+    spec_ac_system BOOLEAN DEFAULT FALSE,
+    spec_ac_system_on_provisions BOOLEAN DEFAULT FALSE,
+    spec_double_wall BOOLEAN DEFAULT FALSE,
+    spec_double_glazing BOOLEAN DEFAULT FALSE,
+    spec_shutters_electrical BOOLEAN DEFAULT FALSE,
+    spec_tiles ENUM('european', 'marble', 'granite', 'other') DEFAULT 'other',
+    spec_oak_doors BOOLEAN DEFAULT FALSE,
+    spec_chimney BOOLEAN DEFAULT FALSE,
+    spec_indirect_light BOOLEAN DEFAULT FALSE,
+    spec_wood_panel_decoration BOOLEAN DEFAULT FALSE,
+    spec_stone_panel_decoration BOOLEAN DEFAULT FALSE,
+    spec_security_door BOOLEAN DEFAULT FALSE,
+    spec_alarm_system BOOLEAN DEFAULT FALSE,
+    spec_solar_heater BOOLEAN DEFAULT FALSE,
+    spec_intercom BOOLEAN DEFAULT FALSE,
+    spec_garage BOOLEAN DEFAULT FALSE,
+    spec_extra_features TEXT DEFAULT '',
     
 
     FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
