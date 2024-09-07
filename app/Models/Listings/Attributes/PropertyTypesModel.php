@@ -34,18 +34,18 @@ class PropertyTypesModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'property_type_id'   => 'required|integer',
-        'property_type_name' => 'required|string|max_length[255]'
+        'property_type_id'   => 'integer|permit_empty',
+        'property_type_name' => 'required|string|max_length[255]|is_unique[property_types.property_type_name]'
     ];
     protected $validationMessages   = [
         'property_type_id' => [
-            'required' => 'Property Type ID is required',
             'integer'  => 'Property Type ID must be an integer'
         ],
         'property_type_name' => [
             'required'    => 'Property Type Name is required',
             'string'      => 'Property Type Name must be a string',
-            'max_length'  => 'Property Type Name must not exceed 255 characters'
+            'max_length'  => 'Property Type Name must not exceed 255 characters',
+            'is_unique'   => 'Property Type Name already exists'
         ]
     ];
     protected $skipValidation       = false;

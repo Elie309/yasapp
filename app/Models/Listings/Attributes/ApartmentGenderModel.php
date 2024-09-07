@@ -35,18 +35,18 @@ class ApartmentGenderModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'apartment_gender_id'   => 'required|integer',
-        'apartment_gender_name' => 'required|string|max_length[255]'
+        'apartment_gender_id'   => 'integer|permit_empty',
+        'apartment_gender_name' => 'required|string|max_length[255]|is_unique[apartment_gender.apartment_gender_name]'
     ];
     protected $validationMessages   = [
         'apartment_gender_id' => [
-            'required' => 'Apartment gender ID is required',
             'integer'  => 'Apartment gender ID must be an integer'
         ],
         'apartment_gender_name' => [
             'required' => 'Apartment gender name is required',
             'string'   => 'Apartment gender name must be a string',
-            'max_length' => 'Apartment gender name must not exceed 255 characters'
+            'max_length' => 'Apartment gender name must not exceed 255 characters',
+            'is_unique' => 'Apartment gender name already exists'
         ]
     ];
     protected $skipValidation       = false;

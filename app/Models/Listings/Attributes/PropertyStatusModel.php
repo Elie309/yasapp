@@ -34,10 +34,20 @@ class PropertyStatusModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'property_status_id'   => 'required|integer',
-        'property_status_name' => 'required|string|max_length[255]'
+        'property_status_id'   => 'integer|permit_empty',
+        'property_status_name' => 'required|string|max_length[255]|is_unique[property_status.property_status_name]'
     ];
-    protected $validationMessages   = [];
+    protected $validationMessages   = [
+        'property_status_id' => [
+            'integer'  => 'Property status ID must be an integer'
+        ],
+        'property_status_name' => [
+            'required' => 'Property status name is required',
+            'string'   => 'Property status name must be a string',
+            'max_length' => 'Property status name must not exceed 255 characters',
+            'is_unique' => 'Property status name already exists'
+        ]
+    ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
