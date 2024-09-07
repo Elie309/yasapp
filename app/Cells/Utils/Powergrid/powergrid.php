@@ -4,7 +4,7 @@
 
     <?php $nonCheckedCols = isset($_GET['nonCheckedCols']) ? explode(',', $_GET['nonCheckedCols']) : null;
 
-    //duplicate the array tableheaders
+    //duplicate the array tableHeaders
     $initialCols = $tableHeaders;
 
     //remove the col from the headers
@@ -63,7 +63,7 @@
                     <?= $AddButtonName ?>
                 </a>
             <?php else : ?>
-                <button popovertarget="<?= $addButtonModelId ?>" id="addBttnPopover" class="secondary-btn mx-auto">
+                <button popovertarget="<?= $addButtonModelId ?>" id="addButtonPopover" class="secondary-btn mx-auto">
                     <?= $AddButtonName ?>
                 </button>
             <?php endif; ?>
@@ -119,7 +119,7 @@
                     <option value='<?= $value ?>'><?= $value ?></option>
                 <?php endforeach; ?>
             </select>
-            <input type="text" class="main-input col-span-6" onkeyup="filterTable(document.getElementById('columnSelect_<?= $tableId ?>').value, this.value)" placeholder="Search">
+            <input type="text" class="main-input col-span-6" onkeyup="filterTable_<?= $tableId ?>(document.getElementById('columnSelect_<?= $tableId ?>').value, this.value)" placeholder="Search">
         <?php endif; ?>
     </div>
 
@@ -278,7 +278,7 @@
         updateURLParameter('nonCheckedCols', nonCheckedCols.join(','));
     }
 
-    function filterTable(columnKey, searchValue) {
+    function filterTable_<?= $tableId ?>(columnKey, searchValue) {
         let td, i, txtValue;
         let <?= $tableId ?>_table = document.getElementById("<?= $tableId ?>"); // Make sure to replace 'yourTableId' with the actual ID of your table
         let tr = <?= $tableId ?>_table.getElementsByTagName("tr");
@@ -347,7 +347,7 @@
 
     <?php if (!isset($addButtonRedirectLink)) : ?>
 
-        document.getElementById('addBttnPopover').addEventListener('click', function() {
+        document.getElementById('addButtonPopover').addEventListener('click', function() {
             <?= isset($addButtonModelAdditionalFn) ? $addButtonModelAdditionalFn : '' ?>
         });
 
@@ -456,5 +456,3 @@
         return new URLSearchParams(window.location.search);
     }
 </script>
-
-</div>
