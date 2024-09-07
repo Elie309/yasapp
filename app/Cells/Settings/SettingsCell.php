@@ -42,6 +42,13 @@ class SettingsCell extends Cell
             'img' => '/images/profile_ill.svg',
             'title' => 'Profile',
             'description' => 'Update your Profile.',
+        ],
+        [
+            'url' => '/settings/listings-attributes/property-status',
+            'img' => '/images/listings_attributes.webp',
+            'title' => 'Listings Attributes',
+            'description' => 'Manage Listings Attributes.',
+            'role' => ['admin', 'manager']
         ]
     ];
 
