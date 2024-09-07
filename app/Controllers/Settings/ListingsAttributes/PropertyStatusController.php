@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Listings\Attributes;
+namespace App\Controllers\Settings\ListingsAttributes;
 
 use App\Controllers\BaseController;
 use App\Models\Listings\Attributes\PropertyStatusModel;
@@ -8,25 +8,12 @@ use \App\Entities\Listings\Attributes\PropertyStatusEntity;
 
 class PropertyStatusController extends BaseController
 {
-    public function getAll()
-    {
-        $propertyStatusModel = new PropertyStatusModel();
-        $data = $propertyStatusModel->findAll();
-        return $this->response->setJSON($data);
-    }
-
-    public function get($id)
-    {
-        $propertyStatusModel = new PropertyStatusModel();
-        $data = $propertyStatusModel->find($id);
-        return $this->response->setJSON($data);
-    }
 
     public function save()
     {
         $propertyStatusModel = new PropertyStatusModel();
         $propertyStatusEntity = new PropertyStatusEntity();
-        $propertyStatusEntity->fill($this->request->getPost());
+        $propertyStatusEntity->fill(esc($this->request->getPost()));
 
         if(!in_array($this->session->get('role'), ['admin', 'manager'])) {
             return redirect()->back()->with('errors', 'You are not authorized to save this record');
@@ -39,17 +26,18 @@ class PropertyStatusController extends BaseController
         }
     }
 
-    public function update($id)
+    public function update()
     {
         $propertyStatusModel = new PropertyStatusModel();
         $propertyStatusEntity = new PropertyStatusEntity();
 
-        $propertyStatusEntity->fill($this->request->getPost());
+        $propertyStatusEntity->fill(esc($this->request->getPost()));
 
         if(!in_array($this->session->get('role'), ['admin', 'manager'])) {
             return redirect()->back()->with('errors', 'You are not authorized to update this record');
         }
 
+        $id = esc($propertyStatusEntity->property_status_id);
         if($propertyStatusModel->find($id) === null) {
             return redirect()->back()->with('errors', 'Record not found');
         }
@@ -62,13 +50,15 @@ class PropertyStatusController extends BaseController
 
     }
 
-    public function delete($id)
+    public function delete()
     {
         $propertyStatusModel = new PropertyStatusModel();
 
         if(!in_array($this->session->get('role'), ['admin', 'manager'])) {
             return redirect()->back()->with('errors', 'You are not authorized to delete this record');
         }
+
+        $id = esc($this->request->getPost('property_status_id'));
 
         if($propertyStatusModel->find($id) === null) {
             return redirect()->back()->with('errors', 'Record not found');

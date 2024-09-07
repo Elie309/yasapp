@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Listings\Attributes;
+namespace App\Controllers\Settings\ListingsAttributes;
 
 use App\Controllers\BaseController;
 use App\Models\Listings\Attributes\ApartmentGenderModel;
@@ -9,25 +9,11 @@ use App\Entities\Listings\Attributes\ApartmentGenderEntity;
 class ApartmentGenderController extends BaseController
 {
 
-    public function getAll()
-    {
-        $apartmentGenderModel = new ApartmentGenderModel();
-        $data = $apartmentGenderModel->findAll();
-        return $this->response->setJSON($data);
-    }
-
-    public function get($id)
-    {
-        $apartmentGenderModel = new ApartmentGenderModel();
-        $data = $apartmentGenderModel->find($id);
-        return $this->response->setJSON($data);
-    }
-
     public function save()
     {
         $apartmentGenderModel = new ApartmentGenderModel();
         $apartmentGenderEntity = new ApartmentGenderEntity();
-        $apartmentGenderEntity->fill($this->request->getPost());
+        $apartmentGenderEntity->fill(esc($this->request->getPost()));
 
         if(!in_array($this->session->get('role'), ['admin', 'manager'])) {
             return redirect()->back()->with('errors', 'You are not authorized to save this record');
@@ -41,15 +27,17 @@ class ApartmentGenderController extends BaseController
 
     }
 
-    public function update($id)
+    public function update()
     {
         $apartmentGenderModel = new ApartmentGenderModel();
         $apartmentGenderEntity = new ApartmentGenderEntity();
-        $apartmentGenderEntity->fill($this->request->getPost());
+        $apartmentGenderEntity->fill(esc($this->request->getPost()));
 
         if(!in_array($this->session->get('role'), ['admin', 'manager'])) {
             return redirect()->back()->with('errors', 'You are not authorized to update this record');
         }
+
+        $id = esc($apartmentGenderEntity->apartment_gender_id);
 
         if($apartmentGenderModel->find($id) === null) {
             return redirect()->back()->with('errors', 'Record not found');
@@ -63,13 +51,15 @@ class ApartmentGenderController extends BaseController
 
     }
 
-    public function delete($id)
+    public function delete()
     {
         $apartmentGenderModel = new ApartmentGenderModel();
 
         if(!in_array($this->session->get('role'), ['admin', 'manager'])) {
             return redirect()->back()->with('errors', 'You are not authorized to delete this record');
         }
+
+        $id = esc($this->request->getPost('apartment_gender_id'));
 
         if($apartmentGenderModel->find($id) === null) {
             return redirect()->back()->with('errors', 'Record not found');

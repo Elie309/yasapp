@@ -61,6 +61,26 @@ $routes->post('settings/employees', 'Settings\EmployeesController::handleEmploye
 $routes->get('settings/profile', 'Settings\ProfileController::index');
 $routes->post('settings/profile', 'Settings\ProfileController::updateProfile');
 
+//Settings Listings
+
+$routes->get('settings/listings-attributes', 'Settings\ListingsAttributesController::index');
+$routes->get('settings/listings-attributes/property-types', 'Settings\ListingsAttributesController::propertyTypes');
+$routes->get('settings/listings-attributes/property-status', 'Settings\ListingsAttributesController::propertyStatus');
+$routes->get('settings/listings-attributes/apartment-gender', 'Settings\ListingsAttributesController::apartmentGender');
+
+
+$routes->post('settings/listings-attributes/add-property-types', 'Settings\ListingsAttributes\PropertyTypesController::save');
+$routes->post('settings/listings-attributes/edit-property-types', 'Settings\ListingsAttributes\PropertyTypesController::update/$1');
+$routes->post('settings/listings-attributes/delete-property-types', 'Settings\ListingsAttributes\PropertyTypesController::delete/$1');
+
+$routes->post('settings/listings-attributes/add-property-status', 'Settings\ListingsAttributes\PropertyStatusController::save');
+$routes->post('settings/listings-attributes/edit-property-status', 'Settings\ListingsAttributes\PropertyStatusController::update/$1');
+$routes->post('settings/listings-attributes/delete-property-status', 'Settings\ListingsAttributes\PropertyStatusController::delete/$1');
+
+$routes->post('settings/listings-attributes/add-apartment-gender', 'Settings\ListingsAttributes\ApartmentGenderController::save');
+$routes->post('settings/listings-attributes/edit-apartment-gender', 'Settings\ListingsAttributes\ApartmentGenderController::update/$1');
+$routes->post('settings/listings-attributes/delete-apartment-gender', 'Settings\ListingsAttributes\ApartmentGenderController::delete/$1');
+
 
 //CLIENTS
 $routes->get('clients', 'Clients\ClientsController::index');
@@ -81,6 +101,10 @@ $routes->get('requests/edit/(:num)', 'Requests\RequestController::edit/$1');
 $routes->post('requests/edit/(:num)', 'Requests\RequestController::updateRequest/$1');
 $routes->get('requests/delete/(:num)', 'Requests\RequestController::delete/$1');
 $routes->get('requests/export', 'Requests\RequestController::export');
+
+
+//Listings
+$routes->get('listings', 'Listings\ListingsController::index');
 
 
 
