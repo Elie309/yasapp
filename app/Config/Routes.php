@@ -105,6 +105,13 @@ $routes->get('requests/export', 'Requests\RequestController::export');
 
 //Listings
 $routes->get('listings', 'Listings\ListingsController::index');
+$routes->get('listings/(:num)', 'Listings\ListingsController::view/$1');
+$routes->get('listings/add', 'Listings\ListingsController::add');
+$routes->post('listings/add', 'Listings\ListingsController::addListing');
+$routes->get('listings/edit/(:num)', 'Listings\ListingsController::edit/$1');
+$routes->post('listings/edit/(:num)', 'Listings\ListingsController::updateListing/$1');
+$routes->get('listings/delete/(:num)', 'Listings\ListingsController::delete/$1');
+$routes->get('listings/export', 'Listings\ListingsController::export');
 
 
 
