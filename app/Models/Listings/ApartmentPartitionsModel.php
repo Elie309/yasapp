@@ -4,37 +4,13 @@ namespace App\Models\Listings;
 
 use CodeIgniter\Model;
 
-/*
 
-CREATE TABLE apartment_partition (
-    partition_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-
-    apartment_id INT UNSIGNED NOT NULL UNIQUE,
-
-    partition_salon VARCHAR(255),
-    partition_dining VARCHAR(255),
-    partition_kitchen VARCHAR(255),
-    partition_master_bedroom VARCHAR(255),
-    partition_bedroom VARCHAR(255),
-    partition_bathroom VARCHAR(255),
-    partition_maid_room VARCHAR(255),
-    partition_reception_balcony VARCHAR(255),
-    partition_sitting_corner VARCHAR(255),
-    partition_balconies VARCHAR(255),
-    partition_parking VARCHAR(255),
-    partition_storage_room VARCHAR(255),
-
-    FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
-);
-
-*/
-
-class ApartmentPartitionModel extends Model
+class ApartmentPartitionsModel extends Model
 {
-    protected $table            = 'apartment_partition';
+    protected $table            = 'apartment_partitions';
     protected $primaryKey       = 'partition_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = \App\Entities\Listings\ApartmentPartitionEntity::class;
+    protected $returnType       = \App\Entities\Listings\ApartmentPartitionsEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [

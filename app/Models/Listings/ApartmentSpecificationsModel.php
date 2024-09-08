@@ -4,38 +4,6 @@ namespace App\Models\Listings;
 
 use CodeIgniter\Model;
 
-/*
-CREATE TABLE apartment_specifications (
-    spec_id INT AUTO_INCREMENT PRIMARY KEY,
-
-    apartment_id INT UNSIGNED NOT NULL UNIQUE,
-
-    spec_heating_system BOOLEAN DEFAULT FALSE,
-    spec_heating_system_on_provisions BOOLEAN DEFAULT FALSE,
-    spec_ac_system BOOLEAN DEFAULT FALSE,
-    spec_ac_system_on_provisions BOOLEAN DEFAULT FALSE,
-    spec_double_wall BOOLEAN DEFAULT FALSE,
-    spec_double_glazing BOOLEAN DEFAULT FALSE,
-    spec_shutters_electrical BOOLEAN DEFAULT FALSE,
-    spec_tiles ENUM('european', 'marble', 'granite', 'other') DEFAULT 'other',
-    spec_oak_doors BOOLEAN DEFAULT FALSE,
-    spec_chimney BOOLEAN DEFAULT FALSE,
-    spec_indirect_light BOOLEAN DEFAULT FALSE,
-    spec_wood_panel_decoration BOOLEAN DEFAULT FALSE,
-    spec_stone_panel_decoration BOOLEAN DEFAULT FALSE,
-    spec_security_door BOOLEAN DEFAULT FALSE,
-    spec_alarm_system BOOLEAN DEFAULT FALSE,
-    spec_solar_heater BOOLEAN DEFAULT FALSE,
-    spec_intercom BOOLEAN DEFAULT FALSE,
-    spec_garage BOOLEAN DEFAULT FALSE,
-    spec_extra_features TEXT,
-    
-
-    FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
-);
-
-*/
-
 class ApartmentSpecificationsModel extends Model
 {
     protected $table            = 'apartment_specifications';

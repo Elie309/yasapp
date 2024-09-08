@@ -234,7 +234,7 @@ CREATE TABLE apartment_details (
 );
 
 
-CREATE TABLE apartment_partition (
+CREATE TABLE apartment_partitions (
     partition_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     apartment_id INT UNSIGNED NOT NULL UNIQUE,

@@ -4,12 +4,12 @@ namespace App\Models\Listings\Attributes;
 
 use CodeIgniter\Model;
 
-class PropertyTypesModel extends Model
+class PropertyTypeModel extends Model
 {
     protected $table            = 'property_types';
     protected $primaryKey       = 'property_type_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = \App\Entities\Listings\Attributes\PropertyTypesEntity::class;
+    protected $returnType       = \App\Entities\Listings\Attributes\PropertyTypeEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [

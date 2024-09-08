@@ -83,7 +83,6 @@ class PropertySeeder extends Seeder
                 $this->db->table('apartment_details')->insert($apartmentData);
                 $apartmentId = $this->db->insertID();
 
-                // Seed data for 'apartment_partition'
                 $partitionData = [
                     'apartment_id' => $apartmentId,
                     'partition_salon' => $faker->word,
@@ -100,7 +99,7 @@ class PropertySeeder extends Seeder
                     'partition_storage_room' => $faker->word,
                 ];
 
-                $this->db->table('apartment_partition')->insert($partitionData);
+                $this->db->table('apartment_partitions')->insert($partitionData);
 
                 // Seed data for 'apartment_specifications'
                 $specificationData = [
