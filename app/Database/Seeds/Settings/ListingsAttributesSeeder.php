@@ -90,7 +90,7 @@ class ListingsAttributesSeeder extends Seeder
 
         $this->db->table('apartment_gender')->insertBatch($apartmentsGender);
         $this->db->table('property_status')->insertBatch($property_status);
-        $this->db->table('property_types')->insertBatch($property_types);
+        $this->db->table('property_type')->insertBatch($property_types);
 
 
     }

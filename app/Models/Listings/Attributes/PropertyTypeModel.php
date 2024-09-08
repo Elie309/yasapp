@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class PropertyTypeModel extends Model
 {
-    protected $table            = 'property_types';
+    protected $table            = 'property_type';
     protected $primaryKey       = 'property_type_id';
     protected $useAutoIncrement = true;
     protected $returnType       = \App\Entities\Listings\Attributes\PropertyTypeEntity::class;
@@ -35,7 +35,7 @@ class PropertyTypeModel extends Model
     // Validation
     protected $validationRules      = [
         'property_type_id'   => 'integer|permit_empty',
-        'property_type_name' => 'required|string|max_length[255]|is_unique[property_types.property_type_name]'
+        'property_type_name' => 'required|string|max_length[255]|is_unique[property_type.property_type_name]'
     ];
     protected $validationMessages   = [
         'property_type_id' => [

@@ -128,7 +128,7 @@ class RequestController extends BaseController
             'requests.*,  clients.*,
             CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
             cities.city_name,
-            paymentplans.payment_plan_name,
+            payment_plans.payment_plan_name,
             CONCAT(requests.request_budget, " ", currencies.currency_symbol) AS request_fees,
             employees.employee_id,
             employees.employee_name,
@@ -138,7 +138,7 @@ class RequestController extends BaseController
             ->join('phones', 'clients.client_id = phones.client_id')
             ->join('countries', 'countries.country_id = phones.country_id')
             ->join('cities', 'requests.city_id = cities.city_id')
-            ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
+            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
             ->where('requests.request_id', $id);
@@ -182,7 +182,7 @@ class RequestController extends BaseController
         $request = $requestModel->select(
             'requests.*, clients.*,
             GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as client_phone,
-            paymentplans.payment_plan_name,
+            payment_plans.payment_plan_name,
             currencies.currency_symbol,
             employees.employee_id,
             employees.employee_name
@@ -191,7 +191,7 @@ class RequestController extends BaseController
             ->join('clients', 'requests.client_id = clients.client_id')
             ->join('phones', 'clients.client_id = phones.client_id')
             ->join('countries', 'countries.country_id = phones.country_id')
-            ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
+            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
             ->groupStart()
@@ -348,7 +348,7 @@ class RequestController extends BaseController
         $param = [
             'city_name' => 'cities.city_name',
             'client_name' => 'clients.client_firstname',
-            'payment_plan_name' => 'paymentplans.payment_plan_name',
+            'payment_plan_name' => 'payment_plans.payment_plan_name',
             'employee_name' => 'employees.employee_name',
             'request_budget' => 'requests.request_budget',
             'comments' => 'requests.comments'
@@ -358,13 +358,13 @@ class RequestController extends BaseController
         $request = $requestModel->select('requests.*,
                     CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
                     cities.city_name, 
-                    paymentplans.payment_plan_name, 
+                    payment_plans.payment_plan_name, 
                     CONCAT(FORMAT(requests.request_budget, 0), " ", currencies.currency_symbol) AS request_fees,
                     employees.employee_name
                     ')
             ->join('clients', 'requests.client_id = clients.client_id')
             ->join('cities', 'requests.city_id = cities.city_id')
-            ->join('paymentplans', 'requests.payment_plan_id = paymentplans.payment_plan_id')
+            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
             ->groupStart()

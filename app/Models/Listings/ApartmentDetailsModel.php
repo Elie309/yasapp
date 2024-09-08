@@ -10,7 +10,7 @@ class ApartmentDetailsModel extends Model
     protected $table            = 'apartment_details';
     protected $primaryKey       = 'apartment_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = \App\Entities\Listings\ApartmentDetailsEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
@@ -61,7 +61,7 @@ class ApartmentDetailsModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'apartment_id' => 'required|integer',
+        'apartment_id' => 'integer|permit_empty',
         'property_id' => 'required|integer',
         'ad_terrace' => 'boolean',
         'ad_terrace_area' => 'integer',
@@ -81,7 +81,6 @@ class ApartmentDetailsModel extends Model
     ];
     protected $validationMessages   = [
         'apartment_id' => [
-            'required' => 'Apartment ID is required',
             'integer'  => 'Apartment ID must be an integer'
         ],
         'property_id' => [

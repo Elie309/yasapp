@@ -15,7 +15,7 @@ class PropertySeeder extends Seeder
         //Get the client data
         $clientData = $this->db->table('clients')->get()->getResultArray();
         $paymentPlanData = $this->db->table('payment_plans')->get()->getResultArray();
-        $propertyTypeData = $this->db->table('property_types')->get()->getResultArray();
+        $propertyTypeData = $this->db->table('property_type')->get()->getResultArray();
         $propertyStatusData = $this->db->table('property_status')->get()->getResultArray();
         $apartmentGenderData = $this->db->table('apartment_gender')->get()->getResultArray();
 

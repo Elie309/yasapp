@@ -139,7 +139,7 @@ CREATE TABLE property_status (
     property_status_name VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE property_types (
+CREATE TABLE property_type (
     property_type_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     property_type_name VARCHAR(255) NOT NULL UNIQUE
 );
@@ -180,7 +180,7 @@ CREATE TABLE properties (
     FOREIGN KEY (city_id) REFERENCES Cities(city_id),
     FOREIGN KEY (payment_plan_id) REFERENCES payment_plans(payment_plan_id),
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
-    FOREIGN KEY (property_type_id) REFERENCES property_types(property_type_id),
+    FOREIGN KEY (property_type_id) REFERENCES property_type(property_type_id),
     FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id)
 );
 
