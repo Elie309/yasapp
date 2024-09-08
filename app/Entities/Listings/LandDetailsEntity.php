@@ -7,6 +7,8 @@ use CodeIgniter\Entity\Entity;
 class LandDetailsEntity extends Entity
 {
     protected $datamap = [];
-    protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
-    protected $casts   = [];
+    protected $casts = [
+        'land_zone_first' => 'float',
+        'land_zone_second' => 'float',
+    ];
 }
