@@ -2,11 +2,9 @@
 
     <?php $emptyTable = ($tableData == null || count($tableData) == 0) ?>
 
-    <?php $nonCheckedCols = isset($_GET['nonCheckedCols']) ? explode(',', $_GET['nonCheckedCols']) : null;
+    <?php $nonCheckedCols = isset($_COOKIE['nonCheckedCols_' . $tableId]) ? explode(',', $_COOKIE['nonCheckedCols_' . $tableId]) : [];
 
-    //duplicate the array tableHeaders
     $initialCols = $tableHeaders;
-
     //remove the col from the headers
     if ($nonCheckedCols != null) {
         foreach ($nonCheckedCols as $col) {
@@ -18,7 +16,7 @@
 
 
     <div class="flex flex-col justify-center sm:flex-row sm:justify-between mb-6">
-        <div class="flex flex-row justify-center align-middle mx-2 my-2 sm:my-0">
+        <div class="flex flex-row align-middle mx-2 my-2 sm:my-0">
             <?php if (isset($rowsPerPageActive) && $rowsPerPageActive) : ?>
                 <!-- Row per page -->
                 <label for="rowPerPage_<?= $tableId ?>" class="main-label ">Rows per page:</label>
@@ -34,11 +32,12 @@
             <?php endif; ?>
         </div>
 
-        <div class="grid grid-rows-3 w-full px-5 gap-3 sm:mx-0 sm:w-fit sm:flex sm:flex-row sm:justify-end align-middle">
+        <div class="flex flex-row w-full sm:mx-0 sm:w-fit justify-end ">
 
             <!-- EXCEL BUTTON -->
             <?php if (!isset($exportToExcelLink)) : ?>
-                <button id="download-xlsx" <?= $emptyTable == true ? 'disabled' : '' ?> onclick="fnExcelReport()" class="secondary-btn mx-auto">
+                <button id="download-xlsx" <?= $emptyTable == true ? 'disabled' : '' ?> onclick="fnExcelReport()" 
+                    class="secondary-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                     </svg>
@@ -50,7 +49,7 @@
                 $queryString = http_build_query($currentParams);
                 $exportToExcelLinkWithParams = $exportToExcelLink . '?' . $queryString;
                 ?>
-                <a href="<?= $exportToExcelLinkWithParams  ?> " class="secondary-btn mx-auto">
+                <a href="<?= $exportToExcelLinkWithParams  ?> " class="secondary-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                     </svg>
@@ -59,11 +58,11 @@
 
             <!-- ADD REQUEST BUTTON -->
             <?php if (isset($addButtonRedirectLink)) : ?>
-                <a href="<?= $addButtonRedirectLink ?>" class="secondary-btn mx-auto">
+                <a href="<?= $addButtonRedirectLink ?>" class="secondary-btn ml-2">
                     <?= $AddButtonName ?>
                 </a>
             <?php else : ?>
-                <button popovertarget="<?= $addButtonModelId ?>" id="addButtonPopover" class="secondary-btn mx-auto">
+                <button popovertarget="<?= $addButtonModelId ?>" id="addButtonPopover" class="secondary-btn ml-2">
                     <?= $AddButtonName ?>
                 </button>
             <?php endif; ?>
@@ -139,7 +138,7 @@
                     <tr class="border border-gray-300">
 
                         <?php foreach ($tableHeaders as $key => $value) : ?>
-                            <th class="bg-gray-200 text-center ">
+                            <th class="bg-gray-200 text-start ">
                                 <?= $value ?>
                             </th>
                         <?php endforeach; ?>
@@ -275,7 +274,10 @@
             }
         });
 
-        updateURLParameter('nonCheckedCols', nonCheckedCols.join(','));
+        //save non checked cols in the cookies with the table id
+        console.log(nonCheckedCols);
+        document.cookie = "nonCheckedCols_<?= $tableId ?>=" + nonCheckedCols.join(',');
+        location.reload();
     }
 
     function filterTable_<?= $tableId ?>(columnKey, searchValue) {
