@@ -6,13 +6,13 @@
 
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
-        <div class="flex flex-row justify-end my-2">
+        <div class="flex flex-row justify-end mb-4">
             <button class="secondary-btn " onclick='resetURL("requests")'>Clear Filter</button>
         </div>
         <div class="flex flex-col">
 
-            <div class="flex flex-row mb-4 w-full justify-center">
-                <div class="flex flex-row align-baseline">
+            <div class="flex flex-col md:flex-row mb-4 w-full justify-center">
+                <div class="grid grid-cols-2 my-2 md:my-0">
                     <label for="request_type" class="main-label mr-2">Request Type:</label>
                     <select name="request_type" id="request_type" class="secondary-input">
                         <option value="" <?= isset($_GET['requestType']) ? '' : 'selected' ?>>All</option>
@@ -22,7 +22,7 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="flex flex-row ml-4">
+                <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
                     <label for="request_state" class="main-label mr-2">Request State:</label>
                     <select name="request_state" id="request_state" class="secondary-input">
                         <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
@@ -32,7 +32,7 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="flex flex-row ml-4">
+                <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
                     <label for="request_priority" class="main-label mr-2">Request Priority:</label>
                     <select name="request_priority" id="request_priority" class="secondary-input">
                         <option value="" <?= isset($_GET['requestPriority']) ? '' : 'selected' ?>>All</option>
@@ -44,21 +44,10 @@
                 </div>
 
             </div>
-            <div class="flex flex-row mb-8 justify-center">
-                <div class="flex flex-row">
-                    <label for="start_date" class="main-label mr-2">Start Date:</label>
-                    <input type="date" name="start_date" id="start_date"
-                        value="<?= isset($_GET['startDate']) ? $_GET['startDate'] : '' ?>"
-                        class="secondary-input">
-                </div>
-                <div class="flex flex-row ml-4">
-                    <label for="end_date" class="main-label mr-2">End Date:</label>
-                    <input type="date" name="end_date" id="end_date"
-                        value="<?= isset($_GET['endDate']) ? $_GET['endDate'] : '' ?>"
-                        class="secondary-input">
-                </div>
-                <div class="flex flex-row ml-4">
-                    <!-- Request Visiblity -->
+
+            <div class="flex flex-col md:flex-row mb-8 justify-center">
+                <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
+                    <!-- Request Visibility -->
                     <label for="request_visibility" class="main-label mr-2">Request Visibility:</label>
                     <select name="request_visibility" id="request_visibility" class="secondary-input">
                         <option value="" <?= isset($_GET['requestVisibility']) ? '' : 'selected' ?>>All</option>
@@ -68,6 +57,19 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div class="grid grid-cols-2 my-2 md:my-0">
+                    <label for="start_date" class="main-label mr-2">Start Date:</label>
+                    <input type="date" name="start_date" id="start_date"
+                        value="<?= isset($_GET['startDate']) ? $_GET['startDate'] : '' ?>"
+                        class="secondary-input">
+                </div>
+                <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
+                    <label for="end_date" class="main-label mr-2">End Date:</label>
+                    <input type="date" name="end_date" id="end_date"
+                        value="<?= isset($_GET['endDate']) ? $_GET['endDate'] : '' ?>"
+                        class="secondary-input">
+                </div>
+
             </div>
         </div>
 

@@ -3,7 +3,7 @@
 
 
 
-    <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
+    <div class="my-8 mr-8 bg-white p-8 shadow-md rounded-md min-w-full overflow-auto">
 
         <?php $tableHeaders = [
             'full_name' => 'Full Name',
@@ -19,34 +19,30 @@
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
 
-        <span class="flex flex-row justify-end">
+        <div class="flex flex-row justify-end mb-4">
             <button class="secondary-btn " onclick='resetURL("clients")'>Clear Filter</button>
-        </span>
-        <div class="flex flex-col">
+        </div>
+        <div class="flex flex-col mb-8">
 
-            <div class="flex flex-row mb-4 w-full justify-center">
-                <div class="flex flex-row align-baseline">
+            <div class="flex flex-row mb-4 w-full md:w-fit md:mx-auto">
                     <label for="visibility" class="main-label mr-2">Visibility</label>
                     <select name="visibility" id="visibility_select" class="secondary-input">
                         <option value="" <?= isset($_GET['visibility']) ? '' : 'selected' ?>>All</option>
                         <option value="public" <?= isset($_GET['visibility']) && $_GET['visibility'] === 'public' ? 'selected' : '' ?>>Public</option>
                         <option value="private" <?= isset($_GET['visibility']) && $_GET['visibility'] === 'private' ? 'selected' : '' ?>>Private</option>
                     </select>
-                </div>
             </div>
-            <div class="flex flex-row mb-8 justify-center">
-                <div class="flex flex-row">
-                    <label for="createdAt" class="main-label mr-2">Created from:</label>
-                    <input type="date" name="createdAt" id="createdAt_select"
-                        value="<?= isset($_GET['createdAt']) ? $_GET['createdAt'] : '' ?>"
-                        class="secondary-input">
-                </div>
-                <div class="flex flex-row ml-4">
-                    <label for="updatedAt" class="main-label mr-2">Updated from:</label>
-                    <input type="date" name="updatedAt" id="updatedAt_select"
-                        value="<?= isset($_GET['updatedAt']) ? $_GET['updatedAt'] : '' ?>"
-                        class="secondary-input">
-                </div>
+            <div class="grid grid-cols-2 grid-rows-2 gap-2 w-full align my-4 md:flex md:flex-row md:max-w-lg md:mx-auto">
+
+                <label for="createdAt" class="main-label mr-2 align-baseline">Created from:</label>
+                <input type="date" name="createdAt" id="createdAt_select"
+                    value="<?= isset($_GET['createdAt']) ? $_GET['createdAt'] : '' ?>"
+                    class="secondary-input">
+                <pre class="hidden md:block"> - </pre>
+                <label for="updatedAt" class="main-label mr-2">Updated from:</label>
+                <input type="date" name="updatedAt" id="updatedAt_select"
+                    value="<?= isset($_GET['updatedAt']) ? $_GET['updatedAt'] : '' ?>"
+                    class="secondary-input">
             </div>
         </div>
 
