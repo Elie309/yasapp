@@ -275,8 +275,7 @@
         });
 
         //save non checked cols in the cookies with the table id
-        console.log(nonCheckedCols);
-        document.cookie = "nonCheckedCols_<?= $tableId ?>=" + nonCheckedCols.join(',');
+        document.cookie = "nonCheckedCols_<?= $tableId ?>=" + nonCheckedCols.join(',') + ";max-age=604800"; //1 week
         location.reload();
     }
 
