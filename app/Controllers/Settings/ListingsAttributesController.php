@@ -5,7 +5,7 @@ namespace App\Controllers\Settings;
 use App\Controllers\BaseController;
 use App\Models\Listings\Attributes\ApartmentGenderModel;
 use App\Models\Listings\Attributes\PropertyStatusModel;
-use App\Models\Listings\Attributes\PropertyTypesModel;
+use App\Models\Listings\Attributes\PropertyTypeModel;
 
 class ListingsAttributesController extends BaseController
 {
@@ -26,7 +26,7 @@ class ListingsAttributesController extends BaseController
             return redirect()->to('settings')->with('errors', 'You are not authorized to view this page');
         }
 
-        $propertyTypeModel = new PropertyTypesModel();
+        $propertyTypeModel = new PropertyTypeModel();
         $propertyType = $propertyTypeModel->findAll();
 
         return view('template/header') . view('settings/listings-attributes', [

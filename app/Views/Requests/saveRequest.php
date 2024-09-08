@@ -1,11 +1,11 @@
 <div class="container-main">
 
     <div class="flex flex-row ">
-        <a href="/requests" class="my-auto cursor-pointer">
+        <button onclick="window.history.back()" class="my-auto cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
             </svg>
-        </a>
+        </button>
         <?php if ($method == 'NEW_REQUEST') : ?>
             <h2 class="main-title-page">Add Request</h2>
         <?php elseif ($method == "UPDATE_REQUEST") : ?>
@@ -83,14 +83,13 @@
                 <div>
 
                     <h3 class="secondary-title">Payment Plan</h3>
-                    <input type="hidden" name="payment_plan_id" id="payment_plan_id" required><br>
 
                     <div class="flex flex-col w-full mb-4">
                         <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
                             'placeholder' => 'Search Payment Plan',
                             'data' => $paymentPlans,
                             'selectedId' => "payment_plan_id",
-                            'selectedName' => 'PaymentPlan'
+                            'selectedName' => 'payment_plan'
                         ]) ?>
                     </div>
                 </div>
@@ -192,7 +191,7 @@
 
                 <div>
                     <label class="main-label" for="comments">Comments:</label>
-                    <textarea class="secondary-input" name="comments" id="comments"></textarea><br>
+                    <textarea class="secondary-input" rows="5" name="comments" id="comments" ></textarea><br>
                 </div>
 
                 <?php if ($method == 'UPDATE_REQUEST') : ?>
@@ -340,8 +339,8 @@
 
 
             if (data.payment_plan_id && data.payment_plan_name) {
-                document.getElementById('result_id_payment_plan_id').value = data.payment_plan_id;
-                document.getElementById('search_payment_plan_id').value = data.payment_plan_name;
+                document.getElementById('result_id_payment_plan').value = data.payment_plan_id;
+                document.getElementById('search_payment_plan').value = data.payment_plan_name;
 
             }
 
