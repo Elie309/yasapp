@@ -7,7 +7,7 @@ use App\Models\Listings\Attributes\PropertyTypeModel;
 use \App\Entities\Listings\Attributes\PropertyTypeEntity;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
-class PropertyTypesController extends BaseController
+class PropertyTypeController extends BaseController
 {
 
     public function save()

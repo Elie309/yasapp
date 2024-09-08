@@ -20,7 +20,7 @@
         </a>
         <a href="<?= base_url('settings/listings-attributes/property-types') ?>"
             class="tabBtn w-1/2 py-4 text-center font-medium text-gray-700  focus:outline-none
-            <?= $id == "propertyTypes" ? 'bg-gray-200' : 'bg-gray-100' ?>">
+            <?= $id == "propertyType" ? 'bg-gray-200' : 'bg-gray-100' ?>">
             Property Type
         </a>
         <a href="<?= base_url('settings/listings-attributes/apartment-gender') ?>"
@@ -32,7 +32,7 @@
 
     <div>
         <?php
-        $tableHeaders_PropertyTypes = [
+        $tableHeaders_PropertyType = [
             "property_type_id" => "ID",
             "property_type_name" => "Property Type",
         ];
@@ -55,10 +55,10 @@
                 'propertyStatus' => $propertyStatus,
             ]) ?>
 
-        <?php elseif ($id == "propertyTypes") : ?>
+        <?php elseif ($id == "propertyType") : ?>
 
-          <?= view_cell("\App\Cells\Listings\PropertyTypes\PropertyTypesCell::render", [
-            'tableHeaders' => $tableHeaders_PropertyTypes,
+          <?= view_cell("\App\Cells\Listings\PropertyType\PropertyTypeCell::render", [
+            'tableHeaders' => $tableHeaders_PropertyType,
             'propertyType' => $propertyType,
           ]) ?>
 

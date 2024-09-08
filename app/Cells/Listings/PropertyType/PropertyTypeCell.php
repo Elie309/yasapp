@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Cells\Listings\PropertyTypes;
+namespace App\Cells\Listings\PropertyType;
 
 use CodeIgniter\View\Cells\Cell;
 
-class PropertyTypesCell extends Cell
+class PropertyTypeCell extends Cell
 {
     public $tableHeaders;
     public $propertyType;
