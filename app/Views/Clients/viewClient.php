@@ -22,40 +22,40 @@
         <div class="flex flex-col w-full">
             <table id="client_personal_table">
                 <tr>
-                    <td>Firstname:</td>
+                    <th>Firstname:</th>
                     <td><?= $client->client_firstname ?></td>
                 </tr>
                 <tr>
-                    <td>Lastname:</td>
+                    <th>Lastname:</th>
                     <td><?= $client->client_lastname ?></td>
                 </tr>
                 <tr>
-                    <td>Email:</td>
+                    <th>Email:</th>
                     <td><?= $client->client_email ?></td>
                 </tr>
                 <tr>
-                    <td>Employee:</td>
+                    <th>Employee:</th>
                     <td><?= $client->employee_name ?></td>
                 </tr>
                 <tr>
-                    <td>visibility:</td>
+                    <th>visibility:</th>
                     <td><?= $client->client_visibility ?></td>
                 </tr>
 
                 <?php foreach ($phones as $key => $phone) : ?>
                     <tr>
-                        <td>Phone number (<?= $key +1 ?>):</td>
+                        <th>Phone number (<?= $key +1 ?>):</th>
                         <td><?= $phone->country_code ?> <?= $phone->phone_number ?></td>
                     </tr>
                 <?php endforeach; ?>
 
                 <tr>
-                    <td>Created at:</td>
+                    <th>Created at:</th>
                     <td><?= $client->created_at ?></td>
                 </tr>
 
                 <tr>
-                    <td>Updated at:</td>
+                    <th>Updated at:</th>
                     <td><?= $client->updated_at ?></td>
                 </tr>
             </table>
@@ -88,7 +88,7 @@
         border: 1px solid lightgray;
         padding: 8px;
         text-align: left;
-        background-color: #f2f2f2;
+        width: 250px;
         font-weight: bold;
     }
 </style>
