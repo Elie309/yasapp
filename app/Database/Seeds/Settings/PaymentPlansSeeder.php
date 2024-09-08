@@ -21,6 +21,6 @@ class PaymentPlansSeeder extends Seeder
        ];
 
 
-         $this->db->table('paymentplans')->insertBatch($data);
+         $this->db->table('payment_plans')->insertBatch($data);
     }
 }

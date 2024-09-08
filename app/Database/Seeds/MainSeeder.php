@@ -15,5 +15,6 @@ class MainSeeder extends Seeder
         $this->call('App\Database\Seeds\Settings\ListingsAttributesSeeder');
         $this->call('App\Database\Seeds\ClientSeeder');
         $this->call('App\Database\Seeds\RequestSeeder');
+        $this->call('App\Database\Seeds\PropertySeeder');
     }
 }

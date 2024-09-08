@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS Cities (
 );
 
 -- PaymentPlans TABLE
-CREATE TABLE IF NOT EXISTS PaymentPlans (
+CREATE TABLE IF NOT EXISTS payment_plans (
     payment_plan_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     payment_plan_name VARCHAR(255) NOT NULL UNIQUE
 );
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS Requests (
 
     FOREIGN KEY (client_id) REFERENCES Clients(client_id),
     FOREIGN KEY (city_id) REFERENCES Cities(city_id),
-    FOREIGN KEY (payment_plan_id) REFERENCES PaymentPlans(payment_plan_id),
+    FOREIGN KEY (payment_plan_id) REFERENCES payment_plans(payment_plan_id),
     FOREIGN KEY (currency_id) REFERENCES Currencies(currency_id),
 
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
@@ -178,7 +178,7 @@ CREATE TABLE properties (
 
     FOREIGN KEY (client_id) REFERENCES Clients(client_id),
     FOREIGN KEY (city_id) REFERENCES Cities(city_id),
-    FOREIGN KEY (payment_plan_id) REFERENCES PaymentPlans(payment_plan_id),
+    FOREIGN KEY (payment_plan_id) REFERENCES payment_plans(payment_plan_id),
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
     FOREIGN KEY (property_type_id) REFERENCES property_types(property_type_id),
     FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id)

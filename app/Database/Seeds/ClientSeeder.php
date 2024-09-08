@@ -13,7 +13,7 @@ class ClientSeeder extends Seeder
         $faker = Factory::create();
 
         $clients = [];
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $clients[] = [
                 'client_firstname' => $faker->firstName,
                 'client_lastname' => $faker->lastName,

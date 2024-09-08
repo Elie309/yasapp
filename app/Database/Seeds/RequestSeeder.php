@@ -14,7 +14,7 @@ class RequestSeeder extends Seeder
         // Get existing IDs from related tables
         $clientIds = $this->db->table('clients')->select('client_id')->get()->getResultArray();
         $cityIds = $this->db->table('cities')->select('city_id')->get()->getResultArray();
-        $paymentPlanIds = $this->db->table('paymentplans')->select('payment_plan_id')->get()->getResultArray();
+        $paymentPlanIds = $this->db->table('payment_plans')->select('payment_plan_id')->get()->getResultArray();
         $currencyIds = $this->db->table('currencies')->select('currency_id')->get()->getResultArray();
         $employeeIds = $this->db->table('employees')->select('employee_id')->get()->getResultArray();
 
