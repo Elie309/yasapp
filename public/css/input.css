@@ -61,7 +61,7 @@
     }
 
     .pagination-container {
-        @apply mb-8 w-full;
+        @apply my-8 w-full;
     }
 
     .pagination-container ul {
