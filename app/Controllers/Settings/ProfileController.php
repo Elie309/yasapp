@@ -16,7 +16,7 @@ class ProfileController extends BaseController
         $employee = $employeeModel->where('employee_name', $this->session->get('name'))->where('employee_status', 'active')->first();
 
 
-        return view("template/header") . view('Settings/profile', ['employee' => $employee]) . view("template/footer");
+        return view("template/header") . view('settings/profile', ['employee' => $employee]) . view("template/footer");
     }
 
 

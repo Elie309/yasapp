@@ -25,7 +25,7 @@ class ClientsController extends BaseController
         $pager = $clientModel->pager;
 
 
-        return view('template/header') . view('Clients/clients', ['employee_id' => $employee_id, 'clients' => $clients, 'pager' => $pager]) . view('template/footer');
+        return view('template/header') . view('clients/clients', ['employee_id' => $employee_id, 'clients' => $clients, 'pager' => $pager]) . view('template/footer');
     }
 
 
@@ -38,7 +38,7 @@ class ClientsController extends BaseController
         $countriesModel = new CountryModel();
         $countries = $countriesModel->findAll();
 
-         return view('template/header')  . view('Clients/addClient', ['employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
+         return view('template/header')  . view('clients/addClient', ['employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
     }
 
     public function addClient()
@@ -122,7 +122,7 @@ class ClientsController extends BaseController
         $phones = $phoneModel->where('client_id', $id)->findAll();
         $countries = $countriesModel->findAll();
 
-        return view('template/header')  . view('Clients/editClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
+        return view('template/header')  . view('clients/editClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
     }
 
     public function updateClient($id)
@@ -212,7 +212,7 @@ class ClientsController extends BaseController
             ->where('phones.client_id', $id)
             ->findAll();
 
-            return view('template/header') . view('Clients/viewClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id]) . view('template/footer');
+            return view('template/header') . view('clients/viewClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id]) . view('template/footer');
     }
 
     public function export(){
