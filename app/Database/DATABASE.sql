@@ -1,6 +1,6 @@
 
 -- Employee TABLE
-CREATE TABLE IF NOT EXISTS Employees (
+CREATE TABLE IF NOT EXISTS employees (
     employee_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     employee_name VARCHAR(100) NOT NULL UNIQUE,
@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS Employees (
 );
 
 
--- Clients TABLE 
-CREATE TABLE IF NOT EXISTS Clients (
+-- clients TABLE 
+CREATE TABLE IF NOT EXISTS clients (
     client_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     client_firstname VARCHAR(255) NOT NULL,
     client_lastname  VARCHAR(255) NOT NULL,
@@ -33,19 +33,19 @@ CREATE TABLE IF NOT EXISTS Clients (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 
 );
 
--- Countries TABLE 
-CREATE TABLE IF NOT EXISTS Countries (
+-- countries TABLE 
+CREATE TABLE IF NOT EXISTS countries (
     country_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     country_name VARCHAR(255) NOT NULL UNIQUE,
     country_code VARCHAR(5) NOT NULL UNIQUE
 );
 
--- Phones TABLE 
-CREATE TABLE IF NOT EXISTS Phones (
+-- phones TABLE 
+CREATE TABLE IF NOT EXISTS phones (
 
     phone_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
@@ -53,34 +53,34 @@ CREATE TABLE IF NOT EXISTS Phones (
     country_id INT UNSIGNED NOT NULL,
     phone_number VARCHAR(20) NOT NULL,
     
-    FOREIGN KEY (client_id) REFERENCES Clients(client_id),
-    FOREIGN KEY (country_id) REFERENCES Countries(country_id)
+    FOREIGN KEY (client_id) REFERENCES clients(client_id),
+    FOREIGN KEY (country_id) REFERENCES countries(country_id)
 
 );
 
 
--- Regions TABLE 
-CREATE TABLE IF NOT EXISTS Regions (
+-- regions TABLE 
+CREATE TABLE IF NOT EXISTS regions (
     region_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     country_id INT UNSIGNED NOT NULL,
     region_name VARCHAR(255) NOT NULL UNIQUE,
-    FOREIGN KEY (country_id) REFERENCES Countries(country_id)
+    FOREIGN KEY (country_id) REFERENCES countries(country_id)
 );
 
--- Subregions TABLE 
-CREATE TABLE IF NOT EXISTS Subregions (
+-- subregions TABLE 
+CREATE TABLE IF NOT EXISTS subregions (
     subregion_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     region_id INT UNSIGNED NOT NULL,
     subregion_name VARCHAR(255) NOT NULL UNIQUE,
-    FOREIGN KEY (region_id) REFERENCES Regions(region_id)
+    FOREIGN KEY (region_id) REFERENCES regions(region_id)
 );
 
--- Cities TABLE 
-CREATE TABLE IF NOT EXISTS Cities (
+-- cities TABLE 
+CREATE TABLE IF NOT EXISTS cities (
     city_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     subregion_id INT UNSIGNED NOT NULL,
     city_name VARCHAR(255) NOT NULL UNIQUE,
-    FOREIGN KEY (subregion_id) REFERENCES Subregions(subregion_id)
+    FOREIGN KEY (subregion_id) REFERENCES subregions(subregion_id)
 );
 
 -- PaymentPlans TABLE
@@ -89,8 +89,8 @@ CREATE TABLE IF NOT EXISTS payment_plans (
     payment_plan_name VARCHAR(255) NOT NULL UNIQUE
 );
 
--- Currencies TABLE 
-CREATE TABLE IF NOT EXISTS Currencies (
+-- currencies TABLE 
+CREATE TABLE IF NOT EXISTS currencies (
     currency_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     currency_code VARCHAR(3) NOT NULL UNIQUE,
     currency_name VARCHAR(255) NOT NULL UNIQUE,
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS Currencies (
 
 
 -- Requests TABLE
-CREATE TABLE IF NOT EXISTS Requests (
+CREATE TABLE IF NOT EXISTS request (
     request_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     client_id INT UNSIGNED NOT NULL,
@@ -123,12 +123,12 @@ CREATE TABLE IF NOT EXISTS Requests (
     deleted_at TIMESTAMP NULL DEFAULT NULL,
 
 
-    FOREIGN KEY (client_id) REFERENCES Clients(client_id),
-    FOREIGN KEY (city_id) REFERENCES Cities(city_id),
+    FOREIGN KEY (client_id) REFERENCES clients(client_id),
+    FOREIGN KEY (city_id) REFERENCES cities(city_id),
     FOREIGN KEY (payment_plan_id) REFERENCES payment_plans(payment_plan_id),
-    FOREIGN KEY (currency_id) REFERENCES Currencies(currency_id),
+    FOREIGN KEY (currency_id) REFERENCES currencies(currency_id),
 
-    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id)
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
 
 
@@ -176,10 +176,10 @@ CREATE TABLE properties (
     deleted_at TIMESTAMP NULL DEFAULT NULL,
     
 
-    FOREIGN KEY (client_id) REFERENCES Clients(client_id),
-    FOREIGN KEY (city_id) REFERENCES Cities(city_id),
+    FOREIGN KEY (client_id) REFERENCES clients(client_id),
+    FOREIGN KEY (city_id) REFERENCES cities(city_id),
     FOREIGN KEY (payment_plan_id) REFERENCES payment_plans(payment_plan_id),
-    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
     FOREIGN KEY (property_type_id) REFERENCES property_type(property_type_id),
     FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id)
 );

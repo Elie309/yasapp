@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class CurrenciesModel extends Model
 {
-    protected $table            = 'Currencies';
+    protected $table            = 'currencies';
     protected $primaryKey       = 'currency_id';
     protected $useAutoIncrement = true;
     protected $returnType       = \App\Entities\Settings\CurrenciesEntity::class;
