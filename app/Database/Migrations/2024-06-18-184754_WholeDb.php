@@ -25,6 +25,8 @@ class WholeDb extends Migration
 
     public function down()
     {
-       //TODO: DOWN Method
+        // Drop the whole database
+        // We would rather not do this in production
+        //$this->db->query('DROP DATABASE IF EXISTS `yasapp`');
     }
 }
