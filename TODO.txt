@@ -1,6 +1,15 @@
 -> modify the entity and model to fill and validate separately VERY IMPORTANT
 -> add listing and requests for client
-->Create dashboard with new requests and new public clients
+->Create dashboard with new requests
+
+
+1) No private / public
+2) Request -> Push notifications
+3) Request Priority urgent/normal/low
+4) Request State / Green / yellow / red
+5) Request notifications once changed
+6) Request & Client only one side
+
 
 DONE:
 
