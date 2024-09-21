@@ -107,16 +107,29 @@
                     <?php endif; ?>
 
                     <div>
-                        <label class="main-label" for="request_visibility">Request Visibility:</label>
-                        <select class="secondary-input" name="request_visibility" id="request_visibility" required>
-                            <?php foreach ($requestVisibilities as $requestVisibility) : ?>
-                                <?php if ($requestVisibility == 'public') : ?>
-                                    <option value="<?= $requestVisibility ?>" selected><?= ucfirst($requestVisibility) ?></option>
-                                <?php else : ?>
-                                    <option value="<?= $requestVisibility ?>"><?= ucfirst($requestVisibility) ?></option>
+                        <label class="main-label" for="agent">Agent:</label>
+                       
+                        <select class="secondary-input" name="agent_id" id="agent" required>
+
+                            <?php foreach ($agents as $agent) : ?>
+
+                                <?php if ($method == 'NEW_REQUEST') : ?>
+                                    <?php if ($agent->agent_id == $employee_id) : ?>
+                                        <option value="<?= $agent->agent_id ?>" selected><?= $agent->agent_name ?></option>
+                                    <?php else : ?>
+                                        <option value="<?= $agent->agent_id ?>"><?= $agent->agent_name ?></option>
+                                    <?php endif; ?>
+                                <?php elseif ($method == "UPDATE_REQUEST") : ?>
+
+                                    <?php if ($agent->agent_id == $request->agent_id) : ?>
+                                        <option value="<?= $agent->agent_id ?>" selected><?= $request->agent_name ?></option>
+                                    <?php else : ?>
+                                        <option value="<?= $agent->agent_id ?>"><?= $agent->agent_name ?></option>
+                                    <?php endif; ?>
                                 <?php endif; ?>
+
                             <?php endforeach; ?>
-                        </select><br>
+                        </select>
                     </div>
                 </div>
 
@@ -191,7 +204,7 @@
 
                 <div>
                     <label class="main-label" for="comments">Comments:</label>
-                    <textarea class="secondary-input" rows="5" name="comments" id="comments" ></textarea><br>
+                    <textarea class="secondary-input" rows="5" name="comments" id="comments"></textarea><br>
                 </div>
 
                 <?php if ($method == 'UPDATE_REQUEST') : ?>
@@ -248,24 +261,24 @@
 
     </div>
 
-    <?php if($method === 'UPDATE_REQUEST') : ?>
-    <div popover id="delete-popover" class="popover max-w-md">
-        <div class="flex flex-col w-full justify-center">
-            <h3 class="secondary-title text-center">Are you sure you want to delete this request?</h3>
-            <div class="grid grid-cols-2 gap-4 w-full my-4">
-                <div class=" w-full">
-                    <button type="button" class="primary-btn w-full cursor-pointer" onclick="closePopover('delete-popover')">Cancel</button>
-                </div>
-                <div class="w-full">
-                    <button onclick="window.location.href='/requests/delete/<?= $request->request_id ?>'"
-                        class="secondary-btn w-full cursor-pointer text-center">
-                        Confirm
-                    </button>
-                </div>
+    <?php if ($method === 'UPDATE_REQUEST') : ?>
+        <div popover id="delete-popover" class="popover max-w-md">
+            <div class="flex flex-col w-full justify-center">
+                <h3 class="secondary-title text-center">Are you sure you want to delete this request?</h3>
+                <div class="grid grid-cols-2 gap-4 w-full my-4">
+                    <div class=" w-full">
+                        <button type="button" class="primary-btn w-full cursor-pointer" onclick="closePopover('delete-popover')">Cancel</button>
+                    </div>
+                    <div class="w-full">
+                        <button onclick="window.location.href='/requests/delete/<?= $request->request_id ?>'"
+                            class="secondary-btn w-full cursor-pointer text-center">
+                            Confirm
+                        </button>
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
     <?php endif; ?>
 
     <script>
@@ -312,6 +325,11 @@
                 document.getElementById('client_phone').value = data.client_phone;
             }
 
+            if (data.employee_id) {
+                document.getElementById('employee_id').value = data.employee_id;
+            }
+
+
             if (city) {
                 document.getElementById('city_id').value = city.city_id;
 
@@ -355,10 +373,6 @@
 
             if (data.request_priority) {
                 document.getElementById('request_priority').value = data.request_priority;
-            }
-
-            if(data.request_visibility) {
-                document.getElementById('request_visibility').value = data.request_visibility;
             }
 
             if (data.request_state) {

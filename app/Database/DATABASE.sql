@@ -106,10 +106,10 @@ CREATE TABLE IF NOT EXISTS requests (
     currency_id INT UNSIGNED NOT NULL,
 
     employee_id INT UNSIGNED NOT NULL,
+    agent_id INT UNSIGNED NULL,
 
     request_location TEXT,
     request_budget INT NOT NULL,
-    request_visibility ENUM('public', 'private') NOT NULL DEFAULT 'public',
     request_state ENUM('pending', 'fulfilled', 'rejected', 'cancelled') NOT NULL DEFAULT 'pending',
     request_priority ENUM('low', 'medium', 'high') NOT NULL DEFAULT 'medium',
     request_type ENUM('normal', 'urgent') NOT NULL DEFAULT 'normal',
@@ -126,7 +126,8 @@ CREATE TABLE IF NOT EXISTS requests (
     FOREIGN KEY (payment_plan_id) REFERENCES payment_plans(payment_plan_id),
     FOREIGN KEY (currency_id) REFERENCES currencies(currency_id),
 
-    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
+    FOREIGN KEY (agent_id) REFERENCES employees(employee_id)
 );
 
 

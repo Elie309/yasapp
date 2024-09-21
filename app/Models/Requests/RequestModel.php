@@ -18,7 +18,7 @@ class RequestModel extends Model
         'payment_plan_id',
         'currency_id',
         'employee_id',
-        'request_visibility',
+        'agent_id',
         'request_location',
         'request_budget',
         'request_state',
@@ -37,6 +37,7 @@ class RequestModel extends Model
         'payment_plan_id' => 'integer',
         'currency_id' => 'integer',
         'employee_id' => 'integer',
+        'agent_id' => 'integer',
         'request_budget' => 'float',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -58,7 +59,7 @@ class RequestModel extends Model
         'payment_plan_id' => 'required|integer',
         'currency_id' => 'required|integer',
         'employee_id' => 'required|integer',
-        'request_visibility' => 'required|in_list[public,private]',
+        'agent_id' => 'permit_empty|integer',
         'request_location' => 'permit_empty|string',
         'request_budget' => 'required|integer',
         'request_state' => 'required|in_list[pending,fulfilled,rejected,cancelled]',
@@ -89,9 +90,8 @@ class RequestModel extends Model
             'required' => 'Employee is required',
             'integer' => 'Employee is invalid'
         ],
-        'request_visibility' => [
-            'required' => 'Request Visibility is required',
-            'in_list' => 'Request Visibility must be one of: public, private'
+        'agent_id' => [
+            'integer' => 'Agent is invalid'
         ],
         'request_location' => [
             'string' => 'Request Location must be a string'

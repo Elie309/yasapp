@@ -46,17 +46,6 @@
             </div>
 
             <div class="flex flex-col md:flex-row mb-8 justify-center">
-                <div class="grid grid-cols-2 my-2 md:flex md:flex-row md:my-0 md:mr-4">
-                    <!-- Request Visibility -->
-                    <label for="request_visibility" class="main-label mr-2 text-wrap">Request Visibility:</label>
-                    <select name="request_visibility" id="request_visibility" class="secondary-input">
-                        <option value="" <?= isset($_GET['requestVisibility']) ? '' : 'selected' ?>>All</option>
-                        <?php foreach ($requestVisibilities as $requestVisibility): ?>
-                            <option value="<?= $requestVisibility ?>"
-                                <?= isset($_GET['requestVisibility']) && $_GET['requestVisibility'] === $requestVisibility ? 'selected' : '' ?>><?= $requestVisibility ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
                 <div class="grid grid-cols-2 my-2 md:flex md:flex-row md:my-0">
                     <label for="start_date" class="main-label mr-2 text-wrap">Start Date:</label>
                     <input type="date" name="start_date" id="start_date"
@@ -78,7 +67,7 @@
             'city_name' => 'City',
             'payment_plan_name' => 'Payment Plan',
             'employee_name' => 'Employee',
-            'request_visibility' => 'Visibility',
+            'agent_name' => 'Agent',
             'request_fees' => 'Budget',
             'request_state' => 'State',
             'request_priority' => 'Priority',
@@ -132,7 +121,6 @@
         const requestPriority = document.getElementById('request_priority');
         const startDate = document.getElementById('start_date');
         const endDate = document.getElementById('end_date');
-        const requestVisibility = document.getElementById('request_visibility');
 
 
         requestType.addEventListener('change', function() {

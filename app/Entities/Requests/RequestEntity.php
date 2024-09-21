@@ -17,6 +17,7 @@ class RequestEntity extends Entity
         'payment_plan_id' => 'integer',
         'currency_id' => 'integer',
         'employee_id' => 'integer',
+        'agent_id' => 'integer',
         'request_budget' => 'float',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -48,8 +49,8 @@ class RequestEntity extends Entity
             $errors[] = 'Employee is invalid';
         }
 
-        if (empty($this->request_visibility) || !is_string($this->request_visibility)) {
-            $errors[] = 'Request visibility is invalid';
+        if (empty($this->agent_id) || !is_int($this->agent_id) || $this->agent_id < 1) {
+            $errors[] = 'Employee is invalid';
         }
 
         if(!is_string($this->request_location)) {

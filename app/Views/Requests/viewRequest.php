@@ -37,8 +37,9 @@
                 <td><?= $request->employee_name ?></td>
             </tr>
             <tr>
-                <th>Request Visibility:</th>
-                <td><?= $request->request_visibility ?></td>
+                <th>Agent Name:</th>
+                <td><?= $request->agent_name ?></td>
+            </tr>
             <tr>
                 <th>Payment Plan:</th>
                 <td><?= $request->payment_plan_name ?></td>

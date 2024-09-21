@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Entities\Requests\RequestEntity;
 use App\Models\Requests\RequestModel;
 use App\Models\Settings\CurrenciesModel;
+use App\Models\Settings\EmployeeModel;
 use App\Models\Settings\Location\CityModel;
 use App\Models\Settings\PaymentPlansModel;
 
@@ -57,6 +58,10 @@ class RequestController extends BaseController
 
         $paymentPlans = new PaymentPlansModel();
         $paymentPlans = $paymentPlans->findAll();
+        
+        $employeeModel = new EmployeeModel();
+        $agents = $employeeModel->select('employee_id as agent_id, employee_name as agent_name')
+            ->findAll();
 
         //Transform the id and name
         $paymentPlans = array_map(function ($paymentPlan) {
@@ -72,6 +77,7 @@ class RequestController extends BaseController
                 'method' => 'NEW_REQUEST',
                 'employee_id' => $employee_id,
                 'employee_name' => $name,
+                'agents' => $agents,
                 'currencies' => $currencies,
                 'paymentPlans' => $paymentPlans,
                 'requestTypes' => $this->requestTypes,
@@ -132,6 +138,8 @@ class RequestController extends BaseController
             CONCAT(requests.request_budget, " ", currencies.currency_symbol) AS request_fees,
             employees.employee_id,
             employees.employee_name,
+            agents.employee_id as agent_id,
+            agents.employee_name as agent_name,
             GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers'
         )
             ->join('clients', 'requests.client_id = clients.client_id')
@@ -141,6 +149,7 @@ class RequestController extends BaseController
             ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
+            ->join('employees as agents', 'requests.agent_id = agents.employee_id')
             ->where('requests.request_id', $id);
 
         $request = $request->groupBy('requests.request_id')->first();
@@ -148,12 +157,10 @@ class RequestController extends BaseController
             return redirect()->back()->with('errors', ['You are not allowed to view this request']);
         }
 
-        // Check if the visibility is public
-        if ($request->request_visibility !== 'public') {
-            if ($request->employee_id !== $employee_id) {
-                //Redirect to requests page
-                return redirect()->to('/requests')->with('errors', ['You are not allowed to view this request']);
-            }
+
+        if ($request->employee_id !== $employee_id && $request->agent_id !== $employee_id) {
+            //Redirect to requests page
+            return redirect()->to('/requests')->with('errors', ['You are not allowed to view this request']);
         }
 
 
@@ -185,7 +192,9 @@ class RequestController extends BaseController
             payment_plans.payment_plan_name,
             currencies.currency_symbol,
             employees.employee_id,
-            employees.employee_name
+            employees.employee_name,
+            agents.employee_id as agent_id,
+            agents.employee_name as agent_name,
             '
         )
             ->join('clients', 'requests.client_id = clients.client_id')
@@ -194,9 +203,11 @@ class RequestController extends BaseController
             ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
-            ->groupStart()
+            ->join('employees as agents', 'requests.agent_id = agents.employee_id')
             ->where('requests.request_id', $id)
+            ->groupStart()
             ->where('requests.employee_id', $employee_id)
+            ->orWhere('requests.agent_id', $employee_id)
             ->groupEnd()
             ->groupBy('requests.request_id')
             ->first();
@@ -223,6 +234,10 @@ class RequestController extends BaseController
         $paymentPlans = new PaymentPlansModel();
         $paymentPlans = $paymentPlans->findAll();
 
+        $employeeModel = new EmployeeModel();
+        $agents = $employeeModel->select('employee_id as agent_id, employee_name as agent_name')
+            ->findAll();
+
         $paymentPlans = array_map(function ($paymentPlan) {
             return [
                 'id' => $paymentPlan->payment_plan_id,
@@ -236,6 +251,7 @@ class RequestController extends BaseController
                 'method' => 'UPDATE_REQUEST',
                 'employee_id' => $employee_id,
                 'employee_name' => $name,
+                'agents' => $agents,
                 'city' => $city,
                 'request' => $request,
                 'currencies' => $currencies,
@@ -269,6 +285,7 @@ class RequestController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $requestModel->errors());
             }
         } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
             return redirect()->back()->withInput()->with('errors', ['An error occurred']);
         }
     }
@@ -280,11 +297,11 @@ class RequestController extends BaseController
 
         $request = $requestModel->find($id);
 
-        if(!$request){
+        if (!$request) {
             return redirect()->back()->with('errors', ['Request not found']);
         }
 
-        if($request->employee_id !== $this->session->get('id')){
+        if ($request->employee_id !== $this->session->get('id')) {
             return redirect()->back()->with('errors', ['You are not allowed to delete this request']);
         }
 
@@ -308,20 +325,21 @@ class RequestController extends BaseController
         $requests = $requests->findAll();
 
         $filename = 'requests_export_' . date('Ymd') . '.xlsx';
-        $header = ['request_id' => 'Request ID', 
-        'client_name' => 'Client Name', 
-        'city_name' => 'City Name', 
-        'payment_plan_name' => 'Payment Plan Name',
-        'request_visibility' => 'Visibility',
-        'request_budget' => 'Request Budget', 
-        'request_type' => 'Request Type',
-        'request_state' => 'Request State',
-        'request_priority' => 'Request Priority',
-        'employee_name' => 'Employee Name', 
-        'comments'=> 'Comments',
-        'created_at' => 'Created At',
-        'updated_at' => 'Updated At'
-    ];
+        $header = [
+            'request_id' => 'Request ID',
+            'client_name' => 'Client Name',
+            'city_name' => 'City Name',
+            'payment_plan_name' => 'Payment Plan Name',
+            'request_budget' => 'Request Budget',
+            'request_type' => 'Request Type',
+            'request_state' => 'Request State',
+            'request_priority' => 'Request Priority',
+            'employee_name' => 'Employee Name',
+            'agent_name' => 'Agent Name',
+            'comments' => 'Comments',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At'
+        ];
 
         export_to_excel($filename, $header, $requests);
     }
@@ -343,8 +361,6 @@ class RequestController extends BaseController
 
         $endDateParam = esc($this->request->getVar('endDate'));
 
-        $requestVisibilityParam = esc($this->request->getVar('requestVisibility'));
-
         $param = [
             'city_name' => 'cities.city_name',
             'client_name' => 'clients.client_firstname',
@@ -360,16 +376,18 @@ class RequestController extends BaseController
                     cities.city_name, 
                     payment_plans.payment_plan_name, 
                     CONCAT(FORMAT(requests.request_budget, 0), " ", currencies.currency_symbol) AS request_fees,
-                    employees.employee_name
+                    employees.employee_name,
+                    agents.employee_name as agent_name,
                     ')
             ->join('clients', 'requests.client_id = clients.client_id')
             ->join('cities', 'requests.city_id = cities.city_id')
             ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
+            ->join('employees as agents', 'requests.agent_id = agents.employee_id')
             ->groupStart()
             ->where('requests.employee_id', $employee_id)
-            ->orWhere('requests.request_visibility', 'public')
+            ->orWhere('requests.agent_id', $employee_id)
             ->groupEnd()
             ->groupBy('requests.request_id');
 
@@ -411,10 +429,6 @@ class RequestController extends BaseController
 
         if (!empty($endDateParam)) {
             $request = $request->where('requests.created_at <=', $endDateParam);
-        }
-
-        if (!empty($requestVisibilityParam)) {
-            $request = $request->where('requests.request_visibility', $requestVisibilityParam);
         }
 
 
