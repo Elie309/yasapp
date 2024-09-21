@@ -28,7 +28,6 @@ class ClientAPIController extends BaseController
             ->groupEnd()
             ->groupStart()
             ->where('Clients.employee_id', $employee_id)
-            ->orWhere('Clients.client_visibility', 'public')
             ->groupEnd()
             ->groupBy('Clients.client_id')
             ->findAll();

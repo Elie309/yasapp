@@ -13,7 +13,7 @@ class ClientModel extends Model
     protected $returnType       = \App\Entities\Clients\ClientEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['client_id', 'client_firstname', 'client_lastname', 'client_email', 'client_visibility', 'employee_id', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['client_id', 'client_firstname', 'client_lastname', 'client_email', 'employee_id', 'created_at', 'updated_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -29,7 +29,6 @@ class ClientModel extends Model
         'client_firstname' => 'required|string|max_length[255]',
         'client_lastname' => 'required|string|max_length[255]',
         'client_email' => 'valid_email|permit_empty',
-        'client_visibility' => 'required|in_list[public,private]',
         'employee_id' => 'required|is_natural_no_zero',
     ];
     protected $validationMessages   = [
@@ -45,10 +44,6 @@ class ClientModel extends Model
         ],
         'client_email' => [
             'valid_email' => 'The client email must be a valid email address.',
-        ],
-        'client_visibility' => [
-            'required' => 'The client visibility is required.',
-            'in_list' => 'The client visibility must be either public or private.',
         ],
         'employee_id' => [
             'required' => 'The employee id is required.',

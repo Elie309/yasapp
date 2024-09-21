@@ -14,7 +14,6 @@ class ClientEntity extends Entity
         'client_firstname' => 'string',
         'client_lastname' => 'string',
         'client_email' => 'string',
-        'client_visibility' => 'string',
     ];
 
     public function getFullName(): string

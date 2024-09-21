@@ -19,7 +19,6 @@ class ClientSeeder extends Seeder
                 'client_lastname' => $faker->lastName,
                 'client_email' => $faker->email,
                 'employee_id' => $faker->numberBetween(1, 3),
-                'client_visibility' => $faker->randomElement(['public', 'private']),
                 'created_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
                 'updated_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
             ];

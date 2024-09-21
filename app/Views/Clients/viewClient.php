@@ -37,10 +37,6 @@
                     <th>Employee:</th>
                     <td><?= $client->employee_name ?></td>
                 </tr>
-                <tr>
-                    <th>visibility:</th>
-                    <td><?= $client->client_visibility ?></td>
-                </tr>
 
                 <?php foreach ($phones as $key => $phone) : ?>
                     <tr>

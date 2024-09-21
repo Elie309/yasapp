@@ -49,7 +49,6 @@ class ClientsController extends BaseController
         $firstname = $this->request->getPost('client_firstname');
         $lastname = $this->request->getPost('client_lastname');
         $email = $this->request->getPost('client_email');
-        $visibility = $this->request->getPost('client_visibility');
         $phones = $this->request->getPost('phone_number');
         $countries = $this->request->getPost('country_id');
 
@@ -63,7 +62,6 @@ class ClientsController extends BaseController
             'client_firstname' => $firstname,
             'client_lastname' => $lastname,
             'client_email' => $email,
-            'client_visibility' => $visibility,
         ];
 
         if ($clientModel->save($clientData)) {
@@ -135,7 +133,6 @@ class ClientsController extends BaseController
         $firstname = $this->request->getPost('client_firstname');
         $lastname = $this->request->getPost('client_lastname');
         $email = $this->request->getPost('client_email');
-        $visibility = $this->request->getPost('client_visibility');
         $phones = $this->request->getPost('phone_number');
         $countries = $this->request->getPost('country_id');
 
@@ -146,7 +143,6 @@ class ClientsController extends BaseController
             'client_firstname' => $firstname,
             'client_lastname' => $lastname,
             'client_email' => $email,
-            'client_visibility' => $visibility,
         ];
 
         $client = $clientModel->find($id);
@@ -204,7 +200,7 @@ class ClientsController extends BaseController
             return redirect('clients')->with('errors', ['Client not found']);
         }
 
-        if($client->employee_id != $employee_id && $client->client_visibility != 'public'){
+        if($client->employee_id != $employee_id){
             return redirect('clients')->with('errors', ['You are not allowed to view this client']);
         }
         $phones = $phoneModel->select('phones.*, countries.country_code')
@@ -235,7 +231,6 @@ class ClientsController extends BaseController
             'client_lastname' => 'Lastname',
             'client_email' => 'Email',
             'phone_numbers' => 'Phone Numbers',
-            'client_visibility' => 'Visibility',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At'
         ];
@@ -259,7 +254,6 @@ class ClientsController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->groupStart()
             ->where('clients.employee_id', $employee_id)
-            ->orWhere('clients.client_visibility', 'public')
             ->groupEnd()
             ->groupBy('clients.client_id');
 
@@ -272,9 +266,6 @@ class ClientsController extends BaseController
                 ->groupEnd();
         }
 
-        if (isset($visibility) && !empty($visibility)) {
-            $clients->where('clients.client_visibility', $visibility);
-        }
 
         if (isset($created_at) && !empty($created_at)) {
             $clients->where('clients.created_at >=', $created_at . ' 00:00:00')

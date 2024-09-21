@@ -8,7 +8,6 @@
         <?php $tableHeaders = [
             'full_name' => 'Full Name',
             'client_email' => 'Email',
-            'client_visibility' => 'Visibility',
             'phone_numbers' => 'Phones',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -23,15 +22,6 @@
             <button class="secondary-btn " onclick='resetURL("clients")'>Clear Filter</button>
         </div>
         <div class="flex flex-col mb-8">
-
-            <div class="flex flex-row mb-4 w-full md:w-fit md:mx-auto">
-                    <label for="visibility" class="main-label mr-2">Visibility</label>
-                    <select name="visibility" id="visibility_select" class="secondary-input">
-                        <option value="" <?= isset($_GET['visibility']) ? '' : 'selected' ?>>All</option>
-                        <option value="public" <?= isset($_GET['visibility']) && $_GET['visibility'] === 'public' ? 'selected' : '' ?>>Public</option>
-                        <option value="private" <?= isset($_GET['visibility']) && $_GET['visibility'] === 'private' ? 'selected' : '' ?>>Private</option>
-                    </select>
-            </div>
             <div class="grid grid-cols-2 grid-rows-2 gap-2 w-full align my-4 md:flex md:flex-row md:max-w-lg md:mx-auto">
 
                 <label for="createdAt" class="main-label mr-2 align-baseline">Created from:</label>

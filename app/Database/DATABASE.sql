@@ -28,8 +28,6 @@ CREATE TABLE IF NOT EXISTS clients (
 
     employee_id INT UNSIGNED NOT NULL,
 
-    client_visibility ENUM('public', 'private') NOT NULL DEFAULT 'public',
-
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 

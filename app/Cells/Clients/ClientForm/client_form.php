@@ -46,16 +46,6 @@
             <input type="text" class="main-input" id="client_email" name="client_email">
         </div>
 
-        <!-- Visiblity -->
-
-        <div class="mt-4">
-            <label for="client_visibility" class="main-label">Visibility<span class="text-red-800">*</span></label>
-            <select class="main-input" id="client_visibility" name="client_visibility" required>
-                <option value="public">Public</option>
-                <option selected value="private">Private</option>
-            </select>
-        </div>
-
         <!-- Line -->
         <hr class="mt-8 mb-3 mx-2">
 
@@ -117,6 +107,13 @@
                 <?php if (isset($clientDataOnError)) : ?>
                     let data = JSON.parse("<?= addslashes(json_encode($clientDataOnError['post'])) ?>");
                     var client = data;
+                    var phones = [];
+                    data.phone_number.forEach((phone, index) => {
+                        phones.push({
+                            country_id: data.country_id[index],
+                            phone_number: phone
+                        });
+                    }); 
                 <?php else : ?>
                     var client = JSON.parse("<?= addslashes(json_encode($client)) ?>");
                     var phones = JSON.parse('<?= addslashes(json_encode($phones)) ?>');
@@ -127,7 +124,6 @@
                 document.getElementById('client_firstname').value = client.client_firstname;
                 document.getElementById('client_lastname').value = client.client_lastname;
                 document.getElementById('client_email').value = client.client_email;
-                document.getElementById('client_visibility').value = client.client_visibility;
 
 
                 <?php if (isset($clientFromRequest) && $clientFromRequest == 'edit') : ?>
