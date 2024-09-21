@@ -22,15 +22,17 @@
             result.innerHTML = ''
         }
 
+
         document.addEventListener('DOMContentLoaded', function() {
             const search = document.getElementById('search_<?= $selectedName  ?>');
             const result = document.getElementById('result_<?= $selectedName  ?>');
 
-            search.addEventListener('input', function() {
+            <?php if (isset($searchLink)): ?>
 
-                const query = search.value.toLowerCase();
+                search.addEventListener('input', function() {
 
-                <?php if (isset($searchLink)): ?>
+                    const query = search.value.toLowerCase();
+
 
                     if (query !== '' && query.length > 2) {
 
@@ -64,39 +66,39 @@
                     } else {
                         result.innerHTML = '';
                     }
-                <?php else : ?>
 
-                    if (query !== '') {
+                });
+            <?php else: ?>
 
-                        let filteredArray = <?= 'items_' . $selectedName  ?>.filter(item => item['name'].toLowerCase().includes(query));
+                search.addEventListener('focus', function() {
 
-                        let output = '<ul class="py-4 px-2">';
-                        filteredArray.forEach(item => {
-                            output +=
-                                `<li><button class="p-2 text-center cursor-pointer text-lg rounded-lg 
-                                focus:bg-red-800 focus:text-white outline-none  
-                                hover:text-white hover:bg-red-800 
-                                w-full"
+                    const query = search.value.toLowerCase();
 
-                                onclick="setSearchResult_<?= $selectedName  ?>('${item['name']}', '${item['id']}')">
-                                ${item['name']}
-                            </button></li>`;
-                        });
+                    let filteredArray = <?= 'items_' . $selectedName  ?>.filter(item => item['name'].toLowerCase().includes(query));
 
-                        if (filteredArray.length === 0) {
-                            output += '<li class="p-2 list-none text-center text-lg rounded-lg">Nothing found</li>';
-                        }
+                    let output = '<ul class="py-4 px-2">';
+                    filteredArray.forEach(item => {
+                        output +=
+                            `<li><button class="p-2 text-center cursor-pointer text-lg rounded-lg 
+                            focus:bg-red-800 focus:text-white outline-none  
+                            hover:text-white hover:bg-red-800 
+                            w-full"
 
-                        output += '</ul>';
-                        result.innerHTML = output;
+                            onclick="setSearchResult_<?= $selectedName  ?>('${item['name']}', '${item['id']}')">
+                            ${item['name']}
+                        </button></li>`;
+                    });
 
-                    } else {
-                        result.innerHTML = '';
+                    if (filteredArray.length === 0) {
+                        output += '<li class="p-2 list-none text-center text-lg rounded-lg">Nothing found</li>';
                     }
 
-                <?php endif; ?>
+                    output += '</ul>';
+                    result.innerHTML = output;
+                });
 
-            });
+            <?php endif; ?>
+
         });
     </script>
 </div>
