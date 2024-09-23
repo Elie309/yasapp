@@ -18,10 +18,10 @@
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
 
-        <div class="flex flex-row justify-end mb-4">
+        <div class="flex flex-row justify-end mb-2">
             <button class="secondary-btn " onclick='resetURL("clients")'>Clear Filter</button>
         </div>
-        <div class="flex flex-col mb-8">
+        <div class="flex flex-col mb-4">
             <div class="grid grid-cols-2 grid-rows-2 gap-2 w-full align my-4 md:flex md:flex-row md:max-w-lg md:mx-auto">
 
                 <label for="createdAt" class="main-label mr-2 align-baseline">Created from:</label>
