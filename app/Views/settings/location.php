@@ -24,6 +24,7 @@
                 'tableHeaders' => $tableHeaders,
                 'tableData' => $data_location,
                 'addButtonModelId' => '',
+                'dataRowActive' =>false,
                 'AddButtonName' => 'Add Location',
                 'addButtonRedirectLink' => 'locations/add',
                 'isOnClickRowActive' => false,
