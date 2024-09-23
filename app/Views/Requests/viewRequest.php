@@ -34,11 +34,11 @@
             </tr>
             <tr>
                 <th>Employee Name:</th>
-                <td><?= $request->employee_name ?></td>
+                <td><?= ucfirst($request->employee_name) ?></td>
             </tr>
             <tr>
                 <th>Agent Name:</th>
-                <td><?= $request->agent_name ?></td>
+                <td><?= ucfirst($request->agent_name) ?></td>
             </tr>
             <tr>
                 <th>Payment Plan:</th>
@@ -60,11 +60,11 @@
             </tr>
             <tr>
                 <th>Request Priority:</th>
-                <td><?= $request->request_priority ?></td>
+                <td><?= ucfirst($request->request_priority) ?></td>
             </tr>
             <tr>
                 <th>Request State:</th>
-                <td><?= $request->request_state ?></td>
+                <td><?= ucfirst($request->request_state) ?></td>
             </tr>
             <tr>
                 <th>Created At:</th>
