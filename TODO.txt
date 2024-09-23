@@ -3,10 +3,8 @@
 ->Create dashboard with new requests
 
 
-1) No private / public
+
 2) Request -> Push notifications
-3) Request Priority urgent/normal/low
-4) Request State / Green / yellow / red
 5) Request notifications once changed
 6) Request & Client only one side
 
@@ -16,3 +14,6 @@ DONE:
 -> Replace the model with the pop over feature
 -> Update client edit and save to one file and remove it from cell
 -> api download excel sheets for all requests and all users etc...
+1) No private / public
+3) Request Priority urgent/normal/low
+4) Request State / Green / yellow / red
