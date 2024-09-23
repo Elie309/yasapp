@@ -12,13 +12,25 @@
         <div class="flex flex-col">
 
             <div class="flex flex-col md:flex-row mb-4 w-full justify-center">
+                <?php if (isset($agents) && !empty($agents)) : ?>
+                    <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
+                        <label for="agent" class="main-label mr-2 text-wrap">Agent:</label>
+                        <select name="agent" id="agent" class="secondary-input">
+                            <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
+                            <?php foreach ($agents as $agent): ?>
+                                <option value="<?= $agent->agent_name ?>"
+                                    <?= isset($_GET['agent']) && $_GET['agent'] === $agent->agent_name ? 'selected' : '' ?>><?= ucfirst($agent->agent_name) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                <?php endif; ?>
                 <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
                     <label for="request_state" class="main-label mr-2 text-wrap">Request State:</label>
                     <select name="request_state" id="request_state" class="secondary-input">
                         <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
                         <?php foreach ($requestStates as $requestState): ?>
                             <option value="<?= $requestState ?>"
-                                <?= isset($_GET['requestState']) && $_GET['requestState'] === $requestState ? 'selected' : '' ?>><?= $requestState ?></option>
+                                <?= isset($_GET['requestState']) && $_GET['requestState'] === $requestState ? 'selected' : '' ?>><?= ucfirst($requestState) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -28,7 +40,7 @@
                         <option value="" <?= isset($_GET['requestPriority']) ? '' : 'selected' ?>>All</option>
                         <?php foreach ($requestPriorities as $requestPriority): ?>
                             <option value="<?= $requestPriority ?>"
-                                <?= isset($_GET['requestPriority']) && $_GET['requestPriority'] === $requestPriority ? 'selected' : '' ?>><?= $requestPriority ?></option>
+                                <?= isset($_GET['requestPriority']) && $_GET['requestPriority'] === $requestPriority ? 'selected' : '' ?>><?= ucfirst($requestPriority) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -52,7 +64,16 @@
             </div>
         </div>
 
-        <?php $tableHeaders = [
+        <?php
+
+
+        foreach ($requests as $key => $request) {
+            $status = $request->request_state;
+            $requests[$key]->request_status = "<span class='status-dot {$status}'></span>";
+        }
+
+        $tableHeaders = [
+            'request_status' => '', //This is the new column create with the above foreach loop
             'client_name' => 'Client',
             'city_name' => 'City',
             'payment_plan_name' => 'Payment Plan',
@@ -65,6 +86,10 @@
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+
+        //Change the values of Status to html
+
+
         ?>
 
         <?= view_cell(
@@ -77,12 +102,14 @@
                 'addButtonRedirectLink' => 'requests/add',
                 'AddButtonName' => 'Add Request',
                 'modelIdOnClickRow' => '',
-                'JSFunctionToRunOnClickRow' => 'redirectToWithId("requests", "request_id");',
                 'classOnClickRow' => 'cursor-pointer',
                 'exportToExcelLink' => 'requests/export',
-                'isOnClickRowActive' => true,
+                'isOnClickRowActive' => false, //This will be used to redirect to a page when a row is clicked
                 'rowsPerPageActive' => true,
                 'searchParamActive' => true,
+                'redirectOnClickRow' => 'requests',
+                'dataRowActive' => false,
+                'id_field' => 'request_id',
                 'searchParam' => [
                     'client_name' => 'Client Name',
                     'city_name' => 'City Name',
@@ -110,6 +137,13 @@
         const startDate = document.getElementById('start_date');
         const endDate = document.getElementById('end_date');
 
+        <?php if (isset($agents) && !empty($agents)) : ?>
+            const agent = document.getElementById('agent');
+
+            agent.addEventListener('change', function() {
+                updateURLParameter('agent', agent.value);
+            });
+        <?php endif; ?>
         requestState.addEventListener('change', function() {
             updateURLParameter('requestState', requestState.value);
         });
@@ -126,8 +160,5 @@
             updateURLParameter('endDate', endDate.value);
         });
 
-        requestVisibility.addEventListener('change', function() {
-            updateURLParameter('requestVisibility', requestVisibility.value);
-        });
     });
 </script>

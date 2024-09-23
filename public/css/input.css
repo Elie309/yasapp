@@ -134,3 +134,17 @@
     }
 
 }
+
+.status-dot {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.pending    { background-color: #FFA500; }   /* Orange */
+.fulfilled  { background-color: #4CAF50; } /* Green */
+.rejected   { background-color: #F44336; }  /* Red */
+.cancelled  { background-color: #070707; }/* Gray */
+.on-hold    { background-color: #FFEB3B; }   /* Yellow */
+.processing { background-color: #00BCD4; }/* Cyan */

@@ -12,8 +12,7 @@ use App\Models\Settings\PaymentPlansModel;
 
 class RequestController extends BaseController
 {
-
-    private $requestStates = ['pending', 'fulfilled', 'rejected', 'cancelled'];
+    private $requestStates = ['pending', 'processing',  'on-hold', 'fulfilled', 'rejected', 'cancelled' ];
     private $requestPriorities = ['low', 'medium', 'high'];
 
     public function index()
@@ -25,6 +24,15 @@ class RequestController extends BaseController
 
         $requestModel = new RequestModel();
 
+        if($this->session->get('role') === 'admin'){
+            $employeeModel = new EmployeeModel();
+            $agents = $employeeModel->select('employee_id as agent_id, employee_name as agent_name')
+                ->findAll();
+    
+        }else{
+            $agents = [];
+        }
+       
         $request = $this->_applyFilters($requestModel, $employee_id);
 
         $request = $request->paginate($rowsPerPage);
@@ -35,6 +43,7 @@ class RequestController extends BaseController
             . view('requests/requests', [
                 'employee_id' => $employee_id,
                 'requests' => $request,
+                'agents' => $agents,
                 'requestStates' => $this->requestStates,
                 'requestPriorities' => $this->requestPriorities,
                 'pager' => $pager
@@ -350,6 +359,8 @@ class RequestController extends BaseController
 
         $endDateParam = esc($this->request->getVar('endDate'));
 
+        $agent = esc($this->request->getVar('agent'));
+
         $param = [
             'city_name' => 'cities.city_name',
             'client_name' => 'clients.client_firstname',
@@ -373,12 +384,16 @@ class RequestController extends BaseController
             ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
-            ->join('employees as agents', 'requests.agent_id = agents.employee_id')
-            ->groupStart()
-            ->where('requests.employee_id', $employee_id)
-            ->orWhere('requests.agent_id', $employee_id)
-            ->groupEnd()
-            ->groupBy('requests.request_id');
+            ->join('employees as agents', 'requests.agent_id = agents.employee_id');
+
+            if($this->session->get('role') !== 'admin'){
+                $request = $request->groupStart()
+                ->where('requests.employee_id', $employee_id)
+                ->orWhere('requests.agent_id', $employee_id)
+                ->groupEnd();
+            }
+            
+            $request = $request->groupBy('requests.request_id');
 
 
         if (!empty($search) && !empty($searchParam) && isset($param[$searchParam])) {
@@ -400,6 +415,10 @@ class RequestController extends BaseController
             }
         }
 
+        if(!empty($agent)){
+            $request = $request->where('agents.employee_name', $agent);
+        }
+
         if (!empty($requestStateParam)) {
             $request = $request->where('requests.request_state', $requestStateParam);
         }
@@ -415,6 +434,8 @@ class RequestController extends BaseController
         if (!empty($endDateParam)) {
             $request = $request->where('requests.created_at <=', $endDateParam);
         }
+
+        
 
         //Order by created_at
         $request = $request->orderBy('requests.created_at', 'DESC');
