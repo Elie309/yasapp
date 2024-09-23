@@ -39,6 +39,8 @@ abstract class BaseController extends Controller
 
     protected $session;
 
+    protected $db;
+
     /**
      * @return void
      */
@@ -52,6 +54,9 @@ abstract class BaseController extends Controller
 
         // Load the session service
         $this->session = \Config\Services::session();
+
+        // Load the database service
+        $this->db = \Config\Database::connect();
     }
 
 }
