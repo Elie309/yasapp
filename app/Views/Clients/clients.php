@@ -48,9 +48,11 @@
                 'AddButtonName' => 'Add Client',
                 'exportToExcelLink' => 'clients/export',
                 'modelIdOnClickRow' => '',
-                'JSFunctionToRunOnClickRow' => 'redirectToWithId("clients", "client_id");',
                 'classOnClickRow' => 'cursor-pointer',
-                'isOnClickRowActive' => true,
+                'isOnClickRowActive' => false, //This will not be used to redirect to a page when a row is clicked
+                'dataRowActive' =>false,
+                'redirectOnClickRow' => 'clients',
+                'id_field' => 'client_id',
                 'rowsPerPageActive' => true,
                 'searchParamActive' => true,
                 'searchParam' => [],
@@ -69,13 +71,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const visibilitySelect = document.getElementById('visibility_select');
         const createdAtSelect = document.getElementById('createdAt_select');
         const updatedAtSelect = document.getElementById('updatedAt_select');
-
-        visibilitySelect.addEventListener('change', function() {
-            updateURLParameter('visibility', visibilitySelect.value);
-        });
 
         createdAtSelect.addEventListener('change', function() {
             updateURLParameter('createdAt', createdAtSelect.value);
