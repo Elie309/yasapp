@@ -56,7 +56,7 @@
 
                 <label class="text-lg mr-4">Phone Numbers</label>
 
-                <button type="button" id="add-phone-btn">
+                <button type="button" onclick="onClickAddPhone()">
                     <svg class=" text-gray-800 size-6 hover:text-blue-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
@@ -79,18 +79,11 @@
     </form>
 
     <script>
-        document.getElementById('add-phone-btn').addEventListener('click', function() {
+        function onClickAddPhone() {
             var phoneSection = document.getElementById('phone-section');
-            var newPhoneInput = document.createElement('div');
-            newPhoneInput.classList.add('phone-input');
-            newPhoneInput.classList.add('flex');
-            newPhoneInput.classList.add('flex-row');
-
-            newPhoneInput.innerHTML = `
-            <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries]) ?>
-        `;
-            phoneSection.appendChild(newPhoneInput);
-        });
+            phoneSection.innerHTML += ` <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', 
+            ['countries' => $countries, 'removeMinus' => true]) ?> `;
+        }
 
         function removeParent(event) {
             event.parentElement.remove();
