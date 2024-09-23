@@ -3,16 +3,21 @@
 namespace App\Controllers\Requests;
 
 use App\Controllers\BaseController;
+use App\Entities\Clients\ClientEntity;
 use App\Entities\Requests\RequestEntity;
+use App\Models\Clients\ClientModel;
 use App\Models\Requests\RequestModel;
 use App\Models\Settings\CurrenciesModel;
 use App\Models\Settings\EmployeeModel;
 use App\Models\Settings\Location\CityModel;
+use App\Models\Settings\Location\CountryModel;
 use App\Models\Settings\PaymentPlansModel;
+
+use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class RequestController extends BaseController
 {
-    private $requestStates = ['pending', 'processing',  'on-hold', 'fulfilled', 'rejected', 'cancelled' ];
+    private $requestStates = ['pending', 'processing',  'on-hold', 'fulfilled', 'rejected', 'cancelled'];
     private $requestPriorities = ['low', 'medium', 'high'];
 
     public function index()
@@ -24,15 +29,14 @@ class RequestController extends BaseController
 
         $requestModel = new RequestModel();
 
-        if($this->session->get('role') === 'admin'){
+        if ($this->session->get('role') === 'admin') {
             $employeeModel = new EmployeeModel();
             $agents = $employeeModel->select('employee_id as agent_id, employee_name as agent_name')
                 ->findAll();
-    
-        }else{
+        } else {
             $agents = [];
         }
-       
+
         $request = $this->_applyFilters($requestModel, $employee_id);
 
         $request = $request->paginate($rowsPerPage);
@@ -63,7 +67,10 @@ class RequestController extends BaseController
 
         $paymentPlans = new PaymentPlansModel();
         $paymentPlans = $paymentPlans->findAll();
-        
+
+        $countries = new CountryModel();
+        $countries = $countries->findAll();
+
         $employeeModel = new EmployeeModel();
         $agents = $employeeModel->select('employee_id as agent_id, employee_name as agent_name')
             ->findAll();
@@ -82,6 +89,7 @@ class RequestController extends BaseController
                 'method' => 'NEW_REQUEST',
                 'employee_id' => $employee_id,
                 'employee_name' => $name,
+                'countries' => $countries,
                 'agents' => $agents,
                 'currencies' => $currencies,
                 'paymentPlans' => $paymentPlans,
@@ -97,11 +105,15 @@ class RequestController extends BaseController
 
         $employee_id = $this->session->get('id');
 
+        $clientModel = new ClientModel();
+        $clientEntity = new ClientEntity();
+
         $requestModel = new RequestModel();
         $requestEntity = new RequestEntity();
 
         try {
 
+            $clientEntity->fill($this->request->getPost());
             $requestEntity->fill($this->request->getPost());
             $requestEntity->employee_id = $employee_id;
 
@@ -112,10 +124,23 @@ class RequestController extends BaseController
             }
 
 
-            if ($requestModel->save($requestEntity)) {
-                return redirect()->to('/requests')->with('success', 'Request added successfully');
-            } else {
-                return redirect()->back()->withInput()->with('errors', $requestModel->errors());
+            try {
+                //Begin transaction
+
+                $this->db->transException(true)->transStart();
+                //Save the client
+                if (!$clientModel->save($clientEntity)) {
+                    return redirect()->back()->withInput()->with('errors', $clientModel->errors());
+                }
+                $requestEntity->client_id = $clientModel->getInsertID();
+                if ($requestModel->save($requestEntity)) {
+                    $this->db->transCommit();
+                    return redirect()->to('/requests')->with('success', 'Request added successfully');
+                } else {
+                    return redirect()->back()->withInput()->with('errors', $requestModel->errors());
+                }
+            } catch (DatabaseException $e) {
+                return redirect()->back()->withInput()->with('errors', ['An error occurred']);
             }
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('errors', ['An error occurred']);
@@ -153,16 +178,19 @@ class RequestController extends BaseController
             ->join('currencies', 'requests.currency_id = currencies.currency_id')
             ->join('employees', 'requests.employee_id = employees.employee_id')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id')
-            ->where('requests.request_id', $id);
+            ->where('requests.request_id', $id)
+            ->groupBy('requests.request_id')
+            ->first();
 
-        $request = $request->groupBy('requests.request_id')->first();
+        
         if (!$request) {
             return redirect()->back()->with('errors', ['You are not allowed to view this request']);
         }
 
 
-        if ($request->employee_id !== $employee_id && $request->agent_id !== $employee_id) {
-            //Redirect to requests page
+        if($this->session->get('role') !== 'admin' && 
+            $request->employee_id !== $employee_id && 
+            $request->agent_id !== $employee_id) {
             return redirect()->to('/requests')->with('errors', ['You are not allowed to view this request']);
         }
 
@@ -386,14 +414,14 @@ class RequestController extends BaseController
             ->join('employees', 'requests.employee_id = employees.employee_id')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id');
 
-            if($this->session->get('role') !== 'admin'){
-                $request = $request->groupStart()
+        if ($this->session->get('role') !== 'admin') {
+            $request = $request->groupStart()
                 ->where('requests.employee_id', $employee_id)
                 ->orWhere('requests.agent_id', $employee_id)
                 ->groupEnd();
-            }
-            
-            $request = $request->groupBy('requests.request_id');
+        }
+
+        $request = $request->groupBy('requests.request_id');
 
 
         if (!empty($search) && !empty($searchParam) && isset($param[$searchParam])) {
@@ -415,7 +443,7 @@ class RequestController extends BaseController
             }
         }
 
-        if(!empty($agent)){
+        if (!empty($agent)) {
             $request = $request->where('agents.employee_name', $agent);
         }
 
@@ -435,7 +463,7 @@ class RequestController extends BaseController
             $request = $request->where('requests.created_at <=', $endDateParam);
         }
 
-        
+
 
         //Order by created_at
         $request = $request->orderBy('requests.created_at', 'DESC');

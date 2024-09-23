@@ -28,9 +28,6 @@ class RequestEntity extends Entity
     public function isValid(): Error|bool
     {
         $errors = [];
-        if (empty($this->client_id) || !is_int($this->client_id) || $this->client_id < 1) {
-             $errors[] = 'Client is invalid';
-        }
 
         if (empty($this->city_id) || !is_int($this->city_id) || $this->city_id < 1) {
             $errors[] = 'City name invalid';

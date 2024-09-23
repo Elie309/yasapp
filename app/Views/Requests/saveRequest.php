@@ -1,4 +1,4 @@
-<div class="container-main">
+<div class="container-main max-w-4xl">
 
     <div class="flex flex-row ">
         <button onclick="window.history.back()" class="my-auto cursor-pointer">
@@ -27,24 +27,37 @@
 
 
                 <h3 class="secondary-title">Client</h3>
-                <input type="hidden" name="client_id" id="client_id" required><br>
-                <div class="flex flex-col w-full mb-4">
-                    <div class="w-full flex flex-row my-2">
-                        <input type="text" class="main-input-readonly mx-2" placeholder="Firstname" readonly name="client_firstname" id="client_firstname" required>
-                        <input type="text" class="main-input-readonly mx-2" placeholder="Lastname" readonly name="client_lastname" id="client_lastname" required>
-                    </div>
-                    <div class="w-full flex flex-row my-2">
-                        <input type="text" class="main-input-readonly mx-2" placeholder="Email" readonly name="client_email" id="client_email" required>
-                        <input type="text" class="main-input-readonly mx-2" placeholder="Phone" readonly name="client_phone" id="client_phone" required>
-                    </div>
-                    <div class="w-full my-2 flex flex-row justify-center">
-                        <!-- on click focus on the input -->
-                        <button type="button" class="secondary-btn mx-auto w-5/12"
+                <?php if ($method == 'UPDATE_REQUEST') : ?>
+                    <input type="hidden" name="client_id" id="client_id" required><br>
+                <?php endif; ?>
 
-                            popovertarget="client-popover" onclick="document.getElementById('search_Client').focus()">
-                            Select Client
-                        </button>
+                <div class="flex flex-col w-full mb-4">
+                    <div class="mt-4">
+                        <label for="client_firstname" class="main-label">First Name<span class="text-red-800">*</span></label>
+                        <input type="text" class="main-input" id="client_firstname" name="client_firstname" required>
                     </div>
+                    <div class="mt-4">
+                        <label for="client_lastname" class="main-label">Last Name<span class="text-red-800">*</span></label>
+                        <input type="text" class="main-input" id="client_lastname" name="client_lastname" required>
+                    </div>
+                    <div class="mt-4">
+                        <label for="client_email" class="main-label">Email</label>
+                        <input type="text" class="main-input" id="client_email" name="client_email">
+                    </div>
+
+                    <div class="mt-4 align-middle">
+                        <label for="client_email" class="main-label">Phone Number:
+                            <button type="button" onclick="onClickAddPhone()">
+                                <svg class=" text-gray-800 size-5 hover:text-blue-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </button>
+                        </label>
+                        <div id="phone-section" class="flex flex-col">
+                            <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries, 'removeMinus' => true]) ?>
+                        </div>
+                    </div>
+
 
                 </div>
 
@@ -56,12 +69,12 @@
 
                     <div class="flex flex-col w-full mb-4">
                         <div class="w-full flex flex-row my-2">
-                            <input type="text" class="main-input-readonly mx-2" placeholder="Country" readonly name="country" id="country" required>
-                            <input type="text" class="main-input-readonly mx-2" placeholder="Region" readonly name="region" id="region" required>
+                            <input type="text" class="main-input-readonly mr-2" placeholder="Country" readonly name="country" id="country" required>
+                            <input type="text" class="main-input-readonly" placeholder="Region" readonly name="region" id="region" required>
                         </div>
                         <div class="w-full flex flex-row my-2">
-                            <input type="text" class="main-input-readonly mx-2" placeholder="Subregion" readonly name="subregion" id="subregion" required>
-                            <input type="text" class="main-input-readonly mx-2" placeholder="City" readonly name="city" id="city" required>
+                            <input type="text" class="main-input-readonly mr-2" placeholder="Subregion" readonly name="subregion" id="subregion" required>
+                            <input type="text" class="main-input-readonly " placeholder="City" readonly name="city" id="city" required>
                         </div>
 
                         <div class="w-full my-2 flex flex-row justify-center">
@@ -70,7 +83,7 @@
 
                         <div>
                             <label class="main-label" for="request_location">Location Details:</label>
-                            <textarea class="main-input mx-2" placeholder="Location address"
+                            <textarea class="main-input" placeholder="Location address"
                                 name="request_location" id="request_location"></textarea>
                         </div>
 
@@ -108,7 +121,7 @@
 
                     <div>
                         <label class="main-label" for="agent">Agent:</label>
-                       
+
                         <select class="secondary-input" name="agent_id" id="agent" required>
 
                             <?php foreach ($agents as $agent) : ?>
@@ -293,9 +306,12 @@
 
         function populateFields(data) {
 
-            if (data.client_id) {
-                document.getElementById('client_id').value = data.client_id;
-            }
+            <?php if ($method === 'UPDATE_REQUEST') : ?>
+                if (data.client_id) {
+                    document.getElementById('client_id').value = data.client_id;
+                }
+            <?php endif; ?>
+
 
             if (data.client_firstname) {
                 document.getElementById('client_firstname').value = data.client_firstname;
@@ -313,12 +329,37 @@
                 document.getElementById('client_phone').value = data.client_phone;
             }
 
+            if (data.phone_number && data.phone_number.length > 0) {
+                var phones = data.phone_number;
+
+                var phoneSection = document.getElementById('phone-section');
+                phoneSection.innerHTML = '';
+
+                phones.forEach((phone, index) => {
+                    var newPhoneInput = document.createElement('div');
+
+                    newPhoneInput.innerHTML = `
+                        <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries, 'removeMinus' => true]) ?>
+                        `;
+                    newPhoneInput.querySelector('.phone-country').value = data.country_id[index];
+                    newPhoneInput.querySelector('.phone-number').value = data.phone_number[index];
+
+                    phoneSection.appendChild(newPhoneInput);
+
+                });
+
+            }
+
+
+
+
+
             if (data.employee_id) {
                 document.getElementById('employee_id').value = data.employee_id;
             }
 
 
-            if (city) {
+            if (employee_id) {
                 document.getElementById('city_id').value = city.city_id;
 
                 if (city.country_name) {
@@ -422,4 +463,10 @@
                 e.target.value = value;
             });
         });
+
+        function onClickAddPhone() {
+            var phoneSection = document.getElementById('phone-section');
+            phoneSection.innerHTML += ` <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', 
+            ['countries' => $countries, 'removeMinus' => true]) ?> `;
+        }
     </script>
