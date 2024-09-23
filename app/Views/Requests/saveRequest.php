@@ -71,7 +71,7 @@
                         <div>
                             <label class="main-label" for="request_location">Location Details:</label>
                             <textarea class="main-input mx-2" placeholder="Location address"
-                                name="request_location" id="request_location" required></textarea>
+                                name="request_location" id="request_location"></textarea>
                         </div>
 
                     </div>
@@ -165,22 +165,10 @@
                         <label class="main-label">Priority</label>
                         <select class="secondary-input" name="request_priority" id="request_priority" required>
                             <?php foreach ($requestPriorities as $requestPriority) : ?>
-                                <?php if ($requestPriority == 'low') : ?>
+                                <?php if ($requestPriority == 'medium') : ?>
                                     <option value="<?= $requestPriority ?>" selected><?= ucfirst($requestPriority) ?></option>
                                 <?php else : ?>
                                     <option value="<?= $requestPriority ?>"><?= ucfirst($requestPriority) ?></option>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        </select><br>
-                    </div>
-                    <div class="my-4">
-                        <label class="main-label">Type</label>
-                        <select class="secondary-input" name="request_type" id="request_type" required>
-                            <?php foreach ($requestTypes as $requestType) : ?>
-                                <?php if ($requestType == 'normal') : ?>
-                                    <option value="<?= $requestType ?>" selected><?= ucfirst($requestType) ?></option>
-                                <?php else : ?>
-                                    <option value="<?= $requestType ?>"><?= ucfirst($requestType) ?></option>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </select><br>
@@ -377,10 +365,6 @@
 
             if (data.request_state) {
                 document.getElementById('request_state').value = data.request_state;
-            }
-
-            if (data.request_type) {
-                document.getElementById('request_type').value = data.request_type;
             }
 
             if (data.comments) {

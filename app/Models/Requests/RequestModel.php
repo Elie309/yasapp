@@ -23,7 +23,6 @@ class RequestModel extends Model
         'request_budget',
         'request_state',
         'request_priority',
-        'request_type',
         'comments'
     ];
 
@@ -64,7 +63,6 @@ class RequestModel extends Model
         'request_budget' => 'required|integer',
         'request_state' => 'required|in_list[pending,fulfilled,rejected,cancelled]',
         'request_priority' => 'required|in_list[low,medium,high]',
-        'request_type' => 'required|in_list[normal,urgent]',
         'comments' => 'permit_empty|string',
         'created_at' => 'permit_empty|valid_date',
         'updated_at' => 'permit_empty|valid_date',
@@ -107,10 +105,6 @@ class RequestModel extends Model
         'request_priority' => [
             'required' => 'Request Priority is required',
             'in_list' => 'Request Priority must be one of: low, medium, high'
-        ],
-        'request_type' => [
-            'required' => 'Request Type is required',
-            'in_list' => 'Request Type must be one of: normal, urgent'
         ],
     ];
     protected $skipValidation       = false;

@@ -59,10 +59,6 @@
                 </td>
             </tr>
             <tr>
-                <th>Request Type:</th>
-                <td><?= $request->request_type ?></td>
-            </tr>
-            <tr>
                 <th>Request Priority:</th>
                 <td><?= $request->request_priority ?></td>
             </tr>

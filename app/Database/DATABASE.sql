@@ -112,7 +112,6 @@ CREATE TABLE IF NOT EXISTS requests (
     request_budget INT NOT NULL,
     request_state ENUM('pending', 'fulfilled', 'rejected', 'cancelled') NOT NULL DEFAULT 'pending',
     request_priority ENUM('low', 'medium', 'high') NOT NULL DEFAULT 'medium',
-    request_type ENUM('normal', 'urgent') NOT NULL DEFAULT 'normal',
     
     comments TEXT,
 

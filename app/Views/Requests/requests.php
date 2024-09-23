@@ -12,16 +12,6 @@
         <div class="flex flex-col">
 
             <div class="flex flex-col md:flex-row mb-4 w-full justify-center">
-                <div class="grid grid-cols-2 my-2 md:my-0">
-                    <label for="request_type" class="main-label mr-2 text-wrap">Request Type:</label>
-                    <select name="request_type" id="request_type" class="secondary-input">
-                        <option value="" <?= isset($_GET['requestType']) ? '' : 'selected' ?>>All</option>
-                        <?php foreach ($requestTypes as $requestType): ?>
-                            <option value="<?= $requestType ?>"
-                                <?= isset($_GET['requestType']) && $_GET['requestType'] === $requestType ? 'selected' : '' ?>><?= $requestType ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
                 <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
                     <label for="request_state" class="main-label mr-2 text-wrap">Request State:</label>
                     <select name="request_state" id="request_state" class="secondary-input">
@@ -71,7 +61,6 @@
             'request_fees' => 'Budget',
             'request_state' => 'State',
             'request_priority' => 'Priority',
-            'request_type' => 'Type',
             'comments' => 'Comments',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -116,16 +105,10 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const requestType = document.getElementById('request_type');
         const requestState = document.getElementById('request_state');
         const requestPriority = document.getElementById('request_priority');
         const startDate = document.getElementById('start_date');
         const endDate = document.getElementById('end_date');
-
-
-        requestType.addEventListener('change', function() {
-            updateURLParameter('requestType', requestType.value);
-        });
 
         requestState.addEventListener('change', function() {
             updateURLParameter('requestState', requestState.value);

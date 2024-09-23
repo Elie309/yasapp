@@ -13,10 +13,8 @@ use App\Models\Settings\PaymentPlansModel;
 class RequestController extends BaseController
 {
 
-    private $requestTypes = ['normal', 'urgent'];
     private $requestStates = ['pending', 'fulfilled', 'rejected', 'cancelled'];
     private $requestPriorities = ['low', 'medium', 'high'];
-    private $requestVisibilities = ['public', 'private'];
 
     public function index()
     {
@@ -37,10 +35,8 @@ class RequestController extends BaseController
             . view('requests/requests', [
                 'employee_id' => $employee_id,
                 'requests' => $request,
-                'requestTypes' => $this->requestTypes,
                 'requestStates' => $this->requestStates,
                 'requestPriorities' => $this->requestPriorities,
-                'requestVisibilities' => $this->requestVisibilities,
                 'pager' => $pager
             ])
             . view('template/footer');
@@ -80,10 +76,8 @@ class RequestController extends BaseController
                 'agents' => $agents,
                 'currencies' => $currencies,
                 'paymentPlans' => $paymentPlans,
-                'requestTypes' => $this->requestTypes,
                 'requestStates' => $this->requestStates,
                 'requestPriorities' => $this->requestPriorities,
-                'requestVisibilities' => $this->requestVisibilities,
             ])
             . view('template/footer');
     }
@@ -110,7 +104,7 @@ class RequestController extends BaseController
 
 
             if ($requestModel->save($requestEntity)) {
-                return redirect()->to('/requests');
+                return redirect()->to('/requests')->with('success', 'Request added successfully');
             } else {
                 return redirect()->back()->withInput()->with('errors', $requestModel->errors());
             }
@@ -256,10 +250,8 @@ class RequestController extends BaseController
                 'request' => $request,
                 'currencies' => $currencies,
                 'paymentPlans' => $paymentPlans,
-                'requestTypes' => $this->requestTypes,
                 'requestStates' => $this->requestStates,
                 'requestPriorities' => $this->requestPriorities,
-                'requestVisibilities' => $this->requestVisibilities,
             ])
             . view('template/footer');
     }
@@ -280,7 +272,7 @@ class RequestController extends BaseController
             }
 
             if ($requestModel->update($id, $requestEntity)) {
-                return redirect()->to('/requests');
+                return redirect()->to('/requests')->with('success', 'Request updated successfully');
             } else {
                 return redirect()->back()->withInput()->with('errors', $requestModel->errors());
             }
@@ -331,7 +323,6 @@ class RequestController extends BaseController
             'city_name' => 'City Name',
             'payment_plan_name' => 'Payment Plan Name',
             'request_budget' => 'Request Budget',
-            'request_type' => 'Request Type',
             'request_state' => 'Request State',
             'request_priority' => 'Request Priority',
             'employee_name' => 'Employee Name',
@@ -350,8 +341,6 @@ class RequestController extends BaseController
         $search = esc($this->request->getVar('search'));
 
         $searchParam = esc($this->request->getVar('searchParam'));
-
-        $requestTypeParam = esc($this->request->getVar('requestType'));
 
         $requestStateParam = esc($this->request->getVar('requestState'));
 
@@ -411,10 +400,6 @@ class RequestController extends BaseController
             }
         }
 
-        if (!empty($requestTypeParam)) {
-            $request = $request->where('requests.request_type', $requestTypeParam);
-        }
-
         if (!empty($requestStateParam)) {
             $request = $request->where('requests.request_state', $requestStateParam);
         }
@@ -430,6 +415,9 @@ class RequestController extends BaseController
         if (!empty($endDateParam)) {
             $request = $request->where('requests.created_at <=', $endDateParam);
         }
+
+        //Order by created_at
+        $request = $request->orderBy('requests.created_at', 'DESC');
 
 
         return $request;

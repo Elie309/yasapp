@@ -69,10 +69,6 @@ class RequestEntity extends Entity
             $errors[] = 'Request priority is invalid';
         }
 
-        if (empty($this->request_type) || !is_string($this->request_type)) {
-            $errors[] = 'Request type is invalid';
-        }
-
         if (!is_string($this->comments)) {
             $errors[] = 'Comments are invalid';
         }
