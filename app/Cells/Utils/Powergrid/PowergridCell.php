@@ -23,6 +23,10 @@ class PowergridCell extends Cell
     public $modelIdOnClickRow;
     public $JSFunctionToRunOnClickRow;
     public $classOnClickRow;
+    
+    public $redirectOnClickRow;
+    public $dataRowActive;
+    public $id_field;
 
     public $actions = [];
 
@@ -31,6 +35,9 @@ class PowergridCell extends Cell
     public $searchParam;
     
     public $isStyleOnHoverDisabled;
+
+
+    
 
 
     public $exportToExcelLink;
