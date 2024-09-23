@@ -32,8 +32,6 @@
                 search.addEventListener('input', function() {
 
                     const query = search.value.toLowerCase();
-
-
                     if (query !== '' && query.length > 2) {
 
 
@@ -97,7 +95,43 @@
                     result.innerHTML = output;
                 });
 
+                search.addEventListener('input', function() {
+
+                    const query = search.value.toLowerCase();
+
+                    let filteredArray = <?= 'items_' . $selectedName  ?>.filter(item => item['name'].toLowerCase().includes(query));
+
+                    let output = '<ul class="py-4 px-2">';
+                    filteredArray.forEach(item => {
+                        output +=
+                            `<li><button class="p-2 text-center cursor-pointer text-lg rounded-lg 
+                            focus:bg-red-800 focus:text-white outline-none  
+                            hover:text-white hover:bg-red-800 
+                            w-full"
+
+                            onclick="setSearchResult_<?= $selectedName  ?>('${item['name']}', '${item['id']}')">
+                            ${item['name']}
+                        </button></li>`;
+                    });
+
+                    if (filteredArray.length === 0) {
+                        output += '<li class="p-2 list-none text-center text-lg rounded-lg">Nothing found</li>';
+                    }
+
+                    output += '</ul>';
+                    result.innerHTML = output;
+                });
+
+               
+
             <?php endif; ?>
+
+
+            search.addEventListener('blur', function() {
+                    setTimeout(() => {
+                        result.innerHTML = '';
+                    }, 200);
+                });
 
         });
     </script>
