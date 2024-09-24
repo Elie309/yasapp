@@ -1148,6 +1148,11 @@ video {
   height: 3rem;
 }
 
+.size-5 {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 .size-6 {
   width: 1.5rem;
   height: 1.5rem;
@@ -1249,6 +1254,10 @@ video {
 
 .max-w-2xl {
   max-width: 42rem;
+}
+
+.max-w-4xl {
+  max-width: 56rem;
 }
 
 .max-w-60 {
@@ -1631,6 +1640,11 @@ video {
   outline-offset: 2px;
 }
 
+.blur {
+  --tw-blur: blur(8px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .drop-shadow-2xl {
   --tw-drop-shadow: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -1660,6 +1674,49 @@ video {
 .duration-300 {
   transition-duration: 300ms;
 }
+
+.status-dot {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.pending    {
+  background-color: #FFA500;
+}
+
+/* Orange */
+
+.fulfilled  {
+  background-color: #4CAF50;
+}
+
+/* Green */
+
+.rejected   {
+  background-color: #F44336;
+}
+
+/* Red */
+
+.cancelled  {
+  background-color: #070707;
+}
+
+/* Gray */
+
+.on-hold    {
+  background-color: #FFEB3B;
+}
+
+/* Yellow */
+
+.processing {
+  background-color: #00BCD4;
+}
+
+/* Cyan */
 
 .hover\:scale-105:hover {
   --tw-scale-x: 1.05;
@@ -1836,10 +1893,6 @@ video {
 
   .md\:ml-4 {
     margin-left: 1rem;
-  }
-
-  .md\:mr-4 {
-    margin-right: 1rem;
   }
 
   .md\:block {
