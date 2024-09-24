@@ -1858,11 +1858,6 @@ video {
     width: 33.333333%;
   }
 
-  .md\:w-fit {
-    width: -moz-fit-content;
-    width: fit-content;
-  }
-
   .md\:max-w-lg {
     max-width: 32rem;
   }
