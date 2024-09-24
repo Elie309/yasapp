@@ -157,7 +157,7 @@
                         echo "<tr class='clickable-row " . (isset($classOnClickRow) ? $classOnClickRow : ' ') . " ' ";
                         if (!isset($dataRowActive) || $dataRowActive) {
                             echo "data-row-data='" . htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8') . "' ";
-                        }else{
+                        }else if(isset($redirectOnClickRow) && $redirectOnClickRow != ''){
                             echo "onclick='redirectToWithId(\"" . $redirectOnClickRow . "\", \"" . $data->$id_field . "\")'";
                         }
                         echo ">";
