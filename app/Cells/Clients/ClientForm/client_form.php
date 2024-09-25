@@ -81,8 +81,13 @@
     <script>
         function onClickAddPhone() {
             var phoneSection = document.getElementById('phone-section');
-            phoneSection.innerHTML += ` <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', 
-            ['countries' => $countries, 'removeMinus' => true]) ?> `;
+           var phone = document.createElement('div');
+            var html = ` <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', 
+            ['countries' => $countries]) ?> `;
+
+            phone.innerHTML = html;
+
+            phoneSection.appendChild(phone);
         }
 
         function removeParent(event) {

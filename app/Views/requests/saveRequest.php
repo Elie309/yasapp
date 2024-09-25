@@ -298,6 +298,13 @@
         if ($method === 'UPDATE_REQUEST') {
             echo "var data = " . json_encode($request) . ";";
             echo "var city = " . json_encode($city) . ";";
+            echo 'var phones = ' . json_encode($phones) . ';';
+            echo "data.phone_number = [];";
+            echo "data.country_id = [];";
+            echo "phones.forEach((phone, index) => {";
+            echo "data.phone_number.push(phone.phone_number);";
+            echo "data.country_id.push(phone.country_id);";
+            echo "});";
             echo "populateFields(data);";
         }
 
@@ -323,10 +330,6 @@
 
             if (data.client_email) {
                 document.getElementById('client_email').value = data.client_email;
-            }
-
-            if (data.client_phone) {
-                document.getElementById('client_phone').value = data.client_phone;
             }
 
             if (data.phone_number && data.phone_number.length > 0) {
@@ -359,7 +362,7 @@
             }
 
 
-            if (employee_id) {
+            if (data.city_id) {
                 document.getElementById('city_id').value = city.city_id;
 
                 if (city.country_name) {
@@ -466,7 +469,14 @@
 
         function onClickAddPhone() {
             var phoneSection = document.getElementById('phone-section');
-            phoneSection.innerHTML += ` <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', 
-            ['countries' => $countries, 'removeMinus' => true]) ?> `;
+            var phone = document.createElement('div');
+            var html = ` <?= view_cell(
+                                'App\Cells\Clients\Phone\PhoneFormCell::render',
+                                ['countries' => $countries, 'removeMinus' => true]
+                            ) ?> `;
+
+            phone.innerHTML = html;
+
+            phoneSection.appendChild(phone);
         }
     </script>
