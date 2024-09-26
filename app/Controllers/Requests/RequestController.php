@@ -341,6 +341,7 @@ class RequestController extends BaseController
         $phoneModel = new PhoneModel();
 
         try {
+
             $clientEntity->fill($this->request->getPost());
             $phones = $this->request->getPost('phone_number');
             $countries = $this->request->getPost('country_id');
@@ -351,13 +352,66 @@ class RequestController extends BaseController
                 return redirect()->back()->withInput()->with('errors', [$isValid->getMessage()]);
             }
 
-            if ($requestModel->update($id, $requestEntity)) {
-                return redirect()->to('/requests')->with('success', 'Request updated successfully');
-            } else {
-                return redirect()->back()->withInput()->with('errors', $requestModel->errors());
+
+            try {
+
+                $this->db->transException(true)->transStart();
+
+
+                $request = $requestModel->find($id);
+
+                if (!$request) {
+                    $this->db->transRollback();
+                    return redirect()->back()->with('errors', ['Request not found']);
+                }
+
+                if ($request->employee_id !== $this->session->get('id') && $request->agent_id !== $this->session->get('id')) {
+                    $this->db->transRollback();
+                    return redirect()->back()->with('errors', ['You are not allowed to edit this request']);
+                }
+
+                //Update the client
+                if (!$clientModel->update($request->client_id, $clientEntity)) {
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $clientModel->errors());
+                }
+
+                //Update the phone numbers
+                if ($phoneModel->where('client_id', $request->client_id)->delete()) {
+
+                    if (is_array($phones)) {
+
+                        foreach ($phones as $key => $phone) {
+                            $phoneData = [
+                                'client_id' => $request->client_id,
+                                'country_id' => $countries[$key],
+                                'phone_number' => $phone
+                            ];
+
+                            if (!$phoneModel->save($phoneData)) {
+
+                                $this->db->transRollback();
+                                return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
+                            }
+                        }
+                    } else {
+                        $this->db->transRollback();
+                        return redirect()->back()->withInput()->with('errors', ['Invalid phone number']);
+                    }
+                }
+
+                if ($requestModel->update($id, $requestEntity)) {
+                    $this->db->transCommit();
+                    return redirect()->to('/requests')->with('success', 'Request updated successfully');
+                } else {
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $requestModel->errors());
+                }
+            } catch (DatabaseException $e) {
+                $this->db->transRollback();
+                return redirect()->back()->withInput()->with('errors', ['An error occurred']);
             }
         } catch (\Exception $e) {
-            log_message('error', $e->getMessage());
             return redirect()->back()->withInput()->with('errors', ['An error occurred']);
         }
     }
@@ -373,7 +427,7 @@ class RequestController extends BaseController
             return redirect()->back()->with('errors', ['Request not found']);
         }
 
-        if ($request->employee_id !== $this->session->get('id')) {
+        if ($request->employee_id !== $this->session->get('id') && $request->agent_id !== $this->session->get('id')) {
             return redirect()->back()->with('errors', ['You are not allowed to delete this request']);
         }
 

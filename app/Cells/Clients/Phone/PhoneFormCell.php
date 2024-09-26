@@ -7,5 +7,4 @@ use CodeIgniter\View\Cells\Cell;
 class PhoneFormCell extends Cell
 {
     public $countries;
-    public $removeMinus;
 }

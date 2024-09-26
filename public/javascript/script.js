@@ -4,6 +4,11 @@ document.getElementById('sidebar-toggle').addEventListener('click', function() {
 });
 
 
+function removeParent(event) {
+    event.parentElement.remove();
+}
+
+
 function updateURLParameter(key, value) {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);

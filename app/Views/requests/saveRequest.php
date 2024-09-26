@@ -54,7 +54,7 @@
                             </button>
                         </label>
                         <div id="phone-section" class="flex flex-col">
-                            <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries, 'removeMinus' => true]) ?>
+                            <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries ]) ?>
                         </div>
                     </div>
 
@@ -342,7 +342,7 @@
                     var newPhoneInput = document.createElement('div');
 
                     newPhoneInput.innerHTML = `
-                        <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries, 'removeMinus' => true]) ?>
+                        <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries ]) ?>
                         `;
                     newPhoneInput.querySelector('.phone-country').value = data.country_id[index];
                     newPhoneInput.querySelector('.phone-number').value = data.phone_number[index];
