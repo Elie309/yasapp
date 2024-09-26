@@ -69,12 +69,12 @@
 
                     <div class="flex flex-col w-full mb-4">
                         <div class="w-full flex flex-row my-2">
-                            <input type="text" class="main-input-readonly mr-2" placeholder="Country" readonly name="country" id="country" required>
-                            <input type="text" class="main-input-readonly" placeholder="Region" readonly name="region" id="region" required>
+                            <input type="text" class="main-input-readonly mr-2" placeholder="Country" readonly name="country_name" id="country_name" required>
+                            <input type="text" class="main-input-readonly" placeholder="Region" readonly name="region_name" id="region_name" required>
                         </div>
                         <div class="w-full flex flex-row my-2">
-                            <input type="text" class="main-input-readonly mr-2" placeholder="Subregion" readonly name="subregion" id="subregion" required>
-                            <input type="text" class="main-input-readonly " placeholder="City" readonly name="city" id="city" required>
+                            <input type="text" class="main-input-readonly mr-2" placeholder="Subregion" readonly name="subregion_name" id="subregion_name" required>
+                            <input type="text" class="main-input-readonly " placeholder="City" readonly name="city_name" id="city_name" required>
                         </div>
 
                         <div class="w-full my-2 flex flex-row justify-center">
@@ -292,6 +292,16 @@
         if (isset($data)) {
             echo "var data = " . json_encode($data['post']) . ";";
 
+            $city = [
+                'city_id' => $data['post']['city_id'],
+                'country_name' => $data['post']['country_name'],
+                'region_name' => $data['post']['region_name'],
+                'subregion_name' => $data['post']['subregion_name'],
+                'city_name' => $data['post']['city_name']
+            ];
+
+            echo "var city = " . json_encode($city) . ";";
+            
             echo "populateFields(data);";
         }
 
@@ -361,25 +371,25 @@
                 document.getElementById('employee_id').value = data.employee_id;
             }
 
-
-            if (data.city_id) {
+            if (city) {
                 document.getElementById('city_id').value = city.city_id;
 
                 if (city.country_name) {
-                    document.getElementById('country').value = city.country_name;
+                    document.getElementById('country_name').value = city.country_name;
                 }
 
                 if (city.region_name) {
-                    document.getElementById('region').value = city.region_name;
+                    document.getElementById('region_name').value = city.region_name;
                 }
 
                 if (city.subregion_name) {
-                    document.getElementById('subregion').value = city.subregion_name;
+                    document.getElementById('subregion_name').value = city.subregion_name;
                 }
 
                 if (city.city_name) {
-                    document.getElementById('city').value = city.city_name;
+                    document.getElementById('city_name').value = city.city_name;
                 }
+
             }
 
             if (data.request_location) {
@@ -392,6 +402,11 @@
                 document.getElementById('result_id_payment_plan').value = data.payment_plan_id;
                 document.getElementById('search_payment_plan').value = data.payment_plan_name;
 
+            }
+
+            if(data.dump_info && data.payment_plan_id){
+                document.getElementById('result_id_payment_plan').value = data.payment_plan_id;
+                document.getElementById('search_payment_plan').value = data.dump_info;
             }
 
             if (data.currency_id) {
@@ -443,10 +458,10 @@
             if (selectedRow) {
                 const data = JSON.parse(selectedRow.dataset.data);
                 document.getElementById('city_id').value = data.city_id;
-                document.getElementById('country').value = data.country_name;
-                document.getElementById('region').value = data.region_name;
-                document.getElementById('subregion').value = data.subregion_name;
-                document.getElementById('city').value = data.city_name;
+                document.getElementById('country_name').value = data.country_name;
+                document.getElementById('region_name').value = data.region_name;
+                document.getElementById('subregion_name').value = data.subregion_name;
+                document.getElementById('city_name').value = data.city_name;
             }
         }
 
