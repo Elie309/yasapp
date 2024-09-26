@@ -277,6 +277,9 @@ class ClientsController extends BaseController
                 ->orderBy('clients.updated_at', 'ASC');
         }
 
+        //ordered by created at by default
+        $clients->orderBy('clients.created_at', 'DESC');
+
         return $clients;
 
     }
