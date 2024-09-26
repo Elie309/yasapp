@@ -68,17 +68,35 @@
         @apply flex flex-row items-center justify-center;
     }
 
-    .pagination-container ul>li a {
-        @apply px-3 py-2 border border-gray-700 rounded mx-1;
+    .pagination-container ul>li {
+        @apply border border-gray-700 rounded mx-1 inline;
     }
 
-    .pagination-container ul>li a:hover {
-        @apply px-3 py-2 border border-gray-700 bg-gray-700 cursor-pointer text-white rounded mx-1;
+    .pagination-container ul>li:hover {
+        @apply border border-gray-700 bg-gray-700 cursor-pointer text-white rounded mx-1;
     }
 
-    .pagination-container ul .active a {
+    .pagination-container ul .active {
         @apply bg-gray-700 rounded mx-1 text-white;
     }
+
+    .pagination-container ul a {
+        @apply py-2 px-3 w-full h-full flex items-center justify-center;
+    }
+
+    /* break rows if page pagination container is in SM size */
+    @media (max-width: 640px) {
+        .pagination-container ul {
+            @apply flex-wrap;
+        }
+
+        .pagination-container ul li {
+            @apply my-1;
+        }
+
+       
+    }
+    
 
     /* Popover backdrop */
 

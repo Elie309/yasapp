@@ -863,20 +863,17 @@ video {
   justify-content: center;
 }
 
-.pagination-container ul>li a {
+.pagination-container ul>li {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
+  display: inline;
   border-radius: 0.25rem;
   border-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgb(55 65 81 / var(--tw-border-opacity));
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 }
 
-.pagination-container ul>li a:hover {
+.pagination-container ul>li:hover {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   cursor: pointer;
@@ -886,15 +883,11 @@ video {
   border-color: rgb(55 65 81 / var(--tw-border-opacity));
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.pagination-container ul .active a {
+.pagination-container ul .active {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   border-radius: 0.25rem;
@@ -902,6 +895,31 @@ video {
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.pagination-container ul a {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+/* break rows if page pagination container is in SM size */
+
+@media (max-width: 640px) {
+  .pagination-container ul {
+    flex-wrap: wrap;
+  }
+
+  .pagination-container ul li {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
 }
 
 /* Popover backdrop */
