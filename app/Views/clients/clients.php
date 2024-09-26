@@ -50,7 +50,7 @@
                 'modelIdOnClickRow' => '',
                 'classOnClickRow' => 'cursor-pointer',
                 'isOnClickRowActive' => false, //This will not be used to redirect to a page when a row is clicked
-                'dataRowActive' =>false,
+                'dataRowActive' => false,
                 'redirectOnClickRow' => 'clients',
                 'id_field' => 'client_id',
                 'rowsPerPageActive' => true,
@@ -63,6 +63,12 @@
         <?php if (isset($pager)) : ?>
             <div class="pagination-container">
                 <?= $pager->links() ?>
+            </div>
+
+            <div>
+                <span class="main-label">Current Page: <?= count($clients) ?> / <?= $pager->getPerPage() ?></span>
+                <span class="main-label">Total Clients: <?= $pager->getTotal() ?></span>
+
             </div>
         <?php endif; ?>
 

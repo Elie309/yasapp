@@ -125,6 +125,12 @@
             <div class="pagination-container">
                 <?= $pager->links() ?>
             </div>
+
+            <div>
+                <span class="main-label">Current Page: <?= count($requests) ?> / <?= $pager->getPerPage() ?></span>
+                <span class="main-label">Total Requests: <?= $pager->getTotal() ?></span>
+
+            </div>
         <?php endif; ?>
 
     </div>
