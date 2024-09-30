@@ -10,4 +10,8 @@ class ListingsController extends BaseController
     {
         return view('template/header') . view('listings/listings') . view('template/footer');
     }
+
+    public function add(){
+        return view('template/header') . view('listings/saveListing', ['method' =>'NEW_REQUEST']) . view('template/footer');
+    }
 }

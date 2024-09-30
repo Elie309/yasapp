@@ -167,8 +167,6 @@ CREATE TABLE properties (
     property_price DECIMAL(15, 2),
 
 
-    property_visibility ENUM('public', 'private') NOT NULL DEFAULT 'public',
-
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL DEFAULT NULL,

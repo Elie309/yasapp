@@ -26,7 +26,6 @@ class PropertyModel extends Model
         'property_catch_phrase',
         'property_size',
         'property_price',
-        'property_visibility',
         'property_status_id',
 
         'created_at',
@@ -79,7 +78,6 @@ class PropertyModel extends Model
         'property_catch_phrase' => 'string',
         'property_size' => 'float',
         'property_price' => 'float',
-        'property_visibility' => 'required|int_list[public,private]',
     ];
     protected $validationMessages   = [
         'property_id' => [
@@ -135,10 +133,6 @@ class PropertyModel extends Model
         'property_price' => [
             'float' => 'Property Price must be a float'
         ],
-        'property_visibility' => [
-            'required' => 'Property Visibility is required',
-            'int_list' => 'Property Visibility must be one of: public, private'
-        ]
 
     ];
     protected $skipValidation       = false;
