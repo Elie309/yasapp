@@ -18,6 +18,7 @@ class PropertySeeder extends Seeder
         $propertyTypeData = $this->db->table('property_type')->get()->getResultArray();
         $propertyStatusData = $this->db->table('property_status')->get()->getResultArray();
         $apartmentGenderData = $this->db->table('apartment_gender')->get()->getResultArray();
+        $currencyData = $this->db->table('currencies')->get()->getResultArray();
 
         // Seed data for 'properties', 'land_details', 'apartment_details', etc.
         for ($i = 0; $i < 50; $i++) {
@@ -30,6 +31,7 @@ class PropertySeeder extends Seeder
                 'city_id' => $faker->numberBetween(1, 1000), // Random city ID
                 'property_type_id' => $faker->randomElement($propertyTypeData)['property_type_id'], // Random property type
                 'property_status_id' => $faker->randomElement($propertyStatusData)['property_status_id'], // Random property status
+                'currency_id' => $faker->randomElement($currencyData)['currency_id'], // Random currency ID
                 'property_location' => $faker->address,
                 'property_referral_name' => $faker->name,
                 'property_referral_phone' => $faker->phoneNumber,

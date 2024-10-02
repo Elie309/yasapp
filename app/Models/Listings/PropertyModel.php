@@ -18,6 +18,7 @@ class PropertyModel extends Model
         'employee_id',
         'payment_plan_id',
         'city_id',
+        'currency_id',
         'property_location',
         'property_referral_name',
         'property_referral_phone',
@@ -43,6 +44,7 @@ class PropertyModel extends Model
         'payment_plan_id' => 'integer',
         'city_id' => 'integer',
         'property_type_id' => 'integer',
+        'currency_id' => 'integer',
         'property_size' => 'float',
         'property_price' => 'float',
         'property_status_id' => 'integer',
@@ -69,6 +71,7 @@ class PropertyModel extends Model
         'city_id' => 'required|integer',
         'property_type_id' => 'required|integer',
         'property_status_id' => 'required|integer',
+        'currency_id' => 'required|integer',
 
         'property_location' => 'string|max_length[255]',
         'property_referral_name' => 'string|max_length[255]',
@@ -107,6 +110,10 @@ class PropertyModel extends Model
         'property_status_id' => [
             'required' => 'Property Status ID is required',
             'integer' => 'Property Status ID must be an integer'
+        ],
+        'currency_id' => [
+            'required' => 'Currency ID is required',
+            'integer' => 'Currency ID must be an integer'
         ],
         'property_location' => [
             'string' => 'Property Location must be a string',
