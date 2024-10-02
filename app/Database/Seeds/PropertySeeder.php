@@ -37,7 +37,6 @@ class PropertySeeder extends Seeder
                 'property_catch_phrase' => $faker->catchPhrase,
                 'property_size' => $faker->randomFloat(2, 50, 500),
                 'property_price' => $faker->randomFloat(2, 100000, 5000000),
-                'property_visibility' => $faker->randomElement(['public', 'private']),
                 'created_at' => $faker->dateTimeThisYear->format('Y-m-d H:i:s'),
                 'updated_at' => $faker->dateTimeThisYear->format('Y-m-d H:i:s'),
             ];
