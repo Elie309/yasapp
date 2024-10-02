@@ -150,7 +150,7 @@ CREATE TABLE properties (
     client_id INT UNSIGNED NOT NULL,
     employee_id INT UNSIGNED NOT NULL,
     payment_plan_id INT UNSIGNED NOT NULL,
-
+    currency_id INT UNSIGNED NOT NULL,
 
     city_id INT UNSIGNED NOT NULL,
     property_type_id INT UNSIGNED NOT NULL,
@@ -165,6 +165,7 @@ CREATE TABLE properties (
 
     property_size DECIMAL(10, 2),
     property_price DECIMAL(15, 2),
+    
 
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -177,7 +178,8 @@ CREATE TABLE properties (
     FOREIGN KEY (payment_plan_id) REFERENCES payment_plans(payment_plan_id),
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
     FOREIGN KEY (property_type_id) REFERENCES property_type(property_type_id),
-    FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id)
+    FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id),
+    FOREIGN KEY (currency_id) REFERENCES currencies(currency_id)
 );
 
 
