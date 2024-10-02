@@ -13,10 +13,10 @@
 
             <div class="flex flex-col md:flex-row mb-4 w-full justify-center">
                 <?php if (isset($agents) && !empty($agents)) : ?>
-                    <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
+                    <div class="my-2 md:my-0 md:ml-4">
                         <label for="agent" class="main-label mr-2 text-wrap">Agent:</label>
-                        <select name="agent" id="agent" class="secondary-input">
-                            <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
+                        <select name="agent" id="agent" class="secondary-input min-w-40">
+                            <option value="" <?= isset($_GET['agent']) ? '' : 'selected' ?>>All</option>
                             <?php foreach ($agents as $agent): ?>
                                 <option value="<?= $agent->agent_name ?>"
                                     <?= isset($_GET['agent']) && $_GET['agent'] === $agent->agent_name ? 'selected' : '' ?>><?= ucfirst($agent->agent_name) ?></option>
@@ -24,9 +24,9 @@
                         </select>
                     </div>
                 <?php endif; ?>
-                <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4">
                     <label for="request_state" class="main-label mr-2 text-wrap">Request State:</label>
-                    <select name="request_state" id="request_state" class="secondary-input">
+                    <select name="request_state" id="request_state" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
                         <?php foreach ($requestStates as $requestState): ?>
                             <option value="<?= $requestState ?>"
@@ -34,9 +34,9 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="grid grid-cols-2 my-2 md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4">
                     <label for="request_priority" class="main-label mr-2 text-wrap">Request Priority:</label>
-                    <select name="request_priority" id="request_priority" class="secondary-input">
+                    <select name="request_priority" id="request_priority" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['requestPriority']) ? '' : 'selected' ?>>All</option>
                         <?php foreach ($requestPriorities as $requestPriority): ?>
                             <option value="<?= $requestPriority ?>"
@@ -48,17 +48,17 @@
             </div>
 
             <div class="flex flex-col md:flex-row mb-8 justify-center">
-                <div class="grid grid-cols-2 my-2 md:flex md:flex-row md:my-0">
+                <div class=" my-2 md:my-0">
                     <label for="start_date" class="main-label mr-2 text-wrap">Start Date:</label>
                     <input type="date" name="start_date" id="start_date"
                         value="<?= isset($_GET['startDate']) ? $_GET['startDate'] : '' ?>"
-                        class="secondary-input">
+                        class="secondary-input min-w-40">
                 </div>
-                <div class="grid grid-cols-2 my-2 md:flex md:flex-row md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4">
                     <label for="end_date" class="main-label mr-2 text-wrap">End Date:</label>
                     <input type="date" name="end_date" id="end_date"
                         value="<?= isset($_GET['endDate']) ? $_GET['endDate'] : '' ?>"
-                        class="secondary-input">
+                        class="secondary-input min-w-40">
                 </div>
 
             </div>
