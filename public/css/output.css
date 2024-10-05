@@ -1258,8 +1258,8 @@ video {
   width: 100%;
 }
 
-.w-40 {
-  width: 10rem;
+.min-w-40 {
+  min-width: 10rem;
 }
 
 .min-w-80 {
@@ -1268,14 +1268,6 @@ video {
 
 .min-w-full {
   min-width: 100%;
-}
-
-.min-w-20 {
-  min-width: 5rem;
-}
-
-.min-w-40 {
-  min-width: 10rem;
 }
 
 .max-w-20 {
@@ -1308,10 +1300,6 @@ video {
 
 .max-w-md {
   max-width: 28rem;
-}
-
-.max-w-40 {
-  max-width: 10rem;
 }
 
 .flex-1 {
