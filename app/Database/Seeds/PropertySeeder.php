@@ -48,7 +48,7 @@ class PropertySeeder extends Seeder
             $propertyId = $this->db->insertID();
 
             // Seed data for 'land_details' table
-            if ($faker->boolean(50)) {
+            if ($faker->boolean(40)) {
                 $landData = [
                     'property_id' => $propertyId,
                     'land_type' => $faker->randomElement(['residential', 'industrial', 'commercial', 'agricultural', 'mixed', 'other']),
@@ -58,10 +58,7 @@ class PropertySeeder extends Seeder
                 ];
 
                 $this->db->table('land_details')->insert($landData);
-            }
-
-            // Seed data for 'apartment_details' table
-            if ($faker->boolean(50)) {
+            }else {
                 $apartmentData = [
                     'property_id' => $propertyId,
                     'ad_terrace' => $faker->boolean,

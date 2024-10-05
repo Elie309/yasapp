@@ -19,8 +19,8 @@
                         <select name="agent" id="agent" class="secondary-input min-w-40">
                             <option value="" <?= isset($_GET['agent']) ? '' : 'selected' ?>>All</option>
                             <?php foreach ($agents as $agent): ?>
-                                <option value="<?= $agent->agent_name ?>"
-                                    <?= isset($_GET['agent']) && $_GET['agent'] === $agent->agent_name ? 'selected' : '' ?>><?= ucfirst($agent->agent_name) ?></option>
+                                <option value="<?= $agent->employee_name ?>"
+                                    <?= isset($_GET['agent']) && $_GET['agent'] === $agent->employee_name ? 'selected' : '' ?>><?= ucfirst($agent->employee_name) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

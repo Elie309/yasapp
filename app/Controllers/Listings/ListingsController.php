@@ -161,13 +161,7 @@ class ListingsController extends BaseController
                 CONCAT(FORMAT(`properties`.`property_price`, 0), " ", `currencies`.`currency_symbol`) as `property_budget`,
                 `property_type`.`property_type_name` as `property_type_name`,
                 `property_status`.`property_status_name` as `property_status_name`,
-                CONCAT(FORMAT(`properties`.`property_size`, 0), " m²") as `property_dimension`,
-                CASE 
-                    WHEN `properties`.`property_rent_or_sale` = "rent" THEN "Rent"
-                    WHEN `properties`.`property_rent_or_sale` = "sale" THEN "Sale"
-                    WHEN `properties`.`property_rent_or_sale` = "rent_sale" THEN "Rent & Sale"
-                    ELSE `properties`.`property_rent_or_sale`
-                END as property_rent_or_sale
+                CONCAT(FORMAT(`properties`.`property_size`, 0), " m²") as `property_dimension`
                 ')
             ->join('clients', 'clients.client_id = properties.client_id', 'left')
             ->join('employees', 'employees.employee_id = properties.employee_id', 'left')

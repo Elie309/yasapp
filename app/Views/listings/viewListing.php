@@ -25,10 +25,6 @@
                 <th>Catch Phrase</th>
                 <td><?= esc($property->property_catch_phrase) ?></td>
             </tr>
-            <tr>
-                <th>Visibility</th>
-                <td><?= esc($property->property_visibility) ?></td>
-            </tr>
         </table>
 
 
