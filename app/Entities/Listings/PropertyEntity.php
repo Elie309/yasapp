@@ -14,6 +14,8 @@ class PropertyEntity extends Entity
         'employee_id' => 'integer',
         'payment_plan_id' => 'integer',
         'city_id' => 'integer',
+        'land_id' => 'integer',
+        'apartment_id' => 'integer',
         'currency_id' => 'integer',
         'property_type_id' => 'integer',
         'property_size' => 'float',

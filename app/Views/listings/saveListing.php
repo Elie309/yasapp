@@ -197,6 +197,9 @@
 
         <label class="main-label" for="partition_storage_room">Storage Room:</label>
         <input type="text" id="partition_storage_room" name="partition_storage_room" class="main-input"><br>
+
+        <label class="main-label" for="partition_extra_features">Extra Features:</label>
+        <textarea id="partition_extra_features" name="partition_extra_features" class="main-input"></textarea><br>
         <hr>
 
 

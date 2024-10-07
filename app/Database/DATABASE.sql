@@ -156,6 +156,11 @@ CREATE TABLE properties (
     property_type_id INT UNSIGNED NOT NULL,
     property_status_id INT UNSIGNED NOT NULL,
 
+    land_id INT UNSIGNED NULL,
+    apartment_id INT UNSIGNED NULL, 
+
+    -- FOREIGN KEYS WILL BE ADDED LATER IN THE FLOW
+
     property_location VARCHAR(255),
     property_referral_name VARCHAR(255),
     property_referral_phone VARCHAR(20),
@@ -180,6 +185,10 @@ CREATE TABLE properties (
     FOREIGN KEY (property_type_id) REFERENCES property_type(property_type_id),
     FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id),
     FOREIGN KEY (currency_id) REFERENCES currencies(currency_id)
+    
+    -- FOREIGN KEY (land_id) REFERENCES land_details(land_id),
+    -- FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
+    -- THEY ARE ADDED LATER IN THE FLOW
 );
 
 
@@ -231,6 +240,9 @@ CREATE TABLE apartment_details (
     FOREIGN KEY (ad_gender_id) REFERENCES  apartment_gender(apartment_gender_id)
 );
 
+ALTER TABLE properties ADD FOREIGN KEY (land_id) REFERENCES land_details(land_id);
+ALTER TABLE properties ADD FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id);
+
 
 CREATE TABLE apartment_partitions (
     partition_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -249,6 +261,7 @@ CREATE TABLE apartment_partitions (
     partition_balconies VARCHAR(255) DEFAULT '',
     partition_parking VARCHAR(255) DEFAULT '',
     partition_storage_room VARCHAR(255) DEFAULT '',
+    partition_extra_features TEXT DEFAULT '',
 
     FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
 );

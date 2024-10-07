@@ -71,10 +71,10 @@ class ApartmentDetailsModel extends Model
         'ad_furnished' => 'boolean',
         'ad_furnished_on_provisions' => 'boolean',
         'ad_elevator' => 'boolean',
-        'ad_status_age' => 'string',
+        'ad_status_age' => 'string|max_length[255]',
         'ad_floor_level' => 'integer',
         'ad_apartments_per_floor' => 'integer',
-        'ad_view' => 'string',
+        'ad_view' => 'string|max_length[255]',
         'ad_type' => 'in_list[luxury, high-end, standard, bad]',
         'ad_architecture_and_interior' => 'string',
         'ad_extra_features' => 'string'
@@ -113,7 +113,8 @@ class ApartmentDetailsModel extends Model
             'boolean' => 'Elevator must be a boolean'
         ],
         'ad_status_age' => [
-            'string' => 'Status Age must be a string'
+            'string' => 'Status Age must be a string',
+            'max_length' => 'Status Age must not exceed 255 characters'
         ],
         'ad_floor_level' => [
             'integer' => 'Floor Level must be an integer'
@@ -122,7 +123,8 @@ class ApartmentDetailsModel extends Model
             'integer' => 'Apartments Per Floor must be an integer'
         ],
         'ad_view' => [
-            'string' => 'View must be a string'
+            'string' => 'View must be a string',
+            'max_length' => 'View must not exceed 255 characters'
         ],
         'ad_type' => [
             'in_list' => 'Type must be one of: luxury, high-end, standard, bad'

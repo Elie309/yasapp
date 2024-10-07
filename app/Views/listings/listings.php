@@ -26,7 +26,15 @@
                     </div>
                 <?php endif; ?>
                 <div class="my-2 md:my-0 md:ml-4">
-                    <label for="propertyType" class="main-label mr-2 text-wrap">Property Type:</label>
+                    <label for="land_apartment" class="main-label mr-2 text-wrap">Land/Apartment:</label>
+                    <select name="land_apartment" id="land_apartment" class="secondary-input min-w-40">
+                        <option value="" <?= isset($_GET['landOrApartment']) ? '' : 'selected' ?>>All</option>
+                        <option value="land" <?= isset($_GET['landOrApartment']) && $_GET['landOrApartment'] === 'land' ? 'selected' : '' ?>>Land</option>
+                        <option value="apartment" <?= isset($_GET['landOrApartment']) && $_GET['landOrApartment'] === 'apartment' ? 'selected' : '' ?>>Apartment</option>
+                    </select>
+                </div>
+                <div class="my-2 md:my-0 md:ml-4">
+                    <label for="propertyType" class="main-label mr-2 text-wrap">Type:</label>
                     <select name="propertyType" id="propertyType" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['propertyType']) ? '' : 'selected' ?>>All</option>
                         <?php foreach ($propertyType as $type): ?>
@@ -36,7 +44,7 @@
                     </select>
                 </div>
                 <div class="my-2 md:my-0 md:ml-4">
-                    <label for="propertyStatus" class="main-label mr-2 text-wrap">Property Status:</label>
+                    <label for="propertyStatus" class="main-label mr-2 text-wrap">Status:</label>
                     <select name="propertyStatus" id="propertyStatus" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['propertyStatus']) ? '' : 'selected' ?>>All</option>
                         <?php foreach ($propertyStatus as $status): ?>
@@ -45,13 +53,13 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-               
+
 
             </div>
 
             <div class="flex flex-col md:flex-row mb-8 justify-center">
                 <div class="my-2 md:my-0">
-                    <label for="createdAt" class="main-label mr-2 text-wrap">Created Date:</label>
+                    <label for="createdAt" class="main-label mr-2 text-wrap">Created At:</label>
                     <input type="date" name="createdAt" id="createdAt"
                         value="<?= isset($_GET['createdAt']) ? $_GET['createdAt'] : '' ?>"
                         class="secondary-input">
@@ -72,6 +80,7 @@
             'client_name' => 'Vendor',
             'employee_name' => 'Employee',
             'city_name' => 'City',
+            'property_land_or_apartment' => 'Land/Apartment',
             'property_type_name' => 'Type',
             'property_status_name' => 'Status',
             'property_budget' => 'Price',
@@ -82,6 +91,20 @@
 
         ];
 
+        //Property change rent_sale to rent or sale
+        for ($i = 0; $i < count($properties); $i++) {
+            if ($properties[$i]->property_rent_or_sale === 'rent_sale') {
+                $properties[$i]->property_rent_or_sale = 'Rent/Sale';
+            }else{
+                $properties[$i]->property_rent_or_sale = ucfirst($properties[$i]->property_rent_or_sale);
+            }
+
+            if ($properties[$i]->property_land_or_apartment !== null) {
+                $properties[$i]->property_land_or_apartment = 'Land';
+            } else {
+                $properties[$i]->property_land_or_apartment = 'Apartment';
+            }
+        }
 
         ?>
 
@@ -134,6 +157,8 @@
         const propertyType = document.getElementById('propertyType');
         const createdAt = document.getElementById('createdAt');
         const updatedAt = document.getElementById('updatedAt');
+        const land_apartment = document.getElementById('land_apartment');
+
 
         <?php if (isset($agents) && !empty($agents)) : ?>
             const agent = document.getElementById('agent');
@@ -157,6 +182,10 @@
 
         updatedAt.addEventListener('change', function() {
             updateURLParameter('updatedAt', updatedAt.value);
+        });
+
+        land_apartment.addEventListener('change', function() {
+            updateURLParameter('landOrApartment', land_apartment.value);
         });
 
     });

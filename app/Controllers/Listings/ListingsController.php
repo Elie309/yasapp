@@ -25,8 +25,10 @@ class ListingsController extends BaseController
         $propertyType = new PropertyTypeModel();
         $propertyType = $propertyType->findAll();
 
-        $agent = new EmployeeModel();
-        $agents = $agent->select('employee_name')->findAll();
+        if ($this->session->get('role') === 'admin') {
+            $agent = new EmployeeModel();
+            $agents = $agent->select('employee_name')->findAll();
+        }
 
 
         $employee_id = $this->session->get('id');
@@ -47,7 +49,7 @@ class ListingsController extends BaseController
                 'apartmentGender' => $apartmentGender,
                 'propertyStatus' => $propertyStatus,
                 'propertyType' => $propertyType,
-                'agents' => $agents,
+                'agents' => $agents ?? null,
                 'properties' => $property,
                 'pager' => $pager
             ]) .
@@ -106,29 +108,58 @@ class ListingsController extends BaseController
         $apartmentDetailModel = new ApartmentDetailsModel();
 
         // Get property data
-        $property = $propertyModel->find($property_id);
+        $property = $propertyModel->select('properties.*, clients.*,
+        CONCAT(clients.client_firstname, " ", clients.client_lastname) as client_name,
+        GROUP_CONCAT(CONCAT(countries.country_code, " ", phones.phone_number) SEPARATOR ", ") as client_phone,
+        CONCAT(FORMAT(properties.property_price, 0), " ", currencies.currency_symbol) as property_budget,
+        employees.employee_name as employee_name,
+        CONCAT(countries_loc.country_name, ", ", regions.region_name, ", ", subregions.subregion_name, ", ", cities.city_name, ", ", properties.property_location) as property_detailed_location,
+        payment_plans.payment_plan_name as payment_plan_name,
+        property_type.property_type_name as property_type_name,
+        property_status.property_status_name as property_status_name,
+        ')
+        ->join('clients', 'clients.client_id = properties.client_id', 'left')
+        ->join('phones', 'phones.client_id = clients.client_id', 'left')
+        ->join('countries', 'countries.country_id = phones.country_id', 'left')
+        ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
+        ->join('cities', 'cities.city_id = properties.city_id', 'left')
+        ->join('payment_plans', 'payment_plans.payment_plan_id = properties.payment_plan_id', 'left')
+        ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
+        ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
+        ->join('regions', 'regions.region_id = subregions.region_id', 'left')
+        ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
+        ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
+        ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
+
+        ->where('property_id', $property_id)
+        ->groupBy('properties.property_id')
+        ->first();
+
 
         if (!$property) {
             return redirect()->to('listings')->with('errors', 'Page not found');
         }
 
-        // Get land details
-        $landDetails = $landDetailModel->where('property_id', $property_id);
-
-        $apartmentDetails = null;
-
-        if ($landDetails) {
-
-            $landDetails = $landDetails->first();
-        } else {
-            $landDetails = null;
+        if($property->employee_id !== $this->session->get('id') && $this->session->get('role') !== 'admin') {
+            return redirect()->to('listings')->with('errors', 'You are not authorized to view this page');
         }
 
-        if ($landDetails == null) {
-            $apartmentDetails = $apartmentDetailModel->select('apartment_details.*, apartment_partitions.*, apartment_specifications.*')
+        $landDetails = null;
+        $apartmentDetails = null;
+
+        if (!empty($property->land_id)) {
+            $landDetails = $landDetailModel->where('property_id', $property_id)->first();
+
+
+        } else if (!empty($property->apartment_id)) {
+            $apartmentDetails = $apartmentDetailModel->select('apartment_details.*, apartment_partitions.*, 
+            apartment_specifications.*, apartment_gender.apartment_gender_name as apartment_gender')
                 ->join('apartment_partitions', 'apartment_partitions.apartment_id = apartment_details.apartment_id')
                 ->join('apartment_specifications', 'apartment_specifications.apartment_id = apartment_details.apartment_id')
+                ->join('apartment_gender', 'apartment_gender.apartment_gender_id = apartment_details.ad_gender_id')
                 ->where('property_id', $property_id)->first();
+        } else {
+            return redirect()->to('listings')->with('errors', 'Page not found');
         }
 
 
@@ -153,41 +184,56 @@ class ListingsController extends BaseController
 
     public function _applyFilters($propertyModel, $employee_id)
     {
-        $property = $propertyModel->select('`properties`.*, 
+
+        $role = $this->session->get('role');
+        $property = $propertyModel->select('`properties`.*,
                 CONCAT(`clients`.`client_firstname`, " ", `clients`.`client_lastname`) as `client_name`,
                 `employees`.`employee_name` as `employee_name`,
                 `cities`.`city_name` as `city_name`,
-
                 CONCAT(FORMAT(`properties`.`property_price`, 0), " ", `currencies`.`currency_symbol`) as `property_budget`,
                 `property_type`.`property_type_name` as `property_type_name`,
                 `property_status`.`property_status_name` as `property_status_name`,
-                CONCAT(FORMAT(`properties`.`property_size`, 0), " m²") as `property_dimension`
+                CONCAT(FORMAT(`properties`.`property_size`, 0), " m²") as `property_dimension`,
+                properties.land_id as property_land_or_apartment,
                 ')
             ->join('clients', 'clients.client_id = properties.client_id', 'left')
             ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
             ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
             ->join('cities', 'cities.city_id = properties.city_id', 'left')
             ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
-            ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
-            ->where('properties.employee_id', $employee_id);
+            ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left');
+
+
+
+        if ($role !== 'admin') {
+            $property->where('properties.employee_id', $employee_id);
+        }
+
+        if (!empty($this->request->getVar('landOrApartment'))) {
+            if ($this->request->getVar('landOrApartment') === 'land') {
+                $property->where('properties.land_id IS NOT NULL');
+            } else if ($this->request->getVar('landOrApartment') === 'apartment') {
+                $property->where('properties.apartment_id IS NOT NULL');
+            }
+        }
 
         if (!empty($this->request->getVar('propertyStatus'))) {
-            $property = $property->where('property_status_name', $this->request->getVar('propertyStatus'));
+            $property->where('property_status_name', $this->request->getVar('propertyStatus'));
         }
 
         if (!empty($this->request->getVar('propertyType'))) {
-            $property = $property->where('property_type_name', $this->request->getVar('propertyType'));
+            $property->where('property_type_name', $this->request->getVar('propertyType'));
         }
 
         if (!empty($this->request->getVar('createdAt'))) {
-            $property = $property->where('created_at >=', $this->request->getVar('createdAt'));
+            $property->where('created_at >=', $this->request->getVar('createdAt'));
         }
 
         if (!empty($this->request->getVar('updatedAt >='))) {
-            $property = $property->where('updated_at', $this->request->getVar('updatedAt'));
+            $property->where('updated_at', $this->request->getVar('updatedAt'));
         }
 
-        $property = $property->orderBy('properties.created_at', 'DESC');
+        $property->orderBy('properties.created_at', 'DESC');
 
         return $property;
     }

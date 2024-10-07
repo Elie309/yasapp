@@ -57,7 +57,13 @@ class PropertySeeder extends Seeder
                     'land_extra_features' => $faker->sentence,
                 ];
 
+                
+
                 $this->db->table('land_details')->insert($landData);
+                $land_id = $this->db->insertID();
+
+                $this->db->table('properties')->where('property_id', $propertyId)->update(['land_id' => $land_id]);
+                
             }else {
                 $apartmentData = [
                     'property_id' => $propertyId,
@@ -69,7 +75,7 @@ class PropertySeeder extends Seeder
                     'ad_furnished' => $faker->boolean,
                     'ad_furnished_on_provisions' => $faker->boolean,
                     'ad_elevator' => $faker->boolean,
-                    'ad_status_age' => $faker->word,
+                    'ad_status_age' => $faker->sentence(4),
                     'ad_floor_level' => $faker->numberBetween(1, 10),
                     'ad_apartments_per_floor' => $faker->numberBetween(1, 5),
                     'ad_view' => $faker->sentence,
@@ -80,6 +86,8 @@ class PropertySeeder extends Seeder
 
                 $this->db->table('apartment_details')->insert($apartmentData);
                 $apartmentId = $this->db->insertID();
+
+                $this->db->table('properties')->where('property_id', $propertyId)->update(['apartment_id' => $apartmentId]);
 
                 $partitionData = [
                     'apartment_id' => $apartmentId,
@@ -95,6 +103,7 @@ class PropertySeeder extends Seeder
                     'partition_balconies' => $faker->word,
                     'partition_parking' => $faker->word,
                     'partition_storage_room' => $faker->word,
+                    'partition_extra_features' => $faker->sentence,
                 ];
 
                 $this->db->table('apartment_partitions')->insert($partitionData);
