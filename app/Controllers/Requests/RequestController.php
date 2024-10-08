@@ -197,7 +197,10 @@ class RequestController extends BaseController
             employees.employee_name,
             agents.employee_id as agent_id,
             agents.employee_name as agent_name,
-            GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers'
+            GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers,
+            requests.created_at as request_created_at,
+            requests.updated_at as request_updated_at
+            '
         )
             ->join('clients', 'requests.client_id = clients.client_id')
             ->join('phones', 'clients.client_id = phones.client_id')
@@ -462,8 +465,8 @@ class RequestController extends BaseController
             'employee_name' => 'Employee Name',
             'agent_name' => 'Agent Name',
             'comments' => 'Comments',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At'
+            'request_created_at' => 'Created At',
+            'request_updated_at' => 'Updated At'
         ];
 
         export_to_excel($filename, $header, $requests);
@@ -503,6 +506,8 @@ class RequestController extends BaseController
                     CONCAT(FORMAT(requests.request_budget, 0), " ", currencies.currency_symbol) AS request_fees,
                     employees.employee_name,
                     agents.employee_name as agent_name,
+                    requests.created_at as request_created_at,
+                    requests.updated_at as request_updated_at
                     ')
             ->join('clients', 'requests.client_id = clients.client_id')
             ->join('cities', 'requests.city_id = cities.city_id')

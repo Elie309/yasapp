@@ -67,12 +67,12 @@
                 <td><?= ucfirst($request->request_state) ?></td>
             </tr>
             <tr>
-                <th>Created At:</th>
-                <td><?= $request->created_at ?></td>
+                <th>Created At</th>
+                <td><?= esc((new DateTime($request->request_created_at))->format('d-M-Y H:i:s T')) ?></td>
             </tr>
             <tr>
-                <th>Updated At:</th>
-                <td><?= $request->updated_at ?></td>
+                <th>Updated At</th>
+                <td><?= esc((new DateTime($request->request_updated_at))->format('d-M-Y H:i:s T')) ?></td>
             </tr>
             <tr>
                 <th>Request Description:</th>

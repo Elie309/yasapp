@@ -83,8 +83,8 @@
             'request_state' => 'State',
             'request_priority' => 'Priority',
             'comments' => 'Comments',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'request_created_at' => 'Created At',
+            'request_updated_at' => 'Updated At',
         ];
 
         //Change the values of Status to html
