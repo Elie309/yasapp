@@ -117,30 +117,32 @@ class ListingsController extends BaseController
         payment_plans.payment_plan_name as payment_plan_name,
         property_type.property_type_name as property_type_name,
         property_status.property_status_name as property_status_name,
+        properties.created_at as property_created_at,
+        properties.updated_at as property_updated_at,
         ')
-        ->join('clients', 'clients.client_id = properties.client_id', 'left')
-        ->join('phones', 'phones.client_id = clients.client_id', 'left')
-        ->join('countries', 'countries.country_id = phones.country_id', 'left')
-        ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
-        ->join('cities', 'cities.city_id = properties.city_id', 'left')
-        ->join('payment_plans', 'payment_plans.payment_plan_id = properties.payment_plan_id', 'left')
-        ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
-        ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
-        ->join('regions', 'regions.region_id = subregions.region_id', 'left')
-        ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
-        ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
-        ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
+            ->join('clients', 'clients.client_id = properties.client_id', 'left')
+            ->join('phones', 'phones.client_id = clients.client_id', 'left')
+            ->join('countries', 'countries.country_id = phones.country_id', 'left')
+            ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
+            ->join('cities', 'cities.city_id = properties.city_id', 'left')
+            ->join('payment_plans', 'payment_plans.payment_plan_id = properties.payment_plan_id', 'left')
+            ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
+            ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
+            ->join('regions', 'regions.region_id = subregions.region_id', 'left')
+            ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
+            ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
+            ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
 
-        ->where('property_id', $property_id)
-        ->groupBy('properties.property_id')
-        ->first();
+            ->where('property_id', $property_id)
+            ->groupBy('properties.property_id')
+            ->first();
 
 
         if (!$property) {
             return redirect()->to('listings')->with('errors', 'Page not found');
         }
 
-        if($property->employee_id !== $this->session->get('id') && $this->session->get('role') !== 'admin') {
+        if ($property->employee_id !== $this->session->get('id') && $this->session->get('role') !== 'admin') {
             return redirect()->to('listings')->with('errors', 'You are not authorized to view this page');
         }
 
@@ -149,8 +151,6 @@ class ListingsController extends BaseController
 
         if (!empty($property->land_id)) {
             $landDetails = $landDetailModel->where('property_id', $property_id)->first();
-
-
         } else if (!empty($property->apartment_id)) {
             $apartmentDetails = $apartmentDetailModel->select('apartment_details.*, apartment_partitions.*, 
             apartment_specifications.*, apartment_gender.apartment_gender_name as apartment_gender')
@@ -174,7 +174,44 @@ class ListingsController extends BaseController
     }
 
 
-    public function export() {}
+    public function export() {
+        helper('excel');
+
+        $employee_id = $this->session->get('id');
+
+        $propertyModel = new PropertyModel();
+        $property = $this->_applyFilters($propertyModel, $employee_id);
+
+
+
+        $properties = $property->findAll();
+
+        //TODO: Change this to a less manual way
+        for ($i = 0; $i < count($properties); $i++) {
+            if ($properties[$i]->property_land_or_apartment !== null) {
+                $properties[$i]->property_land_or_apartment = 'Land';
+            } else {
+                $properties[$i]->property_land_or_apartment = 'Apartment';
+            }
+        }
+
+        $filename = 'listings_export_' . date('Ymd') . '.xlsx';
+        $header = [
+            'client_name' => 'Vendor',
+            'employee_name' => 'Employee',
+            'city_name' => 'City',
+            'property_land_or_apartment' => 'Land/Apartment',
+            'property_type_name' => 'Type',
+            'property_status_name' => 'Status',
+            'property_budget' => 'Price',
+            'property_dimension' => 'Size',
+            'property_created_at' => 'Created At',
+            'property_updated_at' => 'Updated At',
+
+        ];
+
+        export_to_excel($filename, $header, $properties);
+    }
 
     public function delete($id)
     {
@@ -195,6 +232,8 @@ class ListingsController extends BaseController
                 `property_status`.`property_status_name` as `property_status_name`,
                 CONCAT(FORMAT(`properties`.`property_size`, 0), " m²") as `property_dimension`,
                 properties.land_id as property_land_or_apartment,
+                properties.created_at as property_created_at,
+                properties.updated_at as property_updated_at
                 ')
             ->join('clients', 'clients.client_id = properties.client_id', 'left')
             ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
@@ -209,10 +248,10 @@ class ListingsController extends BaseController
             $property->where('properties.employee_id', $employee_id);
         }
 
-        if($role === 'admin' && !empty($this->request->getVar('agent'))) {
+        if ($role === 'admin' && !empty($this->request->getVar('agent'))) {
             $property->where('employee_name', $this->request->getVar('agent'));
         }
-    
+
 
         if (!empty($this->request->getVar('landOrApartment'))) {
             if ($this->request->getVar('landOrApartment') === 'land') {
@@ -231,11 +270,11 @@ class ListingsController extends BaseController
         }
 
         if (!empty($this->request->getVar('createdAt'))) {
-            $property->where('created_at >=', $this->request->getVar('createdAt'));
+            $property->where('properties.created_at >=', $this->request->getVar('createdAt'));
         }
 
-        if (!empty($this->request->getVar('updatedAt >='))) {
-            $property->where('updated_at', $this->request->getVar('updatedAt'));
+        if (!empty($this->request->getVar('updatedAt'))) {
+            $property->where('properties.updated_at >=', $this->request->getVar('updatedAt'));
         }
 
         $property->orderBy('properties.created_at', 'DESC');

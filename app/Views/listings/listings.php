@@ -85,12 +85,12 @@
             'property_status_name' => 'Status',
             'property_budget' => 'Price',
             'property_dimension' => 'Size',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'property_created_at' => 'Created At',
+            'property_updated_at' => 'Updated At',
 
         ];
 
-        //Property change rent_sale to rent or sale
+        //TODO: Change this to a less manual way
         for ($i = 0; $i < count($properties); $i++) {
             if ($properties[$i]->property_land_or_apartment !== null) {
                 $properties[$i]->property_land_or_apartment = 'Land';
