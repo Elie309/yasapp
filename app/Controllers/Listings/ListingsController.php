@@ -209,6 +209,11 @@ class ListingsController extends BaseController
             $property->where('properties.employee_id', $employee_id);
         }
 
+        if($role === 'admin' && !empty($this->request->getVar('agent'))) {
+            $property->where('employee_name', $this->request->getVar('agent'));
+        }
+    
+
         if (!empty($this->request->getVar('landOrApartment'))) {
             if ($this->request->getVar('landOrApartment') === 'land') {
                 $property->where('properties.land_id IS NOT NULL');

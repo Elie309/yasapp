@@ -89,10 +89,6 @@
             </tr>
 
             <tr>
-                <th>Rent/Sale</th>
-                <td><?= esc($property->property_rent_or_sale === "rent" ? 'Rent' : ($property->property_rent_or_sale == 'sale' ? "Sale" : "Rent Or Sale")) ?></td>
-            </tr>
-            <tr>
                 <th>Created At</th>
                 <td><?= esc((new DateTime($property->created_at))->format('d-M-Y H:i:s T')) ?></td>
             </tr>

@@ -165,7 +165,6 @@ CREATE TABLE properties (
     property_referral_name VARCHAR(255),
     property_referral_phone VARCHAR(20),
 
-    property_rent_or_sale ENUM('rent', 'sale', 'rent_sale') DEFAULT 'sale',
     property_catch_phrase TEXT,
 
     property_size DECIMAL(10, 2),

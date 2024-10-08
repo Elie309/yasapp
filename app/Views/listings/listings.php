@@ -85,7 +85,6 @@
             'property_status_name' => 'Status',
             'property_budget' => 'Price',
             'property_dimension' => 'Size',
-            'property_rent_or_sale' => 'Rent/Sale',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
 
@@ -93,12 +92,6 @@
 
         //Property change rent_sale to rent or sale
         for ($i = 0; $i < count($properties); $i++) {
-            if ($properties[$i]->property_rent_or_sale === 'rent_sale') {
-                $properties[$i]->property_rent_or_sale = 'Rent/Sale';
-            }else{
-                $properties[$i]->property_rent_or_sale = ucfirst($properties[$i]->property_rent_or_sale);
-            }
-
             if ($properties[$i]->property_land_or_apartment !== null) {
                 $properties[$i]->property_land_or_apartment = 'Land';
             } else {

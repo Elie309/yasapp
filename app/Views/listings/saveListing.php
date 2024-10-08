@@ -57,12 +57,6 @@
         <label class="main-label" for="property_referral_phone">Referral Phone:</label>
         <input type="text" id="property_referral_phone" name="property_referral_phone" class="main-input"><br>
 
-        <label class="main-label" for="property_rent_or_sale">Rent or Sale:</label>
-        <select id="property_rent_or_sale" name="property_rent_or_sale" class="main-input">
-            <option value="rent">Rent</option>
-            <option value="sale">Sale</option>
-            <option value="rent_sale">Rent & Sale</option>
-        </select><br>
 
         <label class="main-label" for="property_catch_phrase">Catch Phrase:</label>
         <textarea id="property_catch_phrase" name="property_catch_phrase" class="main-input"></textarea><br>

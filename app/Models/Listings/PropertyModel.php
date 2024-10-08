@@ -27,7 +27,6 @@ class PropertyModel extends Model
         'property_referral_name',
         'property_referral_phone',
         'property_type',
-        'property_rent_or_sale',
         'property_catch_phrase',
         'property_size',
         'property_price',
@@ -83,8 +82,6 @@ class PropertyModel extends Model
         'property_location' => 'string|max_length[255]',
         'property_referral_name' => 'string|max_length[255]',
         'property_referral_phone' => 'string|max_length[20]',
-        
-        'property_rent_or_sale' => 'required|in_list[rent,sale,rent_sale]',
         'property_catch_phrase' => 'string',
         'property_size' => 'float',
         'property_price' => 'float',
@@ -139,10 +136,6 @@ class PropertyModel extends Model
         'property_referral_phone' => [
             'string' => 'Property Referral Phone must be a string',
             'max_length' => 'Property Referral Phone must not exceed 20 characters'
-        ],
-        'property_rent_or_sale' => [
-            'required' => 'Property Rent or Sale is required',
-            'in_list' => 'Property Rent or Sale must be one of: rent, sale, rent And Sale'
         ],
         'property_catch_phrase' => [
             'string' => 'Property Catch Phrase must be a string'

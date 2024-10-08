@@ -35,7 +35,6 @@ class PropertySeeder extends Seeder
                 'property_location' => $faker->address,
                 'property_referral_name' => $faker->name,
                 'property_referral_phone' => $faker->phoneNumber,
-                'property_rent_or_sale' => $faker->randomElement(['rent', 'sale', 'rent_sale']),
                 'property_catch_phrase' => $faker->catchPhrase,
                 'property_size' => $faker->randomFloat(2, 50, 500),
                 'property_price' => $faker->randomFloat(2, 100000, 5000000),
