@@ -1,18 +1,18 @@
-<div class="container-main">
+<div class="container-main print-container max-w-6xl overflow-auto">
 
     <!-- Property Details -->
     <div class="flex flex-row">
-        <button onclick="window.history.back()" class="my-auto cursor-pointer">
+        <button onclick="window.history.back()" class="my-auto cursor-pointer no-print">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
             </svg>
         </button>
-        <h2 class="main-title-page">Property of <?= esc($property->client_name) ?></h2>
+        <h2 class="main-title-page text-wrap">Property of <?= esc($property->client_name) ?></h2>
 
-        <a href="/listings/edit/<?= $property->property_id ?>" class="my-auto cursor-pointer"">
+        <a href="/listings/edit/<?= $property->property_id ?>" class="my-auto cursor-pointer no-print">
             <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-            <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
-            <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+                <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
             </svg>
         </a>
 
@@ -20,7 +20,7 @@
 
     <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
-    <div class="my-8 bg-white p-10 shadow-md rounded-md overflow-auto text-lg max-w-6xl mx-auto">
+    <div class="my-8 bg-white p-10 shadow-md rounded-md overflow-auto text-lg w-full max-w-6xl mx-auto print-container">
 
 
         <h2 class="secondary-title">Vendor</h2>
@@ -48,11 +48,11 @@
             </tr>
         </table>
 
-        <br>
-        <hr>
-        <br>
+        <br class="no-print">
+        <hr class="no-print">
+        <br class="no-print">
 
-
+        <div class="break-page"></div>
         <h2 class="secondary-title">Property</h2>
 
         <table>
@@ -90,11 +90,11 @@
 
             <tr>
                 <th>Created At</th>
-                <td><?= esc((new DateTime($property->created_at))->format('d-M-Y H:i:s T')) ?></td>
+                <td><?= esc((new DateTime($property->property_created_at))->format('d-M-Y H:i:s T')) ?></td>
             </tr>
             <tr>
                 <th>Updated At</th>
-                <td><?= esc((new DateTime($property->updated_at))->format('d-M-Y H:i:s T')) ?></td>
+                <td><?= esc((new DateTime($property->property_updated_at))->format('d-M-Y H:i:s T')) ?></td>
             </tr>
         </table>
 
@@ -130,12 +130,13 @@
 
         <?php endif; ?>
 
-        <br>
-        <hr>
-        <br>
+        <br class="no-print">
+        <hr class="no-print">
+        <br class="no-print">
 
         <?php if ($apartmentDetails): ?>
             <!-- Apartment Details -->
+            <div class="break-page"></div>
             <h2 class="secondary-title">Apartment Details</h2>
             <table>
 
@@ -203,9 +204,11 @@
 
             </table>
 
-            <br>
-            <hr>
-            <br>
+            <br class="no-print">
+            <hr class="no-print">
+            <br class="no-print">
+
+            <div class="break-page"></div>
 
             <!-- Apartment Partition -->
             <h2 class="secondary-title">Apartment Partition</h2>
@@ -264,9 +267,11 @@
                 </tr>
             </table>
 
-            <br>
-            <hr>
-            <br>
+            <br class="no-print">
+            <hr class="no-print">
+            <br class="no-print">
+
+            <div class="break-page"></div>
 
             <!-- Apartment Specifications -->
             <h2 class="secondary-title">Apartment Specifications</h2>
@@ -349,9 +354,9 @@
                 </tr>
             </table>
 
-            <br>
-            <hr>
-            <br>
+            <br class="no-print">
+            <hr class="no-print">
+            <br class="no-print">
         <?php endif; ?>
 
     </div>

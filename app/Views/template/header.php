@@ -10,17 +10,17 @@
 
 <body class=" bg-gray-100 flex flex-col min-h-screen max-w-screen overflow-x-auto overflow-y-auto">
     <!-- Top Navigation Bar -->
-    <nav class="lg:hidden bg-gray-900 text-white px-4 py-2 flex justify-between drop-shadow-2xl">
+    <nav class="lg:hidden bg-gray-900 text-white px-4 py-2 flex justify-between drop-shadow-2xl no-print">
         <img src="<?= base_url('logo.png') ?>" alt="Logo" class="w-36">
         <button id="sidebar-toggle" class="lg:hidden text-3xl text-white focus:outline-none mr-4">
             &#9776;
         </button>
     </nav>
 
-    <div class="w-full h-full inline-block lg:flex lg:flex-1">
+    <div class="w-full h-full inline-block lg:flex lg:flex-1 ">
 
         <!-- Sidebar -->
-        <div id="sidebar" class="hidden
+        <div id="sidebar" class="hidden no-print
                             w-full min-h-full bg-[#292f3d]
                             lg:relative lg:block lg:max-w-80 lg:bg-gray-900 
                             text-white p-4 shadow-lg

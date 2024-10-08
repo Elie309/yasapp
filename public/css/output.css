@@ -963,7 +963,7 @@ video {
 .loader {
   width: 60px;
   aspect-ratio: 1;
-  --_g: no-repeat radial-gradient(farthest-side, #374151  90%, #00000000);
+  --_g: no-repeat radial-gradient(farthest-side, #374151 90%, #00000000);
   background: var(--_g), var(--_g), var(--_g);
   background-size: 25% 25%;
   animation: l17 1s infinite;
@@ -1286,6 +1286,10 @@ video {
   max-width: 15rem;
 }
 
+.max-w-6xl {
+  max-width: 72rem;
+}
+
 .max-w-80 {
   max-width: 20rem;
 }
@@ -1300,10 +1304,6 @@ video {
 
 .max-w-md {
   max-width: 28rem;
-}
-
-.max-w-6xl {
-  max-width: 72rem;
 }
 
 .flex-1 {
@@ -1701,6 +1701,30 @@ video {
   transition-duration: 300ms;
 }
 
+@media print {
+  .print-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .break-page {
+    page-break-before: always;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    page-break-inside: avoid;
+  }
+
+  .no-print {
+    display: none;
+  }
+}
+
 .status-dot {
   height: 15px;
   width: 15px;
@@ -1708,31 +1732,31 @@ video {
   display: inline-block;
 }
 
-.pending    {
+.pending {
   background-color: #FFA500;
 }
 
 /* Orange */
 
-.fulfilled  {
+.fulfilled {
   background-color: #4CAF50;
 }
 
 /* Green */
 
-.rejected   {
+.rejected {
   background-color: #F44336;
 }
 
 /* Red */
 
-.cancelled  {
+.cancelled {
   background-color: #070707;
 }
 
 /* Gray */
 
-.on-hold    {
+.on-hold {
   background-color: #FFEB3B;
 }
 

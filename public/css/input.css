@@ -93,10 +93,7 @@
         .pagination-container ul li {
             @apply my-1;
         }
-
-       
     }
-    
 
     /* Popover backdrop */
 
@@ -114,7 +111,7 @@
     .loader {
         width: 60px;
         aspect-ratio: 1;
-        --_g: no-repeat radial-gradient(farthest-side, #374151  90%, #00000000);
+        --_g: no-repeat radial-gradient(farthest-side, #374151 90%, #00000000);
         background: var(--_g), var(--_g), var(--_g);
         background-size: 25% 25%;
         animation: l17 1s infinite;
@@ -153,6 +150,31 @@
 
 }
 
+@media print {
+    .print-container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+    }
+
+    .break-page {
+        page-break-before: always;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+        page-break-inside: avoid;
+    }
+
+    .no-print {
+        display: none;
+    }
+
+}
+
 .status-dot {
     height: 15px;
     width: 15px;
@@ -160,9 +182,33 @@
     display: inline-block;
 }
 
-.pending    { background-color: #FFA500; }   /* Orange */
-.fulfilled  { background-color: #4CAF50; } /* Green */
-.rejected   { background-color: #F44336; }  /* Red */
-.cancelled  { background-color: #070707; }/* Gray */
-.on-hold    { background-color: #FFEB3B; }   /* Yellow */
-.processing { background-color: #00BCD4; }/* Cyan */
+.pending {
+    background-color: #FFA500;
+}
+
+/* Orange */
+.fulfilled {
+    background-color: #4CAF50;
+}
+
+/* Green */
+.rejected {
+    background-color: #F44336;
+}
+
+/* Red */
+.cancelled {
+    background-color: #070707;
+}
+
+/* Gray */
+.on-hold {
+    background-color: #FFEB3B;
+}
+
+/* Yellow */
+.processing {
+    background-color: #00BCD4;
+}
+
+/* Cyan */
