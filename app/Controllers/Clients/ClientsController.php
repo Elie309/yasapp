@@ -18,7 +18,7 @@ class ClientsController extends BaseController
 
         $rowsPerPage = esc($this->request->getVar('rowsPerPage')) ?? 10;
 
-        $clients = $this->_applyFillters($clientModel, $employee_id);
+        $clients = $this->_applyFilters($clientModel, $employee_id);
         
         $clients = $clients->paginate($rowsPerPage);
 
@@ -219,7 +219,7 @@ class ClientsController extends BaseController
 
         $clientsModel = new ClientModel();
 
-        $clients = $this->_applyFillters($clientsModel, $employee_id);
+        $clients = $this->_applyFilters($clientsModel, $employee_id);
 
         $clients = $clients->findAll();
 
@@ -239,10 +239,8 @@ class ClientsController extends BaseController
     }
 
 
-    private function _applyFillters($clientModel, $employee_id){
+    private function _applyFilters($clientModel, $employee_id){
         $search = esc($this->request->getVar('search'));
-
-        $visibility = esc($this->request->getVar('visibility'));
 
         $created_at = esc($this->request->getVar('createdAt'));
 

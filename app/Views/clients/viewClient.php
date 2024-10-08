@@ -46,14 +46,13 @@
                 <?php endforeach; ?>
 
                 <tr>
-                    <th>Created at:</th>
-                    <td><?= $client->created_at ?></td>
-                </tr>
-
-                <tr>
-                    <th>Updated at:</th>
-                    <td><?= $client->updated_at ?></td>
-                </tr>
+                <th>Created At</th>
+                <td><?= esc((new DateTime($client->created_at))->format('d-M-Y H:i:s T')) ?></td>
+            </tr>
+            <tr>
+                <th>Updated At</th>
+                <td><?= esc((new DateTime($client->updated_at))->format('d-M-Y H:i:s T')) ?></td>
+            </tr>
             </table>
         </div>
     </div>
