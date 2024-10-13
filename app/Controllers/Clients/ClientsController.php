@@ -19,7 +19,7 @@ class ClientsController extends BaseController
         $rowsPerPage = esc($this->request->getVar('rowsPerPage')) ?? 10;
 
         $clients = $this->_applyFilters($clientModel, $employee_id);
-        
+
         $clients = $clients->paginate($rowsPerPage);
 
         $pager = $clientModel->pager;
@@ -38,7 +38,15 @@ class ClientsController extends BaseController
         $countriesModel = new CountryModel();
         $countries = $countriesModel->findAll();
 
-         return view('template/header')  . view('clients/addClient', ['employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
+        return view('template/header')  . view(
+            'clients/saveClient',
+            [
+                'employee_id' => $employee_id,
+                'countries' => $countries,
+                'method' => 'NEW_REQUEST'
+            ]
+        )
+            . view('template/footer');
     }
 
     public function addClient()
@@ -120,13 +128,22 @@ class ClientsController extends BaseController
         $phones = $phoneModel->where('client_id', $id)->findAll();
         $countries = $countriesModel->findAll();
 
-        return view('template/header')  . view('clients/editClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id, 'countries' => $countries]) . view('template/footer');
+        return view('template/header')  . view(
+            'clients/saveClient',
+            [
+                'client' => $client,
+                'phones' => $phones,
+                'employee_id' => $employee_id,
+                'countries' => $countries,
+                'method' => "UPDATE_REQUEST"
+            ]
+        ) . view('template/footer');
     }
 
     public function updateClient($id)
     {
 
- 
+
 
         $employee_id = $this->session->get('id');
 
@@ -151,7 +168,7 @@ class ClientsController extends BaseController
             return redirect('clients')->with('errors', ['Client not found']);
         }
 
-        if($client->employee_id != $employee_id){
+        if ($client->employee_id != $employee_id) {
             return redirect('clients')->with('errors', ['Not allowed to edit this client']);
         }
 
@@ -196,11 +213,11 @@ class ClientsController extends BaseController
             ->where('clients.client_id', $id)
             ->first();
 
-        if(!$client){
+        if (!$client) {
             return redirect('clients')->with('errors', ['Client not found']);
         }
 
-        if($client->employee_id != $employee_id){
+        if ($client->employee_id != $employee_id) {
             return redirect('clients')->with('errors', ['You are not allowed to view this client']);
         }
         $phones = $phoneModel->select('phones.*, countries.country_code')
@@ -208,11 +225,12 @@ class ClientsController extends BaseController
             ->where('phones.client_id', $id)
             ->findAll();
 
-            return view('template/header') . view('clients/viewClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id]) . view('template/footer');
+        return view('template/header') . view('clients/viewClient', ['client' => $client, 'phones' => $phones, 'employee_id' => $employee_id]) . view('template/footer');
     }
 
-    public function export(){
-        
+    public function export()
+    {
+
         helper('excel');
 
         $employee_id = $this->session->get('id');
@@ -225,21 +243,21 @@ class ClientsController extends BaseController
 
         $filename = 'clients_export_' . date('Ymd') . '.xlsx';
         $header =
-        [
-            'client_id' => 'ID',
-            'client_firstname' => 'Firstname',
-            'client_lastname' => 'Lastname',
-            'client_email' => 'Email',
-            'phone_numbers' => 'Phone Numbers',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At'
-        ];
+            [
+                'client_id' => 'ID',
+                'client_firstname' => 'Firstname',
+                'client_lastname' => 'Lastname',
+                'client_email' => 'Email',
+                'phone_numbers' => 'Phone Numbers',
+                'created_at' => 'Created At',
+                'updated_at' => 'Updated At'
+            ];
         export_to_excel($filename, $header, $clients);
-       
     }
 
 
-    private function _applyFilters($clientModel, $employee_id){
+    private function _applyFilters($clientModel, $employee_id)
+    {
         $search = esc($this->request->getVar('search'));
 
         $created_at = esc($this->request->getVar('createdAt'));
@@ -279,6 +297,5 @@ class ClientsController extends BaseController
         $clients->orderBy('clients.created_at', 'DESC');
 
         return $clients;
-
     }
 }
