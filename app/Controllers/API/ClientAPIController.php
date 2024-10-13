@@ -32,6 +32,58 @@ class ClientAPIController extends BaseController
             ->groupBy('Clients.client_id')
             ->findAll();
 
-        return $this->response->setJSON($clients);
+        // Fetch phone numbers
+        $phones = $clientModel->select('clients.client_id, phones.phone_number, phones.country_id')
+            ->join('phones', 'clients.client_id = phones.client_id', 'left')
+            ->groupStart()
+            ->like('clients.client_firstname', $search)
+            ->orLike('clients.client_lastname', $search)
+            ->orLike('clients.client_email', $search)
+            ->orLike('phones.phone_number', $search)
+            ->groupEnd()
+            ->groupStart()
+            ->where('clients.employee_id', $employee_id)
+            ->groupEnd()
+            ->findAll();
+
+
+        $clientsWithPhones = [];
+
+        // Group phone numbers by client_id
+        $phoneNumbersByClient = [];
+        foreach ($phones as $phone) {
+            $clientId = $phone->client_id;
+
+            if (!isset($phoneNumbersByClient[$clientId])) {
+
+                $phoneNumbersByClient[$clientId] = [];
+
+            }
+            //Check if country_id is null & set it to 0
+            if($phone->country_id == null ||  $phone->phone_number == null){
+                continue;
+            }
+            $phoneNumbersByClient[$clientId][] = [
+                'country_id' => $phone->country_id,
+                'phone_number' => $phone->phone_number
+            ];
+        }
+
+        // Combine clients with their phone numbers
+        foreach ($clients as $client) {
+            $clientId = $client->client_id;
+            $clientsWithPhones[] = [
+                'client_id' => $client->client_id,
+                'client_firstname' => $client->client_firstname,
+                'client_lastname' => $client->client_lastname,
+                'client_email' => $client->client_email,
+                'phone_numbers' => $client->phone_numbers,
+                'phones' => isset($phoneNumbersByClient[$clientId]) ? $phoneNumbersByClient[$clientId] : []
+            ];
+        }
+
+
+
+        return $this->response->setJSON($clientsWithPhones);
     }
 }

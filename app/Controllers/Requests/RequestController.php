@@ -135,31 +135,39 @@ class RequestController extends BaseController
 
                 $this->db->transException(true)->transStart();
                 //Save the client
-                if (!$clientModel->save($clientEntity)) {
-                    return redirect()->back()->withInput()->with('errors', $clientModel->errors());
-                }
+                $client = $clientModel->find($clientEntity->client_id);
 
-                $client_id = $clientModel->getInsertID();
-                $requestEntity->client_id = $client_id;
+                $client_id = null;
 
-                //Phone numbers
+                if (!$client) {
+                    if (!$clientModel->save($clientEntity)) {
+                        return redirect()->back()->withInput()->with('errors', $clientModel->errors());
+                    }
 
-                if (
-                    is_array($phones) && is_array($countries) && count($phones) == count($countries)
-                    && count($phones) > 0 && count($countries) > 0
-                ) {
-                    foreach ($phones as $key => $phone) {
-                        $phoneData = [
-                            'client_id' => $client_id,
-                            'country_id' => $countries[$key],
-                            'phone_number' => $phone
-                        ];
+                    $client_id = $clientModel->getInsertID();
 
-                        if (!$phoneModel->save($phoneData)) {
-                            return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
+                    if (
+                        is_array($phones) && is_array($countries) && count($phones) == count($countries)
+                        && count($phones) > 0 && count($countries) > 0
+                    ) {
+                        foreach ($phones as $key => $phone) {
+                            $phoneData = [
+                                'client_id' => $client_id,
+                                'country_id' => $countries[$key],
+                                'phone_number' => $phone
+                            ];
+    
+                            if (!$phoneModel->save($phoneData)) {
+                                return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
+                            }
                         }
                     }
+                }else{
+                    $clientEntity->client_id = $client->client_id;
+                    $client_id = $client->client_id;
                 }
+
+                $requestEntity->client_id = $client_id;
 
 
                 if ($requestModel->save($requestEntity)) {
@@ -202,14 +210,14 @@ class RequestController extends BaseController
             requests.updated_at as request_updated_at
             '
         )
-            ->join('clients', 'requests.client_id = clients.client_id')
-            ->join('phones', 'clients.client_id = phones.client_id')
-            ->join('countries', 'countries.country_id = phones.country_id')
-            ->join('cities', 'requests.city_id = cities.city_id')
-            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
-            ->join('currencies', 'requests.currency_id = currencies.currency_id')
-            ->join('employees', 'requests.employee_id = employees.employee_id')
-            ->join('employees as agents', 'requests.agent_id = agents.employee_id')
+            ->join('clients', 'requests.client_id = clients.client_id', 'left')
+            ->join('phones', 'clients.client_id = phones.client_id', 'left')
+            ->join('countries', 'countries.country_id = phones.country_id', 'left')
+            ->join('cities', 'requests.city_id = cities.city_id', 'left')
+            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id', 'left')
+            ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
+            ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
+            ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
             ->where('requests.request_id', $id)
             ->groupBy('requests.request_id')
             ->first();
@@ -259,11 +267,11 @@ class RequestController extends BaseController
             agents.employee_name as agent_name,
             '
         )
-            ->join('clients', 'requests.client_id = clients.client_id')
-            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
-            ->join('currencies', 'requests.currency_id = currencies.currency_id')
-            ->join('employees', 'requests.employee_id = employees.employee_id')
-            ->join('employees as agents', 'requests.agent_id = agents.employee_id')
+            ->join('clients', 'requests.client_id = clients.client_id', 'left')
+            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id', 'left')
+            ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
+            ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
+            ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
             ->where('requests.request_id', $id)
             ->groupStart()
             ->where('requests.employee_id', $employee_id)
@@ -358,35 +366,54 @@ class RequestController extends BaseController
 
             try {
 
-                $this->db->transException(true)->transStart();
-
-
                 $request = $requestModel->find($id);
 
                 if (!$request) {
-                    $this->db->transRollback();
                     return redirect()->back()->with('errors', ['Request not found']);
                 }
 
                 if ($request->employee_id !== $this->session->get('id') && $request->agent_id !== $this->session->get('id')) {
-                    $this->db->transRollback();
                     return redirect()->back()->with('errors', ['You are not allowed to edit this request']);
                 }
 
-                //Update the client
-                if (!$clientModel->update($request->client_id, $clientEntity)) {
-                    $this->db->transRollback();
-                    return redirect()->back()->withInput()->with('errors', $clientModel->errors());
+                $this->db->transException(true)->transStart();
+
+                //Update the client if and check if the client id has changed from the request
+
+                $client_id_post = $clientEntity->client_id;
+
+                $initial_client_id = $request->client_id;
+
+
+                if($client_id_post != $initial_client_id){
+
+                    if(!$clientModel->find($client_id_post)){
+                        $this->db->transRollback();
+                        return redirect()->back()->withInput()->with('errors', ['Invalid client']);
+                    }
+                   
+                    if (!$clientModel->update($client_id_post, $clientEntity)) {
+                        $this->db->transRollback();
+                        return redirect()->back()->withInput()->with('errors', $clientModel->errors());
+                    }
+
+                    $requestEntity->client_id = $client_id_post;
+
+                }else{
+                    if (!$clientModel->update($initial_client_id, $clientEntity)) {
+                        $this->db->transRollback();
+                        return redirect()->back()->withInput()->with('errors', $clientModel->errors());
+                    }
+                    $requestEntity->client_id = $initial_client_id;
                 }
 
-                //Update the phone numbers
-                if ($phoneModel->where('client_id', $request->client_id)->delete()) {
+                if ($phoneModel->where('client_id', $requestEntity->client_id)->delete()) {
 
                     if (is_array($phones)) {
 
                         foreach ($phones as $key => $phone) {
                             $phoneData = [
-                                'client_id' => $request->client_id,
+                                'client_id' => $requestEntity->client_id,
                                 'country_id' => $countries[$key],
                                 'phone_number' => $phone
                             ];
@@ -402,6 +429,7 @@ class RequestController extends BaseController
                         return redirect()->back()->withInput()->with('errors', ['Invalid phone number']);
                     }
                 }
+                
 
                 if ($requestModel->update($id, $requestEntity)) {
                     $this->db->transCommit();
@@ -509,12 +537,12 @@ class RequestController extends BaseController
                     requests.created_at as request_created_at,
                     requests.updated_at as request_updated_at
                     ')
-            ->join('clients', 'requests.client_id = clients.client_id')
-            ->join('cities', 'requests.city_id = cities.city_id')
-            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id')
-            ->join('currencies', 'requests.currency_id = currencies.currency_id')
-            ->join('employees', 'requests.employee_id = employees.employee_id')
-            ->join('employees as agents', 'requests.agent_id = agents.employee_id');
+            ->join('clients', 'requests.client_id = clients.client_id', 'left')
+            ->join('cities', 'requests.city_id = cities.city_id', 'left')
+            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id', 'left')
+            ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
+            ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
+            ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left');
 
         if ($this->session->get('role') !== 'admin') {
             $request = $request->groupStart()

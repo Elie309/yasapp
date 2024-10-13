@@ -1,4 +1,4 @@
-<div class="mt-4">
+<div>
     <label for="client_firstname" class="main-label">First Name<span class="text-red-800">*</span></label>
     <input type="text" class="main-input" id="client_firstname" name="client_firstname" required>
 </div>

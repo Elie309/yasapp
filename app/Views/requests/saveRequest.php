@@ -27,38 +27,18 @@
 
 
                 <h3 class="secondary-title">Client</h3>
-                <?php if ($method == 'UPDATE_REQUEST') : ?>
-                    <input type="hidden" name="client_id" id="client_id" required><br>
-                <?php endif; ?>
+                <div class="w-full text-end">
+                    <button type="button" popovertarget="client-popover"
+                        class="secondary-btn left-0">
+                        Select Client
+                    </button>
+
+                </div>
+
+                <input type="hidden" name="client_id" id="client_id" required><br>
 
                 <div class="flex flex-col w-full mb-4">
-                    <div class="mt-4">
-                        <label for="client_firstname" class="main-label">First Name<span class="text-red-800">*</span></label>
-                        <input type="text" class="main-input" id="client_firstname" name="client_firstname" required>
-                    </div>
-                    <div class="mt-4">
-                        <label for="client_lastname" class="main-label">Last Name<span class="text-red-800">*</span></label>
-                        <input type="text" class="main-input" id="client_lastname" name="client_lastname" required>
-                    </div>
-                    <div class="mt-4">
-                        <label for="client_email" class="main-label">Email</label>
-                        <input type="text" class="main-input" id="client_email" name="client_email">
-                    </div>
-
-                    <div class="mt-4 align-middle">
-                        <label for="client_email" class="main-label">Phone Number:
-                            <button type="button" onclick="onClickAddPhone()">
-                                <svg class=" text-gray-800 size-5 hover:text-blue-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                            </button>
-                        </label>
-                        <div id="phone-section" class="flex flex-col">
-                            <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries ]) ?>
-                        </div>
-                    </div>
-
-
+                    <?= view_cell('App\Cells\Clients\ClientForm\ClientFormCell::render', ['countries' => $countries]) ?>
                 </div>
 
                 <hr class="mx-2" />
@@ -301,7 +281,7 @@
             ];
 
             echo "var city = " . json_encode($city) . ";";
-            
+
             echo "populateFields(data);";
         }
 
@@ -352,7 +332,7 @@
                     var newPhoneInput = document.createElement('div');
 
                     newPhoneInput.innerHTML = `
-                        <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries ]) ?>
+                        <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries]) ?>
                         `;
                     newPhoneInput.querySelector('.phone-country').value = data.country_id[index];
                     newPhoneInput.querySelector('.phone-number').value = data.phone_number[index];
@@ -404,7 +384,7 @@
 
             }
 
-            if(data.dump_info && data.payment_plan_id){
+            if (data.dump_info && data.payment_plan_id) {
                 document.getElementById('result_id_payment_plan').value = data.payment_plan_id;
                 document.getElementById('search_payment_plan').value = data.dump_info;
             }
@@ -441,11 +421,59 @@
 
             if (selectedRow) {
                 const data = JSON.parse(selectedRow.dataset.data);
-                document.getElementById('client_id').value = data.client_id;
-                document.getElementById('client_firstname').value = data.client_firstname;
-                document.getElementById('client_lastname').value = data.client_lastname;
-                document.getElementById('client_email').value = data.client_email;
-                document.getElementById('client_phone').value = data.phone_numbers;
+
+                var client_id_form = document.getElementById('client_id');
+                var client_firstname_form = document.getElementById('client_firstname');
+                var client_lastname_form = document.getElementById('client_lastname');
+                var client_email_form = document.getElementById('client_email');
+
+
+                client_id_form.value = data.client_id;
+                // client_id_form.readOnly = true;
+                // client_id_form.classList += ' main-input-readonly';
+                client_firstname_form.value = data.client_firstname;
+                // client_firstname_form.readOnly = true;
+                // client_firstname_form.classList += ' main-input-readonly';
+                client_lastname_form.value = data.client_lastname;
+                // client_lastname_form.readOnly = true;
+                // client_lastname_form.classList += ' main-input-readonly';
+                client_email_form.value = data.client_email;
+                // client_email_form.readOnly = true;
+                // client_email_form.classList += ' main-input-readonly';
+
+                var phones = data.phones;
+
+                var phoneSection = document.getElementById('phone-section');
+
+                if (phones === null || phones.length === 0) {
+                    phoneSection.innerHTML = '';
+                } else {
+
+                    phoneSection.innerHTML = '';
+
+                    phones.forEach((phone, index) => {
+                        var newPhoneInput = document.createElement('div');
+
+                        newPhoneInput.innerHTML = `
+                        <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries]) ?>
+                        `;
+                        var phoneCountry = newPhoneInput.querySelector('.phone-country');
+                        var phoneNumber = newPhoneInput.querySelector('.phone-number');
+                        phoneCountry.value = phone['country_id'];
+                        phoneNumber.value = phone['phone_number'];
+                        //readOnly
+                        // phoneCountry.disabled = true;
+                        // phoneNumber.readOnly = true;
+
+                        // phoneCountry.classList += ' main-input-readonly';
+                        // phoneNumber.classList += ' main-input-readonly';
+
+                        phoneSection.appendChild(newPhoneInput);
+
+                    });
+
+                }
+
             }
         }
 
@@ -481,17 +509,4 @@
                 e.target.value = value;
             });
         });
-
-        function onClickAddPhone() {
-            var phoneSection = document.getElementById('phone-section');
-            var phone = document.createElement('div');
-            var html = ` <?= view_cell(
-                                'App\Cells\Clients\Phone\PhoneFormCell::render',
-                                ['countries' => $countries, 'removeMinus' => true]
-                            ) ?> `;
-
-            phone.innerHTML = html;
-
-            phoneSection.appendChild(phone);
-        }
     </script>
