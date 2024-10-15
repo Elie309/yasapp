@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Entities\Clients\ClientEntity;
 use App\Entities\Clients\PhoneEntity;
 use App\Entities\Requests\RequestEntity;
+use App\Entities\Settings\PaymentPlansEntity;
 use App\Models\Clients\ClientModel;
 use App\Models\Clients\PhoneModel;
 use App\Models\Requests\RequestModel;
@@ -67,8 +68,8 @@ class RequestController extends BaseController
         $currencyModel = new CurrenciesModel();
         $currencies = $currencyModel->findAll();
 
-        $paymentPlans = new PaymentPlansModel();
-        $paymentPlans = $paymentPlans->findAll();
+        $paymentPlanModel = new PaymentPlansEntity();
+        $paymentPlans = $paymentPlanModel->getPaymentPlans();
 
         $countries = new CountryModel();
         $countries = $countries->findAll();
@@ -76,14 +77,6 @@ class RequestController extends BaseController
         $employeeModel = new EmployeeModel();
         $agents = $employeeModel->select('employee_id as agent_id, employee_name as agent_name')
             ->findAll();
-
-        //Transform the id and name
-        $paymentPlans = array_map(function ($paymentPlan) {
-            return [
-                'id' => $paymentPlan->payment_plan_id,
-                'name' => $paymentPlan->payment_plan_name
-            ];
-        }, $paymentPlans);
 
 
         return view('template/header')
@@ -304,8 +297,8 @@ class RequestController extends BaseController
         $currencyModel = new CurrenciesModel();
         $currencies = $currencyModel->findAll();
 
-        $paymentPlans = new PaymentPlansModel();
-        $paymentPlans = $paymentPlans->findAll();
+        $paymentPlanModel = new PaymentPlansEntity();
+        $paymentPlans = $paymentPlanModel->getPaymentPlans();
 
         $countries = new CountryModel();
         $countries = $countries->findAll();
@@ -313,13 +306,6 @@ class RequestController extends BaseController
         $employeeModel = new EmployeeModel();
         $agents = $employeeModel->select('employee_id as agent_id, employee_name as agent_name')
             ->findAll();
-
-        $paymentPlans = array_map(function ($paymentPlan) {
-            return [
-                'id' => $paymentPlan->payment_plan_id,
-                'name' => $paymentPlan->payment_plan_name
-            ];
-        }, $paymentPlans);
 
 
         return view('template/header')
