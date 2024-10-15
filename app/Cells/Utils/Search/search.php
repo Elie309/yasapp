@@ -10,7 +10,7 @@
             <thead class="table-header-group">
                 <tr class="border border-gray-300">
                     <?php foreach ($tableHeaders as $key => $header) : ?>
-                        <th class="bg-gray-200 text-center p-2"><?= $header ?></th>
+                        <th class="bg-gray-200 text-start p-2"><?= $header ?></th>
                     <?php endforeach; ?>
                 </tr>
             </thead>
@@ -29,7 +29,7 @@
         //Loading sign
         searchResults.innerHTML = `
             <tr>
-                <td colspan="<?= count($tableHeaders) ?>" class="text-center">
+                <td colspan="<?= count($tableHeaders) ?>" class="">
                     <div class="loader mx-auto my-2"></div>
                 </td>
             </tr>
