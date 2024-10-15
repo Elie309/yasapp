@@ -9,7 +9,7 @@
         <?php if ($method == 'NEW_REQUEST') : ?>
             <h2 class="main-title-page">Add Listing</h2>
         <?php elseif ($method == "UPDATE_REQUEST") : ?>
-            <h2 class="main-title-page">Edit Listing of <?= $request->client_firstname . " " . $request->client_lastname ?></h2>
+            <h2 class="main-title-page">Edit Listing of <?= $property->client_firstname . " " . $property->client_lastname ?></h2>
         <?php endif; ?>
     </div>
 
@@ -17,251 +17,251 @@
 
     <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
 
-        <h2 class="secondary-title">Property Status</h2>
-        <label class="main-label" for="property_status_name">Property Status Name:</label>
-        <input type="text" id="property_status_name" name="property_status_name" class="main-input">
-        <br>
-        <hr>
+        <?php if ($method == 'NEW_REQUEST') : ?>
+            <form action="/listings/add" method="POST">
+            <?php elseif ($method == "UPDATE_REQUEST") : ?>
+                <form action="/listings/edit/<?= $property->property_id ?>" method="POST">
+                <?php endif; ?>
+
+
+                <!-- Client details -->
+                <div>
+
+                    <h3 class="secondary-title">Client</h3>
+                    <div class="w-full text-end">
+                        <button type="button" popovertarget="client-popover"
+                            class="secondary-btn left-0">
+                            Select Client
+                        </button>
+
+                    </div>
+
+                    <input type="hidden" name="client_id" id="client_id"><br>
+
+                    <div class="flex flex-col w-full mb-4">
+                        <?= view_cell('App\Cells\Clients\ClientForm\ClientFormCell::render', ['countries' => $countries]) ?>
+                    </div>
+
+                </div>
+
+                <hr class="mx-2" />
+
+
+                <!-- Referral -->
+                <div class="mb-4">
+                    <h3 class="secondary-title">Referral</h3>
+
+                    <label class="main-label" for="property_referral_name">Referral Name:</label>
+                    <input type="text" id="property_referral_name" name="property_referral_name" class="main-input"><br>
+
+                    <label class="main-label" for="property_referral_phone">Referral Phone:</label>
+                    <input type="text" id="property_referral_phone" name="property_referral_phone" class="main-input"><br>
+                </div>
+
+                <hr class="mx-2" />
+
+                <!-- Location -->
+                <div>
+                    <h3 class="secondary-title">Location</h3>
+                    <input type="hidden" name="city_id" id="city_id" required><br>
+
+                    <div class="flex flex-col w-full mb-4">
+                        <div class="w-full flex flex-row my-2">
+                            <input type="text" class="main-input-readonly mr-2" placeholder="Country" readonly name="country_name" id="country_name" required>
+                            <input type="text" class="main-input-readonly" placeholder="Region" readonly name="region_name" id="region_name" required>
+                        </div>
+                        <div class="w-full flex flex-row my-2">
+                            <input type="text" class="main-input-readonly mr-2" placeholder="Subregion" readonly name="subregion_name" id="subregion_name" required>
+                            <input type="text" class="main-input-readonly " placeholder="City" readonly name="city_name" id="city_name" required>
+                        </div>
+
+                        <div class="w-full my-2 flex flex-row justify-center">
+                            <button type="button" popovertarget="location-popover" onclick="document.getElementById('search_Location').focus()" class="secondary-btn mx-auto w-5/12">Select Location</button>
+                        </div>
+
+                        <div>
+                            <label class="main-label" for="property_location">Location Details:</label>
+                            <textarea class="main-input" placeholder="Location address"
+                                name="property_location" id="property_location"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mx-2" />
+
+                <!-- Payment plans -->
+                <div>
+                    <h3 class="secondary-title">Payment Plan</h3>
+                    <div class="flex flex-col w-full mb-4">
+                        <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+                            'placeholder' => 'Search Payment Plan',
+                            'data' => $paymentPlans,
+                            'selectedId' => "payment_plan_id",
+                            'selectedName' => 'payment_plan_name'
+                        ]) ?>
+                    </div>
+                </div>
+
+                <hr class="mx-2" />
+
+                <!-- Property Details -->
+                <div>
+                    <h3 class="secondary-title">Details</h3>
+
+                    <div class="my-4">
+                        <label class="main-label" for="property_type_name">Property Type</label>
+                        <div class="flex flex-col w-full">
+                            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+                                'placeholder' => 'Search Property Type',
+                                'data' => $propertyType,
+                                'selectedId' => "property_type_id",
+                                'selectedName' => 'property_type_name'
+                            ]) ?>
+                        </div>
 
-        <h2 class="secondary-title">Property Type</h2>
-        <label class="main-label" for="property_type_name">Property Type Name:</label>
-        <input type="text" id="property_type_name" name="property_type_name" class="main-input">
-        <br>
-        <hr>
+                    </div>
 
-        <h2 class="secondary-title">Properties</h2>
-        <label class="main-label" for="client_id">Client ID:</label>
-        <input type="number" id="client_id" name="client_id" class="main-input"><br>
 
-        <label class="main-label" for="employee_id">Employee ID:</label>
-        <input type="number" id="employee_id" name="employee_id" class="main-input"><br>
+                    <div class="my-4">
+                        <label class="main-label" for="property_status_name">Property Status</label>
+                        <div class="flex flex-col w-full">
+                            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+                                'placeholder' => 'Search Property Status',
+                                'data' => $propertyStatus,
+                                'selectedId' => "property_status_id",
+                                'selectedName' => 'property_status_name'
+                            ]) ?>
+                        </div>
+                    </div>
 
-        <label class="main-label" for="payment_plan_id">Payment Plan ID:</label>
-        <input type="number" id="payment_plan_id" name="payment_plan_id" class="main-input"><br>
 
-        <label class="main-label" for="city_id">City ID:</label>
-        <input type="number" id="city_id" name="city_id" class="main-input"><br>
+                    <div class="my-4">
 
-        <label class="main-label" for="property_type_id">Property Type ID:</label>
-        <input type="number" id="property_type_id" name="property_type_id" class="main-input"><br>
+                        <label class="main-label" for="property_size">Property Size (m²):</label>
+                        <input type="number" step="1" id="property_size" name="property_size" class="main-input"><br>
 
-        <label class="main-label" for="property_status_id">Property Status ID:</label>
-        <input type="number" id="property_status_id" name="property_status_id" class="main-input"><br>
+                    </div>
 
-        <label class="main-label" for="property_location">Property Location:</label>
-        <input type="text" id="property_location" name="property_location" class="main-input"><br>
+                    <div class="my-4 flex flex-col">
+                        <label class="main-label" for="property_price_display">Price:</label>
+                        <div class="w-full flex flex-row">
+                            <select class="secondary-input w-2/12" name="currency_id" id="currency_id" required>
+                                <?php foreach ($currencies as $currency) : ?>
+                                    <?php if ($currency->currency_symbol == '$') : ?>
+                                        <option value="<?= $currency->currency_id ?>" selected><?= $currency->currency_symbol ?></option>
+                                    <?php else : ?>
+                                        <option value="<?= $currency->currency_id ?>"><?= $currency->currency_symbol ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
 
-        <label class="main-label" for="property_referral_name">Referral Name:</label>
-        <input type="text" id="property_referral_name" name="property_referral_name" class="main-input"><br>
+                            <input type="text" pattern="^\d{1,3}(,\d{3})*(\.\d+)?$" class="secondary-input ml-2 w-10/12" id="property_price_display" required><br>
+                            <input type="hidden" name="property_price" id="property_price">
+                        </div>
 
-        <label class="main-label" for="property_referral_phone">Referral Phone:</label>
-        <input type="text" id="property_referral_phone" name="property_referral_phone" class="main-input"><br>
 
+                    </div>
 
-        <label class="main-label" for="property_catch_phrase">Catch Phrase:</label>
-        <textarea id="property_catch_phrase" name="property_catch_phrase" class="main-input"></textarea><br>
+                    <div class="my-4">
+                        <label class="main-label" for="property_catch_phrase">Catch Phrase:</label>
+                        <textarea id="property_catch_phrase" name="property_catch_phrase" class="main-input"></textarea><br>
 
-        <label class="main-label" for="property_size">Property Size (m<span class="">2</span>):</label>
-        <input type="number" step="0.01" id="property_size" name="property_size" class="main-input"><br>
+                    </div>
 
-        <label class="main-label" for="property_price">Property Price:</label>
-        <input type="number" step="0.01" id="property_price" name="property_price" class="main-input"><br>
+                </div>
 
-        <br>
-        <hr>
+                <br>
 
-        <h2 class="secondary-title">Land Details</h2>
-        <label class="main-label" for="land_type">Land Type:</label>
-        <select id="land_type" name="land_type" class="main-input">
-            <option value="residential">Residential</option>
-            <option value="industrial">Industrial</option>
-            <option value="commercial">Commercial</option>
-            <option value="agricultural">Agricultural</option>
-            <option value="mixed">Mixed</option>
-            <option value="other">Other</option>
-        </select><br>
+                <div class=" w-full flex border-y border-gray-300">
+                    <button type="button" id="land-btn" onclick="showLandForm()"
+                        class=" w-1/2 py-4 text-center 
+                            font-medium text-gray-700 focus:outline-none 
+                            hover:bg-gray-200
+                            ">
+                        Land
+                    </button>
+                    <button type="button" id="apartment-btn" onclick="showApartmentForm()"
+                        class="w-1/2 py-4 text-center font-medium text-gray-700  focus:outline-none
+                        hover:bg-gray-200
+                    ">
+                        Apartment
+                    </button>
 
-        <label class="main-label" for="land_zone_first">Zone First:</label>
-        <input type="number" step="0.01" id="land_zone_first" name="land_zone_first" class="main-input"><br>
+                </div>
 
-        <label class="main-label" for="land_zone_second">Zone Second:</label>
-        <input type="number" step="0.01" id="land_zone_second" name="land_zone_second" class="main-input"><br>
+                <div id="show-land" class="hidden">
+                    <?= view_cell('App\Cells\Listings\LandForm\LandFormCell', ['landTypes' => $landTypes]) ?>
+                </div>
 
-        <label class="main-label" for="land_extra_features">Extra Features:</label>
-        <textarea id="land_extra_features" name="land_extra_features" class="main-input"></textarea>
-        <br>
-        <hr>
+                <div id="show-apartment" class="hidden">
+                
+                <?= view_cell('App\Cells\Listings\ApartmentForm\ApartmentFormCell', ['apartmentGender' => $apartmentGender]) ?>
 
-        <h2 class="secondary-title">Apartment Gender</h2>
-        <label class="main-label" for="apartment_gender_name">Apartment Gender Name:</label>
-        <input type="text" id="apartment_gender_name" name="apartment_gender_name" class="main-input">
-        <br>
-        <hr>
+                </div>
 
-        <h2 class="secondary-title">Apartment Details</h2>
 
-        <label class="main-label" for="property_id">Property ID:</label>
-        <input type="number" id="property_id" name="property_id" class="main-input"><br>
+                </form>
 
-        <label class="main-label" for="ad_terrace">Terrace:</label>
-        <input type="checkbox" id="ad_terrace" name="ad_terrace" class="main-input"><br>
-
-        <label class="main-label" for="ad_terrace_area">Terrace Area (sqm):</label>
-        <input type="number" id="ad_terrace_area" name="ad_terrace_area" class="main-input"><br>
-
-        <label class="main-label" for="ad_roof">Roof:</label>
-        <input type="checkbox" id="ad_roof" name="ad_roof" class="main-input"><br>
-
-        <label class="main-label" for="ad_roof_area">Roof Area (sqm):</label>
-        <input type="number" id="ad_roof_area" name="ad_roof_area" class="main-input"><br>
-
-        <label class="main-label" for="ad_gender_id">Apartment Gender ID:</label>
-        <input type="number" id="ad_gender_id" name="ad_gender_id" class="main-input"><br>
-
-        <label class="main-label" for="ad_furnished">Furnished:</label>
-        <input type="checkbox" id="ad_furnished" name="ad_furnished" class="main-input"><br>
-
-        <label class="main-label" for="ad_furnished_on_provisions">Furnished on Provisions:</label>
-        <input type="checkbox" id="ad_furnished_on_provisions" name="ad_furnished_on_provisions" class="main-input"><br>
-
-        <label class="main-label" for="ad_elevator">Elevator:</label>
-        <input type="checkbox" id="ad_elevator" name="ad_elevator" class="main-input"><br>
-
-        <label class="main-label" for="ad_status_age">Status/Age:</label>
-        <input type="text" id="ad_status_age" name="ad_status_age" class="main-input"><br>
-
-        <label class="main-label" for="ad_floor_level">Floor Level:</label>
-        <input type="number" id="ad_floor_level" name="ad_floor_level" class="main-input"><br>
-
-        <label class="main-label" for="ad_apartments_per_floor">Apartments Per Floor:</label>
-        <input type="number" id="ad_apartments_per_floor" name="ad_apartments_per_floor" class="main-input"><br>
-
-        <label class="main-label" for="ad_view">View:</label>
-        <input type="text" id="ad_view" name="ad_view" class="main-input"><br>
-
-        <label class="main-label" for="ad_type">Type:</label>
-        <select id="ad_type" name="ad_type" class="main-input">
-            <option value="luxury">Luxury</option>
-            <option value="high-end">High-End</option>
-            <option value="standard">Standard</option>
-            <option value="bad">Bad</option>
-        </select><br>
-
-        <label class="main-label" for="ad_architecture_and_interior">Architecture and Interior:</label>
-        <textarea id="ad_architecture_and_interior" name="ad_architecture_and_interior" class="main-input"></textarea><br>
-
-        <label class="main-label" for="ad_extra_features">Extra Features:</label>
-        <textarea id="ad_extra_features" name="ad_extra_features" class="main-input"></textarea><br>
-        <hr>
-
-        <h2 class="secondary-title">Apartment Partitions</h2>
-
-        <label class="main-label" for="partition_salon">Salon:</label>
-        <input type="text" id="partition_salon" name="partition_salon" class="main-input"><br>
-
-        <label class="main-label" for="partition_dining">Dining:</label>
-        <input type="text" id="partition_dining" name="partition_dining" class="main-input"><br>
-
-        <label class="main-label" for="partition_kitchen">Kitchen:</label>
-        <input type="text" id="partition_kitchen" name="partition_kitchen" class="main-input"><br>
-
-        <label class="main-label" for="partition_master_bedroom">Master Bedroom:</label>
-        <input type="text" id="partition_master_bedroom" name="partition_master_bedroom" class="main-input"><br>
-
-        <label class="main-label" for="partition_bedroom">Bedroom:</label>
-        <input type="text" id="partition_bedroom" name="partition_bedroom" class="main-input"><br>
-
-        <label class="main-label" for="partition_bathroom">Bathroom:</label>
-        <input type="text" id="partition_bathroom" name="partition_bathroom" class="main-input"><br>
-
-        <label class="main-label" for="partition_maid_room">Maid Room:</label>
-        <input type="text" id="partition_maid_room" name="partition_maid_room" class="main-input"><br>
-
-        <label class="main-label" for="partition_reception_balcony">Reception Balcony:</label>
-        <input type="text" id="partition_reception_balcony" name="partition_reception_balcony" class="main-input"><br>
-
-        <label class="main-label" for="partition_sitting_corner">Sitting Corner:</label>
-        <input type="text" id="partition_sitting_corner" name="partition_sitting_corner" class="main-input"><br>
-
-        <label class="main-label" for="partition_balconies">Balconies:</label>
-        <input type="text" id="partition_balconies" name="partition_balconies" class="main-input"><br>
-
-        <label class="main-label" for="partition_parking">Parking:</label>
-        <input type="text" id="partition_parking" name="partition_parking" class="main-input"><br>
-
-        <label class="main-label" for="partition_storage_room">Storage Room:</label>
-        <input type="text" id="partition_storage_room" name="partition_storage_room" class="main-input"><br>
-
-        <label class="main-label" for="partition_extra_features">Extra Features:</label>
-        <textarea id="partition_extra_features" name="partition_extra_features" class="main-input"></textarea><br>
-        <hr>
-
-
-        <h2 class="secondary-title">Apartment Specifications</h2>
-
-        <label class="main-label" for="spec_heating_system">Heating System:</label>
-        <input type="checkbox" id="spec_heating_system" name="spec_heating_system" class="main-input"><br>
-
-        <label class="main-label" for="spec_heating_system_on_provisions">Heating System on Provisions:</label>
-        <input type="checkbox" id="spec_heating_system_on_provisions" name="spec_heating_system_on_provisions" class="main-input"><br>
-
-        <label class="main-label" for="spec_ac_system">AC System:</label>
-        <input type="checkbox" id="spec_ac_system" name="spec_ac_system" class="main-input"><br>
-
-        <label class="main-label" for="spec_ac_system_on_provisions">AC System on Provisions:</label>
-        <input type="checkbox" id="spec_ac_system_on_provisions" name="spec_ac_system_on_provisions" class="main-input"><br>
-
-        <label class="main-label" for="spec_double_wall">Double Wall:</label>
-        <input type="checkbox" id="spec_double_wall" name="spec_double_wall" class="main-input"><br>
-
-        <label class="main-label" for="spec_double_glazing">Double Glazing:</label>
-        <input type="checkbox" id="spec_double_glazing" name="spec_double_glazing" class="main-input"><br>
-
-        <label class="main-label" for="spec_shutters_electrical">Electrical Shutters:</label>
-        <input type="checkbox" id="spec_shutters_electrical" name="spec_shutters_electrical" class="main-input"><br>
-
-        <label class="main-label" for="spec_tiles">Tiles:</label>
-        <select id="spec_tiles" name="spec_tiles" class="main-input">
-            <option value="european">European</option>
-            <option value="marble">Marble</option>
-            <option value="granite">Granite</option>
-            <option value="other">Other</option>
-        </select><br>
-
-        <label class="main-label" for="spec_oak_doors">Oak Doors:</label>
-        <input type="checkbox" id="spec_oak_doors" name="spec_oak_doors" class="main-input"><br>
-
-        <label class="main-label" for="spec_chimney">Chimney:</label>
-        <input type="checkbox" id="spec_chimney" name="spec_chimney" class="main-input"><br>
-
-        <label class="main-label" for="spec_indirect_light">Indirect Lighting:</label>
-        <input type="checkbox" id="spec_indirect_light" name="spec_indirect_light" class="main-input"><br>
-
-        <label class="main-label" for="spec_wood_panel_decoration">Wood Panel Decoration:</label>
-        <input type="checkbox" id="spec_wood_panel_decoration" name="spec_wood_panel_decoration" class="main-input"><br>
-
-        <label class="main-label" for="spec_stone_panel_decoration">Stone Panel Decoration:</label>
-        <input type="checkbox" id="spec_stone_panel_decoration" name="spec_stone_panel_decoration" class="main-input"><br>
-
-        <label class="main-label" for="spec_security_door">Security Door:</label>
-        <input type="checkbox" id="spec_security_door" name="spec_security_door" class="main-input"><br>
-
-        <label class="main-label" for="spec_alarm_system">Alarm System:</label>
-        <input type="checkbox" id="spec_alarm_system" name="spec_alarm_system" class="main-input"><br>
-
-        <label class="main-label" for="spec_solar_heater">Solar Heater:</label>
-        <input type="checkbox" id="spec_solar_heater" name="spec_solar_heater" class="main-input"><br>
-
-        <label class="main-label" for="spec_intercom">Intercom:</label>
-        <input type="checkbox" id="spec_intercom" name="spec_intercom" class="main-input"><br>
-
-        <label class="main-label" for="spec_garage">Garage:</label>
-        <input type="checkbox" id="spec_garage" name="spec_garage" class="main-input"><br>
-
-        <label class="main-label" for="spec_extra_features">Extra Features:</label>
-        <textarea id="spec_extra_features" name="spec_extra_features" class="main-input"></textarea>
-        <br>
-        <hr>
-
-    </div class="main-container">
+    </div>
 </div>
+
+<?= view_cell('App\Cells\Settings\Location\LocationPopover\LocationPopoverCell::render') ?>
+
+<?= view_cell('App\Cells\Clients\ClientPopover\ClientPopoverCell::render', ['countries' => $countries]) ?>
+
+<script>
+    function showLandForm() {
+
+        var form = document.getElementById('show-land');
+        var apartmentForm = document.getElementById('show-apartment');
+
+        var landBtn = document.getElementById('land-btn');
+        var apartmentBtn = document.getElementById('apartment-btn');
+
+        landBtn.classList.add('bg-gray-200');
+        apartmentBtn.classList.remove('bg-gray-200');
+
+        apartmentForm.classList.add('hidden');
+        form.classList.remove('hidden');
+
+
+
+
+
+    }
+
+    function showApartmentForm() {
+
+        var form = document.getElementById('show-apartment');
+        var landForm = document.getElementById('show-land');
+
+        var landBtn = document.getElementById('land-btn');
+        var apartmentBtn = document.getElementById('apartment-btn');
+
+        apartmentBtn.classList.add('bg-gray-200');
+        landBtn.classList.remove('bg-gray-200');
+
+        landForm.classList.add('hidden');
+        form.classList.remove('hidden');
+
+
+
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const displayInput = document.getElementById('property_price_display');
+        const hiddenInput = document.getElementById('property_price');
+
+        displayInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            value = value.replace(/,/g, ''); // Remove existing commas
+            if (!isNaN(value) && value !== '') {
+                hiddenInput.value = value; // Update hidden input with numeric value
+                value = parseFloat(value).toLocaleString(); // Format value with commas
+            } else {
+                hiddenInput.value = ''; // Clear hidden input if value is not a number
+            }
+            e.target.value = value;
+        });
+    });
+</script>
