@@ -18,18 +18,21 @@ class ClientAPIController extends BaseController
         $search = str_replace('+', ' ', $search);
         $search = trim($search);
 
-        $clients = $clientModel->select('Clients.client_id, Clients.client_firstname, Clients.client_lastname, Clients.client_email, GROUP_CONCAT(Phones.phone_number SEPARATOR ", ") as phone_numbers')
-            ->join('Phones', 'Clients.client_id = Phones.client_id', 'left')
+        $clients = $clientModel->select('clients.client_id, clients.client_firstname, 
+        clients.client_lastname, clients.client_email,
+        GROUP_CONCAT(Phones.phone_number SEPARATOR ", ") as phone_numbers')
+            ->join('Phones', 'clients.client_id = Phones.client_id', 'left')
             ->groupStart()
-            ->like('Clients.client_firstname', $search)
-            ->orLike('Clients.client_lastname', $search)
-            ->orLike('Clients.client_email', $search)
+            ->like('clients.client_firstname', $search)
+            ->orLike('clients.client_lastname', $search)
+            ->orLike('clients.client_email', $search)
             ->orLike('Phones.phone_number', $search)
+            ->orLike('CONCAT_WS(" ", clients.client_firstname, clients.client_lastname)', $search)
             ->groupEnd()
             ->groupStart()
-            ->where('Clients.employee_id', $employee_id)
+            ->where('clients.employee_id', $employee_id)
             ->groupEnd()
-            ->groupBy('Clients.client_id')
+            ->groupBy('clients.client_id')
             ->findAll();
 
         // Fetch phone numbers
