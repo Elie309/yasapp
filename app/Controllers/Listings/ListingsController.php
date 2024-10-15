@@ -3,16 +3,31 @@
 namespace App\Controllers\Listings;
 
 use App\Controllers\BaseController;
+use App\Entities\Listings\Attributes\ApartmentGenderEntity;
+use App\Entities\Listings\Attributes\PropertyStatusEntity;
+use App\Entities\Listings\Attributes\PropertyTypeEntity;
+use App\Entities\Settings\PaymentPlansEntity;
 use App\Models\Listings\ApartmentDetailsModel;
 use App\Models\Listings\Attributes\ApartmentGenderModel;
 use App\Models\Listings\Attributes\PropertyStatusModel;
 use App\Models\Listings\Attributes\PropertyTypeModel;
 use App\Models\Listings\LandDetailsModel;
 use App\Models\Listings\PropertyModel;
+use App\Models\Settings\CurrenciesModel;
 use App\Models\Settings\EmployeeModel;
+use App\Models\Settings\Location\CountryModel;
 
 class ListingsController extends BaseController
 {
+    private $landTypes = [
+        'residential',
+        'industrial',
+        'commercial',
+        'agricultural',
+        'mixed',
+        'other'
+    ];
+
     public function index()
     {
 
@@ -58,21 +73,34 @@ class ListingsController extends BaseController
 
     public function add()
     {
-        $apartmentGender = new ApartmentGenderModel();
-        $apartmentGender = $apartmentGender->findAll();
+        $apartmentGender = new ApartmentGenderEntity();
+        $apartmentGender = $apartmentGender->getApartmentGenders();
 
-        $propertyStatus = new PropertyStatusModel();
-        $propertyStatus = $propertyStatus->findAll();
+        $propertyStatus = new PropertyStatusEntity();
+        $propertyStatus = $propertyStatus->getPropertyStatuses();
 
-        $propertyType = new PropertyTypeModel();
-        $propertyType = $propertyType->findAll();
+        $propertyType = new PropertyTypeEntity();
+        $propertyType = $propertyType->getPropertyTypes();
+
+        $countryModel = new CountryModel();
+        $countries = $countryModel->findAll();
+
+        $paymentPlans = new PaymentPlansEntity();
+        $paymentPlans = $paymentPlans->getPaymentPlans();
+
+        $currencyModel = new CurrenciesModel();
+        $currencies = $currencyModel->findAll();
 
         return view('template/header') .
             view('listings/saveListing', [
                 'method' => 'NEW_REQUEST',
+                'countries' => $countries,
+                'landTypes' => $this->landTypes,
+                'currencies' => $currencies,
                 'apartmentGender' => $apartmentGender,
                 'propertyStatus' => $propertyStatus,
-                'propertyType' => $propertyType
+                'propertyType' => $propertyType,
+                'paymentPlans' => $paymentPlans
             ]) .
             view('template/footer');
     }
