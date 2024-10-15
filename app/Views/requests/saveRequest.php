@@ -211,36 +211,7 @@
 
     </div>
 
-    <div popover id="client-popover" class="popover">
-        <?= view_cell('\App\Cells\Utils\Search\SearchCell::render', [
-            'title' => 'Client',
-            'tableHeaders' => [
-                'client_firstname' => 'Firstname',
-                'client_lastname' => 'Lastname',
-                'client_email' => 'Email',
-                'phone_numbers' => 'Phone'
-            ],
-            'selectedClassName' => 'selected-row-client',
-            'onSelect' => 'onSelectClient()',
-            'url' => '/api/clients/search?search='
-        ]) ?>
-    </div>
-
-    <div popover id="location-popover" class="popover">
-        <?= view_cell('\App\Cells\Utils\Search\SearchCell::render', [
-            'title' => 'Location',
-            'tableHeaders' => [
-                'country_name' => 'Country',
-                'region_name' => 'Region',
-                'subregion_name' => 'Subregion',
-                'city_name' => 'City'
-            ],
-            'selectedClassName' => 'selected-row-location',
-            'onSelect' => 'onSelectLocation()',
-            'url' => '/api/locations/search?search='
-        ]) ?>
-
-    </div>
+    
 
     <?php if ($method === 'UPDATE_REQUEST') : ?>
         <div popover id="delete-popover" class="popover max-w-md">
@@ -261,6 +232,10 @@
             </div>
         </div>
     <?php endif; ?>
+
+    <?= view_cell('App\Cells\Settings\Location\LocationPopover\LocationPopoverCell::render') ?>
+
+    <?= view_cell('App\Cells\Clients\ClientPopover\ClientPopoverCell::render', ['countries' => $countries]) ?>
 
     <script>
         <?php
@@ -345,8 +320,6 @@
 
 
 
-
-
             if (data.employee_id) {
                 document.getElementById('employee_id').value = data.employee_id;
             }
@@ -413,85 +386,6 @@
 
         }
 
-        function onSelectClient() {
-            //Close the popover
-            closePopover('client-popover');
-
-            const selectedRow = document.querySelector('.selected-row-client');
-
-            if (selectedRow) {
-                const data = JSON.parse(selectedRow.dataset.data);
-
-                var client_id_form = document.getElementById('client_id');
-                var client_firstname_form = document.getElementById('client_firstname');
-                var client_lastname_form = document.getElementById('client_lastname');
-                var client_email_form = document.getElementById('client_email');
-
-
-                client_id_form.value = data.client_id;
-                // client_id_form.readOnly = true;
-                // client_id_form.classList += ' main-input-readonly';
-                client_firstname_form.value = data.client_firstname;
-                // client_firstname_form.readOnly = true;
-                // client_firstname_form.classList += ' main-input-readonly';
-                client_lastname_form.value = data.client_lastname;
-                // client_lastname_form.readOnly = true;
-                // client_lastname_form.classList += ' main-input-readonly';
-                client_email_form.value = data.client_email;
-                // client_email_form.readOnly = true;
-                // client_email_form.classList += ' main-input-readonly';
-
-                var phones = data.phones;
-
-                var phoneSection = document.getElementById('phone-section');
-
-                if (phones === null || phones.length === 0) {
-                    phoneSection.innerHTML = '';
-                } else {
-
-                    phoneSection.innerHTML = '';
-
-                    phones.forEach((phone, index) => {
-                        var newPhoneInput = document.createElement('div');
-
-                        newPhoneInput.innerHTML = `
-                        <?= view_cell('App\Cells\Clients\Phone\PhoneFormCell::render', ['countries' => $countries]) ?>
-                        `;
-                        var phoneCountry = newPhoneInput.querySelector('.phone-country');
-                        var phoneNumber = newPhoneInput.querySelector('.phone-number');
-                        phoneCountry.value = phone['country_id'];
-                        phoneNumber.value = phone['phone_number'];
-                        //readOnly
-                        // phoneCountry.disabled = true;
-                        // phoneNumber.readOnly = true;
-
-                        // phoneCountry.classList += ' main-input-readonly';
-                        // phoneNumber.classList += ' main-input-readonly';
-
-                        phoneSection.appendChild(newPhoneInput);
-
-                    });
-
-                }
-
-            }
-        }
-
-        function onSelectLocation() {
-            //Close the popover
-            closePopover('location-popover');
-
-            const selectedRow = document.querySelector('.selected-row-location');
-
-            if (selectedRow) {
-                const data = JSON.parse(selectedRow.dataset.data);
-                document.getElementById('city_id').value = data.city_id;
-                document.getElementById('country_name').value = data.country_name;
-                document.getElementById('region_name').value = data.region_name;
-                document.getElementById('subregion_name').value = data.subregion_name;
-                document.getElementById('city_name').value = data.city_name;
-            }
-        }
 
         document.addEventListener('DOMContentLoaded', function() {
             const displayInput = document.getElementById('request_budget_display');
@@ -510,3 +404,5 @@
             });
         });
     </script>
+
+</div>
