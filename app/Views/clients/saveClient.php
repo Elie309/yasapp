@@ -1,4 +1,4 @@
-<div class="container-main">
+<div class="container-main max-w-4xl">
 
     <?php
     $clientDataOnError = session()->get('_ci_old_input');
