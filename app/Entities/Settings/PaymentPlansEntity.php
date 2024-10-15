@@ -2,6 +2,7 @@
 
 namespace App\Entities\Settings;
 
+use App\Models\Settings\PaymentPlansModel;
 use CodeIgniter\Entity\Entity;
 
 class PaymentPlansEntity extends Entity
@@ -13,4 +14,23 @@ class PaymentPlansEntity extends Entity
         'payment_plan_id' => 'integer',
         'payment_plan_name' => 'string',
     ];
+
+
+    public function getPaymentPlans(){
+
+        //Get all payment plans
+        $paymentPlansModel = new PaymentPlansModel();
+        $paymentPlans = $paymentPlansModel->findAll();
+
+        $paymentPlans = array_map(function ($paymentPlan) {
+            return [
+                'id' => $paymentPlan->payment_plan_id,
+                'name' => $paymentPlan->payment_plan_name
+            ];
+        }, $paymentPlans);
+
+
+        return $paymentPlans;
+
+    }
 }
