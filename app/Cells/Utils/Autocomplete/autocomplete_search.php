@@ -1,4 +1,4 @@
-<div class="container w-full my-2">
+<div class="container w-full">
     <div class="container relative">
         <input type="text" id="search_<?= $selectedName ?>" name="dump_info" class="select-all main-input" placeholder="<?= $placeholder ?>" autocomplete="off" required>
 
