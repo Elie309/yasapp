@@ -279,6 +279,7 @@ class ClientsController extends BaseController
                 ->orLike('clients.client_lastname', $search)
                 ->orLike('clients.client_email', $search)
                 ->orLike('phones.phone_number', $search)
+                ->orLike('CONCAT_WS(" ", clients.client_firstname, clients.client_lastname)', $search)
                 ->groupEnd();
         }
 
