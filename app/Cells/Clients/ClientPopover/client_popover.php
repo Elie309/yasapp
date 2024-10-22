@@ -30,17 +30,9 @@
 
 
             client_id_form.value = data.client_id;
-            // client_id_form.readOnly = true;
-            // client_id_form.classList += ' main-input-readonly';
             client_firstname_form.value = data.client_firstname;
-            // client_firstname_form.readOnly = true;
-            // client_firstname_form.classList += ' main-input-readonly';
             client_lastname_form.value = data.client_lastname;
-            // client_lastname_form.readOnly = true;
-            // client_lastname_form.classList += ' main-input-readonly';
             client_email_form.value = data.client_email;
-            // client_email_form.readOnly = true;
-            // client_email_form.classList += ' main-input-readonly';
 
             var phones = data.phones;
 
@@ -62,12 +54,6 @@
                     var phoneNumber = newPhoneInput.querySelector('.phone-number');
                     phoneCountry.value = phone['country_id'];
                     phoneNumber.value = phone['phone_number'];
-                    //readOnly
-                    // phoneCountry.disabled = true;
-                    // phoneNumber.readOnly = true;
-
-                    // phoneCountry.classList += ' main-input-readonly';
-                    // phoneNumber.classList += ' main-input-readonly';
 
                     phoneSection.appendChild(newPhoneInput);
 

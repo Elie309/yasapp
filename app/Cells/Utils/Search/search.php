@@ -21,7 +21,10 @@
 
 </div>
 
-<script>
+<script defer>
+
+    var selectedRow = null;
+
     function search_<?= $title ?>(url, search, searchResults) {
         var search = document.getElementById(search).value;
         var searchResults = document.getElementById(searchResults);
@@ -58,11 +61,13 @@
                         `;
                         searchResults.appendChild(tr);
                         tr.addEventListener('click', function() {
-                            var selectedRow = document.querySelector("<?= $selectedClassName ?>");
+                            
+
                             if (selectedRow) {
                                 selectedRow.classList.remove("<?= $selectedClassName ?>");
                             }
 
+                            selectedRow = this;
                             this.classList.add("<?= $selectedClassName ?>");
 
                             <?php if (isset($onSelect)) : ?>
@@ -106,4 +111,5 @@
                 `;
         }
     }
+
 </script>
