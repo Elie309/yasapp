@@ -3,11 +3,22 @@
 namespace App\Controllers\Listings;
 
 use App\Controllers\BaseController;
+use App\Entities\Clients\ClientEntity;
+use App\Entities\Clients\PhoneEntity;
+use App\Entities\Listings\ApartmentDetailsEntity;
+use App\Entities\Listings\ApartmentPartitionsEntity;
+use App\Entities\Listings\ApartmentSpecificationsEntity;
 use App\Entities\Listings\Attributes\ApartmentGenderEntity;
 use App\Entities\Listings\Attributes\PropertyStatusEntity;
 use App\Entities\Listings\Attributes\PropertyTypeEntity;
+use App\Entities\Listings\LandDetailsEntity;
+use App\Entities\Listings\PropertyEntity;
 use App\Entities\Settings\PaymentPlansEntity;
+use App\Models\Clients\ClientModel;
+use App\Models\Clients\PhoneModel;
 use App\Models\Listings\ApartmentDetailsModel;
+use App\Models\Listings\ApartmentPartitionsModel;
+use App\Models\Listings\ApartmentSpecificationsModel;
 use App\Models\Listings\Attributes\ApartmentGenderModel;
 use App\Models\Listings\Attributes\PropertyStatusModel;
 use App\Models\Listings\Attributes\PropertyTypeModel;
@@ -103,6 +114,91 @@ class ListingsController extends BaseController
                 'paymentPlans' => $paymentPlans
             ]) .
             view('template/footer');
+    }
+
+    public function addListing()
+    {
+        $propertyModel = new PropertyModel();
+        $propertyEntity = new PropertyEntity();
+
+        $employee_id = $this->session->get('id');
+
+
+        $clientModel = new ClientModel();
+        $clientEntity = new ClientEntity();
+        $phoneModel = new PhoneModel();
+
+        $client = $clientEntity->fill($this->request->getPost());
+        $phones = $this->request->getPost('phone_number');
+        $countries = $this->request->getPost('country_id');
+        try {
+            $this->db->transException(true)->transStart();
+            //Save the client
+            $client = $clientModel->find($clientEntity->client_id);
+
+            $client_id = null;
+
+            if (!$client) {
+                if (!$clientModel->save($clientEntity)) {
+                    return redirect()->back()->withInput()->with('errors', $clientModel->errors());
+                }
+
+                $client_id = $clientModel->getInsertID();
+
+                if (
+                    is_array($phones) && is_array($countries) && count($phones) == count($countries)
+                    && count($phones) > 0 && count($countries) > 0
+                ) {
+                    foreach ($phones as $key => $phone) {
+                        $phoneData = [
+                            'client_id' => $client_id,
+                            'country_id' => $countries[$key],
+                            'phone_number' => $phone
+                        ];
+
+                        if (!$phoneModel->save($phoneData)) {
+                            return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
+                        }
+                    }
+                }
+            } else {
+                $clientEntity->client_id = $client->client_id;
+                $client_id = $client->client_id;
+            }
+
+
+            $property = $propertyEntity->fill($this->request->getPost());
+            $property->employee_id = $employee_id;
+            $property->client_id = $client_id;
+
+            if ($this->request->getPost('property_land_or_apartment') === 'land') {
+
+                $landDetailsModel = new LandDetailsModel();
+                $landDetailsEntity = new LandDetailsEntity();
+                $landDetails = $landDetailsEntity->fill($this->request->getPost());
+            } else if ($this->request->getPost('property_land_or_apartment') === 'apartment') {
+                $apartmentDetailsModel = new ApartmentDetailsModel();
+                $apartmentDetailsEntity = new ApartmentDetailsEntity();
+                $apartmentDetails = $apartmentDetailsEntity->fill($this->request->getPost());
+
+                $apartmentPartitionsModel = new ApartmentPartitionsModel();
+                $apartmentPartitionsEntity = new ApartmentPartitionsEntity();
+                $apartmentPartitions = $apartmentPartitionsEntity->fill($this->request->getPost());
+
+                $apartmentSpecs = new ApartmentSpecificationsModel();
+                $apartmentSpecsEntity = new ApartmentSpecificationsEntity();
+                $apartmentSpecs = $apartmentSpecsEntity->fill($this->request->getPost());
+            } else {
+                return redirect()->back()->with('errors', 'Invalid property land or apartment type');
+            }
+
+
+
+            return redirect()->to('listings')->with('success', 'Property added successfully');
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
+        }
     }
 
     public function edit($id)
@@ -202,7 +298,8 @@ class ListingsController extends BaseController
     }
 
 
-    public function export() {
+    public function export()
+    {
         helper('excel');
 
         $employee_id = $this->session->get('id');
