@@ -188,17 +188,22 @@
                     </button>
 
                 </div>
+                <input id="land_apartment" type="text" hidden name="property_land_or_apartment" value="property">
 
                 <div id="show-land" class="hidden">
                     <?= view_cell('App\Cells\Listings\LandForm\LandFormCell', ['landTypes' => $landTypes]) ?>
                 </div>
 
                 <div id="show-apartment" class="hidden">
-                
-                <?= view_cell('App\Cells\Listings\ApartmentForm\ApartmentFormCell', ['apartmentGender' => $apartmentGender]) ?>
+
+                    <?= view_cell('App\Cells\Listings\ApartmentForm\ApartmentFormCell', ['apartmentGender' => $apartmentGender]) ?>
 
                 </div>
 
+                <div class="my-4 flex flex-row w-full justify-evenly">
+                    <button id="clear-btn" type="button" disabled class="secondary-btn-disabled w-2/6">Clear</button>
+                    <button id="submit-btn" type="submit" disabled class="primary-btn-disabled w-2/6">Save</button>
+                </div>
 
                 </form>
 
@@ -214,9 +219,13 @@
 
         var form = document.getElementById('show-land');
         var apartmentForm = document.getElementById('show-apartment');
+        var land_apartment = document.getElementById('land_apartment');
+        var clear_btn = document.getElementById('clear-btn');
+        var submit_btn = document.getElementById('submit-btn');
 
         var landBtn = document.getElementById('land-btn');
         var apartmentBtn = document.getElementById('apartment-btn');
+
 
         landBtn.classList.add('bg-gray-200');
         apartmentBtn.classList.remove('bg-gray-200');
@@ -224,6 +233,13 @@
         apartmentForm.classList.add('hidden');
         form.classList.remove('hidden');
 
+        land_apartment.value = 'land';
+        clear_btn.disabled = false;
+        submit_btn.disabled = false;
+        clear_btn.classList.remove('secondary-btn-disabled');
+        submit_btn.classList.remove('primary-btn-disabled');
+        clear_btn.classList.add('secondary-btn');
+        submit_btn.classList.add('primary-btn');
 
 
 
@@ -234,6 +250,9 @@
 
         var form = document.getElementById('show-apartment');
         var landForm = document.getElementById('show-land');
+        var land_apartment = document.getElementById('land_apartment');
+        var clear_btn = document.getElementById('clear-btn');
+        var submit_btn = document.getElementById('submit-btn');
 
         var landBtn = document.getElementById('land-btn');
         var apartmentBtn = document.getElementById('apartment-btn');
@@ -244,7 +263,13 @@
         landForm.classList.add('hidden');
         form.classList.remove('hidden');
 
-
+        land_apartment.value = 'apartment';
+        clear_btn.disabled = false;
+        submit_btn.disabled = false;
+        clear_btn.classList.remove('secondary-btn-disabled');
+        submit_btn.classList.remove('primary-btn-disabled');
+        clear_btn.classList.add('secondary-btn');
+        submit_btn.classList.add('primary-btn');
 
     }
 
@@ -263,5 +288,7 @@
             }
             e.target.value = value;
         });
+
+
     });
 </script>
