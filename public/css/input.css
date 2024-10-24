@@ -15,6 +15,13 @@
     .primary-btn {
         @apply bg-white hover:bg-red-800 border border-red-800 text-red-800 hover:text-white p-2 rounded transition-colors ease-in-out focus:outline-none focus:bg-red-900
     }
+    .primary-btn-disabled {
+        @apply bg-gray-300 border border-gray-300 text-gray-700 p-2 rounded cursor-not-allowed;
+    }
+
+    .secondary-btn-disabled {
+        @apply bg-gray-300 border border-gray-300 text-gray-700 p-2 rounded cursor-not-allowed;
+    }
 
     .success-div {
         @apply text-sm my-2 bg-green-100 border border-green-800 text-green-800 text-center px-4 py-3 rounded relative;
