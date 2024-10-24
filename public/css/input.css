@@ -37,7 +37,7 @@
     }
 
     .main-input-readonly {
-        @apply w-full p-2 border border-gray-300 bg-gray-300 select-none rounded outline-none;
+        @apply w-full p-2 border border-gray-300 bg-gray-200 select-none rounded outline-none;
     }
 
     .secondary-input {
@@ -46,6 +46,10 @@
 
     .main-label {
         @apply my-1 block text-sm font-medium text-gray-700 text-nowrap;
+    }
+
+    .secondary-label {
+        @apply my-1 block text-sm font-medium text-gray-700 text-wrap;
     }
 
     .main-select {
@@ -57,7 +61,7 @@
     }
 
     .main-checkbox {
-        @apply w-5 h-5 border focus:border-red-800 border-gray-300 rounded cursor-pointer;
+        @apply w-4 h-4 border focus:border-red-800 border-gray-300 rounded cursor-pointer;
     }
 
     .pagination-container {
