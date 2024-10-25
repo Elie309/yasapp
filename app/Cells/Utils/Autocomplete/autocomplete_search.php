@@ -1,6 +1,6 @@
 <div class="container w-full">
     <div class="container relative">
-        <input type="text" id="search_<?= $selectedName ?>" name="dump_info" class="select-all main-input" placeholder="<?= $placeholder ?>" autocomplete="off">
+        <input type="text" id="search_<?= $selectedName ?>" name="info_<?= $selectedName ?>" class="select-all main-input" placeholder="<?= $placeholder ?>" autocomplete="off">
 
         <!-- THIS INPUT WILL BE TAKEN TO THE FORM SUBMIT -->
         <input type="hidden" id="result_id_<?= $selectedName ?>" name="<?= $selectedId ?>" value="0" />
@@ -18,14 +18,14 @@
 
             search.value = item;
             result_id.value = id;
-            const result = document.getElementById('result_<?= $selectedName  ?>');
+            const result = document.getElementById('result_<?= $selectedName ?>');
             result.innerHTML = ''
         }
 
 
         document.addEventListener('DOMContentLoaded', function() {
-            const search = document.getElementById('search_<?= $selectedName  ?>');
-            const result = document.getElementById('result_<?= $selectedName  ?>');
+            const search = document.getElementById('search_<?= $selectedName ?>');
+            const result = document.getElementById('result_<?= $selectedName ?>');
 
             <?php if (isset($searchLink)): ?>
 
@@ -48,7 +48,7 @@
                                             hover:text-white hover:bg-red-800 
                                             w-full"
 
-                                            onclick="setSearchResult_<?= $selectedName  ?>('${item['name']}', '${item['id']}')">
+                                            onclick="setSearchResult_<?= $selectedName ?>('${item['name']}', '${item['id']}')">
                                             ${item['name']}
                                         </button></li>`;
                                 });
@@ -82,7 +82,7 @@
                             hover:text-white hover:bg-red-800 
                             w-full"
 
-                            onclick="setSearchResult_<?= $selectedName  ?>('${item['name']}', '${item['id']}')">
+                            onclick="setSearchResult_<?= $selectedName ?>('${item['name']}', '${item['id']}')">
                             ${item['name']}
                         </button></li>`;
                     });
@@ -99,7 +99,7 @@
 
                     const query = search.value.toLowerCase();
 
-                    let filteredArray = <?= 'items_' . $selectedName  ?>.filter(item => item['name'].toLowerCase().includes(query));
+                    let filteredArray = <?= 'items_' . $selectedName ?>.filter(item => item['name'].toLowerCase().includes(query));
 
                     let output = '<ul class="py-4 px-2">';
                     filteredArray.forEach(item => {
@@ -109,7 +109,7 @@
                             hover:text-white hover:bg-red-800 
                             w-full"
 
-                            onclick="setSearchResult_<?= $selectedName  ?>('${item['name']}', '${item['id']}')">
+                            onclick="setSearchResult_<?= $selectedName ?>('${item['name']}', '${item['id']}')">
                             ${item['name']}
                         </button></li>`;
                     });

@@ -194,14 +194,14 @@
                             <button popovertarget="delete-popover" type="button" class="secondary-btn my-4 w-full sm:w-5/12 cursor-pointer">Delete</button>
                         </div>
                         <div class="w-full flex flex-row justify-center">
-                            <input type="submit" class="main-btn my-4 w-full sm:w-5/12 cursor-pointer" value="submit">
+                            <input type="submit" class="primary-btn my-4 w-full sm:w-5/12 cursor-pointer" value="submit">
                         </div>
                     </div>
 
                 <?php else : ?>
 
                     <div class="w-full flex flex-row justify-center">
-                        <input type="submit" class="main-btn my-4 w-full sm:w-5/12 cursor-pointer" value="Submit">
+                        <input type="submit" class="primary-btn my-4 w-full sm:w-5/12 cursor-pointer" value="Submit">
                     </div>
 
                 <?php endif; ?>
@@ -357,9 +357,9 @@
 
             }
 
-            if (data.dump_info && data.payment_plan_id) {
+            if (data.info_payment_plan && data.payment_plan_id) {
                 document.getElementById('result_id_payment_plan').value = data.payment_plan_id;
-                document.getElementById('search_payment_plan').value = data.dump_info;
+                document.getElementById('search_payment_plan').value = data.info_payment_plan;
             }
 
             if (data.currency_id) {
