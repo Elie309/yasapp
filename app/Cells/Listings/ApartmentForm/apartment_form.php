@@ -23,7 +23,7 @@
         <label class="secondary-label md:col-span-2" for="ad_terrace_area">Terrace Area (sqm):</label>
         <input type="number" id="ad_terrace_area"
             name="ad_terrace_area" disabled
-            class="main-input-readonly md:col-span-4" />
+            class="main-input disabled:main-input-readonly md:col-span-4" />
 
         <label class="secondary-label" for="ad_roof">Roof:</label>
         <input type="checkbox" id="ad_roof" name="ad_roof" class="main-checkbox">
@@ -31,7 +31,7 @@
         <label class=" secondary-label md:col-span-2" for="ad_roof_area">Roof Area (sqm):</label>
         <input type="number" id="ad_roof_area"
             name="ad_roof_area" disabled
-            class="main-input-readonly md:col-span-4">
+            class="main-input disabled:main-input-readonly md:col-span-4">
 
         <label class="secondary-label" for="ad_furnished">Furnished:</label>
         <input type="checkbox" id="ad_furnished" name="ad_furnished"
@@ -209,8 +209,6 @@
         ad_terrace.addEventListener('change', function() {
             const ad_terrace_area = document.getElementById("ad_terrace_area");
             ad_terrace_area.disabled = !ad_terrace.checked;
-            ad_terrace_area.classList.toggle('main-input-readonly');
-            ad_terrace_area.classList.toggle('main-input');
 
             if (!ad_terrace.checked) {
                 ad_terrace_area.value = "";
@@ -220,8 +218,6 @@
         ad_roof.addEventListener('change', function() {
             const ad_roof_area = document.getElementById("ad_roof_area");
             ad_roof_area.disabled = !ad_roof.checked;
-            ad_roof_area.classList.toggle('main-input-readonly');
-            ad_roof_area.classList.toggle('main-input');
             if (!ad_roof.checked) {
                 ad_roof_area.value = "";
             }
