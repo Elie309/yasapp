@@ -19,8 +19,8 @@ class EmployeeSeeder extends Seeder
                 'employee_role'       => 'admin',
                 'employee_email'     => 'admin@admin.com',
                 'employee_phone'     => '1234567890',
-                'employee_birthday'  => $faker->date,
-                'employee_address'   => $faker->address,
+                'employee_birthday'  => $faker->date(),
+                'employee_address'   => $faker->address(),
                 'employee_status'    => 'active',
 
             ],
@@ -30,8 +30,8 @@ class EmployeeSeeder extends Seeder
                 'employee_role'       => 'user',
                 'employee_email'     => 'user@user.com',
                 'employee_phone'     => '123456780',
-                'employee_birthday'  => $faker->date,
-                'employee_address'   => $faker->address,
+                'employee_birthday'  => $faker->date(),
+                'employee_address'   => $faker->address(),
                 'employee_status'    => 'active',
 
             ],
@@ -41,8 +41,8 @@ class EmployeeSeeder extends Seeder
                 'employee_role'       => 'manager',
                 'employee_email'     => 'thomas@thomas.com',
                 'employee_phone'     => '1234560',
-                'employee_birthday'  => $faker->date,
-                'employee_address'   => $faker->address,
+                'employee_birthday'  => $faker->date(),
+                'employee_address'   => $faker->address(),
                 'employee_status'    => 'active',
 
             ],

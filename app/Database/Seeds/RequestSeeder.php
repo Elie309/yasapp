@@ -28,13 +28,13 @@ class RequestSeeder extends Seeder
                 'currency_id' => $faker->randomElement($currencyIds)['currency_id'],
                 'employee_id' => $faker->randomElement($employeeIds)['employee_id'],
                 'agent_id' => $faker->randomElement($employeeIds)['employee_id'],
-                'request_location' => $faker->address,
+                'request_location' => $faker->address(),
                 'request_budget' => $faker->randomFloat(2, 10000, 1000000),
                 'request_state' => $faker->randomElement(['pending', 'fulfilled', 'rejected', 'cancelled', 'on-hold', 'processing']),
                 'request_priority' => $faker->randomElement(['low', 'medium', 'high']),
-                'comments' => $faker->text,
-                'created_at' => $faker->dateTimeThisYear->format('Y-m-d H:i:s'),
-                'updated_at' => $faker->dateTimeThisYear->format('Y-m-d H:i:s'),
+                'comments' => $faker->text(),
+                'created_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
+                'updated_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
                 'deleted_at' => null,
             ];
         }

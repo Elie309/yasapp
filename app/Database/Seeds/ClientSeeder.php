@@ -15,9 +15,9 @@ class ClientSeeder extends Seeder
         $clients = [];
         for ($i = 0; $i < 100; $i++) {
             $clients[] = [
-                'client_firstname' => $faker->firstName,
-                'client_lastname' => $faker->lastName,
-                'client_email' => $faker->email,
+                'client_firstname' => $faker->firstName(),
+                'client_lastname' => $faker->lastName(),
+                'client_email' => $faker->email(),
                 'employee_id' => $faker->numberBetween(1, 3),
                 'created_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
                 'updated_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
@@ -39,7 +39,7 @@ class ClientSeeder extends Seeder
                 $phones[] = [
                     'client_id' => $clientId['client_id'],
                     'country_id' => $faker->numberBetween(1, 4),
-                    'phone_number' => $faker->phoneNumber,
+                    'phone_number' => $faker->phoneNumber(),
                 ];
             }
         }
