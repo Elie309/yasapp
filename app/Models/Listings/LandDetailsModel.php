@@ -13,7 +13,6 @@ class LandDetailsModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'land_id',
         'property_id',
         'land_type',
         'land_zone_first',
@@ -41,7 +40,7 @@ class LandDetailsModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'land_id' => 'required|integer',
+        'land_id' => 'permit_empty',
         'property_id' => 'required|integer',
         'land_type' => 'required|string|in_list[industrial, residential, commercial, agricultural, mixed, other]',
         'land_zone_first' => 'integer',
@@ -49,10 +48,7 @@ class LandDetailsModel extends Model
         'land_extra_features' => 'required|string'
     ];
     protected $validationMessages   = [
-        'land_id' => [
-            'required' => 'Land ID is required',
-            'integer'  => 'Land ID must be an integer'
-        ],
+        'land_id' => [],
         'property_id' => [
             'required' => 'Property ID is required',
             'integer'  => 'Property ID must be an integer'

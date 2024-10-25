@@ -14,7 +14,6 @@ class ApartmentDetailsModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'apartment_id',
         'property_id',
         'ad_terrace',
         'ad_terrace_area',
@@ -61,7 +60,7 @@ class ApartmentDetailsModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'apartment_id' => 'integer|permit_empty',
+        'apartment_id' => 'permit_empty',
         'property_id' => 'required|integer',
         'ad_terrace' => 'boolean',
         'ad_terrace_area' => 'integer',
@@ -80,9 +79,7 @@ class ApartmentDetailsModel extends Model
         'ad_extra_features' => 'string'
     ];
     protected $validationMessages   = [
-        'apartment_id' => [
-            'integer'  => 'Apartment ID must be an integer'
-        ],
+        'apartment_id' => [],
         'property_id' => [
             'required' => 'Property ID is required',
             'integer'  => 'Property ID must be an integer'

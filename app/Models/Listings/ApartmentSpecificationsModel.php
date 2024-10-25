@@ -13,7 +13,6 @@ class ApartmentSpecificationsModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'spec_id',
         'apartment_id',
         'spec_heating_system',
         'spec_heating_system_on_provisions',
@@ -72,7 +71,7 @@ class ApartmentSpecificationsModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'spec_id' => 'required|integer',
+        'spec_id' => 'permit_empty',
         'apartment_id' => 'required|integer',
         'spec_heating_system' => 'boolean',
         'spec_heating_system_on_provisions' => 'boolean',
@@ -95,10 +94,7 @@ class ApartmentSpecificationsModel extends Model
         'spec_extra_features' => 'string'
     ];
     protected $validationMessages   = [
-        'spec_id' => [
-            'required' => 'Specification ID is required',
-            'integer' => 'Specification ID must be an integer'
-        ],
+        'spec_id' => [],
         'apartment_id' => [
             'required' => 'Apartment ID is required',
             'integer' => 'Apartment ID must be an integer'

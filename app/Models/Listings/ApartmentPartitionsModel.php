@@ -14,7 +14,6 @@ class ApartmentPartitionsModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'partition_id',
         'apartment_id',
         'partition_salon',
         'partition_dining',
@@ -49,7 +48,7 @@ class ApartmentPartitionsModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'partition_id' => 'required|integer',
+        'partition_id' => 'permit_empty',
         'apartment_id' => 'required|integer',
         'partition_salon' => 'string|max_length[255]',
         'partition_dining' => 'string|max_length[255]',
@@ -66,10 +65,7 @@ class ApartmentPartitionsModel extends Model
         'partition_extra_features' => 'string'
     ];
     protected $validationMessages   = [
-        'partition_id' => [
-            'required' => 'Partition ID is required',
-            'integer' => 'Partition ID must be an integer'
-        ],
+        'partition_id' => [],
         'apartment_id' => [
             'required' => 'Apartment ID is required',
             'integer' => 'Apartment ID must be an integer'

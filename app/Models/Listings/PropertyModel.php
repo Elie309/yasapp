@@ -13,7 +13,6 @@ class PropertyModel extends Model
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    =[
-        'property_id',
         'client_id',
         'employee_id',
         'payment_plan_id',
@@ -69,7 +68,7 @@ class PropertyModel extends Model
     // Validation
     protected $validationRules      = [
 
-        'property_id' => 'required|integer',
+        'property_id' => 'permit_empty',
         'client_id' => 'required|integer',
         'employee_id' => 'required|integer',
         'payment_plan_id' => 'required|integer',
@@ -77,8 +76,8 @@ class PropertyModel extends Model
         'property_type_id' => 'required|integer',
         'property_status_id' => 'required|integer',
         'currency_id' => 'required|integer',
-        'land_id' => 'integer',
-        'apartment_id' => 'integer',
+        'land_id' => 'integer|permit_empty',
+        'apartment_id' => 'integer|permit_empty',
         'property_location' => 'string|max_length[255]',
         'property_referral_name' => 'string|max_length[255]',
         'property_referral_phone' => 'string|max_length[20]',
@@ -87,10 +86,7 @@ class PropertyModel extends Model
         'property_price' => 'integer',
     ];
     protected $validationMessages   = [
-        'property_id' => [
-            'required' => 'Property ID is required',
-            'integer' => 'Property ID must be an integer'
-        ],
+        'property_id' => [],
         'client_id' => [
             'required' => 'Client ID is required',
             'integer' => 'Client ID must be an integer'
