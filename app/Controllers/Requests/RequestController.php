@@ -149,13 +149,13 @@ class RequestController extends BaseController
                                 'country_id' => $countries[$key],
                                 'phone_number' => $phone
                             ];
-    
+
                             if (!$phoneModel->save($phoneData)) {
                                 return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
                             }
                         }
                     }
-                }else{
+                } else {
                     $clientEntity->client_id = $client->client_id;
                     $client_id = $client->client_id;
                 }
@@ -371,21 +371,20 @@ class RequestController extends BaseController
                 $initial_client_id = $request->client_id;
 
 
-                if($client_id_post != $initial_client_id){
+                if ($client_id_post != $initial_client_id) {
 
-                    if(!$clientModel->find($client_id_post)){
+                    if (!$clientModel->find($client_id_post)) {
                         $this->db->transRollback();
                         return redirect()->back()->withInput()->with('errors', ['Invalid client']);
                     }
-                   
+
                     if (!$clientModel->update($client_id_post, $clientEntity)) {
                         $this->db->transRollback();
                         return redirect()->back()->withInput()->with('errors', $clientModel->errors());
                     }
 
                     $requestEntity->client_id = $client_id_post;
-
-                }else{
+                } else {
                     if (!$clientModel->update($initial_client_id, $clientEntity)) {
                         $this->db->transRollback();
                         return redirect()->back()->withInput()->with('errors', $clientModel->errors());
@@ -415,7 +414,7 @@ class RequestController extends BaseController
                         return redirect()->back()->withInput()->with('errors', ['Invalid phone number']);
                     }
                 }
-                
+
 
                 if ($requestModel->update($id, $requestEntity)) {
                     $this->db->transCommit();
