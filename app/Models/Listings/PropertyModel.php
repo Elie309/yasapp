@@ -83,8 +83,8 @@ class PropertyModel extends Model
         'property_referral_name' => 'string|max_length[255]',
         'property_referral_phone' => 'string|max_length[20]',
         'property_catch_phrase' => 'string',
-        'property_size' => 'float',
-        'property_price' => 'float',
+        'property_size' => 'integer',
+        'property_price' => 'integer',
     ];
     protected $validationMessages   = [
         'property_id' => [
@@ -141,10 +141,10 @@ class PropertyModel extends Model
             'string' => 'Property Catch Phrase must be a string'
         ],
         'property_size' => [
-            'float' => 'Property Size must be a float'
+            'integer' => 'Property Size must be a integer'
         ],
         'property_price' => [
-            'float' => 'Property Price must be a float'
+            'integer' => 'Property Price must be a integer'
         ],
 
     ];
