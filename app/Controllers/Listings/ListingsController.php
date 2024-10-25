@@ -27,6 +27,7 @@ use App\Models\Listings\PropertyModel;
 use App\Models\Settings\CurrenciesModel;
 use App\Models\Settings\EmployeeModel;
 use App\Models\Settings\Location\CountryModel;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class ListingsController extends BaseController
 {
@@ -139,6 +140,7 @@ class ListingsController extends BaseController
             $client_id = null;
 
             if (!$client) {
+                $clientEntity->employee_id = $employee_id;
                 if (!$clientModel->save($clientEntity)) {
                     return redirect()->back()->withInput()->with('errors', $clientModel->errors());
                 }
@@ -171,11 +173,22 @@ class ListingsController extends BaseController
             $property->employee_id = $employee_id;
             $property->client_id = $client_id;
 
+            if (!$propertyModel->save($property)) {
+                $this->db->transRollback();
+                return redirect()->back()->withInput()->with('errors', $propertyModel->errors());
+            }
+
             if ($this->request->getPost('property_land_or_apartment') === 'land') {
 
                 $landDetailsModel = new LandDetailsModel();
                 $landDetailsEntity = new LandDetailsEntity();
                 $landDetails = $landDetailsEntity->fill($this->request->getPost());
+
+                if(!$landDetailsModel->save($landDetails)){
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $landDetailsModel->errors());
+                }
+
             } else if ($this->request->getPost('property_land_or_apartment') === 'apartment') {
                 $apartmentDetailsModel = new ApartmentDetailsModel();
                 $apartmentDetailsEntity = new ApartmentDetailsEntity();
@@ -185,18 +198,50 @@ class ListingsController extends BaseController
                 $apartmentPartitionsEntity = new ApartmentPartitionsEntity();
                 $apartmentPartitions = $apartmentPartitionsEntity->fill($this->request->getPost());
 
-                $apartmentSpecs = new ApartmentSpecificationsModel();
+                $apartmentSpecsModel = new ApartmentSpecificationsModel();
                 $apartmentSpecsEntity = new ApartmentSpecificationsEntity();
                 $apartmentSpecs = $apartmentSpecsEntity->fill($this->request->getPost());
+
+                if(!$apartmentDetailsModel->save($apartmentDetails)){
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $apartmentDetailsModel->errors());
+                }
+
+                $apartment_id = $apartmentDetailsModel->getInsertID();
+                $apartmentPartitions->apartment_id = $apartment_id;
+                $apartmentSpecs->apartment_id = $apartment_id;
+
+                if(!$apartmentPartitionsModel->save($apartmentPartitions)){
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $apartmentPartitionsModel->errors());
+                }
+
+                if(!$apartmentSpecsModel->save($apartmentSpecs)){
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $apartmentSpecsModel->errors());
+                }
+
             } else {
-                return redirect()->back()->with('errors', 'Invalid property land or apartment type');
+                $this->db->transRollback();
+                return redirect()->back()->withInput()->with('errors', 'Invalid property land or apartment type');
             }
 
-
-
+            $this->db->transCommit();
             return redirect()->to('listings')->with('success', 'Property added successfully');
-        } catch (\Exception $e) {
+            
+        }catch (DatabaseException $e) {
+            //if the error is foreign key constraint
+            if ($e->getCode() === 1452) {
+                $this->db->transRollback();
+                return redirect()->back()->withInput()->with('errors', $e->getMessage());
+            }
+
             $this->db->transRollback();
+            return redirect()->back()->withInput()->with('errors', $e->getMessage());
+            
+        }catch (\Exception $e) {
+            $this->db->transRollback();
+            log_message('error', $e->getMessage());
             return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
         }
     }
@@ -340,7 +385,7 @@ class ListingsController extends BaseController
 
     public function delete($id)
     {
-
+        //TODO: Add a confirmation dialog
         return redirect()->to('listings')->with('success', 'Property deleted successfully');
     }
 
