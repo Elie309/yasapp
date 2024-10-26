@@ -25,7 +25,7 @@ class PropertyModel extends Model
         'property_location',
         'property_referral_name',
         'property_referral_phone',
-        'property_type',
+        'property_type_id',
         'property_catch_phrase',
         'property_size',
         'property_price',
