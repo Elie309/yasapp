@@ -8,7 +8,7 @@
             <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
                 'placeholder' => 'Search Apartment Gender',
                 'data' => $apartmentGender,
-                'selectedId' => "apartment_gender_id",
+                'selectedId' => "ad_gender_id",
                 'selectedName' => 'apartment_gender_name'
             ]) ?>
         </div>
