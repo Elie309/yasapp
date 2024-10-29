@@ -328,7 +328,7 @@
         }
 
         if (data.property_price) {
-            document.getElementById('property_price_display').value = data.property_price;
+            document.getElementById('property_price_display').value = priceDisplay(data.property_price);
             document.getElementById('property_price').value = data.property_price;
         }
 
@@ -379,8 +379,8 @@
             }
 
         } else {
-            if (data.apartment_gender_id) {
-                document.getElementById("result_id_apartment_gender_name").value = data.apartment_gender_id;
+            if (data.ad_gender_id) {
+                document.getElementById("result_id_apartment_gender_name").value = data.ad_gender_id;
                 document.getElementById("search_apartment_gender_name").value = data.info_apartment_gender_name;
             }
 
@@ -636,7 +636,7 @@
             value = value.replace(/,/g, ''); // Remove existing commas
             if (!isNaN(value) && value !== '') {
                 hiddenInput.value = value; // Update hidden input with numeric value
-                value = parseFloat(value).toLocaleString(); // Format value with commas
+                value = priceDisplay(value); // Format value with commas
             } else {
                 hiddenInput.value = ''; // Clear hidden input if value is not a number
             }
@@ -645,4 +645,8 @@
 
 
     });
+
+    function priceDisplay(value){
+        return parseFloat(value).toLocaleString();
+    }
 </script>
