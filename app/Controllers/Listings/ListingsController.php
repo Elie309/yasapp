@@ -168,6 +168,7 @@ class ListingsController extends BaseController
                 $client_id = $client->client_id;
             }
 
+            $land_apartment = esc($this->request->getPost('property_land_or_apartment'));
 
             $property = $propertyEntity->fill($this->request->getPost());
             $property->employee_id = $employee_id;
@@ -178,21 +179,32 @@ class ListingsController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $propertyModel->errors());
             }
 
-            if ($this->request->getPost('property_land_or_apartment') === 'land') {
+            $property_id = $propertyModel->getInsertID();
+
+            if ($land_apartment === 'land') {
 
                 $landDetailsModel = new LandDetailsModel();
                 $landDetailsEntity = new LandDetailsEntity();
+
                 $landDetails = $landDetailsEntity->fill($this->request->getPost());
+                $landDetails->property_id = $property_id;
 
                 if(!$landDetailsModel->save($landDetails)){
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $landDetailsModel->errors());
                 }
+                
+                $land_id = $landDetailsModel->getInsertID();
+                if(!$propertyModel->update($property_id, ['land_id' => $land_id])){
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
+                }
 
-            } else if ($this->request->getPost('property_land_or_apartment') === 'apartment') {
+            } else if ($land_apartment === 'apartment') {
                 $apartmentDetailsModel = new ApartmentDetailsModel();
                 $apartmentDetailsEntity = new ApartmentDetailsEntity();
                 $apartmentDetails = $apartmentDetailsEntity->fill($this->request->getPost());
+                $apartmentDetails->property_id = $property_id;
 
                 $apartmentPartitionsModel = new ApartmentPartitionsModel();
                 $apartmentPartitionsEntity = new ApartmentPartitionsEntity();
@@ -221,6 +233,11 @@ class ListingsController extends BaseController
                     return redirect()->back()->withInput()->with('errors', $apartmentSpecsModel->errors());
                 }
 
+                if(!$propertyModel->update($property_id, ['apartment_id' => $apartment_id])){
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
+                }
+
             } else {
                 $this->db->transRollback();
                 return redirect()->back()->withInput()->with('errors', 'Invalid property land or apartment type');
@@ -233,7 +250,7 @@ class ListingsController extends BaseController
             //if the error is foreign key constraint
             if ($e->getCode() === 1452) {
                 $this->db->transRollback();
-                return redirect()->back()->withInput()->with('errors', $e->getMessage());
+                return redirect()->back()->withInput()->with('errors', 'Invalid data provided');
             }
 
             $this->db->transRollback();
