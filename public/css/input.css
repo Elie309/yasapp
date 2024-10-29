@@ -197,29 +197,41 @@
     background-color: #FFA500;
 }
 
-/* Orange */
 .fulfilled {
     background-color: #4CAF50;
 }
 
-/* Green */
 .rejected {
     background-color: #F44336;
 }
 
-/* Red */
 .cancelled {
     background-color: #070707;
 }
 
-/* Gray */
 .on-hold {
     background-color: #FFEB3B;
 }
 
-/* Yellow */
 .processing {
     background-color: #00BCD4;
 }
 
-/* Cyan */
+.main-bg-image::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+
+    background-image: url('/images/background.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Add the blur effect */
+    /* filter: blur(8px);
+    -webkit-filter: blur(8px); */
+}

@@ -8,11 +8,11 @@
     <link href="<?= base_url('/css/output.css') ?>" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100 sm:flex sm:items-center sm:justify-center min-h-screen">
+<body class="bg-gray-100 sm:flex sm:items-center sm:justify-center min-h-screen main-bg-image">
 
 
     <div class="w-full max-w-full sm:max-w-3xl min-h-screen sm:min-h-fit sm:h-fit
-            bg-white p-8 sm:shadow-md sm:rounded-lg ">
+            bg-white p-8 sm:shadow-md sm:rounded-lg">
 
 
         <div class=" 
@@ -34,16 +34,14 @@
 
                         <label for="name" class="main-label">Employee Name</label>
 
-                        <input type="text" id="name" name="name" class="main-input" required>
+                        <input type="text" id="name" name="name" autocomplete="name" class="main-input" required>
 
                     </div>
                     <div class="mb-6">
 
                         <label for="password" class="main-label">Password</label>
 
-                        <input type="password" id="password" name="password" class="main-input" required>
-
-
+                        <input type="password" id="password" name="password" autocomplete="current-password" class="main-input" required>
                     </div>
 
                     <button type="submit" class="w-full main-btn">
