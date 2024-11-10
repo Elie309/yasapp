@@ -159,7 +159,7 @@
                 </tr>
                 <tr>
                     <th>Gender</th>
-                    <td><?= esc($apartmentDetails->apartment_gender) ?></td>
+                    <td><?= esc($apartmentDetails->apartment_gender_name) ?></td>
                 </tr>
                 <tr>
                     <th>Furnished</th>

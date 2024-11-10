@@ -189,17 +189,16 @@ class ListingsController extends BaseController
                 $landDetails = $landDetailsEntity->fill($this->request->getPost());
                 $landDetails->property_id = $property_id;
 
-                if(!$landDetailsModel->save($landDetails)){
+                if (!$landDetailsModel->save($landDetails)) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $landDetailsModel->errors());
                 }
-                
+
                 $land_id = $landDetailsModel->getInsertID();
-                if(!$propertyModel->update($property_id, ['land_id' => $land_id])){
+                if (!$propertyModel->update($property_id, ['land_id' => $land_id])) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
                 }
-
             } else if ($land_apartment === 'apartment') {
                 $apartmentDetailsModel = new ApartmentDetailsModel();
                 $apartmentDetailsEntity = new ApartmentDetailsEntity();
@@ -214,7 +213,7 @@ class ListingsController extends BaseController
                 $apartmentSpecsEntity = new ApartmentSpecificationsEntity();
                 $apartmentSpecs = $apartmentSpecsEntity->fill($this->request->getPost());
 
-                if(!$apartmentDetailsModel->save($apartmentDetails)){
+                if (!$apartmentDetailsModel->save($apartmentDetails)) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $apartmentDetailsModel->errors());
                 }
@@ -223,21 +222,20 @@ class ListingsController extends BaseController
                 $apartmentPartitions->apartment_id = $apartment_id;
                 $apartmentSpecs->apartment_id = $apartment_id;
 
-                if(!$apartmentPartitionsModel->save($apartmentPartitions)){
+                if (!$apartmentPartitionsModel->save($apartmentPartitions)) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $apartmentPartitionsModel->errors());
                 }
 
-                if(!$apartmentSpecsModel->save($apartmentSpecs)){
+                if (!$apartmentSpecsModel->save($apartmentSpecs)) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $apartmentSpecsModel->errors());
                 }
 
-                if(!$propertyModel->update($property_id, ['apartment_id' => $apartment_id])){
+                if (!$propertyModel->update($property_id, ['apartment_id' => $apartment_id])) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
                 }
-
             } else {
                 $this->db->transRollback();
                 return redirect()->back()->withInput()->with('errors', 'Invalid property land or apartment type');
@@ -245,8 +243,7 @@ class ListingsController extends BaseController
 
             $this->db->transCommit();
             return redirect()->to('listings')->with('success', 'Property added successfully');
-            
-        }catch (DatabaseException $e) {
+        } catch (DatabaseException $e) {
             //if the error is foreign key constraint
             if ($e->getCode() === 1452) {
                 $this->db->transRollback();
@@ -255,36 +252,163 @@ class ListingsController extends BaseController
 
             $this->db->transRollback();
             return redirect()->back()->withInput()->with('errors', $e->getMessage());
-            
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             $this->db->transRollback();
             log_message('error', $e->getMessage());
             return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
         }
     }
 
-    public function edit($id)
+    public function edit($property_id)
     {
 
-        $apartmentGender = new ApartmentGenderModel();
-        $apartmentGender = $apartmentGender->findAll();
+        $role = $this->session->get('role');
+        $employee_id = $this->session->get('id');
 
-        $propertyStatus = new PropertyStatusModel();
-        $propertyStatus = $propertyStatus->findAll();
+        try {
 
-        $propertyType = new PropertyTypeModel();
-        $propertyType = $propertyType->findAll();
+            $property_id = esc($property_id);
+            $property_id = (int) $property_id;
+
+            $propertyModel = new PropertyModel();
+            $property = $propertyModel->find($property_id);
+
+            if (!$property) {
+                return redirect()->to('listings')->with('errors', 'Page not found');
+            }
+
+            if ($property->employee_id !== $employee_id && $role !== 'admin') {
+                return redirect()->to('listings')->with('errors', 'You are not authorized to view this page');
+            }
 
 
-        return view('template/header') .
-            view('listings/saveListing', [
-                'method' => 'EDIT_REQUEST',
-                'apartmentGender' => $apartmentGender,
-                'propertyStatus' => $propertyStatus,
-                'propertyType' => $propertyType
-            ]) .
-            view('template/footer');
+            $apartmentGender = new ApartmentGenderEntity();
+            $apartmentGender = $apartmentGender->getApartmentGenders();
+
+            $propertyStatus = new PropertyStatusEntity();
+            $propertyStatus = $propertyStatus->getPropertyStatuses();
+
+            $propertyType = new PropertyTypeEntity();
+            $propertyType = $propertyType->getPropertyTypes();
+
+            $countryModel = new CountryModel();
+            $countries = $countryModel->findAll();
+
+            $paymentPlans = new PaymentPlansEntity();
+            $paymentPlans = $paymentPlans->getPaymentPlans();
+
+            $currencyModel = new CurrenciesModel();
+            $currencies = $currencyModel->findAll();
+
+            $landDetails = null;
+            $apartmentDetails = null;
+
+            $property = $propertyModel->select('properties.*, clients.*,
+        CONCAT(clients.client_firstname, " ", clients.client_lastname) as client_name,
+        GROUP_CONCAT(CONCAT(countries.country_code, " ", phones.phone_number) SEPARATOR ", ") as client_phone,
+        CONCAT(FORMAT(properties.property_price, 0), " ", currencies.currency_symbol) as property_budget,
+        employees.employee_name as employee_name,
+        countries_loc.country_name as country_name,
+        regions.region_name as region_name,
+        subregions.subregion_name as subregion_name,
+        cities.city_name as city_name,
+        payment_plans.payment_plan_name as payment_plan_name,
+        property_type.property_type_name as property_type_name,
+        property_status.property_status_name as property_status_name,
+        properties.created_at as property_created_at,
+        properties.updated_at as property_updated_at,
+        ')
+                ->join('clients', 'clients.client_id = properties.client_id', 'left')
+                ->join('phones', 'phones.client_id = clients.client_id', 'left')
+                ->join('countries', 'countries.country_id = phones.country_id', 'left')
+                ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
+                ->join('cities', 'cities.city_id = properties.city_id', 'left')
+                ->join('payment_plans', 'payment_plans.payment_plan_id = properties.payment_plan_id', 'left')
+                ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
+                ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
+                ->join('regions', 'regions.region_id = subregions.region_id', 'left')
+                ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
+                ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
+                ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
+
+                ->where('property_id', $property_id)
+                ->groupBy('properties.property_id')
+                ->first();
+
+            if (!$property) {
+                return redirect()->to('listings')->with('errors', 'Page not found');
+            }
+
+            $phonesModel = new PhoneModel();
+            $phones = $phonesModel->select('phones.*')
+                ->where('client_id', $property->client_id)
+                ->findAll();
+
+            
+
+
+            if ($property->land_id !== null) {
+                $landDetailsModel = new LandDetailsModel();
+                $landDetails = $landDetailsModel->where('property_id', $property_id)->first();
+
+            } 
+            
+            if ($property->apartment_id !== null) {
+                
+                $apartmentDetailModel = new ApartmentDetailsModel();
+                $apartmentDetails = $apartmentDetailModel->select('apartment_details.*, apartment_partitions.*, 
+                apartment_specifications.*, apartment_gender.*')
+                    ->join('apartment_partitions', 'apartment_partitions.apartment_id = apartment_details.apartment_id')
+                    ->join('apartment_specifications', 'apartment_specifications.apartment_id = apartment_details.apartment_id')
+                    ->join('apartment_gender', 'apartment_gender.apartment_gender_id = apartment_details.ad_gender_id')
+                    ->where('property_id', $property_id)->first();
+
+            } 
+
+            if ($property->apartment_id !== null) {
+                $property->property_land_or_apartment = 'apartment';
+            } else {
+                $property->property_land_or_apartment = 'land';
+            }
+                
+
+
+
+            return view('template/header') .
+                view('listings/saveListing', [
+                    'method' => 'UPDATE_REQUEST',
+                    'countries' => $countries,
+                    'landTypes' => $this->landTypes,
+                    'currencies' => $currencies,
+                    'apartmentGender' => $apartmentGender,
+                    'propertyStatus' => $propertyStatus,
+                    'propertyType' => $propertyType,
+                    'paymentPlans' => $paymentPlans,
+                    'property' => $property,
+                    'landDetails' => $landDetails,
+                    'apartmentDetails' => $apartmentDetails,
+                    'phones' => $phones
+
+                ]) .
+                view('template/footer');
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return redirect()->to('listings')->with('errors', 'An error occurred while editing the property');
+        }
     }
+
+    public function updateListing($id)
+    {
+        $propertyModel = new PropertyModel();
+        $propertyEntity = new PropertyEntity();
+
+        $employee_id = $this->session->get('id');
+
+        $clientModel = new ClientModel();
+        $clientEntity = new ClientEntity();
+        $phoneModel = new PhoneModel();
+    }
+
 
     public function view($property_id)
     {
@@ -339,7 +463,7 @@ class ListingsController extends BaseController
             $landDetails = $landDetailModel->where('property_id', $property_id)->first();
         } else if (!empty($property->apartment_id)) {
             $apartmentDetails = $apartmentDetailModel->select('apartment_details.*, apartment_partitions.*, 
-            apartment_specifications.*, apartment_gender.apartment_gender_name as apartment_gender')
+            apartment_specifications.*, apartment_gender.*')
                 ->join('apartment_partitions', 'apartment_partitions.apartment_id = apartment_details.apartment_id')
                 ->join('apartment_specifications', 'apartment_specifications.apartment_id = apartment_details.apartment_id')
                 ->join('apartment_gender', 'apartment_gender.apartment_gender_id = apartment_details.ad_gender_id')

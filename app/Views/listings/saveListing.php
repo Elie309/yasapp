@@ -242,13 +242,40 @@
     ?>
 
 
+    <?php if ($method == 'UPDATE_REQUEST') : ?>
+        var data = <?= json_encode($property) ?>;
+        var landDetails = <?= json_encode($landDetails) ?>;
+        var apartmentDetails = <?= json_encode($apartmentDetails) ?>;
+        var phonesMain = <?= json_encode($phones) ?>;
+        data.country_id = [];
+        data.phone_number = [];
+        phonesMain.forEach((phone, index) => {
+            data.phone_number.push(phone.phone_number);
+            data.country_id.push(phone.country_id);
+        });
+
+        var city = {
+            city_id: data.city_id,
+            country_name: data.country_name,
+            region_name: data.region_name,
+            subregion_name: data.subregion_name,
+            city_name: data.city_name
+        };
+
+
+        data = Object.assign(data, landDetails, apartmentDetails, {
+            city: city
+        });
+        populateField(data);
+
+    <?php endif; ?>
+
+
     function populateField(data) {
 
-        <?php if ($method === 'UPDATE_REQUEST') : ?>
-            if (data.client_id) {
-                document.getElementById('client_id').value = data.client_id;
-            }
-        <?php endif; ?>
+        if (data.client_id) {
+            document.getElementById('client_id').value = data.client_id;
+        }
 
 
         if (data.client_firstname) {
@@ -262,6 +289,7 @@
         if (data.client_email) {
             document.getElementById('client_email').value = data.client_email;
         }
+
 
         if (data.phone_number && data.phone_number.length > 0) {
             var phones = data.phone_number;
@@ -281,14 +309,11 @@
                 phoneSection.appendChild(newPhoneInput);
 
             });
-
         }
 
-
-
-        if (data.employee_id) {
-            document.getElementById('employee_id').value = data.employee_id;
-        }
+        // if (data.employee_id) {
+        //     document.getElementById('employee_id').value = data.employee_id;
+        // }
 
         let city = data.city;
         if (city) {
@@ -337,18 +362,18 @@
         }
 
         if (data.payment_plan_id) {
-            document.getElementById('result_id_payment_plan_name').value = data.payment_plan_id;
-            document.getElementById('search_payment_plan_name').value = data.info_payment_plan_name;
+            document.getElementById('result_id_payment_plan_name').value = data.payment_plan_id ?? data.payment_plan_id;
+            document.getElementById('search_payment_plan_name').value = data.info_payment_plan_name ?? data.payment_plan_name;
         }
 
         if (data.property_type_id) {
             document.getElementById('result_id_property_type_name').value = data.property_type_id;
-            document.getElementById('search_property_type_name').value = data.info_property_type_name;
+            document.getElementById('search_property_type_name').value = data.info_property_type_name ?? data.property_type_name;
         }
 
         if (data.property_status_id) {
             document.getElementById('result_id_property_status_name').value = data.property_status_id;
-            document.getElementById('search_property_status_name').value = data.info_property_status_name;
+            document.getElementById('search_property_status_name').value = data.info_property_status_name ?? data.property_status_name;
         }
 
         if (data.property_land_or_apartment) {
@@ -381,10 +406,10 @@
         } else {
             if (data.ad_gender_id) {
                 document.getElementById("result_id_apartment_gender_name").value = data.ad_gender_id;
-                document.getElementById("search_apartment_gender_name").value = data.info_apartment_gender_name;
+                document.getElementById("search_apartment_gender_name").value = data.info_apartment_gender_name ?? data.apartment_gender_name;
             }
 
-            
+
 
             if (data.ad_terrace) {
                 document.getElementById("ad_terrace").checked = true;
@@ -646,7 +671,7 @@
 
     });
 
-    function priceDisplay(value){
+    function priceDisplay(value) {
         return parseFloat(value).toLocaleString();
     }
 </script>
