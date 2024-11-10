@@ -201,14 +201,44 @@
                 </div>
 
                 <div class="my-4 flex flex-row w-full justify-evenly">
-                    <button id="clear-btn" type="button" disabled class="secondary-btn disabled:secondary-btn-disabled w-2/6">Clear</button>
-                    <button id="submit-btn" type="submit" disabled class="primary-btn disabled:primary-btn-disabled w-2/6">Save</button>
+                    <?php if ($method == 'UPDATE_REQUEST') : ?>
+                        <button type="button" popovertarget="delete-popover"
+                            class="secondary-btn w-1/2 mr-2 md:w-2/6">Delete
+                        </button>
+                    <?php endif; ?>
+
+                    <button id="clear-btn" <?php echo $method == "UPDATE_REQUEST" ? 'hidden' : '' ?>
+                        type="button" disabled
+                        class="secondary-btn disabled:secondary-btn-disabled w-1/2 mr-2 md:w-2/6">Clear</button>
+                    <button id="submit-btn" type="submit" disabled
+                        class="primary-btn disabled:primary-btn-disabled w-1/2 ml-2 md:w-2/6">Save</button>
                 </div>
 
                 </form>
 
     </div>
 </div>
+
+
+<?php if ($method === 'UPDATE_REQUEST') : ?>
+    <div popover id="delete-popover" class="popover max-w-md">
+        <div class="flex flex-col w-full justify-center">
+            <h3 class="secondary-title text-center">Are you sure you want to delete this property?</h3>
+            <div class="grid grid-cols-2 gap-4 w-full my-4">
+                <div class=" w-full">
+                    <button type="button" class="primary-btn w-full cursor-pointer" onclick="closePopover('delete-popover')">Cancel</button>
+                </div>
+                <div class="w-full">
+                    <button onclick="window.location.href='/listings/delete/<?= $property->property_id ?>'"
+                        class="secondary-btn w-full cursor-pointer text-center">
+                        Confirm
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 
 <?= view_cell('App\Cells\Settings\Location\LocationPopover\LocationPopoverCell::render') ?>
 
@@ -262,10 +292,19 @@
             city_name: data.city_name
         };
 
+        if (landDetails) {
+            data = Object.assign(data, landDetails, {
+                city: city
+            });
+        }
 
-        data = Object.assign(data, landDetails, apartmentDetails, {
-            city: city
-        });
+        if (apartmentDetails) {
+            data = Object.assign(data, apartmentDetails, {
+                city: city
+            });
+        }
+
+
         populateField(data);
 
     <?php endif; ?>

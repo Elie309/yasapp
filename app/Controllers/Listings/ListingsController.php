@@ -365,11 +365,8 @@ class ListingsController extends BaseController
 
             } 
 
-            if ($property->apartment_id !== null) {
-                $property->property_land_or_apartment = 'apartment';
-            } else {
-                $property->property_land_or_apartment = 'land';
-            }
+            
+            $property->property_land_or_apartment = $property->land_id !==  0 ? 'land' : 'apartment';
                 
 
 
@@ -526,7 +523,22 @@ class ListingsController extends BaseController
 
     public function delete($id)
     {
-        //TODO: Add a confirmation dialog
+        $propertyModel = new PropertyModel();
+        
+        $property = $propertyModel->find($id);
+
+        if (!$property) {
+            return redirect()->to('listings')->with('errors', 'Property not found');
+        }
+
+        if ($property->employee_id !== $this->session->get('id') && $this->session->get('role') !== 'admin') {
+            return redirect()->to('listings')->with('errors', 'You are not authorized to delete this property');
+        }
+
+        if (!$propertyModel->delete($id)) {
+            return redirect()->to('listings')->with('errors', 'An error occurred while deleting the property');
+        }
+
         return redirect()->to('listings')->with('success', 'Property deleted successfully');
     }
 
