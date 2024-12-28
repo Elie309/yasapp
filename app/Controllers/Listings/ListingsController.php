@@ -401,9 +401,146 @@ class ListingsController extends BaseController
 
         $employee_id = $this->session->get('id');
 
+
         $clientModel = new ClientModel();
         $clientEntity = new ClientEntity();
         $phoneModel = new PhoneModel();
+
+        $client = $clientEntity->fill($this->request->getPost());
+        $phones = $this->request->getPost('phone_number');
+        $countries = $this->request->getPost('country_id');
+        try {
+            $this->db->transException(true)->transStart();
+            //Save the client
+            $OldClient = $clientModel->find($client->client_id);
+
+            if(!$OldClient){
+                return redirect()->back()->withInput()->with('errors', 'Client not found');
+            }else{
+                //Update the client
+                if (!$clientModel->update($client->client_id, $client)) {
+                    return redirect()->back()->withInput()->with('errors', $clientModel->errors());
+                }
+            }
+
+            if (!$client) {
+                $clientEntity->employee_id = $employee_id;
+                if (!$clientModel->save($clientEntity)) {
+                    return redirect()->back()->withInput()->with('errors', $clientModel->errors());
+                }
+
+                $client_id = $clientModel->getInsertID();
+
+                if (
+                    is_array($phones) && is_array($countries) && count($phones) == count($countries)
+                    && count($phones) > 0 && count($countries) > 0
+                ) {
+                    foreach ($phones as $key => $phone) {
+                        $phoneData = [
+                            'client_id' => $client_id,
+                            'country_id' => $countries[$key],
+                            'phone_number' => $phone
+                        ];
+
+                        if (!$phoneModel->save($phoneData)) {
+                            return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
+                        }
+                    }
+                }
+            } else {
+                $clientEntity->client_id = $client->client_id;
+                $client_id = $client->client_id;
+            }
+
+            $land_apartment = esc($this->request->getPost('property_land_or_apartment'));
+
+            $property = $propertyEntity->fill($this->request->getPost());
+            $property->employee_id = $employee_id;
+            $property->client_id = $client_id;
+
+            if (!$propertyModel->save($property)) {
+                $this->db->transRollback();
+                return redirect()->back()->withInput()->with('errors', $propertyModel->errors());
+            }
+
+            $property_id = $propertyModel->getInsertID();
+
+            if ($land_apartment === 'land') {
+
+                $landDetailsModel = new LandDetailsModel();
+                $landDetailsEntity = new LandDetailsEntity();
+
+                $landDetails = $landDetailsEntity->fill($this->request->getPost());
+                $landDetails->property_id = $property_id;
+
+                if (!$landDetailsModel->save($landDetails)) {
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $landDetailsModel->errors());
+                }
+
+                $land_id = $landDetailsModel->getInsertID();
+                if (!$propertyModel->update($property_id, ['land_id' => $land_id])) {
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
+                }
+            } else if ($land_apartment === 'apartment') {
+                $apartmentDetailsModel = new ApartmentDetailsModel();
+                $apartmentDetailsEntity = new ApartmentDetailsEntity();
+                $apartmentDetails = $apartmentDetailsEntity->fill($this->request->getPost());
+                $apartmentDetails->property_id = $property_id;
+
+                $apartmentPartitionsModel = new ApartmentPartitionsModel();
+                $apartmentPartitionsEntity = new ApartmentPartitionsEntity();
+                $apartmentPartitions = $apartmentPartitionsEntity->fill($this->request->getPost());
+
+                $apartmentSpecsModel = new ApartmentSpecificationsModel();
+                $apartmentSpecsEntity = new ApartmentSpecificationsEntity();
+                $apartmentSpecs = $apartmentSpecsEntity->fill($this->request->getPost());
+
+                if (!$apartmentDetailsModel->save($apartmentDetails)) {
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $apartmentDetailsModel->errors());
+                }
+
+                $apartment_id = $apartmentDetailsModel->getInsertID();
+                $apartmentPartitions->apartment_id = $apartment_id;
+                $apartmentSpecs->apartment_id = $apartment_id;
+
+                if (!$apartmentPartitionsModel->save($apartmentPartitions)) {
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $apartmentPartitionsModel->errors());
+                }
+
+                if (!$apartmentSpecsModel->save($apartmentSpecs)) {
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', $apartmentSpecsModel->errors());
+                }
+
+                if (!$propertyModel->update($property_id, ['apartment_id' => $apartment_id])) {
+                    $this->db->transRollback();
+                    return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
+                }
+            } else {
+                $this->db->transRollback();
+                return redirect()->back()->withInput()->with('errors', 'Invalid property land or apartment type');
+            }
+
+            $this->db->transCommit();
+            return redirect()->to('listings')->with('success', 'Property added successfully');
+        } catch (DatabaseException $e) {
+            //if the error is foreign key constraint
+            if ($e->getCode() === 1452) {
+                $this->db->transRollback();
+                return redirect()->back()->withInput()->with('errors', 'Invalid data provided');
+            }
+
+            $this->db->transRollback();
+            return redirect()->back()->withInput()->with('errors', $e->getMessage());
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            log_message('error', $e->getMessage());
+            return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
+        }
     }
 
 
