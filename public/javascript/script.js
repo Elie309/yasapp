@@ -1,7 +1,12 @@
-document.getElementById('sidebar-toggle').addEventListener('click', function() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('hidden');
-});
+function toggleDropdown() {
+    var dropdown = document.getElementById('profile-dropdown');
+    dropdown.classList.toggle('hidden');
+}
+
+function toggleSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('-translate-x-full');
+}
 
 
 function removeParent(event) {
