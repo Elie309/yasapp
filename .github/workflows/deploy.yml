@@ -19,6 +19,7 @@ jobs:
               cd ${{ secrets.WORK_DIR }}
               git checkout ${{ secrets.MAIN_BRANCH }}
               git pull
+              rm -rf writable/cache/*
               composer install
             EOF
         - name: cleanup
