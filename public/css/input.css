@@ -186,37 +186,6 @@
 
 }
 
-.status-dot {
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.pending {
-    background-color: #FFA500;
-}
-
-.fulfilled {
-    background-color: #4CAF50;
-}
-
-.rejected {
-    background-color: #F44336;
-}
-
-.cancelled {
-    background-color: #070707;
-}
-
-.on-hold {
-    background-color: #FFEB3B;
-}
-
-.processing {
-    background-color: #00BCD4;
-}
-
 .main-bg-image::before {
     content: '';
     position: fixed;
