@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS requests (
 
     request_location TEXT,
     request_budget INT NOT NULL,
-    request_state ENUM('pending', 'fulfilled', 'rejected', 'cancelled', 'on-hold', 'processing') NOT NULL DEFAULT 'pending',
+    request_state ENUM('pending', 'finishing', 'rejected', 'cancelled', 'on-hold', 'on-track') NOT NULL DEFAULT 'pending',
     request_priority ENUM('low', 'medium', 'high') NOT NULL DEFAULT 'medium',
     
     comments TEXT,

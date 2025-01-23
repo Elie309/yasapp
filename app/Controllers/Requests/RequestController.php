@@ -14,13 +14,12 @@ use App\Models\Settings\CurrenciesModel;
 use App\Models\Settings\EmployeeModel;
 use App\Models\Settings\Location\CityModel;
 use App\Models\Settings\Location\CountryModel;
-use App\Models\Settings\PaymentPlansModel;
 
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class RequestController extends BaseController
 {
-    private $requestStates = ['pending', 'processing',  'on-hold', 'fulfilled', 'rejected', 'cancelled'];
+    private $requestStates = ['pending', 'on-track',  'on-hold', 'finishing', 'rejected', 'cancelled'];
     private $requestPriorities = ['low', 'medium', 'high'];
 
     public function index()
@@ -513,7 +512,8 @@ class RequestController extends BaseController
 
 
         $request = $requestModel->select('requests.*,
-                    CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
+                    CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name,
+                    GROUP_CONCAT(CONCAT(countries.country_code, " " ,phones.phone_number) SEPARATOR ", ") as phone_numbers,
                     cities.city_name, 
                     payment_plans.payment_plan_name, 
                     CONCAT(FORMAT(requests.request_budget, 0), " ", currencies.currency_symbol) AS request_fees,
@@ -523,6 +523,8 @@ class RequestController extends BaseController
                     requests.updated_at as request_updated_at
                     ')
             ->join('clients', 'requests.client_id = clients.client_id', 'left')
+            ->join('phones', 'phones.client_id = clients.client_id', 'left')
+            ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('cities', 'requests.city_id = cities.city_id', 'left')
             ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')

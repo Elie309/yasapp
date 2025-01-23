@@ -66,18 +66,11 @@
 
         <?php
 
-
-        foreach ($requests as $key => $request) {
-            $status = $request->request_state;
-            $requests[$key]->request_status = "<span class='status-dot {$status}'></span>";
-        }
-
         $tableHeaders = [
-            'request_status' => '', //This is the new column create with the above foreach loop
             'client_name' => 'Client',
+            'phone_numbers' => 'Phones',
             'city_name' => 'City',
             'payment_plan_name' => 'Payment Plan',
-            'employee_name' => 'Employee',
             'agent_name' => 'Agent',
             'request_fees' => 'Budget',
             'request_state' => 'State',

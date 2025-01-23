@@ -61,7 +61,7 @@ class RequestModel extends Model
         'agent_id' => 'permit_empty|integer',
         'request_location' => 'permit_empty|string',
         'request_budget' => 'required|integer',
-        'request_state' => 'required|in_list[pending,fulfilled,rejected,cancelled,on-hold,processing]',
+        'request_state' => 'required|in_list[pending,finishing,rejected,cancelled,on-hold,on-track]',
         'request_priority' => 'required|in_list[low,medium,high]',
         'comments' => 'permit_empty|string',
         'created_at' => 'permit_empty|valid_date',
@@ -100,7 +100,7 @@ class RequestModel extends Model
         ],
         'request_state' => [
             'required' => 'Request State is required',
-            'in_list' => 'Request State must be one of: pending, on-hold,processing fulfilled, rejected, cancelled'
+            'in_list' => 'Request State must be one of: pending, on-hold, on-track, finishing, rejected and cancelled'
         ],
         'request_priority' => [
             'required' => 'Request Priority is required',
