@@ -6,14 +6,11 @@
 
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
-        <div class="flex flex-row justify-end mb-4">
-            <button class="secondary-btn " onclick='resetURL("requests")'>Clear Filter</button>
-        </div>
         <div class="flex flex-col">
 
             <div class="flex flex-col md:flex-row mb-4 w-full justify-center">
                 <?php if (isset($agents) && !empty($agents)) : ?>
-                    <div class="my-2 md:my-0 md:ml-4">
+                    <div class="my-2 md:my-0 md:ml-4 order-2">
                         <label for="agent" class="main-label mr-2 text-wrap">Agent:</label>
                         <select name="agent" id="agent" class="secondary-input min-w-40">
                             <option value="" <?= isset($_GET['agent']) ? '' : 'selected' ?>>All</option>
@@ -24,7 +21,7 @@
                         </select>
                     </div>
                 <?php endif; ?>
-                <div class="my-2 md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4 order-3">
                     <label for="request_state" class="main-label mr-2 text-wrap">Request State:</label>
                     <select name="request_state" id="request_state" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
@@ -34,7 +31,7 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="my-2 md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4 order-4">
                     <label for="request_priority" class="main-label mr-2 text-wrap">Request Priority:</label>
                     <select name="request_priority" id="request_priority" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['requestPriority']) ? '' : 'selected' ?>>All</option>
@@ -44,7 +41,9 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-
+                <div class="my-2 md:my-0 md:ml-4 order-1 md:order-5 flex items-end">
+                    <button class="secondary-btn w-full min-w-40 " onclick='resetURL("requests")'>Clear Filter</button>
+                </div>
             </div>
 
             <div class="flex flex-col md:flex-row mb-8 justify-center">
@@ -60,7 +59,6 @@
                         value="<?= isset($_GET['endDate']) ? $_GET['endDate'] : '' ?>"
                         class="secondary-input min-w-40">
                 </div>
-
             </div>
         </div>
 

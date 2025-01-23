@@ -6,15 +6,13 @@
 
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
-        <div class="flex flex-row justify-end mb-4">
-            <button class="secondary-btn " onclick='resetURL("listings")'>Clear Filter</button>
-        </div>
+
         <div class="flex flex-col">
 
-            <div class="flex flex-col md:flex-row mb-4 w-full justify-center">
+            <div class="flex flex-col md:flex-row mb-4 flex-wrap w-full justify-center">
 
                 <?php if (isset($agents) && !empty($agents)) : ?>
-                    <div class="my-2 md:my-0 md:ml-4">
+                    <div class="my-2 md:my-0 md:ml-4 order-2">
                         <label for="agent" class="main-label mr-2 text-wrap">Agent:</label>
                         <select name="agent" id="agent" class="secondary-input min-w-40">
                             <option value="" <?= isset($_GET['agent']) ? '' : 'selected' ?>>All</option>
@@ -25,7 +23,7 @@
                         </select>
                     </div>
                 <?php endif; ?>
-                <div class="my-2 md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4 order-3">
                     <label for="land_apartment" class="main-label mr-2 text-wrap">Land/Apartment:</label>
                     <select name="land_apartment" id="land_apartment" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['landOrApartment']) ? '' : 'selected' ?>>All</option>
@@ -33,7 +31,7 @@
                         <option value="apartment" <?= isset($_GET['landOrApartment']) && $_GET['landOrApartment'] === 'apartment' ? 'selected' : '' ?>>Apartment</option>
                     </select>
                 </div>
-                <div class="my-2 md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4 order-4">
                     <label for="propertyType" class="main-label mr-2 text-wrap">Type:</label>
                     <select name="propertyType" id="propertyType" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['propertyType']) ? '' : 'selected' ?>>All</option>
@@ -43,7 +41,7 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="my-2 md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4 order-5">
                     <label for="propertyStatus" class="main-label mr-2 text-wrap">Status:</label>
                     <select name="propertyStatus" id="propertyStatus" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['propertyStatus']) ? '' : 'selected' ?>>All</option>
@@ -52,6 +50,10 @@
                                 <?= isset($_GET['propertyStatus']) && $_GET['propertyStatus'] === $status->property_status_name ? 'selected' : '' ?>><?= ucfirst($status->property_status_name) ?></option>
                         <?php endforeach; ?>
                     </select>
+                </div>
+
+                <div class="my-2 md:my-0 md:ml-4 order-1 md:order-6 flex items-end">
+                    <button class="secondary-btn w-full min-w-40  " onclick='resetURL("listings")'>Clear Filter</button>
                 </div>
 
 
@@ -70,8 +72,9 @@
                         value="<?= isset($_GET['updatedAt']) ? $_GET['updatedAt'] : '' ?>"
                         class="secondary-input">
                 </div>
-
             </div>
+
+
         </div>
 
         <?php
