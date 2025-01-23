@@ -1,10 +1,11 @@
 <div class="container-main max-w-4xl">
 
     <div class="flex flex-row ">
-        <button onclick="window.history.back()" class="my-auto cursor-pointer">
+        <button onclick="window.history.back()" class="my-auto flex space-x-2 cursor-pointer no-print">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
             </svg>
+            <p>Return</p>
         </button>
         <?php if ($method == 'NEW_REQUEST') : ?>
             <h2 class="main-title-page">Add Request</h2>
@@ -211,7 +212,7 @@
 
     </div>
 
-    
+
 
     <?php if ($method === 'UPDATE_REQUEST') : ?>
         <div popover id="delete-popover" class="popover max-w-md">

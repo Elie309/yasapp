@@ -167,17 +167,22 @@
         margin: 0;
         padding: 0;
         box-shadow: none;
+        font-size: 14px;
     }
 
-    .break-page {
+    /* .break-page {
         page-break-before: always;
-    }
+    } */
 
     table {
         width: 100%;
         border-collapse: collapse;
         margin: 0;
-        page-break-inside: avoid;
+        /* page-break-inside: avoid; */
+    }
+
+    .print-only {
+        display: block;
     }
 
     .no-print {

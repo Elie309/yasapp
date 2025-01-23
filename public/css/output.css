@@ -1154,6 +1154,10 @@ video {
   margin-left: 0.5rem;
 }
 
+.ml-auto {
+  margin-left: auto;
+}
+
 .mr-2 {
   margin-right: 0.5rem;
 }
@@ -1296,6 +1300,10 @@ video {
 
 .w-5\/6 {
   width: 83.333333%;
+}
+
+.w-64 {
+  width: 16rem;
 }
 
 .w-full {
@@ -1453,6 +1461,12 @@ video {
   gap: 1rem;
 }
 
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .space-x-8 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(2rem * var(--tw-space-x-reverse));
@@ -1463,6 +1477,12 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .place-self-center {
@@ -1813,17 +1833,22 @@ video {
     margin: 0;
     padding: 0;
     box-shadow: none;
+    font-size: 14px;
   }
 
-  .break-page {
-    page-break-before: always;
-  }
+  /* .break-page {
+        page-break-before: always;
+    } */
 
   table {
     width: 100%;
     border-collapse: collapse;
     margin: 0;
-    page-break-inside: avoid;
+    /* page-break-inside: avoid; */
+  }
+
+  .print-only {
+    display: block;
   }
 
   .no-print {
