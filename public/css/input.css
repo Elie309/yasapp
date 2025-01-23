@@ -167,54 +167,28 @@
         margin: 0;
         padding: 0;
         box-shadow: none;
+        font-size: 14px;
     }
 
-    .break-page {
+    /* .break-page {
         page-break-before: always;
-    }
+    } */
 
     table {
         width: 100%;
         border-collapse: collapse;
         margin: 0;
-        page-break-inside: avoid;
+        /* page-break-inside: avoid; */
+    }
+
+    .print-only {
+        display: block;
     }
 
     .no-print {
         display: none;
     }
 
-}
-
-.status-dot {
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.pending {
-    background-color: #FFA500;
-}
-
-.fulfilled {
-    background-color: #4CAF50;
-}
-
-.rejected {
-    background-color: #F44336;
-}
-
-.cancelled {
-    background-color: #070707;
-}
-
-.on-hold {
-    background-color: #FFEB3B;
-}
-
-.processing {
-    background-color: #00BCD4;
 }
 
 .main-bg-image::before {

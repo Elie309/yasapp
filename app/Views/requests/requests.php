@@ -1,19 +1,25 @@
 <div class="container-main">
-    <h2 class="main-title-page">Request</h2>
+    <div class="flex flex-row items-center">
+
+        <h2 class="main-title-page">Request</h2>
+        <a href="<?= base_url('requests/add') ?>" class=" border-2 border-gray-900 bg-white shadow-xl text-gray-900
+                        font-bold size-14 rounded-full text-4xl flex items-center justify-center
+                        hover:bg-gray-900 hover:text-white transition duration-300 ease-in-out">
+            <span class="pb-2">+</span>
+        </a>
+    </div>
+
 
 
     <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
 
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
-        <div class="flex flex-row justify-end mb-4">
-            <button class="secondary-btn " onclick='resetURL("requests")'>Clear Filter</button>
-        </div>
         <div class="flex flex-col">
 
             <div class="flex flex-col md:flex-row mb-4 w-full justify-center">
                 <?php if (isset($agents) && !empty($agents)) : ?>
-                    <div class="my-2 md:my-0 md:ml-4">
+                    <div class="my-2 md:my-0 md:ml-4 order-2">
                         <label for="agent" class="main-label mr-2 text-wrap">Agent:</label>
                         <select name="agent" id="agent" class="secondary-input min-w-40">
                             <option value="" <?= isset($_GET['agent']) ? '' : 'selected' ?>>All</option>
@@ -24,7 +30,7 @@
                         </select>
                     </div>
                 <?php endif; ?>
-                <div class="my-2 md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4 order-3">
                     <label for="request_state" class="main-label mr-2 text-wrap">Request State:</label>
                     <select name="request_state" id="request_state" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
@@ -34,7 +40,7 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="my-2 md:my-0 md:ml-4">
+                <div class="my-2 md:my-0 md:ml-4 order-4">
                     <label for="request_priority" class="main-label mr-2 text-wrap">Request Priority:</label>
                     <select name="request_priority" id="request_priority" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['requestPriority']) ? '' : 'selected' ?>>All</option>
@@ -44,7 +50,9 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-
+                <div class="my-2 md:my-0 md:ml-4 order-1 md:order-5 flex items-end">
+                    <button class="secondary-btn w-full min-w-40 " onclick='resetURL("requests")'>Clear Filter</button>
+                </div>
             </div>
 
             <div class="flex flex-col md:flex-row mb-8 justify-center">
@@ -60,24 +68,16 @@
                         value="<?= isset($_GET['endDate']) ? $_GET['endDate'] : '' ?>"
                         class="secondary-input min-w-40">
                 </div>
-
             </div>
         </div>
 
         <?php
 
-
-        foreach ($requests as $key => $request) {
-            $status = $request->request_state;
-            $requests[$key]->request_status = "<span class='status-dot {$status}'></span>";
-        }
-
         $tableHeaders = [
-            'request_status' => '', //This is the new column create with the above foreach loop
             'client_name' => 'Client',
+            'phone_numbers' => 'Phones',
             'city_name' => 'City',
             'payment_plan_name' => 'Payment Plan',
-            'employee_name' => 'Employee',
             'agent_name' => 'Agent',
             'request_fees' => 'Budget',
             'request_state' => 'State',
@@ -98,10 +98,10 @@
                 'tableId' => 'request_table',
                 'tableHeaders' => $tableHeaders,
                 'tableData' => $requests,
-                'addButtonModelId' => '',
-                'addButtonRedirectLink' => 'requests/add',
-                'AddButtonName' => 'Add Request',
-                'modelIdOnClickRow' => '',
+                // 'addButtonModelId' => '',
+                // 'addButtonRedirectLink' => 'requests/add',
+                // 'AddButtonName' => 'Add Request',
+                // 'modelIdOnClickRow' => '',
                 'classOnClickRow' => 'cursor-pointer',
                 'exportToExcelLink' => 'requests/export',
                 'isOnClickRowActive' => false, //This will be used to redirect to a page when a row is clicked

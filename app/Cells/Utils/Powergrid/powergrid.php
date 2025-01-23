@@ -57,11 +57,11 @@
             <?php endif; ?>
 
             <!-- ADD REQUEST BUTTON -->
-            <?php if (isset($addButtonRedirectLink)) : ?>
+            <?php if (isset($addButtonRedirectLink) && isset($AddButtonName)) : ?>
                 <a href="<?= $addButtonRedirectLink ?>" class="secondary-btn ml-2">
                     <?= $AddButtonName ?>
                 </a>
-            <?php else : ?>
+            <?php elseif(isset($addButtonModelId) && isset($AddButtonName)) : ?>
                 <button popovertarget="<?= $addButtonModelId ?>" id="addButtonPopover" class="secondary-btn ml-2">
                     <?= $AddButtonName ?>
                 </button>
@@ -353,7 +353,7 @@
         }, 5000);
     }
 
-    <?php if (!isset($addButtonRedirectLink)) : ?>
+    <?php if (!isset($addButtonRedirectLink) && isset($addButtonModelId) && isset($AddButtonName)) : ?>
 
         document.getElementById('addButtonPopover').addEventListener('click', function() {
             <?= isset($addButtonModelAdditionalFn) ? $addButtonModelAdditionalFn : '' ?>
