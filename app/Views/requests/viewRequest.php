@@ -1,13 +1,13 @@
 <div class="container-main print-container max-w-6xl overflow-auto">
     <img class="mx-auto hidden print-only w-64" src="/logo.png" alt="">
-    <div class="flex flex-row ">
+    <div class="flex flex-row md:mt-0">
         <button onclick="window.history.back()" class="my-auto flex space-x-2 cursor-pointer no-print">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
             </svg>
             <p>Return</p>
         </button>
-        <h2 class="main-title-page">Request Of <?= $request->client_name ?></h2>
+        <h2 class="hidden md:block main-title-page text-wrap">Request Of <?= $request->client_name ?></h2>
 
         <div class="flex flex-row ml-auto space-x-4 ">
             <button onclick="window.print()" class="my-auto flex space-x-2 cursor-pointer no-print">
@@ -28,10 +28,14 @@
         </div>
 
     </div>
+
+    <h2 class="md:hidden main-title-page">Request Of <?= $request->client_name ?></h2>
+
+    <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
+
+
     <div class="my-8 bg-white p-10 shadow-md rounded-md overflow-auto text-lg w-full max-w-6xl mx-auto print-container">
 
-
-        <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
         <table id="request_personal_table">
             <tr>

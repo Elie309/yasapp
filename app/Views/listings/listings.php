@@ -1,5 +1,15 @@
 <div class="container-main">
-    <h2 class="main-title-page">Listings</h2>
+
+    <div class="flex flex-row items-center">
+
+        <h2 class="main-title-page">Listings</h2>
+        <a href="<?= base_url('listings/add') ?>" class=" border-2 border-gray-900 bg-white shadow-xl text-gray-900
+                                font-bold size-14 rounded-full text-4xl flex items-center justify-center
+                                hover:bg-gray-900 hover:text-white transition duration-300 ease-in-out">
+           <span class="pb-2">+</span>
+        </a>
+    </div>
+
 
 
     <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
@@ -110,10 +120,10 @@
                 'tableId' => 'listings_table',
                 'tableHeaders' => $tableHeaders,
                 'tableData' => $properties,
-                'addButtonModelId' => '',
-                'addButtonRedirectLink' => 'listings/add',
-                'AddButtonName' => 'Add Property',
-                'modelIdOnClickRow' => '',
+                // 'addButtonModelId' => '',
+                // 'addButtonRedirectLink' => 'listings/add',
+                // 'AddButtonName' => 'Add Property',
+                // 'modelIdOnClickRow' => '',
                 'classOnClickRow' => 'cursor-pointer',
                 'exportToExcelLink' => 'listings/export',
                 'isOnClickRowActive' => false, //This will be used to redirect to a page when a row is clicked

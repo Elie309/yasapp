@@ -10,7 +10,7 @@
             </svg>
             <p>Return</p>
         </button>
-        <h2 class="main-title-page text-wrap">Property of <?= esc($property->client_name) ?></h2>
+        <h2 class="hidden md:block main-title-page text-wrap">Property of <?= esc($property->client_name) ?></h2>
 
         <div class="flex flex-row ml-auto space-x-4 ">
             <button onclick="window.print()" class="my-auto flex space-x-2 cursor-pointer no-print">
@@ -32,6 +32,9 @@
 
         </div>
     </div>
+
+    <h2 class="md:hidden main-title-page">Property of <?= esc($property->client_name) ?></h2>
+
 
     <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
