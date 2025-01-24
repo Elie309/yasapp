@@ -17,13 +17,6 @@ class SettingsCell extends Cell
             'role' => ['admin', 'manager', 'user']
         ],
         [
-            'url' => '/settings/payment-plans',
-            'img' => '/images/payment_plan.webp',
-            'title' => 'Payment Plans',
-            'description' => 'Manage Payment Plans Availability.',
-            'role' => ['admin']
-        ],
-        [
             'url' => '/settings/currencies',
             'img' => '/images/currencies.webp',
             'title' => 'Currencies',

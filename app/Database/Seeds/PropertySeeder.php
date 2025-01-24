@@ -14,7 +14,6 @@ class PropertySeeder extends Seeder
 
         //Get the client data
         $clientData = $this->db->table('clients')->get()->getResultArray();
-        $paymentPlanData = $this->db->table('payment_plans')->get()->getResultArray();
         $propertyTypeData = $this->db->table('property_type')->get()->getResultArray();
         $propertyStatusData = $this->db->table('property_status')->get()->getResultArray();
         $apartmentGenderData = $this->db->table('apartment_gender')->get()->getResultArray();
@@ -27,11 +26,11 @@ class PropertySeeder extends Seeder
             $propertyData = [
                 'client_id' => $client['client_id'], // Get random client ID
                 'employee_id' => $client['employee_id'], // Assuming employee ID is random
-                'payment_plan_id' => $faker->randomElement($paymentPlanData)['payment_plan_id'], // Random payment plan ID
                 'city_id' => $faker->numberBetween(1, 1000), // Random city ID
                 'property_type_id' => $faker->randomElement($propertyTypeData)['property_type_id'], // Random property type
                 'property_status_id' => $faker->randomElement($propertyStatusData)['property_status_id'], // Random property status
                 'currency_id' => $faker->randomElement($currencyData)['currency_id'], // Random currency ID
+                'property_payment_plan' => $faker->randomElement(['cash to be paid directly', 'installments for over 30 years', 'loan from bank', 'other']),
                 'property_location' => $faker->address(),
                 'property_referral_name' => $faker->name(),
                 'property_referral_phone' => $faker->phoneNumber(),

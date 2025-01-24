@@ -80,7 +80,7 @@
             </tr>
             <tr>
                 <th>Payment Plan</th>
-                <td><?= esc($property->payment_plan_name) ?></td>
+                <td><?= esc($property->property_payment_plan) ?></td>
             </tr>
             <tr>
                 <th>Location</th>

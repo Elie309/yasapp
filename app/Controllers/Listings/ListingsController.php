@@ -13,7 +13,6 @@ use App\Entities\Listings\Attributes\PropertyStatusEntity;
 use App\Entities\Listings\Attributes\PropertyTypeEntity;
 use App\Entities\Listings\LandDetailsEntity;
 use App\Entities\Listings\PropertyEntity;
-use App\Entities\Settings\PaymentPlansEntity;
 use App\Models\Clients\ClientModel;
 use App\Models\Clients\PhoneModel;
 use App\Models\Listings\ApartmentDetailsModel;
@@ -97,8 +96,6 @@ class ListingsController extends BaseController
         $countryModel = new CountryModel();
         $countries = $countryModel->findAll();
 
-        $paymentPlans = new PaymentPlansEntity();
-        $paymentPlans = $paymentPlans->getPaymentPlans();
 
         $currencyModel = new CurrenciesModel();
         $currencies = $currencyModel->findAll();
@@ -112,7 +109,6 @@ class ListingsController extends BaseController
                 'apartmentGender' => $apartmentGender,
                 'propertyStatus' => $propertyStatus,
                 'propertyType' => $propertyType,
-                'paymentPlans' => $paymentPlans
             ]) .
             view('template/footer');
     }
@@ -294,8 +290,6 @@ class ListingsController extends BaseController
             $countryModel = new CountryModel();
             $countries = $countryModel->findAll();
 
-            $paymentPlans = new PaymentPlansEntity();
-            $paymentPlans = $paymentPlans->getPaymentPlans();
 
             $currencyModel = new CurrenciesModel();
             $currencies = $currencyModel->findAll();
@@ -312,7 +306,6 @@ class ListingsController extends BaseController
         regions.region_name as region_name,
         subregions.subregion_name as subregion_name,
         cities.city_name as city_name,
-        payment_plans.payment_plan_name as payment_plan_name,
         property_type.property_type_name as property_type_name,
         property_status.property_status_name as property_status_name,
         properties.created_at as property_created_at,
@@ -323,7 +316,6 @@ class ListingsController extends BaseController
                 ->join('countries', 'countries.country_id = phones.country_id', 'left')
                 ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
                 ->join('cities', 'cities.city_id = properties.city_id', 'left')
-                ->join('payment_plans', 'payment_plans.payment_plan_id = properties.payment_plan_id', 'left')
                 ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
                 ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
                 ->join('regions', 'regions.region_id = subregions.region_id', 'left')
@@ -380,7 +372,6 @@ class ListingsController extends BaseController
                     'apartmentGender' => $apartmentGender,
                     'propertyStatus' => $propertyStatus,
                     'propertyType' => $propertyType,
-                    'paymentPlans' => $paymentPlans,
                     'property' => $property,
                     'landDetails' => $landDetails,
                     'apartmentDetails' => $apartmentDetails,
@@ -558,7 +549,6 @@ class ListingsController extends BaseController
         CONCAT(FORMAT(properties.property_price, 0), " ", currencies.currency_symbol) as property_budget,
         employees.employee_name as employee_name,
         CONCAT(countries_loc.country_name, ", ", regions.region_name, ", ", subregions.subregion_name, ", ", cities.city_name, ", ", properties.property_location) as property_detailed_location,
-        payment_plans.payment_plan_name as payment_plan_name,
         property_type.property_type_name as property_type_name,
         property_status.property_status_name as property_status_name,
         properties.created_at as property_created_at,
@@ -569,7 +559,6 @@ class ListingsController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
             ->join('cities', 'cities.city_id = properties.city_id', 'left')
-            ->join('payment_plans', 'payment_plans.payment_plan_id = properties.payment_plan_id', 'left')
             ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
             ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
             ->join('regions', 'regions.region_id = subregions.region_id', 'left')

@@ -93,14 +93,8 @@
                 <!-- Payment plans -->
                 <div>
                     <h3 class="secondary-title">Payment Plan</h3>
-                    <div class="flex flex-col w-full mb-4">
-                        <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                            'placeholder' => 'Search Payment Plan',
-                            'data' => $paymentPlans,
-                            'selectedId' => "payment_plan_id",
-                            'selectedName' => 'payment_plan_name'
-                        ]) ?>
-                    </div>
+                    <textarea class="main-input" placeholder="Property Payment Plan Details"
+                                name="property_payment_plan" id="property_payment_plan"></textarea>
                 </div>
 
                 <hr class="mx-2" />
@@ -401,9 +395,8 @@
             document.getElementById('property_catch_phrase').value = data.property_catch_phrase;
         }
 
-        if (data.payment_plan_id) {
-            document.getElementById('result_id_payment_plan_name').value = data.payment_plan_id ?? data.payment_plan_id;
-            document.getElementById('search_payment_plan_name').value = data.info_payment_plan_name ?? data.payment_plan_name;
+        if (data.property_payment_plan) {
+            document.getElementById('property_payment_plan').value = data.property_payment_plan;
         }
 
         if (data.property_type_id) {

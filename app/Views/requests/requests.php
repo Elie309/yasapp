@@ -77,7 +77,7 @@
             'client_name' => 'Client',
             'phone_numbers' => 'Phones',
             'city_name' => 'City',
-            'payment_plan_name' => 'Payment Plan',
+            'request_payment_plan' => 'Payment Plan',
             'agent_name' => 'Agent',
             'request_fees' => 'Budget',
             'request_state' => 'State',
@@ -113,7 +113,7 @@
                 'searchParam' => [
                     'client_name' => 'Client Name',
                     'city_name' => 'City Name',
-                    'plan_name' => 'Payment Plan',
+                    'request_payment_plan' => 'Payment Plan',
                     'request_budget' => 'Budget',
                     'comments' => 'Comments',
                 ],
