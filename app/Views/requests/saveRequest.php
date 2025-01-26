@@ -240,6 +240,20 @@
 
         $data = $session->get('_ci_old_input');
 
+
+        if ($method === 'UPDATE_REQUEST' && !$data) {
+            echo "var data = " . json_encode($request) . ";";
+            echo "var city = " . json_encode($city) . ";";
+            echo 'var phones = ' . json_encode($phones) . ';';
+            echo "data.phone_number = [];";
+            echo "data.country_id = [];";
+            echo "phones.forEach((phone, index) => {";
+            echo "data.phone_number.push(phone.phone_number);";
+            echo "data.country_id.push(phone.country_id);";
+            echo "});";
+            echo "populateFields(data);";
+        }
+
         if (isset($data)) {
             echo "var data = " . json_encode($data['post']) . ";";
 
@@ -256,18 +270,7 @@
             echo "populateFields(data);";
         }
 
-        if ($method === 'UPDATE_REQUEST') {
-            echo "var data = " . json_encode($request) . ";";
-            echo "var city = " . json_encode($city) . ";";
-            echo 'var phones = ' . json_encode($phones) . ';';
-            echo "data.phone_number = [];";
-            echo "data.country_id = [];";
-            echo "phones.forEach((phone, index) => {";
-            echo "data.phone_number.push(phone.phone_number);";
-            echo "data.country_id.push(phone.country_id);";
-            echo "});";
-            echo "populateFields(data);";
-        }
+      
 
         ?>
 
