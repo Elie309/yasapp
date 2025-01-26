@@ -99,5 +99,91 @@ class ApartmentSpecificationsEntity extends Entity
         $this->attributes['spec_garage'] = $value == 'on' ? true : false;
     }
 
+    //Getters return ONLY TRUE or FALSE
+
+    public function getSpecHeatingSystem()
+    {
+        return $this->attributes['spec_heating_system'] ? true : false;
+    }
+
+    public function getSpecHeatingSystemOnProvisions()
+    {
+        return $this->attributes['spec_heating_system_on_provisions'] ? true : false;
+    }
+
+    public function getSpecAcSystem()
+    {
+        return $this->attributes['spec_ac_system'] ? true : false;
+    }
+
+    public function getSpecAcSystemOnProvisions()
+    {
+        return $this->attributes['spec_ac_system_on_provisions'] ? true : false;
+    }
+
+    public function getSpecDoubleWall()
+    {
+        return $this->attributes['spec_double_wall'] ? true : false;
+    }
+
+    public function getSpecDoubleGlazing()
+    {
+        return $this->attributes['spec_double_glazing'] ? true : false;
+    }
+
+    public function getSpecShuttersElectrical()
+    {
+        return $this->attributes['spec_shutters_electrical'] ? true : false;
+    }
+
+    public function getSpecOakDoors()
+    {
+        return $this->attributes['spec_oak_doors'] ? true : false;
+    }
+
+    public function getSpecChimney()
+    {
+        return $this->attributes['spec_chimney'] ? true : false;
+    }
+
+    public function getSpecIndirectLight()
+    {
+        return $this->attributes['spec_indirect_light'] ? true : false;
+    }
+
+    public function getSpecWoodPanelDecoration()
+    {
+        return $this->attributes['spec_wood_panel_decoration'] ? true : false;
+    }
+
+    public function getSpecStonePanelDecoration()
+    {
+        return $this->attributes['spec_stone_panel_decoration'] ? true : false;
+    }
+
+    public function getSpecSecurityDoor()
+    {
+        return $this->attributes['spec_security_door'] ? true : false;
+    }
+
+    public function getSpecAlarmSystem()
+    {
+        return $this->attributes['spec_alarm_system'] ? true : false;
+    }
+
+    public function getSpecSolarHeater()
+    {
+        return $this->attributes['spec_solar_heater'] ? true : false;
+    }
+
+    public function getSpecIntercom()
+    {
+        return $this->attributes['spec_intercom'] ? true : false;
+    }
+
+    public function getSpecGarage()
+    {
+        return $this->attributes['spec_garage'] ? true : false;
+    }
 
 }

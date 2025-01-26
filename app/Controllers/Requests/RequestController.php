@@ -529,7 +529,8 @@ class RequestController extends BaseController
 
             if ($searchParam === 'client_name') {
                 $request = $request->like('clients.client_firstname', $search)
-                    ->orLike('clients.client_lastname', $search);
+                    ->orLike('clients.client_lastname', $search)
+                    ->orLike('CONCAT_WS(" ", clients.client_firstname, clients.client_lastname)', $search);
             } else if ($searchParam === 'request_budget') {
                 $search = str_replace(',', '', $search);
                 $search = str_replace(' ', '', $search);

@@ -81,8 +81,8 @@ class PropertyModel extends Model
         'property_referral_phone' => 'string|max_length[20]',
         'property_catch_phrase' => 'permit_empty|string',
         'property_payment_plan' => 'permit_empty|string',
-        'property_size' => 'integer',
-        'property_price' => 'integer',
+        'property_size' => 'decimal',
+        'property_price' => 'decimal',
     ];
     protected $validationMessages   = [
         'property_id' => [],
@@ -135,10 +135,10 @@ class PropertyModel extends Model
             'string' => 'Property Payment Plan must be a string'
         ],
         'property_size' => [
-            'integer' => 'Property Size must be a integer'
+            'decimal' => 'Property Size must be a decimal or float',
         ],
         'property_price' => [
-            'integer' => 'Property Price must be a integer'
+            'decimal' => 'Property Price must be a decimal or float',
         ],
 
     ];

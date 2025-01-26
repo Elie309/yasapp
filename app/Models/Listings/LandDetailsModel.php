@@ -43,8 +43,8 @@ class LandDetailsModel extends Model
         'land_id' => 'permit_empty',
         'property_id' => 'required|integer',
         'land_type' => 'required|string|in_list[industrial, residential, commercial, agricultural, mixed, other]',
-        'land_zone_first' => 'integer',
-        'land_zone_second' => 'integer',
+        'land_zone_first' => 'decimal',
+        'land_zone_second' => 'decimal',
         'land_extra_features' => 'required|string'
     ];
     protected $validationMessages   = [
@@ -59,10 +59,10 @@ class LandDetailsModel extends Model
             'in_list'  => 'Land Type must be one of: industrial, residential, commercial, agricultural, mixed, other'
         ],
         'land_zone_first' => [
-            'integer' => 'Land Zone First must be a integer'
+            'decimal' => 'Land Zone First must be a number'
         ],
         'land_zone_second' => [
-            'integer' => 'Land Zone Second must be a integer'
+            'decimal' => 'Land Zone Second must be a number'
         ],
         'land_extra_features' => [
             'required' => 'Land Extra Features is required',

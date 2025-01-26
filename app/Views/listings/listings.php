@@ -135,7 +135,6 @@
                 'searchParam' => [
                     'client_name' => 'Vendor',
                     'city_name' => 'City',
-                    'property_payment_plan' => 'Payment Plan',
                     'property_price' => 'Budget',
                 ],
 

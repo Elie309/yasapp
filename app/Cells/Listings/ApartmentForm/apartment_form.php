@@ -21,7 +21,7 @@
             class="main-checkbox" />
 
         <label class="secondary-label md:col-span-2" for="ad_terrace_area">Terrace Area (sqm):</label>
-        <input type="number" id="ad_terrace_area"
+        <input type="text" id="ad_terrace_area"
             name="ad_terrace_area" disabled
             class="main-input disabled:main-input-readonly md:col-span-4" />
 
@@ -29,7 +29,7 @@
         <input type="checkbox" id="ad_roof" name="ad_roof" class="main-checkbox">
 
         <label class=" secondary-label md:col-span-2" for="ad_roof_area">Roof Area (sqm):</label>
-        <input type="number" id="ad_roof_area"
+        <input type="text" id="ad_roof_area"
             name="ad_roof_area" disabled
             class="main-input disabled:main-input-readonly md:col-span-4">
 
@@ -53,10 +53,10 @@
         <input type="text" id="ad_status_age" name="ad_status_age" class="main-input col-span-10">
 
         <label class="secondary-label col-span-2 " for="ad_floor_level">Floor Level:</label>
-        <input type="number" id="ad_floor_level" name="ad_floor_level" class="main-input col-span-10">
+        <input type="text" id="ad_floor_level" name="ad_floor_level" class="main-input col-span-10">
 
         <label class="secondary-label col-span-2 " for="ad_apartments_per_floor">Apartments Per Floor:</label>
-        <input type="number" id="ad_apartments_per_floor" name="ad_apartments_per_floor" class="main-input col-span-10">
+        <input type="text" id="ad_apartments_per_floor" name="ad_apartments_per_floor" class="main-input col-span-10">
 
         <label class="secondary-label col-span-2 " for="ad_view">View:</label>
         <input type="text" id="ad_view" name="ad_view" class="main-input col-span-10">
