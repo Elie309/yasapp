@@ -149,6 +149,20 @@
                     <h3 class="secondary-title">Property Details</h3>
 
                     <div class="my-4">
+                        <label class="main-label" for="property_type_name">Property Type</label>
+                        <div class="flex flex-col w-full">
+                            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+                                'placeholder' => 'Search Property Type',
+                                'data' => $propertyType,
+                                'selectedId' => "property_type_id",
+                                'selectedName' => 'property_type_name'
+                            ]) ?>
+                        </div>
+
+                    </div>
+
+
+                    <div class="my-4">
                         <label class="main-label" for="property_status_name">Property Status</label>
                         <div class="flex flex-col w-full">
                             <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
@@ -428,6 +442,11 @@
 
         if (data.property_payment_plan) {
             document.getElementById('property_payment_plan').value = data.property_payment_plan;
+        }
+
+        if (data.property_type_id) {
+            document.getElementById('result_id_property_type_name').value = data.property_type_id;
+            document.getElementById('search_property_type_name').value = data.info_property_type_name ?? data.property_type_name;
         }
 
         if (data.property_status_id) {

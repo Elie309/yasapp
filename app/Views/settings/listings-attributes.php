@@ -18,6 +18,11 @@
             <?= $id == "propertyStatus" ? 'bg-gray-200' : 'bg-gray-100' ?>">
             Property Status
         </a>
+        <a href="<?= base_url('settings/listings-attributes/property-types') ?>"
+            class="tabBtn w-1/2 py-4 text-center font-medium text-gray-700  focus:outline-none
+            <?= $id == "propertyType" ? 'bg-gray-200' : 'bg-gray-100' ?>">
+            Property Type
+        </a>
         <a href="<?= base_url('settings/listings-attributes/apartment-gender') ?>"
             class="tabBtn w-1/2 py-4 text-center font-medium text-gray-700   focus:outline-none
             <?= $id == "apartmentGender" ? 'bg-gray-200' : 'bg-gray-100' ?>">
@@ -27,6 +32,11 @@
 
     <div>
         <?php
+        $tableHeaders_PropertyType = [
+            "property_type_id" => "ID",
+            "property_type_name" => "Property Type",
+        ];
+
         $tableHeaders_PropertyStatus = [
             "property_status_id" => "ID",
             "property_status_name" => "Property Status",
@@ -44,6 +54,13 @@
                 'tableHeaders' => $tableHeaders_PropertyStatus,
                 'propertyStatus' => $propertyStatus,
             ]) ?>
+
+        <?php elseif ($id == "propertyType") : ?>
+
+          <?= view_cell("\App\Cells\Listings\PropertyType\PropertyTypeCell::render", [
+            'tableHeaders' => $tableHeaders_PropertyType,
+            'propertyType' => $propertyType,
+          ]) ?>
 
         <?php elseif ($id == "apartmentGender") : ?>
 

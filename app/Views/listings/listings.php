@@ -41,7 +41,16 @@
                         <option value="apartment" <?= isset($_GET['landOrApartment']) && $_GET['landOrApartment'] === 'apartment' ? 'selected' : '' ?>>Apartment</option>
                     </select>
                 </div>
-            
+                <div class="my-2 md:my-0 md:ml-4 order-4">
+                    <label for="propertyType" class="main-label mr-2 text-wrap">Type:</label>
+                    <select name="propertyType" id="propertyType" class="secondary-input min-w-40">
+                        <option value="" <?= isset($_GET['propertyType']) ? '' : 'selected' ?>>All</option>
+                        <?php foreach ($propertyType as $type): ?>
+                            <option value="<?= $type->property_type_name ?>"
+                                <?= isset($_GET['propertyType']) && $_GET['propertyType'] === $type->property_type_name ? 'selected' : '' ?>><?= ucfirst($type->property_type_name) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <div class="my-2 md:my-0 md:ml-4 order-5">
                     <label for="propertyStatus" class="main-label mr-2 text-wrap">Status:</label>
                     <select name="propertyStatus" id="propertyStatus" class="secondary-input min-w-40">
@@ -90,6 +99,7 @@
             'phone_number' => 'Phone',
             'city_name' => 'City',
             'property_land_or_apartment' => 'Land/Apartment',
+            'property_type_name' => 'Type',
             'property_status_name' => 'Status',
             'property_budget' => 'Price',
             'property_dimension' => 'Size',
@@ -155,6 +165,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const propertyStatus = document.getElementById('propertyStatus');
+        const propertyType = document.getElementById('propertyType');
         const createdAt = document.getElementById('createdAt');
         const updatedAt = document.getElementById('updatedAt');
         const land_apartment = document.getElementById('land_apartment');
@@ -170,6 +181,10 @@
 
         propertyStatus.addEventListener('change', function() {
             updateURLParameter('propertyStatus', propertyStatus.value);
+        });
+
+        propertyType.addEventListener('change', function() {
+            updateURLParameter('propertyType', propertyType.value);
         });
 
         createdAt.addEventListener('change', function() {
