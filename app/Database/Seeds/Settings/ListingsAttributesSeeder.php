@@ -37,31 +37,12 @@ class ListingsAttributesSeeder extends Seeder
             [ 'apartment_gender_name' => 'Other']
         ];
 
+        // Under construction - Ready to move - Pre-booking - Pre sales
         $property_status = [
-            ['property_status_name' => 'For Sale'],
-            ['property_status_name' => 'For Rent'],
-            ['property_status_name' => 'Sold'],
-            ['property_status_name' => 'Rented'],
-            ['property_status_name' => 'Leased'],
             ['property_status_name' => 'Under Construction'],
-            ['property_status_name' => 'New Construction'],
-            ['property_status_name' => 'Foreclosure'],
-            ['property_status_name' => 'Open House'],
-            ['property_status_name' => 'Reduced Price'],
-            ['property_status_name' => 'Featured'],
-            ['property_status_name' => 'Hot Offer'],
-            ['property_status_name' => 'Auction'],
-            ['property_status_name' => 'Resale'],
-            ['property_status_name' => 'Short Sale'],
-            ['property_status_name' => 'Pre-Construction'],
-            ['property_status_name' => 'Pre-Sale'],
-            ['property_status_name' => 'Pre-Lease'],
-            ['property_status_name' => 'Pre-Registration'],
-            ['property_status_name' => 'Pre-Booking'],
-            ['property_status_name' => 'Pre-Approval'],
-            ['property_status_name' => 'Pre-Order'],
-            ['property_status_name' => 'Pre-Release'],
-            ['property_status_name' => 'Pre-Opening'],
+            ['property_status_name' => 'Pre Booking'],
+            ['property_status_name' => 'Pre Sales'],
+            ['property_status_name' => 'Ready to move'],
            
         ];
 
