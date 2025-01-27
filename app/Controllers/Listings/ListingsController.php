@@ -410,6 +410,16 @@ class ListingsController extends BaseController
             $clientEntity->fill($this->request->getPost());
             $phones = esc($this->request->getPost('phone_number'));
             $countries = esc($this->request->getPost('country_id'));
+            $phone_ids = esc($this->request->getPost('phone_id'));
+
+            $phones_details = [];
+            foreach ($phones as $key => $phone) {
+                $phones_details[] = [
+                    'phone_id' => $phone_ids[$key],
+                    'phone_number' => $phone,
+                    'country_id' => $countries[$key]
+                ];
+            }
 
             $propertyEntity->fill($this->request->getPost());
             $propertyEntity->employee_id = $employee_id;
@@ -431,7 +441,7 @@ class ListingsController extends BaseController
             }
 
 
-            $client_id = $this->clientServices->updateClient($clientEntity, $phones, $countries);
+            $client_id = $this->clientServices->updateClient($clientEntity, $phones_details);
 
             $propertyEntity->client_id = $client_id;
 

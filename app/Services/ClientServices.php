@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Services;
 
 use App\Entities\Clients\ClientEntity;
@@ -9,7 +10,7 @@ use InvalidArgumentException;
 class ClientServices extends BaseServices
 {
 
-    public function updateClient(ClientEntity $clientEntity, array $phones, array $countries)
+    public function updateClient(ClientEntity $clientEntity, array $phones_details)
     {
         $clientModel = new ClientModel();
         $phoneModel = new PhoneModel();
@@ -28,46 +29,43 @@ class ClientServices extends BaseServices
                 throw new InvalidArgumentException('Failed to update client');
             }
 
-            // Get current phone numbers and countries
-            $currentPhones = $phoneModel->where('client_id', $clientEntity->client_id)->findAll();
-            $currentPhoneData = [];
-            foreach ($currentPhones as $currentPhone) {
-                $currentPhoneData[] = [
-                    'phone_number' => $currentPhone->phone_number,
-                    'country_id' => $currentPhone->country_id
-                ];
-            }
+            // Update client phone numbers
+            $phonesAvailable = $phoneModel->where('client_id', $clientEntity->client_id)->findAll();
 
-            // Update phone numbers if they have changed
-            if (is_array($phones) && is_array($countries) && count($phones) == count($countries)) {
-                foreach ($phones as $key => $phone) {
-                    $phoneData = [
-                        'phone_number' => $phone,
-                        'country_id' => $countries[$key]
-                    ];
+            foreach ($phones_details as $phone_detail) {
+                $found = false;
+                foreach ($phonesAvailable as $key => $phone) {
+                    if ($phone->phone_id == $phone_detail['phone_id']) {
 
-                    if (!in_array($phoneData, $currentPhoneData)) {
-                        $phoneData['client_id'] = $clientEntity->client_id;
-                        if (!$phoneModel->save($phoneData)) {
-                            throw new InvalidArgumentException('Failed to update phone numbers');
+                        if (!$phoneModel->update($phone->phone_id, $phone_detail)) {
+                            throw new InvalidArgumentException('Failed to update phone');
                         }
+                        unset($phonesAvailable[$key]);
+                        $found = true;
+                        break;
                     }
                 }
-              
+
+                if (!$found && $phone_detail['phone_id'] == 0) {
+                    //Add new phone
+                    $phone_detail['client_id'] = $clientEntity->client_id;
+                    unset($phone_detail['phone_id']);
+                    log_message('debug', 'Phone ID: ' . json_encode($phone_detail));
+                    if (!$phoneModel->save($phone_detail)) {
+                        throw new InvalidArgumentException('Failed to insert phone');
+                    }
+                }
             }
 
-            for($i = 0; $i < count($currentPhoneData); $i++) {
-                
-                if (!in_array($currentPhoneData[$i]["phone_number"], $phones)) {
-                    if (!$phoneModel->delete($currentPhones[$i]->phone_id)) {
-                        throw new InvalidArgumentException('Failed to update phone numbers');
-                    }
+            foreach ($phonesAvailable as $phone) {
+                if (!$phoneModel->delete($phone->phone_id)) {
+                    throw new InvalidArgumentException('Failed to delete phone');
                 }
             }
+
 
             return $clientEntity->client_id;
         } catch (\Exception $e) {
-            $this->db->transRollback();
             throw new InvalidArgumentException($e->getMessage());
         }
     }

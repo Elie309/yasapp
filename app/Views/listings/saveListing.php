@@ -279,9 +279,11 @@
         var phonesMain = <?= json_encode($phones) ?>;
         data.country_id = [];
         data.phone_number = [];
+        data.phone_id = [];
         phonesMain.forEach((phone, index) => {
             data.phone_number.push(phone.phone_number);
             data.country_id.push(phone.country_id);
+            data.phone_id.push(phone.phone_id);
         });
 
         var city = {
@@ -359,6 +361,7 @@
             phoneSection.innerHTML = '';
 
             phones.forEach((phone, index) => {
+                console.log(phone);
                 var newPhoneInput = document.createElement('div');
 
                 newPhoneInput.innerHTML = `
@@ -366,6 +369,7 @@
                         `;
                 newPhoneInput.querySelector('.phone-country').value = data.country_id[index];
                 newPhoneInput.querySelector('.phone-number').value = data.phone_number[index];
+                newPhoneInput.querySelector('.phone-id').value = data.phone_id[index];
 
                 phoneSection.appendChild(newPhoneInput);
 

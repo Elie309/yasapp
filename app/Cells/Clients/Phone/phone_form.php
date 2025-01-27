@@ -13,6 +13,7 @@
     </select>
 
     <input type="text" class="main-input mx-2 phone-number" name="phone_number[]" placeholder="Phone Number">
+    <input type="hidden" class="phone-id" name="phone_id[]" value="0">
     
     <button type="button" class="remove-phone-btn" onclick="removeParent(this)">
         <svg class=" text-gray-800 size-6 hover:text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
