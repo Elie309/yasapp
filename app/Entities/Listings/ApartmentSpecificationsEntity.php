@@ -7,12 +7,47 @@ use CodeIgniter\Entity\Entity;
 class ApartmentSpecificationsEntity extends Entity
 {
     protected $datamap = [];
-    
+
     protected $casts = [
         'spec_id' => 'int',
         'apartment_id' => 'int',
         'spec_extra_features' => 'string'
     ];
+
+    protected $defaultBooleans = [
+        'spec_heating_system',
+        'spec_heating_system_on_provisions',
+        'spec_ac_system',
+        'spec_ac_system_on_provisions',
+        'spec_double_wall',
+        'spec_double_glazing',
+        'spec_shutters_electrical',
+        'spec_oak_doors',
+        'spec_chimney',
+        'spec_indirect_light',
+        'spec_wood_panel_decoration',
+        'spec_stone_panel_decoration',
+        'spec_security_door',
+        'spec_alarm_system',
+        'spec_solar_heater',
+        'spec_intercom',
+        'spec_garage'
+    ];
+
+    public function fill(array $data = null)
+    {
+        parent::fill($data);
+
+        foreach ($this->defaultBooleans as $attribute) {
+
+            //Check if the attribute is not set - if not set, set it to false -- Checkbox values are not sent when unchecked
+            if (!isset($this->attributes[$attribute])) {
+                $this->attributes[$attribute] = false;
+            }
+        }
+
+        return $this;
+    }
 
     public function setSpecHeatingSystem(string $value)
     {
@@ -185,5 +220,4 @@ class ApartmentSpecificationsEntity extends Entity
     {
         return $this->attributes['spec_garage'] ? true : false;
     }
-
 }

@@ -478,17 +478,14 @@ class ListingsController extends BaseController
 
                 $apartment_id = $property->apartment_id;
 
-                log_message('info', 'Apartment ID: ' . json_encode($apartmentDetailsEntity));
-
 
                 if (!$apartmentDetailsModel->update($apartment_id, $apartmentDetailsEntity)) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $apartmentDetailsModel->errors());
                 }
 
-                $apartmentPartitionsId = intval($apartmentPartitionsModel->where('apartment_id', $apartment_id)->first()->apartment_partition_id);
-                $apartmentSpecsId = intval($apartmentSpecsModel->where('apartment_id', $apartment_id)->first()->apartment_specification_id);
-
+                $apartmentPartitionsId = $apartmentPartitionsModel->where('apartment_id', $apartment_id)->first()->partition_id;
+                $apartmentSpecsId = $apartmentSpecsModel->where('apartment_id', $apartment_id)->first()->spec_id;
 
                 if (!$apartmentPartitionsModel->update($apartmentPartitionsId, $apartmentPartitionsEntity)) {
                     $this->db->transRollback();

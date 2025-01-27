@@ -18,6 +18,38 @@ class ApartmentDetailsEntity extends Entity
         'ad_floor_level' => 'int',
     ];
 
+    protected $defaultBooleans = [
+        'ad_terrace',
+        'ad_roof',
+        'ad_furnished',
+        'ad_furnished_on_provisions',
+        'ad_elevator'
+    ];
+
+    public function fill(array $data = null)
+    {
+        parent::fill($data);
+
+        foreach ($this->defaultBooleans as $attribute) {
+
+            //Check if the attribute is not set - if not set, set it to false -- Checkbox values are not sent when unchecked
+            if (!isset($this->attributes[$attribute])) {
+                $this->attributes[$attribute] = false;
+                
+                //When ad_terrace is not set, set ad_terrace_area to 0
+                if($attribute == 'ad_terrace'){
+                    $this->attributes['ad_terrace_area'] = 0;
+                }
+
+                //When ad_roof is not set, set ad_roof_area to 0
+                if($attribute == 'ad_roof'){
+                    $this->attributes['ad_roof_area'] = 0;
+                }
+            }
+        }
+
+        return $this;
+    }
 
     public function setAdTerrace(string $value = 'off')
     {
