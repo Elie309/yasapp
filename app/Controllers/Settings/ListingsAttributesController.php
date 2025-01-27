@@ -5,7 +5,6 @@ namespace App\Controllers\Settings;
 use App\Controllers\BaseController;
 use App\Models\Listings\Attributes\ApartmentGenderModel;
 use App\Models\Listings\Attributes\PropertyStatusModel;
-use App\Models\Listings\Attributes\PropertyTypeModel;
 
 class ListingsAttributesController extends BaseController
 {
@@ -18,21 +17,6 @@ class ListingsAttributesController extends BaseController
         }
     
         return redirect()->to('settings/listings-attributes/property-status');
-    }
-
-    public function PropertyType()
-    {
-        if (!in_array($this->session->get('role'), ['admin', 'manager'])) {
-            return redirect()->to('settings')->with('errors', 'You are not authorized to view this page');
-        }
-
-        $propertyTypeModel = new PropertyTypeModel();
-        $propertyType = $propertyTypeModel->findAll();
-
-        return view('template/header') . view('settings/listings-attributes', [
-            'id' => 'propertyType',
-            'propertyType' => $propertyType,
-        ]) . view('template/footer');
     }
 
     public function propertyStatus()

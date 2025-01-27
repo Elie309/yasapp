@@ -51,32 +51,8 @@ class ListingsAttributesSeeder extends Seeder
            
         ];
 
-        $property_types = [
-            ['property_type_name' => 'Luxury'],
-            ['property_type_name' => 'Bad'],
-            ['property_type_name' => 'High-end'],
-            ['property_type_name' => 'Mid-range'],
-            ['property_type_name' => 'Low-end'],
-            ['property_type_name' => 'Affordable'],
-            ['property_type_name' => 'Cheap'],
-            ['property_type_name' => 'Expensive'],
-            ['property_type_name' => 'Economic'],
-            ['property_type_name' => 'Budget'],
-            ['property_type_name' => 'Premium'],
-            ['property_type_name' => 'Standard'],
-            ['property_type_name' => 'Deluxe'],
-            ['property_type_name' => 'Executive'],
-            ['property_type_name' => 'Elegant'],
-            ['property_type_name' => 'Stylish'],
-            ['property_type_name' => 'Modern'],
-            ['property_type_name' => 'Contemporary'],
-            ['property_type_name' => 'Traditional'],
-                        
-        ];
-
         $this->db->table('apartment_gender')->insertBatch($apartmentsGender);
         $this->db->table('property_status')->insertBatch($property_status);
-        $this->db->table('property_type')->insertBatch($property_types);
 
 
     }

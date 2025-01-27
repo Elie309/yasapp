@@ -130,11 +130,6 @@ CREATE TABLE property_status (
     property_status_name VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE property_type (
-    property_type_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    property_type_name VARCHAR(255) NOT NULL UNIQUE
-);
-
 
 CREATE TABLE properties (
     property_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -145,7 +140,6 @@ CREATE TABLE properties (
     currency_id INT UNSIGNED NOT NULL,
 
     city_id INT UNSIGNED NOT NULL,
-    property_type_id INT UNSIGNED NOT NULL,
     property_status_id INT UNSIGNED NOT NULL,
 
     property_rent BOOLEAN DEFAULT FALSE,
@@ -175,7 +169,6 @@ CREATE TABLE properties (
     FOREIGN KEY (client_id) REFERENCES clients(client_id),
     FOREIGN KEY (city_id) REFERENCES cities(city_id),
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
-    FOREIGN KEY (property_type_id) REFERENCES property_type(property_type_id),
     FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id),
     FOREIGN KEY (currency_id) REFERENCES currencies(currency_id)
     

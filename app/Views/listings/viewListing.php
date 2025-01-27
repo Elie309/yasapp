@@ -79,16 +79,12 @@
                 <td><?= esc($property->employee_name) ?></td>
             </tr>
             <tr>
-                <th>Payment Plan</th>
-                <td><?= esc($property->property_payment_plan) ?></td>
-            </tr>
-            <tr>
                 <th>Location</th>
                 <td><?= esc($property->property_detailed_location) ?></td>
             </tr>
             <tr>
-                <th>Type</th>
-                <td><?= esc($property->property_type_name) ?></td>
+                <th>Size</th>
+                <td><?= esc($property->property_size) ?> m²</td>
             </tr>
             <tr>
                 <th>Status</th>
@@ -104,18 +100,18 @@
                 <td><?= $property->property_sale ? 'Yes' : 'No' ?></td>
             </tr>
             <tr>
+                <th>Payment Plan</th>
+                <td><?= esc($property->property_payment_plan) ?></td>
+            </tr>
+          
+            <tr>
                 <th>Price</th>
                 <td><?= esc($property->property_budget) ?></td>
-            </tr>
-            <tr>
-                <th>Size</th>
-                <td><?= esc($property->property_size) ?> m²</td>
             </tr>
             <tr>
                 <th>Catch Phrase</th>
                 <td><?= esc($property->property_catch_phrase) ?></td>
             </tr>
-
             <tr>
                 <th>Created At</th>
                 <td><?= esc((new DateTime($property->property_created_at))->format('d-M-Y H:i:s T')) ?></td>
