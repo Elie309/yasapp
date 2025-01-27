@@ -572,9 +572,6 @@
                 document.getElementById("partition_storage_room").value = data.partition_storage_room;
             }
 
-            if (data.partition_extra_features) {
-                document.getElementById("partition_extra_features").value = data.partition_extra_features;
-            }
 
             if (data.spec_heating_system) {
                 document.getElementById("spec_heating_system").checked = data.spec_heating_system;
@@ -647,11 +644,7 @@
             if (data.spec_tiles) {
                 document.getElementById("spec_tiles").value = data.spec_tiles;
             }
-
-            if (data.spec_extra_features) {
-                document.getElementById("spec_extra_features").value = data.spec_extra_features;
-            }
-
+           
         }
 
 

@@ -1250,6 +1250,10 @@ video {
   height: 100%;
 }
 
+.h-10 {
+  height: 2.5rem;
+}
+
 .max-h-80 {
   max-height: 20rem;
 }
@@ -1261,6 +1265,14 @@ video {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-10 {
+  min-height: 2.5rem;
+}
+
+.min-h-20 {
+  min-height: 5rem;
 }
 
 .w-1\/2 {

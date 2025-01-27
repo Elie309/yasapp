@@ -32,7 +32,6 @@ class ApartmentSpecificationsModel extends Model
         'spec_solar_heater',
         'spec_intercom',
         'spec_garage',
-        'spec_extra_features'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -74,7 +73,6 @@ class ApartmentSpecificationsModel extends Model
         'spec_solar_heater' => 'permit_empty|boolean',
         'spec_intercom' => 'permit_empty|boolean',
         'spec_garage' => 'permit_empty|boolean',
-        'spec_extra_features' => 'permit_empty|string'
     ];
     protected $validationMessages   = [
         'spec_id' => [],
@@ -135,9 +133,6 @@ class ApartmentSpecificationsModel extends Model
         ],
         'spec_garage' => [
             'boolean' => 'Garage must be a boolean value'
-        ],
-        'spec_extra_features' => [
-            'string' => 'Extra features must be a string'
         ]
     ];
     protected $skipValidation       = false;

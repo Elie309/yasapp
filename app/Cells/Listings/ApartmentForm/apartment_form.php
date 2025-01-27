@@ -76,8 +76,6 @@
         <label class="secondary-label" for="ad_architecture_and_interior">Architecture and Interior:</label>
         <textarea id="ad_architecture_and_interior" name="ad_architecture_and_interior" class="main-input"></textarea>
 
-        <label class="secondary-label" for="ad_extra_features">Extra Features:</label>
-        <textarea id="ad_extra_features" name="ad_extra_features" class="main-input"></textarea>
     </div>
     <hr>
 
@@ -120,8 +118,6 @@
         <label class="secondary-label col-span-2" for="partition_storage_room">Storage Room:</label>
         <input type="text" id="partition_storage_room" name="partition_storage_room" class="main-input col-span-10">
 
-        <label class="secondary-label col-span-2" for="partition_extra_features">Extra Features:</label>
-        <textarea id="partition_extra_features" name="partition_extra_features" class="main-input col-span-10"></textarea>
 
     </div>
 
@@ -195,9 +191,9 @@
         <option value="granite">Granite</option>
         <option value="other">Other</option>
     </select>
-    <label class="secondary-label" for="spec_extra_features">Extra Features:</label>
-    <textarea id="spec_extra_features" name="spec_extra_features" class="main-input"></textarea>
 
+    <label class="secondary-label" for="ad_extra_features">Extra Features:</label>
+    <textarea id="ad_extra_features" name="ad_extra_features" class="main-input min-h-20"></textarea>
 
 </div>
 

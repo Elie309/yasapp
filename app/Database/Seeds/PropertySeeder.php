@@ -101,7 +101,6 @@ class PropertySeeder extends Seeder
                     'partition_balconies' => $faker->word(),
                     'partition_parking' => $faker->word(),
                     'partition_storage_room' => $faker->word(),
-                    'partition_extra_features' => $faker->sentence(),
                 ];
 
                 $this->db->table('apartment_partitions')->insert($partitionData);
@@ -127,7 +126,6 @@ class PropertySeeder extends Seeder
                     'spec_solar_heater' => $faker->boolean(),
                     'spec_intercom' => $faker->boolean(),
                     'spec_garage' => $faker->boolean(),
-                    'spec_extra_features' => $faker->sentence(),
                 ];
 
                 $this->db->table('apartment_specifications')->insert($specificationData);

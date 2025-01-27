@@ -279,10 +279,6 @@
                     <th>Storage Room</th>
                     <td><?= esc($apartmentDetails->partition_storage_room) ?></td>
                 </tr>
-                <tr>
-                    <th>Extra Features</th>
-                    <td><?= esc($apartmentDetails->partition_extra_features) ?></td>
-                </tr>
             </table>
 
             <br class="no-print">
@@ -365,10 +361,6 @@
                 <tr>
                     <th>Garage</th>
                     <td><?= $apartmentDetails->spec_garage ? 'Yes' : 'No' ?></td>
-                </tr>
-                <tr>
-                    <th>Extra Features</th>
-                    <td><?= esc($apartmentDetails->spec_extra_features) ?></td>
                 </tr>
             </table>
 

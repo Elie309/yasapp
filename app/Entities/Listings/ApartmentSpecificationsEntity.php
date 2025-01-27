@@ -11,7 +11,6 @@ class ApartmentSpecificationsEntity extends Entity
     protected $casts = [
         'spec_id' => 'int',
         'apartment_id' => 'int',
-        'spec_extra_features' => 'string'
     ];
 
     protected $defaultBooleans = [

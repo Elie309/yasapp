@@ -224,7 +224,7 @@ CREATE TABLE apartment_details (
     ad_view VARCHAR(255),
     ad_type ENUM('luxury', 'high-end', 'standard', 'bad') DEFAULT 'standard',
     ad_architecture_and_interior TEXT,
-    ad_extra_features TEXT,
+    ad_extra_features TEXT DEFAULT NULL,
 
     FOREIGN KEY (property_id) REFERENCES properties(property_id),
     FOREIGN KEY (ad_gender_id) REFERENCES  apartment_gender(apartment_gender_id)
@@ -251,7 +251,6 @@ CREATE TABLE apartment_partitions (
     partition_balconies VARCHAR(255) DEFAULT '',
     partition_parking VARCHAR(255) DEFAULT '',
     partition_storage_room VARCHAR(255) DEFAULT '',
-    partition_extra_features TEXT DEFAULT '',
 
     FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
 );
@@ -279,7 +278,6 @@ CREATE TABLE apartment_specifications (
     spec_solar_heater BOOLEAN DEFAULT FALSE,
     spec_intercom BOOLEAN DEFAULT FALSE,
     spec_garage BOOLEAN DEFAULT FALSE,
-    spec_extra_features TEXT DEFAULT '',
     
 
     FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
