@@ -4,7 +4,6 @@ namespace App\Controllers\Listings;
 
 use App\Controllers\BaseController;
 use App\Entities\Clients\ClientEntity;
-use App\Entities\Clients\PhoneEntity;
 use App\Entities\Listings\ApartmentDetailsEntity;
 use App\Entities\Listings\ApartmentPartitionsEntity;
 use App\Entities\Listings\ApartmentSpecificationsEntity;
@@ -440,13 +439,14 @@ class ListingsController extends BaseController
                 return redirect()->back()->withInput()->with('errors', 'Property not found');
             }
 
+            if ($OldProperty->employee_id !== $employee_id ) {
+                return redirect()->to('listings')->with('errors', 'You are not authorized to edit this page');
+            }
+
 
             $client_id = $this->clientServices->updateClient($clientEntity, $phones_details);
 
             $propertyEntity->client_id = $client_id;
-
-
-
             $land_apartment = esc($this->request->getPost('property_land_or_apartment'));
 
 
@@ -684,6 +684,7 @@ class ListingsController extends BaseController
         $role = $this->session->get('role');
         $property = $propertyModel->select('`properties`.*,
                 CONCAT(`clients`.`client_firstname`, " ", `clients`.`client_lastname`) as `client_name`,
+                GROUP_CONCAT(CONCAT(countries.country_code, " ", phones.phone_number) SEPARATOR ", ") as phone_number,
                 `employees`.`employee_name` as `employee_name`,
                 `cities`.`city_name` as `city_name`,
                 CONCAT(FORMAT(`properties`.`property_price`, 0), " ", `currencies`.`currency_symbol`) as `property_budget`,
@@ -696,10 +697,13 @@ class ListingsController extends BaseController
                 ')
             ->join('clients', 'clients.client_id = properties.client_id', 'left')
             ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
+            ->join('phones', 'phones.client_id = clients.client_id', 'left')
+            ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
             ->join('cities', 'cities.city_id = properties.city_id', 'left')
             ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
-            ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left');
+            ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
+            ->groupBy('properties.property_id');
 
 
 

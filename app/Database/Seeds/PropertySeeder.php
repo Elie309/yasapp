@@ -31,6 +31,8 @@ class PropertySeeder extends Seeder
                 'property_status_id' => $faker->randomElement($propertyStatusData)['property_status_id'], // Random property status
                 'currency_id' => $faker->randomElement($currencyData)['currency_id'], // Random currency ID
                 'property_payment_plan' => $faker->randomElement(['cash to be paid directly', 'installments for over 30 years', 'loan from bank', 'other']),
+                'property_rent' => $faker->boolean(),
+                'property_sale' => $faker->boolean(),
                 'property_location' => $faker->address(),
                 'property_referral_name' => $faker->name(),
                 'property_referral_phone' => $faker->phoneNumber(),

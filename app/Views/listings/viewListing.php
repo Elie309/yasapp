@@ -92,7 +92,17 @@
             </tr>
             <tr>
                 <th>Status</th>
-                <td><?= esc($property->property_status_name) ?></td>
+                <td><?= esc($property->property_status_name) ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Rent</th>
+                <td><?= $property->property_rent ? 'Yes' : 'No' ?></td>
+            </tr>
+            <tr>
+                <th>Sale</th>
+                <td><?= $property->property_sale ? 'Yes' : 'No' ?></td>
+            </tr>
             <tr>
                 <th>Price</th>
                 <td><?= esc($property->property_budget) ?></td>

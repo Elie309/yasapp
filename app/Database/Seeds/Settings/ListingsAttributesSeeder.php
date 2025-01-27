@@ -37,12 +37,17 @@ class ListingsAttributesSeeder extends Seeder
             [ 'apartment_gender_name' => 'Other']
         ];
 
-        // Under construction - Ready to move - Pre-booking - Pre sales
+        // Under construction - Ready to move - Pre-booking - Pre sales - Sold - Rented - Available - Unavailable
         $property_status = [
             ['property_status_name' => 'Under Construction'],
             ['property_status_name' => 'Pre Booking'],
             ['property_status_name' => 'Pre Sales'],
             ['property_status_name' => 'Ready to move'],
+            ['property_status_name' => 'Sold'],
+            ['property_status_name' => 'Rented'],
+            ['property_status_name' => 'Available'],
+            ['property_status_name' => 'Unavailable'],
+            ['property_status_name' => 'Other'],
            
         ];
 

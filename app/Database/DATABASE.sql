@@ -148,6 +148,9 @@ CREATE TABLE properties (
     property_type_id INT UNSIGNED NOT NULL,
     property_status_id INT UNSIGNED NOT NULL,
 
+    property_rent BOOLEAN DEFAULT FALSE,
+    property_sale BOOLEAN DEFAULT FALSE,
+
     land_id INT UNSIGNED NULL,
     apartment_id INT UNSIGNED NULL, 
 

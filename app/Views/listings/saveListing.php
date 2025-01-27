@@ -24,7 +24,6 @@
                 <form action="/listings/edit/<?= $property->property_id ?>" method="POST">
                 <?php endif; ?>
 
-
                 <!-- Client details -->
                 <div>
 
@@ -90,18 +89,64 @@
 
                 <hr class="mx-2" />
 
-                <!-- Payment plans -->
-                <div>
-                    <h3 class="secondary-title">Payment Plan</h3>
-                    <textarea class="main-input" placeholder="Property Payment Plan Details"
-                        name="property_payment_plan" id="property_payment_plan"></textarea>
+
+                <?php if ($method == 'UPDATE_REQUEST') : ?>
+
+                    <?php if ($property->property_land_or_apartment == 'land') : ?>
+                        <div class=" w-full flex border-y border-gray-300">
+                            <button type="button" id="land-btn"
+                                class=" w-full py-4 text-center 
+                            font-medium text-gray-700 focus:outline-none 
+                            hover:bg-gray-200
+                            ">
+                                Land
+                            </button>
+                        </div>
+                    <?php else : ?>
+                        <div class=" w-full flex border-y border-gray-300">
+
+                            <button type="button" id="apartment-btn"
+                                class="w-full py-4 text-center font-medium text-gray-700  focus:outline-none
+                                hover:bg-gray-200">
+                                Apartment
+                            </button>
+
+                        </div>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <div class=" w-full flex border-y border-gray-300">
+                        <button type="button" id="land-btn" onclick="showLandForm()"
+                            class=" w-1/2 py-4 text-center 
+                            font-medium text-gray-700 focus:outline-none 
+                            hover:bg-gray-200
+                            ">
+                            Land
+                        </button>
+                        <button type="button" id="apartment-btn" onclick="showApartmentForm()"
+                            class="w-1/2 py-4 text-center font-medium text-gray-700  focus:outline-none
+                        hover:bg-gray-200
+                    ">
+                            Apartment
+                        </button>
+                    </div>
+
+                <?php endif; ?>
+
+                <input id="property_land_or_apartment" type="text" hidden name="property_land_or_apartment" value="property">
+
+                <div id="show-land" class="hidden">
+                    <?= view_cell('App\Cells\Listings\LandForm\LandFormCell', ['landTypes' => $landTypes]) ?>
                 </div>
 
-                <hr class="mx-2" />
+                <div id="show-apartment" class="hidden">
+
+                    <?= view_cell('App\Cells\Listings\ApartmentForm\ApartmentFormCell', ['apartmentGender' => $apartmentGender]) ?>
+
+                </div>
 
                 <!-- Property Details -->
                 <div>
-                    <h3 class="secondary-title">Details</h3>
+                    <h3 class="secondary-title">Property Details</h3>
 
                     <div class="my-4">
                         <label class="main-label" for="property_type_name">Property Type</label>
@@ -165,60 +210,25 @@
 
                 </div>
 
-                <br>
 
-                <?php if ($method == 'UPDATE_REQUEST') : ?>
+                <!-- Payment plans & Rent/Sale -->
+                <div>
 
-                    <?php if ($property->property_land_or_apartment == 'land') : ?>
-                        <div class=" w-full flex border-y border-gray-300">
-                            <button type="button" id="land-btn"
-                                class=" w-full py-4 text-center 
-                            font-medium text-gray-700 focus:outline-none 
-                            hover:bg-gray-200
-                            ">
-                                Land
-                            </button>
+                    <!-- Rent or Sale checkbox -->
+                    <div class="flex flex-col justify-between mb-4 text-xl">
+                        <h3 class="secondary-title">Rent or Sale</h3>
+                        <div class="flex flex-row justify-around">
+                            <label for="property_rent">Rent</label>
+                            <input type="checkbox" id="property_rent" name="property_rent" class="mr-2">
+                            <br>
+                            <label for="property_sale">Sale</label>
+                            <input type="checkbox" id="property_sale" name="property_sale" class="ml-4 mr-2">
                         </div>
-                    <?php else : ?>
-                        <div class=" w-full flex border-y border-gray-300">
-
-                            <button type="button" id="apartment-btn" 
-                                class="w-full py-4 text-center font-medium text-gray-700  focus:outline-none
-                                hover:bg-gray-200">
-                                Apartment
-                            </button>
-
-                        </div>
-                    <?php endif; ?>
-                <?php else : ?>
-                    <div class=" w-full flex border-y border-gray-300">
-                        <button type="button" id="land-btn" onclick="showLandForm()"
-                            class=" w-1/2 py-4 text-center 
-                            font-medium text-gray-700 focus:outline-none 
-                            hover:bg-gray-200
-                            ">
-                            Land
-                        </button>
-                        <button type="button" id="apartment-btn" onclick="showApartmentForm()"
-                            class="w-1/2 py-4 text-center font-medium text-gray-700  focus:outline-none
-                        hover:bg-gray-200
-                    ">
-                            Apartment
-                        </button>
                     </div>
 
-                <?php endif; ?>
-
-                <input id="property_land_or_apartment" type="text" hidden name="property_land_or_apartment" value="property">
-
-                <div id="show-land" class="hidden">
-                    <?= view_cell('App\Cells\Listings\LandForm\LandFormCell', ['landTypes' => $landTypes]) ?>
-                </div>
-
-                <div id="show-apartment" class="hidden">
-
-                    <?= view_cell('App\Cells\Listings\ApartmentForm\ApartmentFormCell', ['apartmentGender' => $apartmentGender]) ?>
-
+                    <h3 class="secondary-title">Payment Plan</h3>
+                    <textarea class="main-input" placeholder="Property Payment Plan Details"
+                        name="property_payment_plan" id="property_payment_plan"></textarea>
                 </div>
 
                 <div class="my-4 flex flex-row w-full justify-evenly">
@@ -236,7 +246,6 @@
                 </div>
 
                 </form>
-
     </div>
 </div>
 
@@ -404,6 +413,14 @@
         }
         if (data.property_referral_phone) {
             document.getElementById('property_referral_phone').value = data.property_referral_phone;
+        }
+
+        if(data.property_rent){
+            document.getElementById('property_rent').checked = data.property_rent;
+        }
+
+        if(data.property_sale){
+            document.getElementById('property_sale').checked = data.property_sale;
         }
 
         if (data.property_location) {
@@ -648,7 +665,7 @@
             if (data.spec_tiles) {
                 document.getElementById("spec_tiles").value = data.spec_tiles;
             }
-           
+
         }
 
 
