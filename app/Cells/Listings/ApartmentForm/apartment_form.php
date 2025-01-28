@@ -14,6 +14,18 @@
         </div>
     </div>
 
+    <div class="my-4">
+        <label class="main-label" for="ad_type_name">Apartment Type</label>
+        <div class="flex flex-col w-full">
+            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+                'placeholder' => 'Search Apartment Type',
+                'data' => $apartmentTypes,
+                'selectedId' => "ad_type_id",
+                'selectedName' => 'ad_type_name'
+            ]) ?>
+        </div>
+    </div>
+
 
     <div class="my-4 grid grid-cols-2 md:grid-cols-8 gap-4 justify-start items-center">
         <label class="secondary-label" for="ad_terrace">Terrace:</label>
@@ -60,14 +72,6 @@
 
         <label class="secondary-label col-span-2 " for="ad_view">View:</label>
         <input type="text" id="ad_view" name="ad_view" class="main-input col-span-10">
-
-        <label class="secondary-label col-span-2 " for="ad_type">Type:</label>
-        <select id="ad_type" name="ad_type" class="main-input col-span-10">
-            <option value="luxury">Luxury</option>
-            <option value="high-end">High-End</option>
-            <option value="standard">Standard</option>
-            <option value="bad">Bad</option>
-        </select>
 
     </div>
 
@@ -181,7 +185,7 @@
 
     <label class="secondary-label" for="spec_tiles">Tiles:</label>
     <select id="spec_tiles" name="spec_tiles" class="main-input">
-       <?php foreach ($tilesOptions as $tile): ?>
+        <?php foreach ($tilesOptions as $tile): ?>
             <option value="<?= $tile ?>"><?= ucfirst($tile) ?></option>
         <?php endforeach; ?>
     </select>

@@ -84,10 +84,10 @@
     <script>
         function setFormDetails(){
             const data = JSON.parse(sessionStorage.getItem('tempTableData'));
-            document.getElementById('apartment_gender_id_edit').value = data.apartment_gender_id;
-            document.getElementById('apartment_gender_id_delete').value = data.apartment_gender_id;
-            document.getElementById('apartment_gender_name_edit').value = data.apartment_gender_name;
-            document.getElementById('apartment_gender_name_delete').value = data.apartment_gender_name;
+            document.getElementById('apartment_gender_id_edit').value = data.id;
+            document.getElementById('apartment_gender_name_edit').value = data.name;
+            document.getElementById('apartment_gender_id_delete').value = data.id;
+            document.getElementById('apartment_gender_name_delete').value = data.name;
 
         }
     </script>

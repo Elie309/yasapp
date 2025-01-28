@@ -9,7 +9,7 @@ use App\Entities\Listings\ApartmentPartitionsEntity;
 use App\Entities\Listings\ApartmentSpecificationsEntity;
 use App\Entities\Listings\Attributes\ApartmentGenderEntity;
 use App\Entities\Listings\Attributes\PropertyStatusEntity;
-use App\Entities\Listings\Attributes\PropertyTypeEntity;
+use App\Entities\Listings\Attributes\ApartmentTypeEntity;
 use App\Entities\Listings\LandDetailsEntity;
 use App\Entities\Listings\PropertyEntity;
 use App\Models\Clients\ClientModel;
@@ -17,9 +17,6 @@ use App\Models\Clients\PhoneModel;
 use App\Models\Listings\ApartmentDetailsModel;
 use App\Models\Listings\ApartmentPartitionsModel;
 use App\Models\Listings\ApartmentSpecificationsModel;
-use App\Models\Listings\Attributes\ApartmentGenderModel;
-use App\Models\Listings\Attributes\PropertyStatusModel;
-use App\Models\Listings\Attributes\PropertyTypeModel;
 use App\Models\Listings\LandDetailsModel;
 use App\Models\Listings\PropertyModel;
 use App\Models\Settings\CurrenciesModel;
@@ -57,14 +54,15 @@ class ListingsController extends BaseController
     public function index()
     {
 
-        $apartmentGender = new ApartmentGenderModel();
-        $apartmentGender = $apartmentGender->findAll();
+        $apartmentGender = new ApartmentGenderEntity();
+        $apartmentGender = $apartmentGender->getApartmentGenders();
 
-        $propertyStatus = new PropertyStatusModel();
-        $propertyStatus = $propertyStatus->findAll();
+        $propertyStatus = new PropertyStatusEntity();
+        $propertyStatus = $propertyStatus->getPropertyStatuses();
 
-        $propertyType = new PropertyTypeModel();
-        $propertyType = $propertyType->findAll();
+        $apartmentTypes = new ApartmentTypeEntity();
+        $apartmentTypes = $apartmentTypes->getApartmentTypes();
+
 
         if ($this->session->get('role') === 'admin') {
             $agent = new EmployeeModel();
@@ -89,7 +87,7 @@ class ListingsController extends BaseController
             view('listings/listings', [
                 'apartmentGender' => $apartmentGender,
                 'propertyStatus' => $propertyStatus,
-                'propertyType' => $propertyType,
+                'apartmentTypes' => $apartmentTypes,
                 'agents' => $agents ?? null,
                 'properties' => $property,
                 'pager' => $pager
@@ -105,8 +103,8 @@ class ListingsController extends BaseController
         $propertyStatus = new PropertyStatusEntity();
         $propertyStatus = $propertyStatus->getPropertyStatuses();
 
-        $propertyType = new PropertyTypeEntity();
-        $propertyType = $propertyType->getPropertyTypes();
+        $apartmentTypes = new ApartmentTypeEntity();
+        $apartmentTypes = $apartmentTypes->getApartmentTypes();
 
         $countryModel = new CountryModel();
         $countries = $countryModel->findAll();
@@ -124,7 +122,7 @@ class ListingsController extends BaseController
                 'currencies' => $currencies,
                 'apartmentGender' => $apartmentGender,
                 'propertyStatus' => $propertyStatus,
-                'propertyType' => $propertyType,
+                'apartmentTypes' => $apartmentTypes,
             ]) .
             view('template/footer');
     }
@@ -259,7 +257,7 @@ class ListingsController extends BaseController
             //if the error is foreign key constraint
             if ($e->getCode() === 1452) {
                 $this->db->transRollback();
-                return redirect()->back()->withInput()->with('errors', 'Invalid data provided');
+                return redirect()->back()->withInput()->with('errors', 'Invalid data provided, please check the data and try again');
             }
 
             $this->db->transRollback();
@@ -299,8 +297,8 @@ class ListingsController extends BaseController
             $propertyStatus = new PropertyStatusEntity();
             $propertyStatus = $propertyStatus->getPropertyStatuses();
 
-            $propertyType = new PropertyTypeEntity();
-            $propertyType = $propertyType->getPropertyTypes();
+            $apartmentTypes = new ApartmentTypeEntity();
+            $apartmentTypes = $apartmentTypes->getApartmentTypes();
 
             $countryModel = new CountryModel();
             $countries = $countryModel->findAll();
@@ -321,7 +319,6 @@ class ListingsController extends BaseController
         regions.region_name as region_name,
         subregions.subregion_name as subregion_name,
         cities.city_name as city_name,
-        property_type.property_type_name as property_type_name,
         property_status.property_status_name as property_status_name,
         properties.created_at as property_created_at,
         properties.updated_at as property_updated_at,
@@ -335,7 +332,6 @@ class ListingsController extends BaseController
                 ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
                 ->join('regions', 'regions.region_id = subregions.region_id', 'left')
                 ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
-                ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
                 ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
 
                 ->where('property_id', $property_id)
@@ -364,8 +360,9 @@ class ListingsController extends BaseController
                 $apartmentDetailModel = new ApartmentDetailsModel();
                 $apartmentPartitionsModel = new ApartmentPartitionsModel();
                 $apartmentSpecsModel = new ApartmentSpecificationsModel();
-                $apartment = $apartmentDetailModel->select('apartment_details.*, apartment_gender.*')
+                $apartment = $apartmentDetailModel->select('apartment_details.*, apartment_gender.*, apartment_type.apartment_type_name as ad_type_name')
                     ->join('apartment_gender', 'apartment_gender.apartment_gender_id = apartment_details.ad_gender_id', 'left')
+                    ->join('apartment_type', 'apartment_type.apartment_type_id = apartment_details.ad_type_id', 'left')
                     ->where('property_id', $property_id)->first();
                 $apartmentPartitions = $apartmentPartitionsModel->where('apartment_id', $property->apartment_id)->first();
                 $apartmentSpecs = $apartmentSpecsModel->where('apartment_id', $property->apartment_id)->first();
@@ -393,7 +390,7 @@ class ListingsController extends BaseController
                     'currencies' => $currencies,
                     'apartmentGender' => $apartmentGender,
                     'propertyStatus' => $propertyStatus,
-                    'propertyType' => $propertyType,
+                    'apartmentTypes' => $apartmentTypes,
                     'property' => $property,
                     'landDetails' => $landDetails,
                     'apartmentDetails' => $apartmentDetails,
@@ -402,7 +399,7 @@ class ListingsController extends BaseController
                 ]) .
                 view('template/footer');
         } catch (\Exception $e) {
-            return redirect()->to('listings')->with('errors', 'An error occurred while editing the property');
+            return redirect()->to('listings')->with('errors', 'An error occurred while accessing the property');
         }
     }
 
@@ -527,7 +524,7 @@ class ListingsController extends BaseController
             //if the error is foreign key constraint
             if ($e->getCode() === 1452) {
                 $this->db->transRollback();
-                return redirect()->back()->withInput()->with('errors', 'Invalid data provided');
+                return redirect()->back()->withInput()->with('errors', 'Invalid data provided, please check the data and try again');
             }
 
             $this->db->transRollback();
@@ -553,7 +550,6 @@ class ListingsController extends BaseController
         CONCAT(FORMAT(properties.property_price, 0), " ", currencies.currency_symbol) as property_budget,
         employees.employee_name as employee_name,
         CONCAT(countries_loc.country_name, ", ", regions.region_name, ", ", subregions.subregion_name, ", ", cities.city_name, ", ", properties.property_location) as property_detailed_location,
-        property_type.property_type_name as property_type_name,
         property_status.property_status_name as property_status_name,
         properties.created_at as property_created_at,
         properties.updated_at as property_updated_at,
@@ -567,9 +563,7 @@ class ListingsController extends BaseController
             ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
             ->join('regions', 'regions.region_id = subregions.region_id', 'left')
             ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
-            ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
             ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
-
             ->where('property_id', $property_id)
             ->groupBy('properties.property_id')
             ->first();
@@ -590,10 +584,11 @@ class ListingsController extends BaseController
             $landDetails = $landDetailModel->where('property_id', $property_id)->first();
         } else if (!empty($property->apartment_id)) {
             $apartmentDetails = $apartmentDetailModel->select('apartment_details.*, apartment_partitions.*, 
-            apartment_specifications.*, apartment_gender.*')
+            apartment_specifications.*, apartment_gender.*, apartment_type.*')
                 ->join('apartment_partitions', 'apartment_partitions.apartment_id = apartment_details.apartment_id')
                 ->join('apartment_specifications', 'apartment_specifications.apartment_id = apartment_details.apartment_id')
                 ->join('apartment_gender', 'apartment_gender.apartment_gender_id = apartment_details.ad_gender_id')
+                ->join('apartment_type', 'apartment_type.apartment_type_id = apartment_details.ad_type_id')
                 ->where('property_id', $property_id)->first();
         } else {
             return redirect()->to('listings')->with('errors', 'Page not found');
@@ -639,7 +634,7 @@ class ListingsController extends BaseController
             'employee_name' => 'Employee',
             'city_name' => 'City',
             'property_land_or_apartment' => 'Land/Apartment',
-            'property_type_name' => 'Type',
+            'apartment_type_name' => 'Type',
             'property_status_name' => 'Status',
             'property_budget' => 'Price',
             'property_dimension' => 'Size',
@@ -678,7 +673,7 @@ class ListingsController extends BaseController
         $searchParam = esc($this->request->getVar('searchParam'));
 
         $propertyStatus = esc($this->request->getVar('propertyStatus'));
-        $propertyType = esc($this->request->getVar('propertyType'));
+        $apartmentTypes = esc($this->request->getVar('apartmentType'));
         $createdAt = esc($this->request->getVar('createdAt'));
         $updatedAt = esc($this->request->getVar('updatedAt'));
 
@@ -698,7 +693,6 @@ class ListingsController extends BaseController
                 `employees`.`employee_name` as `employee_name`,
                 `cities`.`city_name` as `city_name`,
                 CONCAT(FORMAT(`properties`.`property_price`, 0), " ", `currencies`.`currency_symbol`) as `property_budget`,
-                `property_type`.`property_type_name` as `property_type_name`,
                 `property_status`.`property_status_name` as `property_status_name`,
                 CONCAT(FORMAT(`properties`.`property_size`, 0), " m²") as `property_dimension`,
                 properties.land_id as property_land_or_apartment,
@@ -711,7 +705,6 @@ class ListingsController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
             ->join('cities', 'cities.city_id = properties.city_id', 'left')
-            ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
             ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
             ->groupBy('properties.property_id');
 
@@ -758,8 +751,8 @@ class ListingsController extends BaseController
             $property->where('property_status_name', $propertyStatus);
         }
 
-        if (!empty($propertyType)) {
-            $property->where('property_type_name', $propertyType);
+        if (!empty($apartmentTypes)) {
+            $property->where('apartment_type_name', $apartmentTypes);
         }
 
         if (!empty($createdAt)) {

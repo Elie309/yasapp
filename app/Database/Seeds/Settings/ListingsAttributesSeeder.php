@@ -51,32 +51,32 @@ class ListingsAttributesSeeder extends Seeder
            
         ];
 
-        $property_types = [
-            ['property_type_name' => 'Luxury'],
-            ['property_type_name' => 'Bad'],
-            ['property_type_name' => 'High-end'],
-            ['property_type_name' => 'Mid-range'],
-            ['property_type_name' => 'Low-end'],
-            ['property_type_name' => 'Affordable'],
-            ['property_type_name' => 'Cheap'],
-            ['property_type_name' => 'Expensive'],
-            ['property_type_name' => 'Economic'],
-            ['property_type_name' => 'Budget'],
-            ['property_type_name' => 'Premium'],
-            ['property_type_name' => 'Standard'],
-            ['property_type_name' => 'Deluxe'],
-            ['property_type_name' => 'Executive'],
-            ['property_type_name' => 'Elegant'],
-            ['property_type_name' => 'Stylish'],
-            ['property_type_name' => 'Modern'],
-            ['property_type_name' => 'Contemporary'],
-            ['property_type_name' => 'Traditional'],
+        $apartment_types = [
+            ['apartment_type_name' => 'Luxury'],
+            ['apartment_type_name' => 'Bad'],
+            ['apartment_type_name' => 'High-end'],
+            ['apartment_type_name' => 'Mid-range'],
+            ['apartment_type_name' => 'Low-end'],
+            ['apartment_type_name' => 'Affordable'],
+            ['apartment_type_name' => 'Cheap'],
+            ['apartment_type_name' => 'Expensive'],
+            ['apartment_type_name' => 'Economic'],
+            ['apartment_type_name' => 'Budget'],
+            ['apartment_type_name' => 'Premium'],
+            ['apartment_type_name' => 'Standard'],
+            ['apartment_type_name' => 'Deluxe'],
+            ['apartment_type_name' => 'Executive'],
+            ['apartment_type_name' => 'Elegant'],
+            ['apartment_type_name' => 'Stylish'],
+            ['apartment_type_name' => 'Modern'],
+            ['apartment_type_name' => 'Contemporary'],
+            ['apartment_type_name' => 'Traditional'],
                         
         ];
 
         $this->db->table('apartment_gender')->insertBatch($apartmentsGender);
         $this->db->table('property_status')->insertBatch($property_status);
-        $this->db->table('property_type')->insertBatch($property_types);
+        $this->db->table('apartment_type')->insertBatch($apartment_types);
 
 
     }

@@ -87,10 +87,6 @@
                 <td><?= esc($property->property_detailed_location) ?></td>
             </tr>
             <tr>
-                <th>Type</th>
-                <td><?= esc($property->property_type_name) ?></td>
-            </tr>
-            <tr>
                 <th>Status</th>
                 <td><?= esc($property->property_status_name) ?>
                 </td>
@@ -167,7 +163,14 @@
             <div class="break-page"></div>
             <h2 class="secondary-title">Apartment Details</h2>
             <table>
-
+                <tr>
+                    <th>Gender</th>
+                    <td><?= esc($apartmentDetails->apartment_gender_name) ?></td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td><?= esc($apartmentDetails->apartment_type_name) ?></td>
+                </tr>
 
                 <tr>
                     <th>Terrace</th>
@@ -184,10 +187,6 @@
                 <tr>
                     <th>Roof Area</th>
                     <td><?= esc($apartmentDetails->ad_roof_area) ?> m²</td>
-                </tr>
-                <tr>
-                    <th>Gender</th>
-                    <td><?= esc($apartmentDetails->apartment_gender_name) ?></td>
                 </tr>
                 <tr>
                     <th>Furnished</th>
@@ -216,10 +215,6 @@
                 <tr>
                     <th>View</th>
                     <td><?= esc($apartmentDetails->ad_view) ?></td>
-                </tr>
-                <tr>
-                    <th>Type</th>
-                    <td><?= esc($apartmentDetails->ad_type) ?></td>
                 </tr>
                 <tr>
                     <th>Extra Features</th>

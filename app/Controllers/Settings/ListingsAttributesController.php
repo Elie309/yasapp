@@ -3,9 +3,9 @@
 namespace App\Controllers\Settings;
 
 use App\Controllers\BaseController;
-use App\Models\Listings\Attributes\ApartmentGenderModel;
-use App\Models\Listings\Attributes\PropertyStatusModel;
-use App\Models\Listings\Attributes\PropertyTypeModel;
+use App\Entities\Listings\Attributes\ApartmentGenderEntity;
+use App\Entities\Listings\Attributes\ApartmentTypeEntity;
+use App\Entities\Listings\Attributes\PropertyStatusEntity;
 
 class ListingsAttributesController extends BaseController
 {
@@ -20,18 +20,18 @@ class ListingsAttributesController extends BaseController
         return redirect()->to('settings/listings-attributes/property-status');
     }
 
-    public function PropertyType()
+    public function apartmentType()
     {
         if (!in_array($this->session->get('role'), ['admin', 'manager'])) {
             return redirect()->to('settings')->with('errors', 'You are not authorized to view this page');
         }
 
-        $propertyTypeModel = new PropertyTypeModel();
-        $propertyType = $propertyTypeModel->findAll();
+        $apartmentType = new ApartmentTypeEntity();
+        $apartmentType = $apartmentType->getApartmentTypes();
 
         return view('template/header') . view('settings/listings-attributes', [
-            'id' => 'propertyType',
-            'propertyType' => $propertyType,
+            'id' => 'apartmentType',
+            'apartmentType' => $apartmentType,
         ]) . view('template/footer');
     }
 
@@ -41,8 +41,8 @@ class ListingsAttributesController extends BaseController
             return redirect()->to('settings')->with('errors', 'You are not authorized to view this page');
         }
 
-        $propertyStatusModel = new PropertyStatusModel();
-        $propertyStatus = $propertyStatusModel->findAll();
+        $propertyStatus = new PropertyStatusEntity();
+        $propertyStatus = $propertyStatus->getPropertyStatuses();
 
         return view('template/header') . view('settings/listings-attributes', [
             'id' => 'propertyStatus',
@@ -56,8 +56,8 @@ class ListingsAttributesController extends BaseController
             return redirect()->to('settings')->with('errors', 'You are not authorized to view this page');
         }
 
-        $apartmentGenderModel = new ApartmentGenderModel();
-        $apartmentGender = $apartmentGenderModel->findAll();
+        $apartmentGender = new ApartmentGenderEntity();
+        $apartmentGender = $apartmentGender->getApartmentGenders();
 
         return view('template/header') . view('settings/listings-attributes', [
             'id' => 'apartmentGender',

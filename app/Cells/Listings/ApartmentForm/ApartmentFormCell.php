@@ -7,5 +7,6 @@ use CodeIgniter\View\Cells\Cell;
 class ApartmentFormCell extends Cell
 {
     public $apartmentGender;
+    public $apartmentTypes;
     public $tilesOptions;
 }

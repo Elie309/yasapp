@@ -20,6 +20,7 @@ class ApartmentDetailsModel extends Model
         'ad_roof',
         'ad_roof_area',
         'ad_gender_id',
+        'ad_type_id',
         'ad_furnished',
         'ad_furnished_on_provisions',
         'ad_elevator',
@@ -27,7 +28,6 @@ class ApartmentDetailsModel extends Model
         'ad_floor_level',
         'ad_apartments_per_floor',
         'ad_view',
-        'ad_type',
         'ad_extra_features'
     ];
 
@@ -40,6 +40,7 @@ class ApartmentDetailsModel extends Model
         'ad_terrace_area' => 'integer',
         'ad_roof_area' => 'integer',
         'ad_gender_id' => 'integer',
+        'ad_type_id' => 'integer',
         'ad_floor_level' => 'integer',
         'ad_apartments_per_floor' => 'integer'
     ];
@@ -61,6 +62,7 @@ class ApartmentDetailsModel extends Model
         'ad_roof' => 'permit_empty|boolean',
         'ad_roof_area' => 'permit_empty|integer',
         'ad_gender_id' => 'required|integer',
+        'ad_type_id' => 'required|integer',
         'ad_furnished' => 'permit_empty|boolean',
         'ad_furnished_on_provisions' => 'permit_empty|boolean',
         'ad_elevator' => 'permit_empty|boolean',
@@ -68,7 +70,6 @@ class ApartmentDetailsModel extends Model
         'ad_floor_level' => 'permit_empty|integer',
         'ad_apartments_per_floor' => 'permit_empty|integer',
         'ad_view' => 'string|max_length[255]',
-        'ad_type' => 'in_list[luxury, high-end, standard, bad]',
         'ad_extra_features' => 'string'
     ];
     protected $validationMessages   = [
@@ -93,6 +94,10 @@ class ApartmentDetailsModel extends Model
             'required' => 'Apartment Gender ID is required',
             'integer'  => 'Apartment Gender ID must be an integer'
         ],
+        'ad_type_id' => [
+            'integer' => 'Apartment Type ID must be an integer',
+            'required' => 'Apartment Type ID is required'
+        ],
         'ad_furnished' => [
             'boolean' => 'Furnished must be a boolean'
         ],
@@ -115,9 +120,6 @@ class ApartmentDetailsModel extends Model
         'ad_view' => [
             'string' => 'View must be a string',
             'max_length' => 'View must not exceed 255 characters'
-        ],
-        'ad_type' => [
-            'in_list' => 'Type must be one of: luxury, high-end, standard, bad'
         ],
         'ad_extra_features' => [
             'string' => 'Extra Features must be a string'

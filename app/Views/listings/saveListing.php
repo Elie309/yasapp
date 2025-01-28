@@ -142,6 +142,7 @@
 
                     <?= view_cell('App\Cells\Listings\ApartmentForm\ApartmentFormCell', [
                         'apartmentGender' => $apartmentGender,
+                        'apartmentTypes' => $apartmentTypes,
                         'tilesOptions' => $tilesOptions
                         ]) ?>
 
@@ -150,20 +151,6 @@
                 <!-- Property Details -->
                 <div>
                     <h3 class="secondary-title">Property Details</h3>
-
-                    <div class="my-4">
-                        <label class="main-label" for="property_type_name">Property Type</label>
-                        <div class="flex flex-col w-full">
-                            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                                'placeholder' => 'Search Property Type',
-                                'data' => $propertyType,
-                                'selectedId' => "property_type_id",
-                                'selectedName' => 'property_type_name'
-                            ]) ?>
-                        </div>
-
-                    </div>
-
 
                     <div class="my-4">
                         <label class="main-label" for="property_status_name">Property Status</label>
@@ -447,10 +434,7 @@
             document.getElementById('property_payment_plan').value = data.property_payment_plan;
         }
 
-        if (data.property_type_id) {
-            document.getElementById('result_id_property_type_name').value = data.property_type_id;
-            document.getElementById('search_property_type_name').value = data.info_property_type_name ?? data.property_type_name;
-        }
+
 
         if (data.property_status_id) {
             document.getElementById('result_id_property_status_name').value = data.property_status_id;
@@ -490,6 +474,11 @@
                 document.getElementById("result_id_apartment_gender_name").value = data.ad_gender_id;
                 document.getElementById("search_apartment_gender_name").value = data.info_apartment_gender_name ?? data.apartment_gender_name;
             }
+
+            if (data.ad_type_id) {
+            document.getElementById('result_id_ad_type_name').value = data.ad_type_id;
+            document.getElementById('search_ad_type_name').value = data.info_ad_type_name ?? data.ad_type_name;
+        }
 
             if (data.ad_terrace) {
                 document.getElementById("ad_terrace").checked = data.ad_terrace;
@@ -534,10 +523,6 @@
 
             if (data.ad_view) {
                 document.getElementById("ad_view").value = data.ad_view;
-            }
-
-            if (data.ad_type) {
-                document.getElementById("ad_type").value = data.ad_type;
             }
 
             if (data.ad_extra_features) {

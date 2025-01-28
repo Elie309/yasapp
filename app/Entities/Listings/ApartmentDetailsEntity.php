@@ -11,6 +11,7 @@ class ApartmentDetailsEntity extends Entity
         'apartment_id' => 'int',
         'property_id' => 'int',
         'ad_gender_id' => 'int',
+        'ad_type_id' => 'int',
         'ad_status_age' => 'string',
         'ad_apartments_per_floor' => 'int',
         'ad_terrace_area' => 'int',
