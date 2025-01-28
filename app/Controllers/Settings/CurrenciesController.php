@@ -90,7 +90,7 @@ class CurrenciesController extends BaseController
             };
 
         } catch (DatabaseException $e) {
-            return redirect()->back()->with('errors', ['Payment plan cannot be deleted']);
+            return redirect()->back()->with('errors', ['Currency cannot be deleted']);
         }
     }
 }

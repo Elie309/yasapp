@@ -32,7 +32,6 @@ class ApartmentSpecificationsModel extends Model
         'spec_solar_heater',
         'spec_intercom',
         'spec_garage',
-        'spec_extra_features'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -63,7 +62,7 @@ class ApartmentSpecificationsModel extends Model
         'spec_double_wall' => 'permit_empty|boolean',
         'spec_double_glazing' => 'permit_empty|boolean',
         'spec_shutters_electrical' => 'permit_empty|boolean',
-        'spec_tiles' => 'in_list[european,marble,granite,other]',
+        'spec_tiles' => 'permit_empty|string|max_length[255]',
         'spec_oak_doors' => 'permit_empty|boolean',
         'spec_chimney' => 'permit_empty|boolean',
         'spec_indirect_light' => 'permit_empty|boolean',
@@ -74,7 +73,6 @@ class ApartmentSpecificationsModel extends Model
         'spec_solar_heater' => 'permit_empty|boolean',
         'spec_intercom' => 'permit_empty|boolean',
         'spec_garage' => 'permit_empty|boolean',
-        'spec_extra_features' => 'permit_empty|string'
     ];
     protected $validationMessages   = [
         'spec_id' => [],
@@ -104,7 +102,8 @@ class ApartmentSpecificationsModel extends Model
             'boolean' => 'Shutters electrical must be a boolean value'
         ],
         'spec_tiles' => [
-            'in_list' => 'Tiles must be one of: european, marble, granite, other'
+            'string' => 'Tiles must be a string',
+            'max_length' => 'Tiles must not exceed 255 characters'
         ],
         'spec_oak_doors' => [
             'boolean' => 'Oak doors must be a boolean value'
@@ -135,9 +134,6 @@ class ApartmentSpecificationsModel extends Model
         ],
         'spec_garage' => [
             'boolean' => 'Garage must be a boolean value'
-        ],
-        'spec_extra_features' => [
-            'string' => 'Extra features must be a string'
         ]
     ];
     protected $skipValidation       = false;

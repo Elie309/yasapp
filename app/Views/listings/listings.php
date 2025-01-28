@@ -89,9 +89,14 @@
 
         <?php
 
+        $adminHeaders = [];
+                            
+        if (isset($agents) && !empty($agents)){
+            $adminHeaders['employee_name'] = 'Agent';
+        }
         $tableHeaders = [
             'client_name' => 'Vendor',
-            'employee_name' => 'Employee',
+            'phone_number' => 'Phone',
             'city_name' => 'City',
             'property_land_or_apartment' => 'Land/Apartment',
             'property_type_name' => 'Type',
@@ -100,8 +105,9 @@
             'property_dimension' => 'Size',
             'property_created_at' => 'Created At',
             'property_updated_at' => 'Updated At',
-
         ];
+
+        $tableHeaders = array_merge($adminHeaders, $tableHeaders);
 
         //TODO: Change this to a less manual way
         for ($i = 0; $i < count($properties); $i++) {
@@ -135,7 +141,6 @@
                 'searchParam' => [
                     'client_name' => 'Vendor',
                     'city_name' => 'City',
-                    'plan_name' => 'Payment Plan',
                     'property_price' => 'Budget',
                 ],
 

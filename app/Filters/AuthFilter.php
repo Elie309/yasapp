@@ -45,10 +45,6 @@ class AuthFilter implements FilterInterface
                 return redirect("Settings\LocationController::index")->with("errors", ["Unauthorized access"]);
             }
 
-            if(str_contains($currentUri, "payment-plans") && !in_array($role, ["admin"])){
-                return redirect("Settings\SettingsController::index")->with("errors", ["Unauthorized access"]);
-            }
-
             if(str_contains($currentUri, "currencies") && !in_array($role, ["admin"])){
                 return redirect("Settings\SettingsController::index")->with("errors", ["Unauthorized access"]);
             }

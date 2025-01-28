@@ -56,7 +56,7 @@
             </tr>
             <tr>
                 <th>Payment Plan:</th>
-                <td><?= $request->payment_plan_name ?></td>
+                <td><?= $request->request_payment_plan ?></td>
             </tr>
             <tr>
                 <th>City:</th>

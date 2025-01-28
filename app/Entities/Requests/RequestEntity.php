@@ -14,7 +14,6 @@ class RequestEntity extends Entity
         'request_id' => 'integer',
         'client_id' => 'integer',
         'city_id' => 'integer',
-        'payment_plan_id' => 'integer',
         'currency_id' => 'integer',
         'employee_id' => 'integer',
         'agent_id' => 'integer',
@@ -33,10 +32,6 @@ class RequestEntity extends Entity
             $errors[] = 'City name invalid';
         }
 
-        if (empty($this->payment_plan_id) || !is_int($this->payment_plan_id) || $this->payment_plan_id < 1) {
-            $errors[] = 'Payment plan is invalid';
-
-        }
 
         if (empty($this->currency_id) || !is_int($this->currency_id) || $this->currency_id < 1) {
             $errors[] = 'Currency is invalid';

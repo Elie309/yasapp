@@ -77,15 +77,10 @@
                 <div>
 
                     <h3 class="secondary-title">Payment Plan</h3>
-
-                    <div class="flex flex-col w-full mb-4">
-                        <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                            'placeholder' => 'Search Payment Plan',
-                            'data' => $paymentPlans,
-                            'selectedId' => "payment_plan_id",
-                            'selectedName' => 'payment_plan'
-                        ]) ?>
-                    </div>
+                    
+                    <textarea class="main-input" placeholder="Request Payment plan options"
+                                name="request_payment_plan" id="request_payment_plan"></textarea>
+                    
                 </div>
 
                 <hr class="mx-2" />
@@ -245,6 +240,20 @@
 
         $data = $session->get('_ci_old_input');
 
+
+        if ($method === 'UPDATE_REQUEST' && !$data) {
+            echo "var data = " . json_encode($request) . ";";
+            echo "var city = " . json_encode($city) . ";";
+            echo 'var phones = ' . json_encode($phones) . ';';
+            echo "data.phone_number = [];";
+            echo "data.country_id = [];";
+            echo "phones.forEach((phone, index) => {";
+            echo "data.phone_number.push(phone.phone_number);";
+            echo "data.country_id.push(phone.country_id);";
+            echo "});";
+            echo "populateFields(data);";
+        }
+
         if (isset($data)) {
             echo "var data = " . json_encode($data['post']) . ";";
 
@@ -261,18 +270,7 @@
             echo "populateFields(data);";
         }
 
-        if ($method === 'UPDATE_REQUEST') {
-            echo "var data = " . json_encode($request) . ";";
-            echo "var city = " . json_encode($city) . ";";
-            echo 'var phones = ' . json_encode($phones) . ';';
-            echo "data.phone_number = [];";
-            echo "data.country_id = [];";
-            echo "phones.forEach((phone, index) => {";
-            echo "data.phone_number.push(phone.phone_number);";
-            echo "data.country_id.push(phone.country_id);";
-            echo "});";
-            echo "populateFields(data);";
-        }
+      
 
         ?>
 
@@ -352,17 +350,9 @@
 
 
 
-            if (data.payment_plan_id && data.payment_plan_name) {
-                document.getElementById('result_id_payment_plan').value = data.payment_plan_id;
-                document.getElementById('search_payment_plan').value = data.payment_plan_name;
-
+            if (data.request_payment_plan) {
+                document.getElementById('request_payment_plan').value = data.request_payment_plan;
             }
-
-            if (data.info_payment_plan && data.payment_plan_id) {
-                document.getElementById('result_id_payment_plan').value = data.payment_plan_id;
-                document.getElementById('search_payment_plan').value = data.info_payment_plan;
-            }
-
             if (data.currency_id) {
                 document.getElementById('currency_id').value = data.currency_id;
             }

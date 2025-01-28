@@ -21,7 +21,7 @@
             class="main-checkbox" />
 
         <label class="secondary-label md:col-span-2" for="ad_terrace_area">Terrace Area (sqm):</label>
-        <input type="number" id="ad_terrace_area"
+        <input type="text" id="ad_terrace_area"
             name="ad_terrace_area" disabled
             class="main-input disabled:main-input-readonly md:col-span-4" />
 
@@ -29,7 +29,7 @@
         <input type="checkbox" id="ad_roof" name="ad_roof" class="main-checkbox">
 
         <label class=" secondary-label md:col-span-2" for="ad_roof_area">Roof Area (sqm):</label>
-        <input type="number" id="ad_roof_area"
+        <input type="text" id="ad_roof_area"
             name="ad_roof_area" disabled
             class="main-input disabled:main-input-readonly md:col-span-4">
 
@@ -53,10 +53,10 @@
         <input type="text" id="ad_status_age" name="ad_status_age" class="main-input col-span-10">
 
         <label class="secondary-label col-span-2 " for="ad_floor_level">Floor Level:</label>
-        <input type="number" id="ad_floor_level" name="ad_floor_level" class="main-input col-span-10">
+        <input type="text" id="ad_floor_level" name="ad_floor_level" class="main-input col-span-10">
 
         <label class="secondary-label col-span-2 " for="ad_apartments_per_floor">Apartments Per Floor:</label>
-        <input type="number" id="ad_apartments_per_floor" name="ad_apartments_per_floor" class="main-input col-span-10">
+        <input type="text" id="ad_apartments_per_floor" name="ad_apartments_per_floor" class="main-input col-span-10">
 
         <label class="secondary-label col-span-2 " for="ad_view">View:</label>
         <input type="text" id="ad_view" name="ad_view" class="main-input col-span-10">
@@ -72,13 +72,6 @@
     </div>
 
 
-    <div class="mb-8">
-        <label class="secondary-label" for="ad_architecture_and_interior">Architecture and Interior:</label>
-        <textarea id="ad_architecture_and_interior" name="ad_architecture_and_interior" class="main-input"></textarea>
-
-        <label class="secondary-label" for="ad_extra_features">Extra Features:</label>
-        <textarea id="ad_extra_features" name="ad_extra_features" class="main-input"></textarea>
-    </div>
     <hr>
 
     <h2 class="secondary-title">Apartment Partitions</h2>
@@ -120,8 +113,6 @@
         <label class="secondary-label col-span-2" for="partition_storage_room">Storage Room:</label>
         <input type="text" id="partition_storage_room" name="partition_storage_room" class="main-input col-span-10">
 
-        <label class="secondary-label col-span-2" for="partition_extra_features">Extra Features:</label>
-        <textarea id="partition_extra_features" name="partition_extra_features" class="main-input col-span-10"></textarea>
 
     </div>
 
@@ -190,14 +181,13 @@
 
     <label class="secondary-label" for="spec_tiles">Tiles:</label>
     <select id="spec_tiles" name="spec_tiles" class="main-input">
-        <option value="european">European</option>
-        <option value="marble">Marble</option>
-        <option value="granite">Granite</option>
-        <option value="other">Other</option>
+       <?php foreach ($tilesOptions as $tile): ?>
+            <option value="<?= $tile ?>"><?= ucfirst($tile) ?></option>
+        <?php endforeach; ?>
     </select>
-    <label class="secondary-label" for="spec_extra_features">Extra Features:</label>
-    <textarea id="spec_extra_features" name="spec_extra_features" class="main-input"></textarea>
 
+    <label class="secondary-label" for="ad_extra_features">Extra Features:</label>
+    <textarea id="ad_extra_features" name="ad_extra_features" class="main-input min-h-20"></textarea>
 
 </div>
 

@@ -27,7 +27,6 @@ class ApartmentPartitionsModel extends Model
         'partition_balconies',
         'partition_parking',
         'partition_storage_room',
-        'partition_extra_features'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -62,7 +61,6 @@ class ApartmentPartitionsModel extends Model
         'partition_balconies' => 'permit_empty|string|max_length[255]',
         'partition_parking' => 'permit_empty|string|max_length[255]',
         'partition_storage_room' => 'permit_empty|string|max_length[255]',
-        'partition_extra_features' => 'permit_empty|string'
     ];
     protected $validationMessages   = [
         'partition_id' => [],
@@ -118,9 +116,6 @@ class ApartmentPartitionsModel extends Model
         'partition_storage_room' => [
             'string' => 'Storage Room must be a string',
             'max_length' => 'Storage Room must not exceed 255 characters'
-        ],
-        'partition_extra_features' => [
-            'string' => 'Extra Features must be a string'
         ]
     ];
     protected $skipValidation       = false;

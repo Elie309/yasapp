@@ -4,7 +4,6 @@ namespace App\Controllers\Listings;
 
 use App\Controllers\BaseController;
 use App\Entities\Clients\ClientEntity;
-use App\Entities\Clients\PhoneEntity;
 use App\Entities\Listings\ApartmentDetailsEntity;
 use App\Entities\Listings\ApartmentPartitionsEntity;
 use App\Entities\Listings\ApartmentSpecificationsEntity;
@@ -13,7 +12,6 @@ use App\Entities\Listings\Attributes\PropertyStatusEntity;
 use App\Entities\Listings\Attributes\PropertyTypeEntity;
 use App\Entities\Listings\LandDetailsEntity;
 use App\Entities\Listings\PropertyEntity;
-use App\Entities\Settings\PaymentPlansEntity;
 use App\Models\Clients\ClientModel;
 use App\Models\Clients\PhoneModel;
 use App\Models\Listings\ApartmentDetailsModel;
@@ -27,6 +25,7 @@ use App\Models\Listings\PropertyModel;
 use App\Models\Settings\CurrenciesModel;
 use App\Models\Settings\EmployeeModel;
 use App\Models\Settings\Location\CountryModel;
+use App\Services\ClientServices;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class ListingsController extends BaseController
@@ -39,6 +38,21 @@ class ListingsController extends BaseController
         'mixed',
         'other'
     ];
+
+    private $tilesOptions = [
+        'european',
+        'marble',
+        'granite',
+        'parquet',
+        'other'
+    ];
+
+    protected ClientServices $clientServices;
+
+    public function __construct()
+    {
+        $this->clientServices = new ClientServices();
+    }
 
     public function index()
     {
@@ -97,8 +111,6 @@ class ListingsController extends BaseController
         $countryModel = new CountryModel();
         $countries = $countryModel->findAll();
 
-        $paymentPlans = new PaymentPlansEntity();
-        $paymentPlans = $paymentPlans->getPaymentPlans();
 
         $currencyModel = new CurrenciesModel();
         $currencies = $currencyModel->findAll();
@@ -108,11 +120,11 @@ class ListingsController extends BaseController
                 'method' => 'NEW_REQUEST',
                 'countries' => $countries,
                 'landTypes' => $this->landTypes,
+                'tilesOptions' => $this->tilesOptions,
                 'currencies' => $currencies,
                 'apartmentGender' => $apartmentGender,
                 'propertyStatus' => $propertyStatus,
                 'propertyType' => $propertyType,
-                'paymentPlans' => $paymentPlans
             ]) .
             view('template/footer');
     }
@@ -254,7 +266,6 @@ class ListingsController extends BaseController
             return redirect()->back()->withInput()->with('errors', $e->getMessage());
         } catch (\Exception $e) {
             $this->db->transRollback();
-            log_message('error', $e->getMessage());
             return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
         }
     }
@@ -294,8 +305,6 @@ class ListingsController extends BaseController
             $countryModel = new CountryModel();
             $countries = $countryModel->findAll();
 
-            $paymentPlans = new PaymentPlansEntity();
-            $paymentPlans = $paymentPlans->getPaymentPlans();
 
             $currencyModel = new CurrenciesModel();
             $currencies = $currencyModel->findAll();
@@ -312,7 +321,6 @@ class ListingsController extends BaseController
         regions.region_name as region_name,
         subregions.subregion_name as subregion_name,
         cities.city_name as city_name,
-        payment_plans.payment_plan_name as payment_plan_name,
         property_type.property_type_name as property_type_name,
         property_status.property_status_name as property_status_name,
         properties.created_at as property_created_at,
@@ -323,7 +331,6 @@ class ListingsController extends BaseController
                 ->join('countries', 'countries.country_id = phones.country_id', 'left')
                 ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
                 ->join('cities', 'cities.city_id = properties.city_id', 'left')
-                ->join('payment_plans', 'payment_plans.payment_plan_id = properties.payment_plan_id', 'left')
                 ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
                 ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
                 ->join('regions', 'regions.region_id = subregions.region_id', 'left')
@@ -344,30 +351,36 @@ class ListingsController extends BaseController
                 ->where('client_id', $property->client_id)
                 ->findAll();
 
-            
+
 
 
             if ($property->land_id !== null) {
                 $landDetailsModel = new LandDetailsModel();
                 $landDetails = $landDetailsModel->where('property_id', $property_id)->first();
+            }
 
-            } 
-            
             if ($property->apartment_id !== null) {
-                
+
                 $apartmentDetailModel = new ApartmentDetailsModel();
-                $apartmentDetails = $apartmentDetailModel->select('apartment_details.*, apartment_partitions.*, 
-                apartment_specifications.*, apartment_gender.*')
-                    ->join('apartment_partitions', 'apartment_partitions.apartment_id = apartment_details.apartment_id')
-                    ->join('apartment_specifications', 'apartment_specifications.apartment_id = apartment_details.apartment_id')
-                    ->join('apartment_gender', 'apartment_gender.apartment_gender_id = apartment_details.ad_gender_id')
+                $apartmentPartitionsModel = new ApartmentPartitionsModel();
+                $apartmentSpecsModel = new ApartmentSpecificationsModel();
+                $apartment = $apartmentDetailModel->select('apartment_details.*, apartment_gender.*')
+                    ->join('apartment_gender', 'apartment_gender.apartment_gender_id = apartment_details.ad_gender_id', 'left')
                     ->where('property_id', $property_id)->first();
+                $apartmentPartitions = $apartmentPartitionsModel->where('apartment_id', $property->apartment_id)->first();
+                $apartmentSpecs = $apartmentSpecsModel->where('apartment_id', $property->apartment_id)->first();
+                unset($apartment->property_id);
+                unset($apartment->apartment_id);
+                unset($apartmentPartitions->apartment_id);
+                unset($apartmentSpecs->apartment_id);
 
-            } 
+                if ($apartment)
+                    $apartmentDetails = array_merge($apartment->toArray(), $apartmentPartitions->toArray(), $apartmentSpecs->toArray());
+            }
 
-            
+
             $property->property_land_or_apartment = $property->land_id !==  0 ? 'land' : 'apartment';
-                
+
 
 
 
@@ -376,11 +389,11 @@ class ListingsController extends BaseController
                     'method' => 'UPDATE_REQUEST',
                     'countries' => $countries,
                     'landTypes' => $this->landTypes,
+                    'tilesOptions' => $this->tilesOptions,
                     'currencies' => $currencies,
                     'apartmentGender' => $apartmentGender,
                     'propertyStatus' => $propertyStatus,
                     'propertyType' => $propertyType,
-                    'paymentPlans' => $paymentPlans,
                     'property' => $property,
                     'landDetails' => $landDetails,
                     'apartmentDetails' => $apartmentDetails,
@@ -389,136 +402,119 @@ class ListingsController extends BaseController
                 ]) .
                 view('template/footer');
         } catch (\Exception $e) {
-            log_message('error', $e->getMessage());
             return redirect()->to('listings')->with('errors', 'An error occurred while editing the property');
         }
     }
 
-    public function updateListing($id)
+    public function updateListing($property_id)
     {
-        $propertyModel = new PropertyModel();
-        $propertyEntity = new PropertyEntity();
-
-        $employee_id = $this->session->get('id');
-
-
-        $clientModel = new ClientModel();
-        $clientEntity = new ClientEntity();
-        $phoneModel = new PhoneModel();
-
-        $client = $clientEntity->fill($this->request->getPost());
-        $phones = $this->request->getPost('phone_number');
-        $countries = $this->request->getPost('country_id');
         try {
+
+            $propertyModel = new PropertyModel();
+            $propertyEntity = new PropertyEntity();
+
+            $employee_id = $this->session->get('id');
+
+            $clientEntity = new ClientEntity();
+            $clientEntity->fill($this->request->getPost());
+            $phones = esc($this->request->getPost('phone_number'));
+            $countries = esc($this->request->getPost('country_id'));
+            $phone_ids = esc($this->request->getPost('phone_id'));
+
+            $phones_details = [];
+            foreach ($phones as $key => $phone) {
+                $phones_details[] = [
+                    'phone_id' => $phone_ids[$key],
+                    'phone_number' => $phone,
+                    'country_id' => $countries[$key]
+                ];
+            }
+
+            $propertyEntity->fill($this->request->getPost());
+            $propertyEntity->employee_id = $employee_id;
+            unset($propertyEntity->land_id);
+            unset($propertyEntity->apartment_id);
+            unset($propertyEntity->client_id);
+
+
             $this->db->transException(true)->transStart();
-            //Save the client
-            $OldClient = $clientModel->find($client->client_id);
 
-            if(!$OldClient){
-                return redirect()->back()->withInput()->with('errors', 'Client not found');
-            }else{
-                //Update the client
-                if (!$clientModel->update($client->client_id, $client)) {
-                    return redirect()->back()->withInput()->with('errors', $clientModel->errors());
-                }
+            if ($property_id === null) {
+                return redirect()->back()->withInput()->with('errors', 'Invalid property id');
             }
 
-            if (!$client) {
-                $clientEntity->employee_id = $employee_id;
-                if (!$clientModel->save($clientEntity)) {
-                    return redirect()->back()->withInput()->with('errors', $clientModel->errors());
-                }
+            $OldProperty = $propertyModel->find($property_id);
 
-                $client_id = $clientModel->getInsertID();
-
-                if (
-                    is_array($phones) && is_array($countries) && count($phones) == count($countries)
-                    && count($phones) > 0 && count($countries) > 0
-                ) {
-                    foreach ($phones as $key => $phone) {
-                        $phoneData = [
-                            'client_id' => $client_id,
-                            'country_id' => $countries[$key],
-                            'phone_number' => $phone
-                        ];
-
-                        if (!$phoneModel->save($phoneData)) {
-                            return redirect()->back()->withInput()->with('errors', $phoneModel->errors());
-                        }
-                    }
-                }
-            } else {
-                $clientEntity->client_id = $client->client_id;
-                $client_id = $client->client_id;
+            if (!$OldProperty) {
+                return redirect()->back()->withInput()->with('errors', 'Property not found');
             }
 
+            if ($OldProperty->employee_id !== $employee_id ) {
+                return redirect()->to('listings')->with('errors', 'You are not authorized to edit this page');
+            }
+
+
+            $client_id = $this->clientServices->updateClient($clientEntity, $phones_details);
+
+            $propertyEntity->client_id = $client_id;
             $land_apartment = esc($this->request->getPost('property_land_or_apartment'));
 
-            $property = $propertyEntity->fill($this->request->getPost());
-            $property->employee_id = $employee_id;
-            $property->client_id = $client_id;
 
-            if (!$propertyModel->save($property)) {
+            if (!$propertyModel->update($property_id, $propertyEntity)) {
                 $this->db->transRollback();
                 return redirect()->back()->withInput()->with('errors', $propertyModel->errors());
             }
 
-            $property_id = $propertyModel->getInsertID();
+            //Get the property updated
+            $property = $propertyModel->find($property_id);
 
             if ($land_apartment === 'land') {
 
                 $landDetailsModel = new LandDetailsModel();
                 $landDetailsEntity = new LandDetailsEntity();
 
-                $landDetails = $landDetailsEntity->fill($this->request->getPost());
-                $landDetails->property_id = $property_id;
+                $landDetailsEntity->fill($this->request->getPost());
+                unset($landDetails->land_id);
+                unset($landDetails->property_id);
 
-                if (!$landDetailsModel->save($landDetails)) {
+                if (!$landDetailsModel->update($property->land_id, $landDetailsEntity)) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $landDetailsModel->errors());
                 }
-
-                $land_id = $landDetailsModel->getInsertID();
-                if (!$propertyModel->update($property_id, ['land_id' => $land_id])) {
-                    $this->db->transRollback();
-                    return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
-                }
             } else if ($land_apartment === 'apartment') {
+
                 $apartmentDetailsModel = new ApartmentDetailsModel();
                 $apartmentDetailsEntity = new ApartmentDetailsEntity();
-                $apartmentDetails = $apartmentDetailsEntity->fill($this->request->getPost());
-                $apartmentDetails->property_id = $property_id;
+                $apartmentDetailsEntity->fill($this->request->getPost());
+                unset($apartmentDetailsEntity->apartment_id);
 
                 $apartmentPartitionsModel = new ApartmentPartitionsModel();
                 $apartmentPartitionsEntity = new ApartmentPartitionsEntity();
-                $apartmentPartitions = $apartmentPartitionsEntity->fill($this->request->getPost());
+                $apartmentPartitionsEntity->fill($this->request->getPost());
 
                 $apartmentSpecsModel = new ApartmentSpecificationsModel();
                 $apartmentSpecsEntity = new ApartmentSpecificationsEntity();
-                $apartmentSpecs = $apartmentSpecsEntity->fill($this->request->getPost());
+                $apartmentSpecsEntity->fill($this->request->getPost());
 
-                if (!$apartmentDetailsModel->save($apartmentDetails)) {
+                $apartment_id = $property->apartment_id;
+
+
+                if (!$apartmentDetailsModel->update($apartment_id, $apartmentDetailsEntity)) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $apartmentDetailsModel->errors());
                 }
 
-                $apartment_id = $apartmentDetailsModel->getInsertID();
-                $apartmentPartitions->apartment_id = $apartment_id;
-                $apartmentSpecs->apartment_id = $apartment_id;
+                $apartmentPartitionsId = $apartmentPartitionsModel->where('apartment_id', $apartment_id)->first()->partition_id;
+                $apartmentSpecsId = $apartmentSpecsModel->where('apartment_id', $apartment_id)->first()->spec_id;
 
-                if (!$apartmentPartitionsModel->save($apartmentPartitions)) {
+                if (!$apartmentPartitionsModel->update($apartmentPartitionsId, $apartmentPartitionsEntity)) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $apartmentPartitionsModel->errors());
                 }
 
-                if (!$apartmentSpecsModel->save($apartmentSpecs)) {
+                if (!$apartmentSpecsModel->update($apartmentSpecsId, $apartmentSpecsEntity)) {
                     $this->db->transRollback();
                     return redirect()->back()->withInput()->with('errors', $apartmentSpecsModel->errors());
-                }
-
-                if (!$propertyModel->update($property_id, ['apartment_id' => $apartment_id])) {
-                    $this->db->transRollback();
-                    return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
                 }
             } else {
                 $this->db->transRollback();
@@ -526,7 +522,7 @@ class ListingsController extends BaseController
             }
 
             $this->db->transCommit();
-            return redirect()->to('listings')->with('success', 'Property added successfully');
+            return redirect()->to('listings')->with('success', 'Property updated successfully');
         } catch (DatabaseException $e) {
             //if the error is foreign key constraint
             if ($e->getCode() === 1452) {
@@ -538,8 +534,7 @@ class ListingsController extends BaseController
             return redirect()->back()->withInput()->with('errors', $e->getMessage());
         } catch (\Exception $e) {
             $this->db->transRollback();
-            log_message('error', $e->getMessage());
-            return redirect()->back()->withInput()->with('errors', 'An error occurred while adding the property');
+            return redirect()->back()->withInput()->with('errors', $e->getMessage());
         }
     }
 
@@ -558,7 +553,6 @@ class ListingsController extends BaseController
         CONCAT(FORMAT(properties.property_price, 0), " ", currencies.currency_symbol) as property_budget,
         employees.employee_name as employee_name,
         CONCAT(countries_loc.country_name, ", ", regions.region_name, ", ", subregions.subregion_name, ", ", cities.city_name, ", ", properties.property_location) as property_detailed_location,
-        payment_plans.payment_plan_name as payment_plan_name,
         property_type.property_type_name as property_type_name,
         property_status.property_status_name as property_status_name,
         properties.created_at as property_created_at,
@@ -569,7 +563,6 @@ class ListingsController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
             ->join('cities', 'cities.city_id = properties.city_id', 'left')
-            ->join('payment_plans', 'payment_plans.payment_plan_id = properties.payment_plan_id', 'left')
             ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
             ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
             ->join('regions', 'regions.region_id = subregions.region_id', 'left')
@@ -661,7 +654,7 @@ class ListingsController extends BaseController
     public function delete($id)
     {
         $propertyModel = new PropertyModel();
-        
+
         $property = $propertyModel->find($id);
 
         if (!$property) {
@@ -681,10 +674,27 @@ class ListingsController extends BaseController
 
     public function _applyFilters($propertyModel, $employee_id)
     {
+        $search = esc($this->request->getVar('search'));
+        $searchParam = esc($this->request->getVar('searchParam'));
+
+        $propertyStatus = esc($this->request->getVar('propertyStatus'));
+        $propertyType = esc($this->request->getVar('propertyType'));
+        $createdAt = esc($this->request->getVar('createdAt'));
+        $updatedAt = esc($this->request->getVar('updatedAt'));
+
+        $landOrApartment = esc($this->request->getVar('landOrApartment'));
+
+        $param = [
+            'client_name' => 'clients.client_firstname',
+            'city_name' => 'cities.city_name',
+            'property_price' => 'properties.property_price',
+        ];
+
 
         $role = $this->session->get('role');
         $property = $propertyModel->select('`properties`.*,
                 CONCAT(`clients`.`client_firstname`, " ", `clients`.`client_lastname`) as `client_name`,
+                GROUP_CONCAT(CONCAT(countries.country_code, " ", phones.phone_number) SEPARATOR ", ") as phone_number,
                 `employees`.`employee_name` as `employee_name`,
                 `cities`.`city_name` as `city_name`,
                 CONCAT(FORMAT(`properties`.`property_price`, 0), " ", `currencies`.`currency_symbol`) as `property_budget`,
@@ -697,10 +707,13 @@ class ListingsController extends BaseController
                 ')
             ->join('clients', 'clients.client_id = properties.client_id', 'left')
             ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
+            ->join('phones', 'phones.client_id = clients.client_id', 'left')
+            ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
             ->join('cities', 'cities.city_id = properties.city_id', 'left')
             ->join('property_type', 'property_type.property_type_id = properties.property_type_id', 'left')
-            ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left');
+            ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
+            ->groupBy('properties.property_id');
 
 
 
@@ -713,28 +726,48 @@ class ListingsController extends BaseController
         }
 
 
-        if (!empty($this->request->getVar('landOrApartment'))) {
-            if ($this->request->getVar('landOrApartment') === 'land') {
+        if (!empty($landOrApartment)) {
+            if ($landOrApartment === 'land') {
                 $property->where('properties.land_id IS NOT NULL');
-            } else if ($this->request->getVar('landOrApartment') === 'apartment') {
+            } else if ($landOrApartment === 'apartment') {
                 $property->where('properties.apartment_id IS NOT NULL');
             }
         }
 
-        if (!empty($this->request->getVar('propertyStatus'))) {
-            $property->where('property_status_name', $this->request->getVar('propertyStatus'));
+        if (!empty($search) && !empty($searchParam) && isset($param[$searchParam])) {
+
+            if ($searchParam === 'client_name') {
+                $property = $property->like('clients.client_firstname', $search)
+                    ->orLike('clients.client_lastname', $search)
+                    ->orLike('CONCAT_WS(" ", clients.client_firstname, clients.client_lastname)', $search);
+            } else if ($searchParam === 'property_price') {
+                $search = str_replace(',', '', $search);
+                $search = str_replace(' ', '', $search);
+
+                if (!is_numeric($search)) {
+                    return redirect()->back()->withInput()->with('errors', ['Invalid search value']);
+                }
+
+                $property = $property->where('requests.request_budget >=', $search);
+            } else {
+                $property->like($param[$searchParam], $search);
+            }
         }
 
-        if (!empty($this->request->getVar('propertyType'))) {
-            $property->where('property_type_name', $this->request->getVar('propertyType'));
+        if (!empty($propertyStatus)) {
+            $property->where('property_status_name', $propertyStatus);
         }
 
-        if (!empty($this->request->getVar('createdAt'))) {
-            $property->where('properties.created_at >=', $this->request->getVar('createdAt'));
+        if (!empty($propertyType)) {
+            $property->where('property_type_name', $propertyType);
         }
 
-        if (!empty($this->request->getVar('updatedAt'))) {
-            $property->where('properties.updated_at >=', $this->request->getVar('updatedAt'));
+        if (!empty($createdAt)) {
+            $property->where('properties.created_at >=', $createdAt);
+        }
+
+        if (!empty($updatedAt)) {
+            $property->where('properties.updated_at >=', $updatedAt);
         }
 
         $property->orderBy('properties.created_at', 'DESC');

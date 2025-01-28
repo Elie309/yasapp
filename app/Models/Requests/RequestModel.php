@@ -15,10 +15,10 @@ class RequestModel extends Model
     protected $allowedFields = [
         'client_id',
         'city_id',
-        'payment_plan_id',
         'currency_id',
         'employee_id',
         'agent_id',
+        'request_payment_plan',
         'request_location',
         'request_budget',
         'request_state',
@@ -33,7 +33,6 @@ class RequestModel extends Model
         'request_id' => 'integer',
         'client_id' => 'integer',
         'city_id' => 'integer',
-        'payment_plan_id' => 'integer',
         'currency_id' => 'integer',
         'employee_id' => 'integer',
         'agent_id' => 'integer',
@@ -55,10 +54,10 @@ class RequestModel extends Model
     protected $validationRules      = [
         'client_id' => 'required|integer',
         'city_id' => 'integer',
-        'payment_plan_id' => 'required|integer',
         'currency_id' => 'required|integer',
         'employee_id' => 'required|integer',
         'agent_id' => 'permit_empty|integer',
+        'request_payment_plan' => 'permit_empty|string',
         'request_location' => 'permit_empty|string',
         'request_budget' => 'required|integer',
         'request_state' => 'required|in_list[pending,finishing,rejected,cancelled,on-hold,on-track]',
@@ -76,10 +75,6 @@ class RequestModel extends Model
         'city_id' => [
             'integer' => 'City is invalid'
         ],
-        'payment_plan_id' => [
-            'required' => 'Payment Plan is required',
-            'integer' => 'Payment Plan is invalid'
-        ],
         'currency_id' => [
             'required' => 'Currency is required',
             'integer' => 'Currency is invalid'
@@ -90,6 +85,9 @@ class RequestModel extends Model
         ],
         'agent_id' => [
             'integer' => 'Agent is invalid'
+        ],
+        'request_payment_plan' => [
+            'string' => 'Request Payment Plan must be a string'
         ],
         'request_location' => [
             'string' => 'Request Location must be a string'

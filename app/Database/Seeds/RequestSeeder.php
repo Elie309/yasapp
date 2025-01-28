@@ -14,7 +14,6 @@ class RequestSeeder extends Seeder
         // Get existing IDs from related tables
         $clientIds = $this->db->table('clients')->select('client_id')->get()->getResultArray();
         $cityIds = $this->db->table('cities')->select('city_id')->get()->getResultArray();
-        $paymentPlanIds = $this->db->table('payment_plans')->select('payment_plan_id')->get()->getResultArray();
         $currencyIds = $this->db->table('currencies')->select('currency_id')->get()->getResultArray();
         $employeeIds = $this->db->table('employees')->select('employee_id')->get()->getResultArray();
 
@@ -24,10 +23,10 @@ class RequestSeeder extends Seeder
             $requests[] = [
                 'client_id' => $faker->randomElement($clientIds)['client_id'],
                 'city_id' => $faker->randomElement($cityIds)['city_id'],
-                'payment_plan_id' => $faker->randomElement($paymentPlanIds)['payment_plan_id'],
                 'currency_id' => $faker->randomElement($currencyIds)['currency_id'],
                 'employee_id' => $faker->randomElement($employeeIds)['employee_id'],
                 'agent_id' => $faker->randomElement($employeeIds)['employee_id'],
+                'request_payment_plan' => $faker->randomElement(['cash to be paid directly', 'installments for over 30 years', 'loan from bank', 'other']),
                 'request_location' => $faker->address(),
                 'request_budget' => $faker->randomFloat(2, 10000, 1000000),
                 'request_state' => $faker->randomElement(['pending', 'finishing', 'rejected', 'cancelled', 'on-hold', 'on-track']),

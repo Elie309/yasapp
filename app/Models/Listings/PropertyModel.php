@@ -15,18 +15,20 @@ class PropertyModel extends Model
     protected $allowedFields    =[
         'client_id',
         'employee_id',
-        'payment_plan_id',
         'city_id',
         'currency_id',
 
         'land_id',
         'apartment_id',
 
+        'property_rent',
+        'property_sale',
         'property_location',
         'property_referral_name',
         'property_referral_phone',
         'property_type_id',
         'property_catch_phrase',
+        'property_payment_plan',
         'property_size',
         'property_price',
         'property_status_id',
@@ -43,7 +45,6 @@ class PropertyModel extends Model
         'property_id' => 'integer',
         'client_id' => 'integer',
         'employee_id' => 'integer',
-        'payment_plan_id' => 'integer',
         'city_id' => 'integer',
         'land_id' => '?integer',
         'apartment_id' => '?integer',
@@ -71,19 +72,21 @@ class PropertyModel extends Model
         'property_id' => 'permit_empty',
         'client_id' => 'required|integer',
         'employee_id' => 'required|integer',
-        'payment_plan_id' => 'required|integer',
         'city_id' => 'required|integer',
         'property_type_id' => 'required|integer',
         'property_status_id' => 'required|integer',
         'currency_id' => 'required|integer',
         'land_id' => 'integer|permit_empty',
         'apartment_id' => 'integer|permit_empty',
+        'property_rent' => 'permit_empty|boolean',
+        'property_sale' => 'permit_empty|boolean',
         'property_location' => 'string|max_length[255]',
         'property_referral_name' => 'string|max_length[255]',
         'property_referral_phone' => 'string|max_length[20]',
-        'property_catch_phrase' => 'string',
-        'property_size' => 'integer',
-        'property_price' => 'integer',
+        'property_catch_phrase' => 'permit_empty|string',
+        'property_payment_plan' => 'permit_empty|string',
+        'property_size' => 'decimal',
+        'property_price' => 'decimal',
     ];
     protected $validationMessages   = [
         'property_id' => [],
@@ -94,10 +97,6 @@ class PropertyModel extends Model
         'employee_id' => [
             'required' => 'Employee ID is required',
             'integer' => 'Employee ID must be an integer'
-        ],
-        'payment_plan_id' => [
-            'required' => 'Payment Plan ID is required',
-            'integer' => 'Payment Plan ID must be an integer'
         ],
         'city_id' => [
             'required' => 'City ID is required',
@@ -121,6 +120,12 @@ class PropertyModel extends Model
             'required' => 'Currency ID is required',
             'integer' => 'Currency ID must be an integer'
         ],
+        'property_rent' => [
+            'boolean' => 'Property Rent must be a boolean'
+        ],
+        'property_sale' => [
+            'boolean' => 'Property Sale must be a boolean'
+        ],
         'property_location' => [
             'string' => 'Property Location must be a string',
             'max_length' => 'Property Location must not exceed 255 characters'
@@ -136,11 +141,14 @@ class PropertyModel extends Model
         'property_catch_phrase' => [
             'string' => 'Property Catch Phrase must be a string'
         ],
+        'property_payment_plan' => [
+            'string' => 'Property Payment Plan must be a string'
+        ],
         'property_size' => [
-            'integer' => 'Property Size must be a integer'
+            'decimal' => 'Property Size must be a decimal or float',
         ],
         'property_price' => [
-            'integer' => 'Property Price must be a integer'
+            'decimal' => 'Property Price must be a decimal or float',
         ],
 
     ];

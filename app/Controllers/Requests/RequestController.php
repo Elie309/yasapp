@@ -6,7 +6,6 @@ use App\Controllers\BaseController;
 use App\Entities\Clients\ClientEntity;
 use App\Entities\Clients\PhoneEntity;
 use App\Entities\Requests\RequestEntity;
-use App\Entities\Settings\PaymentPlansEntity;
 use App\Models\Clients\ClientModel;
 use App\Models\Clients\PhoneModel;
 use App\Models\Requests\RequestModel;
@@ -67,8 +66,6 @@ class RequestController extends BaseController
         $currencyModel = new CurrenciesModel();
         $currencies = $currencyModel->findAll();
 
-        $paymentPlanModel = new PaymentPlansEntity();
-        $paymentPlans = $paymentPlanModel->getPaymentPlans();
 
         $countries = new CountryModel();
         $countries = $countries->findAll();
@@ -86,7 +83,6 @@ class RequestController extends BaseController
                 'countries' => $countries,
                 'agents' => $agents,
                 'currencies' => $currencies,
-                'paymentPlans' => $paymentPlans,
                 'requestStates' => $this->requestStates,
                 'requestPriorities' => $this->requestPriorities,
             ])
@@ -191,7 +187,6 @@ class RequestController extends BaseController
             'requests.*,  clients.*,
             CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
             cities.city_name,
-            payment_plans.payment_plan_name,
             CONCAT(requests.request_budget, " ", currencies.currency_symbol) AS request_fees,
             employees.employee_id,
             employees.employee_name,
@@ -206,7 +201,6 @@ class RequestController extends BaseController
             ->join('phones', 'clients.client_id = phones.client_id', 'left')
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('cities', 'requests.city_id = cities.city_id', 'left')
-            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
             ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
@@ -251,7 +245,6 @@ class RequestController extends BaseController
 
         $request = $requestModel->select(
             'requests.*, clients.*,
-            payment_plans.payment_plan_name,
             currencies.currency_symbol,
             employees.employee_id,
             employees.employee_name,
@@ -260,7 +253,6 @@ class RequestController extends BaseController
             '
         )
             ->join('clients', 'requests.client_id = clients.client_id', 'left')
-            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
             ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
@@ -296,9 +288,6 @@ class RequestController extends BaseController
         $currencyModel = new CurrenciesModel();
         $currencies = $currencyModel->findAll();
 
-        $paymentPlanModel = new PaymentPlansEntity();
-        $paymentPlans = $paymentPlanModel->getPaymentPlans();
-
         $countries = new CountryModel();
         $countries = $countries->findAll();
 
@@ -318,7 +307,6 @@ class RequestController extends BaseController
                 'phones' => $phones,
                 'request' => $request,
                 'currencies' => $currencies,
-                'paymentPlans' => $paymentPlans,
                 'requestStates' => $this->requestStates,
                 'requestPriorities' => $this->requestPriorities,
             ])
@@ -470,7 +458,6 @@ class RequestController extends BaseController
             'request_id' => 'Request ID',
             'client_name' => 'Client Name',
             'city_name' => 'City Name',
-            'payment_plan_name' => 'Payment Plan Name',
             'request_budget' => 'Request Budget',
             'request_state' => 'Request State',
             'request_priority' => 'Request Priority',
@@ -504,7 +491,6 @@ class RequestController extends BaseController
         $param = [
             'city_name' => 'cities.city_name',
             'client_name' => 'clients.client_firstname',
-            'payment_plan_name' => 'payment_plans.payment_plan_name',
             'employee_name' => 'employees.employee_name',
             'request_budget' => 'requests.request_budget',
             'comments' => 'requests.comments'
@@ -515,7 +501,6 @@ class RequestController extends BaseController
                     CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name,
                     GROUP_CONCAT(CONCAT(countries.country_code, " " ,phones.phone_number) SEPARATOR ", ") as phone_numbers,
                     cities.city_name, 
-                    payment_plans.payment_plan_name, 
                     CONCAT(FORMAT(requests.request_budget, 0), " ", currencies.currency_symbol) AS request_fees,
                     employees.employee_name,
                     agents.employee_name as agent_name,
@@ -526,7 +511,6 @@ class RequestController extends BaseController
             ->join('phones', 'phones.client_id = clients.client_id', 'left')
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('cities', 'requests.city_id = cities.city_id', 'left')
-            ->join('payment_plans', 'requests.payment_plan_id = payment_plans.payment_plan_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
             ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left');
@@ -545,7 +529,8 @@ class RequestController extends BaseController
 
             if ($searchParam === 'client_name') {
                 $request = $request->like('clients.client_firstname', $search)
-                    ->orLike('clients.client_lastname', $search);
+                    ->orLike('clients.client_lastname', $search)
+                    ->orLike('CONCAT_WS(" ", clients.client_firstname, clients.client_lastname)', $search);
             } else if ($searchParam === 'request_budget') {
                 $search = str_replace(',', '', $search);
                 $search = str_replace(' ', '', $search);

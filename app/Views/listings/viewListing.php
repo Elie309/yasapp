@@ -80,7 +80,7 @@
             </tr>
             <tr>
                 <th>Payment Plan</th>
-                <td><?= esc($property->payment_plan_name) ?></td>
+                <td><?= esc($property->property_payment_plan) ?></td>
             </tr>
             <tr>
                 <th>Location</th>
@@ -92,7 +92,17 @@
             </tr>
             <tr>
                 <th>Status</th>
-                <td><?= esc($property->property_status_name) ?></td>
+                <td><?= esc($property->property_status_name) ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Rent</th>
+                <td><?= $property->property_rent ? 'Yes' : 'No' ?></td>
+            </tr>
+            <tr>
+                <th>Sale</th>
+                <td><?= $property->property_sale ? 'Yes' : 'No' ?></td>
+            </tr>
             <tr>
                 <th>Price</th>
                 <td><?= esc($property->property_budget) ?></td>
@@ -212,10 +222,6 @@
                     <td><?= esc($apartmentDetails->ad_type) ?></td>
                 </tr>
                 <tr>
-                    <th>Architecture and Interior</th>
-                    <td><?= esc($apartmentDetails->ad_architecture_and_interior) ?></td>
-                </tr>
-                <tr>
                     <th>Extra Features</th>
                     <td><?= esc($apartmentDetails->ad_extra_features) ?></td>
                 </tr>
@@ -279,10 +285,6 @@
                     <th>Storage Room</th>
                     <td><?= esc($apartmentDetails->partition_storage_room) ?></td>
                 </tr>
-                <tr>
-                    <th>Extra Features</th>
-                    <td><?= esc($apartmentDetails->partition_extra_features) ?></td>
-                </tr>
             </table>
 
             <br class="no-print">
@@ -322,10 +324,7 @@
                     <th>Shutters Electrical</th>
                     <td><?= $apartmentDetails->spec_shutters_electrical ? 'Yes' : 'No' ?></td>
                 </tr>
-                <tr>
-                    <th>Tiles</th>
-                    <td><?= esc($apartmentDetails->spec_tiles) ?></td>
-                </tr>
+
                 <tr>
                     <th>Oak Doors</th>
                     <td><?= $apartmentDetails->spec_oak_doors ? 'Yes' : 'No' ?></td>
@@ -367,8 +366,8 @@
                     <td><?= $apartmentDetails->spec_garage ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
-                    <th>Extra Features</th>
-                    <td><?= esc($apartmentDetails->spec_extra_features) ?></td>
+                    <th>Tiles</th>
+                    <td><?= esc(ucfirst($apartmentDetails->spec_tiles)) ?></td>
                 </tr>
             </table>
 
