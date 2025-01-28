@@ -85,10 +85,10 @@
     <script>
         function setFormDetails(){
             const data = JSON.parse(sessionStorage.getItem('tempTableData'));
-            document.getElementById('property_status_id_edit').value = data.property_status_id;
-            document.getElementById('property_status_name_edit').value = data.property_status_name;
-            document.getElementById('property_status_id_delete').value = data.property_status_id;
-            document.getElementById('property_status_name_delete').value = data.property_status_name;
+            document.getElementById('property_status_id_edit').value = data.id;
+            document.getElementById('property_status_name_edit').value = data.name;
+            document.getElementById('property_status_id_delete').value = data.id;
+            document.getElementById('property_status_name_delete').value = data.name;
         }
     </script>
 

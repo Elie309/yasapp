@@ -61,7 +61,7 @@
                 <a href="<?= $addButtonRedirectLink ?>" class="secondary-btn ml-2">
                     <?= $AddButtonName ?>
                 </a>
-            <?php elseif(isset($addButtonModelId) && isset($AddButtonName)) : ?>
+            <?php elseif (isset($addButtonModelId) && isset($AddButtonName)) : ?>
                 <button popovertarget="<?= $addButtonModelId ?>" id="addButtonPopover" class="secondary-btn ml-2">
                     <?= $AddButtonName ?>
                 </button>
@@ -157,16 +157,20 @@
                         echo "<tr class='clickable-row " . (isset($classOnClickRow) ? $classOnClickRow : ' ') . " ' ";
                         if (!isset($dataRowActive) || $dataRowActive) {
                             echo "data-row-data='" . htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8') . "' ";
-                        }else if(isset($redirectOnClickRow) && $redirectOnClickRow != ''){
+                        } else if (isset($redirectOnClickRow) && $redirectOnClickRow != '') {
                             echo "onclick='redirectToWithId(\"" . $redirectOnClickRow . "\", \"" . $data->$id_field . "\")'";
                         }
                         echo ">";
 
                         foreach ($tableHeaders as $key => $value) {
-                            $cellData = $data->$key;
-                            if (is_array($cellData)) {
-                                $cellData = implode('; ', $cellData);
-                            }
+                            $cellData = '';
+                            // Check if $data is an object and has the property $key
+                            if (is_object($data)) {
+                                $cellData = $data->$key;
+                            }else if (is_array($data) && isset($data[$key])) {
+                                $cellData = $data[$key];
+                            } 
+                            
                             echo "<td class='truncate overflow-hidden whitespace-nowrap text-ellipsis'>" . $cellData . "</td>";
                         }
 
@@ -451,7 +455,7 @@
 
 
     function redirectToWithId(base_link, id) {
-            window.location.href = base_link + '/' + id;
+        window.location.href = base_link + '/' + id;
     }
 
     function getCurrentURLParam() {

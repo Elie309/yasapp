@@ -58,14 +58,14 @@ $routes->post('settings/profile', 'Settings\ProfileController::updateProfile');
 //Settings Listings
 
 $routes->get('settings/listings-attributes', 'Settings\ListingsAttributesController::index');
-$routes->get('settings/listings-attributes/property-types', 'Settings\ListingsAttributesController::propertyType');
+$routes->get('settings/listings-attributes/apartment-types', 'Settings\ListingsAttributesController::apartmentType');
 $routes->get('settings/listings-attributes/property-status', 'Settings\ListingsAttributesController::propertyStatus');
 $routes->get('settings/listings-attributes/apartment-gender', 'Settings\ListingsAttributesController::apartmentGender');
 
 
-$routes->post('settings/listings-attributes/add-property-types', 'Settings\ListingsAttributes\PropertyTypeController::save');
-$routes->post('settings/listings-attributes/edit-property-types', 'Settings\ListingsAttributes\PropertyTypeController::update/$1');
-$routes->post('settings/listings-attributes/delete-property-types', 'Settings\ListingsAttributes\PropertyTypeController::delete/$1');
+$routes->post('settings/listings-attributes/add-apartment-types', 'Settings\ListingsAttributes\ApartmentTypeController::save');
+$routes->post('settings/listings-attributes/edit-apartment-types', 'Settings\ListingsAttributes\ApartmentTypeController::update/$1');
+$routes->post('settings/listings-attributes/delete-apartment-types', 'Settings\ListingsAttributes\ApartmentTypeController::delete/$1');
 
 $routes->post('settings/listings-attributes/add-property-status', 'Settings\ListingsAttributes\PropertyStatusController::save');
 $routes->post('settings/listings-attributes/edit-property-status', 'Settings\ListingsAttributes\PropertyStatusController::update/$1');

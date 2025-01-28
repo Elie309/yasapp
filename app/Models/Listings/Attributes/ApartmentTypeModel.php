@@ -4,24 +4,24 @@ namespace App\Models\Listings\Attributes;
 
 use CodeIgniter\Model;
 
-class PropertyTypeModel extends Model
+class ApartmentTypeModel extends Model
 {
-    protected $table            = 'property_type';
-    protected $primaryKey       = 'property_type_id';
+    protected $table            = 'apartment_type';
+    protected $primaryKey       = 'apartment_type_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = \App\Entities\Listings\Attributes\PropertyTypeEntity::class;
+    protected $returnType       = \App\Entities\Listings\Attributes\ApartmentTypeEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'property_type_id',
-        'property_type_name'
+        'apartment_type_id',
+        'apartment_type_name'
     ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
     protected array $casts = [
-        'property_type_id' => 'integer',
+        'apartment_type_id' => 'integer',
     ];
     protected array $castHandlers = [];
 
@@ -34,18 +34,18 @@ class PropertyTypeModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'property_type_id'   => 'integer|permit_empty',
-        'property_type_name' => 'required|string|max_length[255]|is_unique[property_type.property_type_name]'
+        'apartment_type_id'   => 'integer|permit_empty',
+        'apartment_type_name' => 'required|string|max_length[255]|is_unique[apartment_type.apartment_type_name]'
     ];
     protected $validationMessages   = [
-        'property_type_id' => [
-            'integer'  => 'Property Type ID must be an integer'
+        'apartment_type_id' => [
+            'integer'  => 'Apartment Type ID must be an integer'
         ],
-        'property_type_name' => [
-            'required'    => 'Property Type Name is required',
-            'string'      => 'Property Type Name must be a string',
-            'max_length'  => 'Property Type Name must not exceed 255 characters',
-            'is_unique'   => 'Property Type Name already exists'
+        'apartment_type_name' => [
+            'required'    => 'Apartment Type Name is required',
+            'string'      => 'Apartment Type Name must be a string',
+            'max_length'  => 'Apartment Type Name must not exceed 255 characters',
+            'is_unique'   => 'Apartment Type Name already exists'
         ]
     ];
     protected $skipValidation       = false;

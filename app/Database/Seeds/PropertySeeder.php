@@ -14,7 +14,7 @@ class PropertySeeder extends Seeder
 
         //Get the client data
         $clientData = $this->db->table('clients')->get()->getResultArray();
-        $propertyTypeData = $this->db->table('property_type')->get()->getResultArray();
+        $apartmentTypeData = $this->db->table('apartment_type')->get()->getResultArray();
         $propertyStatusData = $this->db->table('property_status')->get()->getResultArray();
         $apartmentGenderData = $this->db->table('apartment_gender')->get()->getResultArray();
         $currencyData = $this->db->table('currencies')->get()->getResultArray();
@@ -27,7 +27,6 @@ class PropertySeeder extends Seeder
                 'client_id' => $client['client_id'], // Get random client ID
                 'employee_id' => $client['employee_id'], // Assuming employee ID is random
                 'city_id' => $faker->numberBetween(1, 1000), // Random city ID
-                'property_type_id' => $faker->randomElement($propertyTypeData)['property_type_id'], // Random property type
                 'property_status_id' => $faker->randomElement($propertyStatusData)['property_status_id'], // Random property status
                 'currency_id' => $faker->randomElement($currencyData)['currency_id'], // Random currency ID
                 'property_payment_plan' => $faker->randomElement(['cash to be paid directly', 'installments for over 30 years', 'loan from bank', 'other']),
@@ -72,6 +71,7 @@ class PropertySeeder extends Seeder
                     'ad_roof' => $faker->boolean(),
                     'ad_roof_area' => $faker->numberBetween(0, 200),
                     'ad_gender_id' => $faker->randomElement($apartmentGenderData)['apartment_gender_id'], // Random gender ID
+                    'ad_type_id' => $faker->randomElement($apartmentTypeData)['apartment_type_id'], // Random property type
                     'ad_furnished' => $faker->boolean(),
                     'ad_furnished_on_provisions' => $faker->boolean(),
                     'ad_elevator' => $faker->boolean(),
@@ -79,7 +79,6 @@ class PropertySeeder extends Seeder
                     'ad_floor_level' => $faker->numberBetween(1, 10),
                     'ad_apartments_per_floor' => $faker->numberBetween(1, 5),
                     'ad_view' => $faker->sentence(4),
-                    'ad_type' => $faker->randomElement(['luxury', 'high-end', 'standard', 'bad']),
                     'ad_extra_features' => $faker->sentence(10),
                 ];
 

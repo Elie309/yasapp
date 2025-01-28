@@ -130,12 +130,6 @@ CREATE TABLE property_status (
     property_status_name VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE property_type (
-    property_type_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    property_type_name VARCHAR(255) NOT NULL UNIQUE
-);
-
-
 CREATE TABLE properties (
     property_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
@@ -145,7 +139,7 @@ CREATE TABLE properties (
     currency_id INT UNSIGNED NOT NULL,
 
     city_id INT UNSIGNED NOT NULL,
-    property_type_id INT UNSIGNED NOT NULL,
+    
     property_status_id INT UNSIGNED NOT NULL,
 
     property_rent BOOLEAN DEFAULT FALSE,
@@ -175,7 +169,6 @@ CREATE TABLE properties (
     FOREIGN KEY (client_id) REFERENCES clients(client_id),
     FOREIGN KEY (city_id) REFERENCES cities(city_id),
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
-    FOREIGN KEY (property_type_id) REFERENCES property_type(property_type_id),
     FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id),
     FOREIGN KEY (currency_id) REFERENCES currencies(currency_id)
     
@@ -203,6 +196,10 @@ CREATE TABLE apartment_gender (
     apartment_gender_name VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE apartment_type (
+    apartment_type_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    apartment_type_name VARCHAR(255) NOT NULL UNIQUE
+);
 
 CREATE TABLE apartment_details (
 
@@ -210,13 +207,14 @@ CREATE TABLE apartment_details (
 
     property_id INT UNSIGNED NOT NULL UNIQUE,
 
+    ad_gender_id INT UNSIGNED NOT NULL,
+    ad_type_id INT UNSIGNED NOT NULL,
+
     ad_terrace BOOLEAN DEFAULT FALSE,
     ad_terrace_area INT DEFAULT 0,
     ad_roof BOOLEAN DEFAULT FALSE,
     ad_roof_area INT DEFAULT 0,
 
-    ad_gender_id INT UNSIGNED NOT NULL,
-    
     ad_furnished BOOLEAN DEFAULT FALSE,
     ad_furnished_on_provisions BOOLEAN DEFAULT FALSE,
     ad_elevator BOOLEAN DEFAULT FALSE,
@@ -225,11 +223,11 @@ CREATE TABLE apartment_details (
     ad_floor_level INT DEFAULT 0,
     ad_apartments_per_floor INT DEFAULT 1,
     ad_view VARCHAR(255),
-    ad_type ENUM('luxury', 'high-end', 'standard', 'bad') DEFAULT 'standard',
     ad_extra_features TEXT DEFAULT NULL,
 
     FOREIGN KEY (property_id) REFERENCES properties(property_id),
-    FOREIGN KEY (ad_gender_id) REFERENCES  apartment_gender(apartment_gender_id)
+    FOREIGN KEY (ad_gender_id) REFERENCES  apartment_gender(apartment_gender_id),
+    FOREIGN KEY (ad_type_id) REFERENCES apartment_type(apartment_type_id)
 );
 
 ALTER TABLE properties ADD FOREIGN KEY (land_id) REFERENCES land_details(land_id);
