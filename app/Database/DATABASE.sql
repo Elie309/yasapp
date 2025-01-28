@@ -269,7 +269,6 @@ CREATE TABLE apartment_specifications (
     spec_double_wall BOOLEAN DEFAULT FALSE,
     spec_double_glazing BOOLEAN DEFAULT FALSE,
     spec_shutters_electrical BOOLEAN DEFAULT FALSE,
-    spec_tiles ENUM('european', 'marble', 'granite', 'other') DEFAULT 'other',
     spec_oak_doors BOOLEAN DEFAULT FALSE,
     spec_chimney BOOLEAN DEFAULT FALSE,
     spec_indirect_light BOOLEAN DEFAULT FALSE,
@@ -280,7 +279,7 @@ CREATE TABLE apartment_specifications (
     spec_solar_heater BOOLEAN DEFAULT FALSE,
     spec_intercom BOOLEAN DEFAULT FALSE,
     spec_garage BOOLEAN DEFAULT FALSE,
-    
+    spec_tiles VARCHAR(255) DEFAULT '',
 
     FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
 );

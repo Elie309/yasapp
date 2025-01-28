@@ -324,10 +324,7 @@
                     <th>Shutters Electrical</th>
                     <td><?= $apartmentDetails->spec_shutters_electrical ? 'Yes' : 'No' ?></td>
                 </tr>
-                <tr>
-                    <th>Tiles</th>
-                    <td><?= esc($apartmentDetails->spec_tiles) ?></td>
-                </tr>
+
                 <tr>
                     <th>Oak Doors</th>
                     <td><?= $apartmentDetails->spec_oak_doors ? 'Yes' : 'No' ?></td>
@@ -367,6 +364,10 @@
                 <tr>
                     <th>Garage</th>
                     <td><?= $apartmentDetails->spec_garage ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Tiles</th>
+                    <td><?= esc(ucfirst($apartmentDetails->spec_tiles)) ?></td>
                 </tr>
             </table>
 

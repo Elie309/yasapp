@@ -39,6 +39,14 @@ class ListingsController extends BaseController
         'other'
     ];
 
+    private $tilesOptions = [
+        'european',
+        'marble',
+        'granite',
+        'parquet',
+        'other'
+    ];
+
     protected ClientServices $clientServices;
 
     public function __construct()
@@ -112,6 +120,7 @@ class ListingsController extends BaseController
                 'method' => 'NEW_REQUEST',
                 'countries' => $countries,
                 'landTypes' => $this->landTypes,
+                'tilesOptions' => $this->tilesOptions,
                 'currencies' => $currencies,
                 'apartmentGender' => $apartmentGender,
                 'propertyStatus' => $propertyStatus,
@@ -380,6 +389,7 @@ class ListingsController extends BaseController
                     'method' => 'UPDATE_REQUEST',
                     'countries' => $countries,
                     'landTypes' => $this->landTypes,
+                    'tilesOptions' => $this->tilesOptions,
                     'currencies' => $currencies,
                     'apartmentGender' => $apartmentGender,
                     'propertyStatus' => $propertyStatus,

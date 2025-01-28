@@ -181,10 +181,9 @@
 
     <label class="secondary-label" for="spec_tiles">Tiles:</label>
     <select id="spec_tiles" name="spec_tiles" class="main-input">
-        <option value="european">European</option>
-        <option value="marble">Marble</option>
-        <option value="granite">Granite</option>
-        <option value="other">Other</option>
+       <?php foreach ($tilesOptions as $tile): ?>
+            <option value="<?= $tile ?>"><?= ucfirst($tile) ?></option>
+        <?php endforeach; ?>
     </select>
 
     <label class="secondary-label" for="ad_extra_features">Extra Features:</label>

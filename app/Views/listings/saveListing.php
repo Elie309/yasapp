@@ -140,7 +140,10 @@
 
                 <div id="show-apartment" class="hidden">
 
-                    <?= view_cell('App\Cells\Listings\ApartmentForm\ApartmentFormCell', ['apartmentGender' => $apartmentGender]) ?>
+                    <?= view_cell('App\Cells\Listings\ApartmentForm\ApartmentFormCell', [
+                        'apartmentGender' => $apartmentGender,
+                        'tilesOptions' => $tilesOptions
+                        ]) ?>
 
                 </div>
 
