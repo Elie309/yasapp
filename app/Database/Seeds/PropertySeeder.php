@@ -80,7 +80,6 @@ class PropertySeeder extends Seeder
                     'ad_apartments_per_floor' => $faker->numberBetween(1, 5),
                     'ad_view' => $faker->sentence(4),
                     'ad_type' => $faker->randomElement(['luxury', 'high-end', 'standard', 'bad']),
-                    'ad_architecture_and_interior' => $faker->sentence(10),
                     'ad_extra_features' => $faker->sentence(10),
                 ];
 

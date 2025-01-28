@@ -222,10 +222,6 @@
                     <td><?= esc($apartmentDetails->ad_type) ?></td>
                 </tr>
                 <tr>
-                    <th>Architecture and Interior</th>
-                    <td><?= esc($apartmentDetails->ad_architecture_and_interior) ?></td>
-                </tr>
-                <tr>
                     <th>Extra Features</th>
                     <td><?= esc($apartmentDetails->ad_extra_features) ?></td>
                 </tr>

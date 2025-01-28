@@ -226,7 +226,6 @@ CREATE TABLE apartment_details (
     ad_apartments_per_floor INT DEFAULT 1,
     ad_view VARCHAR(255),
     ad_type ENUM('luxury', 'high-end', 'standard', 'bad') DEFAULT 'standard',
-    ad_architecture_and_interior TEXT,
     ad_extra_features TEXT DEFAULT NULL,
 
     FOREIGN KEY (property_id) REFERENCES properties(property_id),

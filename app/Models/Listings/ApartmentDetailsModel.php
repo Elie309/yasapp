@@ -28,7 +28,6 @@ class ApartmentDetailsModel extends Model
         'ad_apartments_per_floor',
         'ad_view',
         'ad_type',
-        'ad_architecture_and_interior',
         'ad_extra_features'
     ];
 
@@ -70,7 +69,6 @@ class ApartmentDetailsModel extends Model
         'ad_apartments_per_floor' => 'permit_empty|integer',
         'ad_view' => 'string|max_length[255]',
         'ad_type' => 'in_list[luxury, high-end, standard, bad]',
-        'ad_architecture_and_interior' => 'string',
         'ad_extra_features' => 'string'
     ];
     protected $validationMessages   = [
@@ -120,9 +118,6 @@ class ApartmentDetailsModel extends Model
         ],
         'ad_type' => [
             'in_list' => 'Type must be one of: luxury, high-end, standard, bad'
-        ],
-        'ad_architecture_and_interior' => [
-            'string' => 'Architecture and Interior must be a string'
         ],
         'ad_extra_features' => [
             'string' => 'Extra Features must be a string'

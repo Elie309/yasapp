@@ -72,11 +72,6 @@
     </div>
 
 
-    <div class="mb-8">
-        <label class="secondary-label" for="ad_architecture_and_interior">Architecture and Interior:</label>
-        <textarea id="ad_architecture_and_interior" name="ad_architecture_and_interior" class="main-input"></textarea>
-
-    </div>
     <hr>
 
     <h2 class="secondary-title">Apartment Partitions</h2>

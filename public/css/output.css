@@ -1154,6 +1154,10 @@ video {
   margin-left: 0.5rem;
 }
 
+.ml-4 {
+  margin-left: 1rem;
+}
+
 .ml-auto {
   margin-left: auto;
 }
@@ -1188,10 +1192,6 @@ video {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.ml-4 {
-  margin-left: 1rem;
 }
 
 .block {
@@ -1254,12 +1254,12 @@ video {
   height: 100%;
 }
 
-.h-10 {
-  height: 2.5rem;
-}
-
 .max-h-80 {
   max-height: 20rem;
+}
+
+.min-h-20 {
+  min-height: 5rem;
 }
 
 .min-h-fit {
@@ -1269,14 +1269,6 @@ video {
 
 .min-h-screen {
   min-height: 100vh;
-}
-
-.min-h-10 {
-  min-height: 2.5rem;
-}
-
-.min-h-20 {
-  min-height: 5rem;
 }
 
 .w-1\/2 {

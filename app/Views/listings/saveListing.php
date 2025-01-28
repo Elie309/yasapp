@@ -537,10 +537,6 @@
                 document.getElementById("ad_type").value = data.ad_type;
             }
 
-            if (data.ad_architecture_and_interior) {
-                document.getElementById("ad_architecture_and_interior").value = data.ad_architecture_and_interior;
-            }
-
             if (data.ad_extra_features) {
                 document.getElementById("ad_extra_features").value = data.ad_extra_features;
             }
