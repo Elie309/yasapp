@@ -20,8 +20,33 @@
                 <li><a href="/listings" class="h-full rounded font-bold  hover:text-red-800 outline-none ">Listings</a></li>
                 <li><a href="/requests" class="h-full  rounded font-bold text-white hover:text-red-800 outline-none ">Requests</a></li>
             </ul>
+
+            <div id="notifications" class="relative flex-grow-0">
+                <button class="block p-2 text-white font-bold 
+                         outline-none hover:bg-gray-600 rounded-full focus:outline-none relative">
+                    <span class="absolute scale-75 right-0 top-0 w-6 h-6 rounded-full bg-red-800 flex items-center justify-center">
+                        <span id="notification-icon" class="text-sm text-white">50</span>
+                    </span>
+                    <svg width="100%" height="100%" viewBox="0 0 24 24" fit=""
+                        preserveAspectRatio="xMidYMid meet"
+                        focusable="false" class="size-6 fill-white  rounded-full">
+                        <path d="M18 17v-6c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v6H4v2h16v-2h-2zm-2 0H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zm-4 5c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"></path>
+                    </svg>
+                </button>
+            </div>
             <div id="profile" class="relative flex-grow-0">
-                <button class="block p-4 rounded text-white font-bold hover:text-red-800 outline-none focus:outline-none" onclick="toggleDropdown()">Profile</button>
+                <button class="block p-2 rounded-full hover:bg-gray-600 text-white font-bold 
+                outline-none focus:outline-none" onclick="toggleDropdown()">
+                    <svg class="size-8 fill-white "
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="800px" height="800px" viewBox="0 0 45.532 45.532"
+                        xml:space="preserve">
+                        <g>
+                            <path d="M22.766,0.001C10.194,0.001,0,10.193,0,22.766s10.193,22.765,22.766,22.765c12.574,0,22.766-10.192,22.766-22.765S35.34,0.001,22.766,0.001z M22.766,6.808c4.16,0,7.531,3.372,7.531,7.53c0,4.159-3.371,7.53-7.531,7.53c-4.158,0-7.529-3.371-7.529-7.53C15.237,10.18,18.608,6.808,22.766,6.808z M22.761,39.579c-4.149,0-7.949-1.511-10.88-4.012c-0.714-0.609-1.126-1.502-1.126-2.439c0-4.217,3.413-7.592,7.631-7.592h8.762c4.219,0,7.619,3.375,7.619,7.592c0,0.938-0.41,1.829-1.125,2.438C30.712,38.068,26.911,39.579,22.761,39.579z" />
+                        </g>
+                    </svg>
+                </button>
+
                 <ul id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg">
                     <li><a href="/settings" class="block p-4 font-bold text-gray-900 outline-none rounded-t  hover:bg-gray-300 focus:outline-none">Settings</a></li>
                     <li><a href="/logout" class="block p-4 font-bold text-gray-900 outline-none rounded-b  hover:bg-gray-300 focus:outline-none">Logout</a></li>
