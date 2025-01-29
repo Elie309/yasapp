@@ -360,7 +360,6 @@
             phoneSection.innerHTML = '';
 
             phones.forEach((phone, index) => {
-                console.log(phone);
                 var newPhoneInput = document.createElement('div');
 
                 newPhoneInput.innerHTML = `
