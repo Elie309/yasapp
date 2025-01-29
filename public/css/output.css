@@ -1347,6 +1347,10 @@ video {
   max-width: 56rem;
 }
 
+.max-w-60 {
+  max-width: 15rem;
+}
+
 .max-w-6xl {
   max-width: 72rem;
 }
@@ -1438,6 +1442,10 @@ video {
   flex-wrap: wrap;
 }
 
+.place-items-center {
+  place-items: center;
+}
+
 .items-end {
   align-items: flex-end;
 }
@@ -1504,6 +1512,10 @@ video {
 
 .place-self-center {
   place-self: center;
+}
+
+.justify-self-start {
+  justify-self: start;
 }
 
 .overflow-auto {
@@ -2202,6 +2214,18 @@ video {
 
   .md\:flex-row {
     flex-direction: row;
+  }
+
+  .md\:space-x-4 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(1rem * var(--tw-space-x-reverse));
+    margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  .md\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(0px * var(--tw-space-y-reverse));
   }
 }
 

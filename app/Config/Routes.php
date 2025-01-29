@@ -96,6 +96,10 @@ $routes->post('requests/edit/(:num)', 'Requests\RequestController::updateRequest
 $routes->get('requests/delete/(:num)', 'Requests\RequestController::delete/$1');
 $routes->get('requests/export', 'Requests\RequestController::export');
 
+//Request API Routes
+$routes->get('api/requests/update-status/(:num)/(:segment)', 'API\RequestAPIController::updateRequestStatus/$1/$2');
+$routes->get('api/requests/update-priority/(:num)/(:alpha)', 'API\RequestAPIController::updateRequestPriority/$1/$2');
+
 
 //Listings
 $routes->get('listings', 'Listings\ListingsController::index');

@@ -33,6 +33,27 @@
 
     <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
+    <div class="flex flex-col md:flex-row justify-around space-y-4 md:space-y-0 md:space-x-4 w-full">
+        <div class="w-full md:w-2/6 grid grid-cols-2 gap-2 place-items-center">
+            <strong class="justify-self-start">Request Priority:</strong>
+            <select name="request_priority" id="request_priority" class="secondary-input min-w-40 max-w-60">
+                <p><?= $request->request_priority ?></p>
+                <?php foreach ($requestPriorities as $requestPriority): ?>
+                    <option value="<?= $requestPriority ?>"
+                        <?= strtolower($requestPriority) === strtolower($request->request_priority) ? 'selected' : '' ?>><?= ucfirst($requestPriority) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class=" w-full md:w-2/6 grid grid-cols-2 gap-2 place-items-center">
+            <strong class="justify-self-start">Request State:</strong>
+            <select name="request_state" id="request_state" class="secondary-input min-w-40 max-w-60">
+                <?php foreach ($requestStates as $requestState): ?>
+                    <option value="<?= $requestState ?>"
+                        <?= strtolower($requestState) === strtolower($request->request_state) ? 'selected' : '' ?>><?= ucfirst($requestState) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
 
     <div class="my-8 bg-white p-10 shadow-md rounded-md overflow-auto text-lg w-full max-w-6xl mx-auto print-container">
 
@@ -67,26 +88,19 @@
                 <td><?= $request->request_location ?></td>
             </tr>
             <tr>
-                <th>Request Fees:</th>
+                <th>Request Budget:</th>
                 <td>
                     <?= $request->request_fees ?>
                 </td>
             </tr>
-            <tr>
-                <th>Request Priority:</th>
-                <td><?= ucfirst($request->request_priority) ?></td>
-            </tr>
-            <tr>
-                <th>Request State:</th>
-                <td><?= ucfirst($request->request_state) ?></td>
-            </tr>
+
             <tr>
                 <th>Created At</th>
-                <td><?= esc((new DateTime($request->request_created_at))->format('d-M-Y H:i:s T')) ?></td>
+                <td><?= esc((new DateTime($request->request_created_at))->format('D d M Y H:i:s T')) ?></td>
             </tr>
             <tr>
                 <th>Updated At</th>
-                <td><?= esc((new DateTime($request->request_updated_at))->format('d-M-Y H:i:s T')) ?></td>
+                <td><?= esc((new DateTime($request->request_updated_at))->format('D d M Y H:i:s T')) ?></td>
             </tr>
             <tr>
                 <th>Request Description:</th>
@@ -124,3 +138,72 @@
         font-weight: bold;
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const requestPriority = document.getElementById('request_priority');
+        const requestState = document.getElementById('request_state');
+        const errorDiv = document.getElementById('error-div');
+        const successDiv = document.getElementById('success-div');
+
+        requestPriority.addEventListener('change', async function() {
+            const priority = requestPriority.value;
+            const request_id = <?= $request->request_id ?>;
+            try {
+
+                await fetch(`/api/requests/update-priority/${request_id}/${priority}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            successDiv.classList.remove('hidden');
+                            successDiv.innerHTML = data.message;
+                        } else {
+                            errorDiv.classList.remove('hidden');
+                            errorDiv.innerHTML = data.message;
+                        }
+                    });
+
+            } catch (e) {
+                errorDiv.classList.remove('hidden');
+                errorDiv.innerHTML = e.message;
+            }
+
+            setTimeout(() => {
+                successDiv.classList.add('hidden');
+                errorDiv.classList.add('hidden');
+            }, 5000);
+
+        });
+
+        requestState.addEventListener('change', async function() {
+            const state = requestState.value;
+            const request_id = <?= $request->request_id ?>;
+
+            try {
+
+                await fetch(`/api/requests/update-status/${request_id}/${state}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            successDiv.classList.remove('hidden');
+                            successDiv.innerHTML = data.message;
+                        } else {
+                            errorDiv.classList.remove('hidden');
+                            errorDiv.innerHTML = data.message;
+                        }
+                    });
+
+            } catch (e) {
+                errorDiv.classList.remove('hidden');
+                errorDiv.innerHTML = data.message;
+            }
+            setTimeout(() => {
+                successDiv.classList.add('hidden');
+                errorDiv.classList.add('hidden');
+            }, 5000);
+
+        });
+
+    });
+</script>

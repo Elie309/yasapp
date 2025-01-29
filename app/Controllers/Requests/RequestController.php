@@ -13,13 +13,21 @@ use App\Models\Settings\CurrenciesModel;
 use App\Models\Settings\EmployeeModel;
 use App\Models\Settings\Location\CityModel;
 use App\Models\Settings\Location\CountryModel;
-
+use App\Services\RequestServices;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class RequestController extends BaseController
 {
-    private $requestStates = ['pending', 'on-track',  'on-hold', 'finishing', 'rejected', 'cancelled'];
-    private $requestPriorities = ['low', 'medium', 'high'];
+    private $requestStates;
+    private $requestPriorities;
+
+    public function __construct()
+    {
+        $this->requestStates = RequestServices::$RequestStatuses;
+        $this->requestPriorities = RequestServices::$RequestPriorities;
+    }
+
+
 
     public function index()
     {
@@ -227,6 +235,8 @@ class RequestController extends BaseController
             . view('requests/viewRequest', [
                 'employee_id' => $employee_id,
                 'request' => $request,
+                'requestStates' => $this->requestStates,
+                'requestPriorities' => $this->requestPriorities,
             ])
             . view('template/footer');
     }
