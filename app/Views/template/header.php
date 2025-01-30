@@ -15,6 +15,7 @@
         <button id="sidebar-toggle" class="lg:hidden text-3xl text-white focus:outline-none mr-4" onclick="toggleSidebar()">
             &#9776;
         </button>
+        
         <div class="hidden lg:flex flex-1 justify-between items-center">
             <ul class="flex justify-center flex-grow space-x-8 text-center items-center text-white">
                 <li><a href="/listings" class="h-full rounded font-bold  hover:text-red-800 outline-none ">Listings</a></li>
@@ -35,17 +36,18 @@
                         <path d="M18 17v-6c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v6H4v2h16v-2h-2zm-2 0H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zm-4 5c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"></path>
                     </svg>
                 </button>
-                <ul id="notifications-dropdown" class="hidden absolute right-0 mt-2 w-80 
-                bg-white rounded h-60 overflow-x-hidden overflow-y-auto shadow-lg text-sm z-50">
-                    <li class="w-full">
-                        <div class="flex justify-between items-center px-2">
-                            <span class="p-4 font-bold text-center text-gray-900">Notifications</span>
-                            <button class="text-xs font-bold text-red-800" onclick="markAllAsRead()">Mark all as read</button>
+                <ul id="notifications-dropdown" class="hidden">
+                    <div class="w-full border-b border-gray-200">
+                        <div class="flex justify-between items-center my-2 p-2">
+                            <a href="/notifications"><span class=" font-bold text-base text-center text-gray-900">Notifications</span></a>
+                            <button class="text-xs text-red-800" onclick="markAllAsRead()">Mark all as read</button>
                         </div>
-                    </li>
+                    </div>
 
                     <!-- No notification element -->
                     <li id="no-notifications" class="hidden p-4 text-center text-gray-900">No notifications</li>
+                    <!-- Error notification element -->
+                    <li id="error-notifications" class="hidden p-4 text-center text-red-800">Error loading notifications</li>
                 </ul>
             </div>
             <div id="profile" class="relative flex-grow-0 ">
@@ -63,6 +65,7 @@
 
                 <ul id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg ">
                     <li><a href="/settings" class="block p-4 font-bold text-gray-900 outline-none rounded-t  hover:bg-gray-300 focus:outline-none">Settings</a></li>
+                    <li><a href="/notifications" class="block p-4 font-bold text-gray-900 outline-none rounded-t  hover:bg-gray-300 focus:outline-none">Notifications</a></li>
                     <li><a href="/logout" class="block p-4 font-bold text-gray-900 outline-none rounded-b  hover:bg-gray-300 focus:outline-none">Logout</a></li>
                 </ul>
             </div>
@@ -91,6 +94,7 @@
                         <!-- Removed Clients Link -->
                         <li class="mb-4"><a href="/listings" class="block p-4 font-bold rounded hover:bg-red-800 outline-none focus:outline-red-800">Listings</a></li>
                         <li class="mb-4"><a href="/requests" class="block p-4 font-bold rounded hover:bg-red-800 outline-none focus:outline-red-800">Requests</a></li>
+                        <li class="mb-4"><a href="/notifications" class="block p-4 font-bold rounded hover:bg-red-800 outline-none focus:outline-red-800">Notifications</a></li>
                         <li class="mb-4"><a href="/settings" class="block p-4 font-bold rounded hover:bg-red-800 outline-none focus:outline-red-800">Settings</a></li>
                         <li class="mb-4"><a href="/logout" class="block p-4 font-bold rounded hover:bg-red-800 outline-none focus:outline-red-800">Logout</a></li>
                     </ul>

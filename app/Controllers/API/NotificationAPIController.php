@@ -16,19 +16,19 @@ class NotificationAPIController extends BaseController
         $this->notificationServices = new NotificationServices();
     }
 
-    public function index()
+    public function unreadNotifications()
     {
         $employee_id = $this->session->get('id');
 
         try {
 
-            $notifications = $this->notificationServices->getNotificationsByEmployeeId($employee_id);
+            $notifications = $this->notificationServices->getNotificationUnreadByEmployeeId($employee_id);
 
             return $this->response->setStatusCode(200)->setJSON(
                 [
                     'success' => true,
                     'notifications' => $notifications['data'],
-                    'unread_count' => $notifications['unread_count']
+                    'unread_count' => $notifications['count']
                 ]
             );
 
@@ -86,7 +86,7 @@ class NotificationAPIController extends BaseController
         }
     }
 
-    public function markAllAsRead()
+    public function markAllRead()
     {
         try {
 
@@ -106,7 +106,7 @@ class NotificationAPIController extends BaseController
     }
 
 
-    public function markAllAsUnread()
+    public function markAllUnread()
     {
         try {
 

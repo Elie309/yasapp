@@ -158,31 +158,35 @@ class NotificationServices extends BaseServices
     }
 
     /**
-     * Get notifications by employee ID.
-     *
+     * Get all read notifications by employee ID.
+     * @param int $employeeId
+     * @return array
+     * @param int|null $limit
+     */
+    public function getNotificationReadByEmployeeId($employeeId, $limit = null)
+    {
+        return $this->getNotificationsByEmployeeIdHelper($employeeId, NotificationServices::$NOTIFICATION_STATUS[0], $limit);
+    }
+
+    /**
+     * Get all unread notifications by employee ID.
+     * @param int $employeeId
+     * @return array
+     * @param int|null $limit
+     */
+    public function getNotificationUnreadByEmployeeId($employeeId, $limit = null)
+    {
+        return $this->getNotificationsByEmployeeIdHelper($employeeId, NotificationServices::$NOTIFICATION_STATUS[1], $limit);
+    }
+
+    /**
+     * Get all notifications.
      * @param int $employeeId
      * @return array
      */
-    public function getNotificationsByEmployeeId($employeeId)
+    public function getAllNotificationsByEmployeeId($employeeId)
     {
-        try {
-            $notifications = $this->notificationModel
-            ->where('employee_id', $employeeId)
-            ->where('notification_status', NotificationServices::$NOTIFICATION_STATUS[1])
-            ->findAll();
-
-            $notificationCount = count($notifications);
-            
-
-            return ['success' => true, 
-            'message' => 'Notifications retrieved successfully', 
-            'data' => $notifications,
-            'unread_count' => $notificationCount
-        ];
-        } catch (Exception $e) {
-            log_message('error', $e->getMessage());
-            return ['success' => false, 'message' => $e->getMessage()];
-        }
+        return $this->getNotificationsByEmployeeIdHelper($employeeId);
     }
 
     /**
@@ -218,4 +222,31 @@ class NotificationServices extends BaseServices
     {
         return $this->notificationModel->where('notification_id', $notificationId)->where('employee_id', $employeeId)->countAllResults() > 0;
     }
+
+
+    /**
+     * Get notifications by employee ID.
+     *
+     * @param int $employeeId
+     * @return array
+     */
+    private function getNotificationsByEmployeeIdHelper($employeeId, $status = -1, $limit = null)
+    {
+        try {
+            $notifications = $this->notificationModel->where('employee_id', $employeeId);
+            if($status != -1) {
+                $notifications = $notifications->where('notification_status', $status);
+            }
+
+            $notifications = $notifications->orderBy('notification_created_at', 'DESC')->findAll($limit);
+
+            $count = count($notifications);
+
+            return ['success' => true, 'message' => 'Notifications retrieved successfully', 'data' => $notifications, 'count' => $count];
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
 }

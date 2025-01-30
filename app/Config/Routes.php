@@ -112,6 +112,9 @@ $routes->get('listings/delete/(:num)', 'Listings\ListingsController::delete/$1')
 $routes->get('listings/export', 'Listings\ListingsController::export');
 
 
+//Notifications
+$routes->get('notifications', 'Notifications\NotificationController::index');
+
 
 //API
 
@@ -123,7 +126,7 @@ $routes->get('/api/locations/get-regions', 'API\LocationAPIController::getRegion
 $routes->get('/api/locations/get-countries', 'API\LocationAPIController::getCountries');
 
 //API Notifications
-$routes->get('/api/notifications', 'API\NotificationAPIController::index');
+$routes->get('/api/notifications', 'API\NotificationAPIController::unreadNotifications');
 $routes->get('/api/notifications/mark-read/(:num)', 'API\NotificationAPIController::markRead/$1');
 $routes->get('/api/notifications/mark-unread/(:num)', 'API\NotificationAPIController::markUnread/$1');
 $routes->get('/api/notifications/mark-all-read', 'API\NotificationAPIController::markAllRead');

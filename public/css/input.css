@@ -106,6 +106,46 @@
         }
     }
 
+    #notifications-dropdown {
+        @apply  absolute right-0 mt-2 w-80 bg-white rounded h-96 overflow-x-hidden overflow-y-auto shadow-lg text-sm z-50;
+    }
+
+/* For every other child change bg of #notification-dropdown */
+    #notifications-dropdown li:nth-child(odd) {
+        @apply bg-gray-200 bg-opacity-40;
+    }
+
+    /* On hover */
+
+    #notifications-dropdown li:hover {
+        @apply bg-gray-400 bg-opacity-40;
+    }
+
+    .notification-read-button {
+        @apply flex items-center justify-center w-8 h-12 hover:bg-gray-400 hover:bg-opacity-40 hover:fill-red-800 rounded-full ;
+    }
+
+
+    .notification-title {
+        @apply text-sm font-semibold text-gray-800;
+    }
+
+    .notification-icon {
+        @apply flex items-center justify-center p-1 text-white rounded-full w-8 h-8;
+    }
+
+    .notification-icon-info {
+        @apply bg-green-500 bg-opacity-50;
+    }
+
+    .notification-icon-error {
+        @apply bg-red-500 bg-opacity-50;
+    }
+
+    .notification-icon-warning {
+        @apply bg-yellow-500 bg-opacity-50;
+    }
+
     /* Popover backdrop */
 
     [popover]::backdrop {
@@ -210,18 +250,6 @@
     -webkit-filter: blur(8px); */
 }
 
-
-
-#notifications-dropdown li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-#notifications-dropdown li:last-child {
-    border-bottom: none;
-}
 
 /* width */
 ::-webkit-scrollbar {
