@@ -34,6 +34,16 @@ class NotificationServices extends BaseServices
         $this->notificationModel = new NotificationModel();
     }
 
+    /**
+     * Send a notification to an employee.
+     *
+     * @param int $employeeId
+     * @param string $title
+     * @param string $message
+     * @param int $type
+     * @param string|null $link
+     * @return array
+     */
     public function send($employeeId, $title, $message, $type, $link = null)
     {
         $data = [
@@ -54,6 +64,12 @@ class NotificationServices extends BaseServices
         }
     }
 
+    /**
+     * Mark a notification as read.
+     *
+     * @param int $notificationId
+     * @return array
+     */
     public function markAsRead($notificationId)
     {
         try {
@@ -67,6 +83,12 @@ class NotificationServices extends BaseServices
         }
     }
 
+    /**
+     * Mark a notification as unread.
+     *
+     * @param int $notificationId
+     * @return array
+     */
     public function markAsUnread($notificationId)
     {
         try {
@@ -80,6 +102,50 @@ class NotificationServices extends BaseServices
         }
     }
 
+    /**
+     * Mark all notifications as read for a specific employee.
+     *
+     * @param int $employeeId
+     * @return array
+     */
+    public function markAllAsRead($employeeId)
+    {
+        try {
+            $this->notificationModel->where('employee_id', $employeeId)->update([
+                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[0]
+            ]);
+            return ['success' => true, 'message' => 'All notifications marked as read'];
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Mark all notifications as unread for a specific employee.
+     *
+     * @param int $employeeId
+     * @return array
+     */
+    public function markAllAsUnread($employeeId)
+    {
+        try {
+            $this->notificationModel->where('employee_id', $employeeId)->update([
+                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[1]
+            ]);
+            return ['success' => true, 'message' => 'All notifications marked as unread'];
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Delete a notification.
+     *
+     * @param int $notificationId
+     * @return array
+     */
     public function deleteNotification($notificationId)
     {
         try {
@@ -91,14 +157,65 @@ class NotificationServices extends BaseServices
         }
     }
 
+    /**
+     * Get notifications by employee ID.
+     *
+     * @param int $employeeId
+     * @return array
+     */
     public function getNotificationsByEmployeeId($employeeId)
     {
         try {
-            $notifications = $this->notificationModel->where('employee_id', $employeeId)->findAll();
-            return ['success' => true, 'message' => 'Notifications retrieved successfully', 'data' => $notifications];
+            $notifications = $this->notificationModel
+            ->where('employee_id', $employeeId)
+            ->where('notification_status', NotificationServices::$NOTIFICATION_STATUS[1])
+            ->findAll();
+
+            $notificationCount = count($notifications);
+            
+
+            return ['success' => true, 
+            'message' => 'Notifications retrieved successfully', 
+            'data' => $notifications,
+            'unread_count' => $notificationCount
+        ];
         } catch (Exception $e) {
             log_message('error', $e->getMessage());
             return ['success' => false, 'message' => $e->getMessage()];
         }
+    }
+
+    /**
+     * Check if a notification exists.
+     *
+     * @param int $notificationId
+     * @return bool
+     */
+    public function isNotificationExist($notificationId)
+    {
+        return $this->notificationModel->where('notification_id', $notificationId)->countAllResults() > 0;
+    }
+
+    /**
+     * Get a notification by its ID.
+     *
+     * @param int $notificationId
+     * @return array|null
+     */
+    public function getNotificationById($notificationId)
+    {
+        return $this->notificationModel->find($notificationId);
+    }
+
+    /**
+     * Check if a notification belongs to a specific employee.
+     *
+     * @param int $notificationId
+     * @param int $employeeId
+     * @return bool
+     */
+    public function checkIfNotificationBelongsToEmployee($notificationId, $employeeId)
+    {
+        return $this->notificationModel->where('notification_id', $notificationId)->where('employee_id', $employeeId)->countAllResults() > 0;
     }
 }

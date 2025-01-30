@@ -23,9 +23,11 @@
 
             <div id="notifications" class="relative flex-grow-0">
                 <button class="block p-2 text-white font-bold 
-                         outline-none hover:bg-gray-600 rounded-full focus:outline-none relative">
-                    <span class="absolute scale-75 right-0 top-0 w-6 h-6 rounded-full bg-red-800 flex items-center justify-center">
-                        <span id="notification-icon" class="text-sm text-white">50</span>
+                         outline-none hover:bg-gray-600 hover:bg-opacity-70 rounded-full focus:outline-none relative"
+                         onclick="toggleDropdown('notifications-dropdown')"
+                         >
+                    <span class="hidden absolute scale-75 right-0 top-0 w-6 h-6 rounded-full bg-red-800  items-center justify-center">
+                        <span id="notification-count" class=" text-sm text-white">0</span>
                     </span>
                     <svg width="100%" height="100%" viewBox="0 0 24 24" fit=""
                         preserveAspectRatio="xMidYMid meet"
@@ -33,10 +35,22 @@
                         <path d="M18 17v-6c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v6H4v2h16v-2h-2zm-2 0H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zm-4 5c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"></path>
                     </svg>
                 </button>
+                <ul id="notifications-dropdown" class="hidden absolute right-0 mt-2 w-80 
+                bg-white rounded h-60 overflow-x-hidden overflow-y-auto shadow-lg text-sm z-50">
+                    <li class="w-full">
+                        <div class="flex justify-between items-center px-2">
+                            <span class="p-4 font-bold text-center text-gray-900">Notifications</span>
+                            <button class="text-xs font-bold text-red-800" onclick="markAllAsRead()">Mark all as read</button>
+                        </div>
+                    </li>
+
+                    <!-- No notification element -->
+                    <li id="no-notifications" class="hidden p-4 text-center text-gray-900">No notifications</li>
+                </ul>
             </div>
-            <div id="profile" class="relative flex-grow-0">
-                <button class="block p-2 rounded-full hover:bg-gray-600 text-white font-bold 
-                outline-none focus:outline-none" onclick="toggleDropdown()">
+            <div id="profile" class="relative flex-grow-0 ">
+                <button class="block p-2 rounded-full hover:bg-gray-600 hover:bg-opacity-70 text-white font-bold 
+                outline-none focus:outline-none" onclick="toggleDropdown('profile-dropdown')">
                     <svg class="size-8 fill-white "
                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         width="800px" height="800px" viewBox="0 0 45.532 45.532"
@@ -47,7 +61,7 @@
                     </svg>
                 </button>
 
-                <ul id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg">
+                <ul id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg ">
                     <li><a href="/settings" class="block p-4 font-bold text-gray-900 outline-none rounded-t  hover:bg-gray-300 focus:outline-none">Settings</a></li>
                     <li><a href="/logout" class="block p-4 font-bold text-gray-900 outline-none rounded-b  hover:bg-gray-300 focus:outline-none">Logout</a></li>
                 </ul>

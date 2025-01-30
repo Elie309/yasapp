@@ -17,6 +17,7 @@ class MainSeeder extends Seeder
             $this->call('App\Database\Seeds\ClientSeeder');
             $this->call('App\Database\Seeds\RequestSeeder');
             $this->call('App\Database\Seeds\PropertySeeder');
+            $this->call('App\Database\Seeds\NotificationSeeder');
         } else {
             // Seed only the necessary data for production
             $this->call('App\Database\Seeds\Settings\CurrenciesSeeder');
