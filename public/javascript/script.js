@@ -12,6 +12,11 @@ function toggleDropdown(id) {
             dropdown.classList.add('hidden');
         }, 100); // Adjust the timeout as needed
     });
+
+    // Prevent blur event when clicking inside the dropdown
+    dropdown.addEventListener('mousedown', function (event) {
+        event.preventDefault();
+    });
 }
 
 function toggleSidebar() {

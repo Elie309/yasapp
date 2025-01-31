@@ -121,8 +121,24 @@
         @apply bg-gray-400 bg-opacity-40;
     }
 
+    .notification-container {
+        @apply p-4 shadow rounded-lg w-full flex flex-col justify-between items-center space-x-4;
+    }
+
+    .notification-container-read {
+        @apply flex items-center justify-between p-2 bg-gray-400 bg-opacity-40;
+    }
+
+    .notification-container-unread {
+        @apply flex items-center justify-between p-2 bg-white;
+    }
+
     .notification-read-button {
         @apply flex items-center justify-center w-8 h-12 hover:bg-gray-400 hover:bg-opacity-40 hover:fill-red-800 rounded-full ;
+    }
+
+    .settings-container {
+        @apply block mx-4 my-2 min-w-80 max-w-80 bg-white rounded-lg shadow-md;
     }
 
 
@@ -157,6 +173,7 @@
         @apply w-full px-8 sm:px-2 md:w-3/4 max-h-screen overflow-auto rounded-md shadow-md;
     }
 
+   
 
     /* HTML: <div class="loader"></div> */
     .loader {
@@ -229,6 +246,19 @@
         display: none;
     }
 
+}
+
+.notification-container:hover {
+    transition: all 0.3s;
+    transform: scale(1.01);
+    
+    z-index: -1;
+}
+
+.settings-container:hover {
+    transition: all 0.3s;
+    transform: scale(1.02);
+    
 }
 
 .main-bg-image::before {

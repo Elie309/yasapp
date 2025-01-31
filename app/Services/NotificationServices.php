@@ -74,7 +74,8 @@ class NotificationServices extends BaseServices
     {
         try {
             $this->notificationModel->update($notificationId, [
-                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[0]
+                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[0],
+                'notification_read_at' => date('Y-m-d H:i:s')
             ]);
             return ['success' => true, 'message' => 'Notification marked as read'];
         } catch (Exception $e) {
@@ -93,7 +94,8 @@ class NotificationServices extends BaseServices
     {
         try {
             $this->notificationModel->update($notificationId, [
-                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[1]
+                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[1],
+                'notification_read_at' => null
             ]);
             return ['success' => true, 'message' => 'Notification marked as unread'];
         } catch (Exception $e) {
@@ -112,7 +114,8 @@ class NotificationServices extends BaseServices
     {
         try {
             $this->notificationModel->where('employee_id', $employeeId)->update([
-                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[0]
+                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[0],
+                'notification_read_at' => date('Y-m-d H:i:s')
             ]);
             return ['success' => true, 'message' => 'All notifications marked as read'];
         } catch (Exception $e) {
@@ -131,7 +134,8 @@ class NotificationServices extends BaseServices
     {
         try {
             $this->notificationModel->where('employee_id', $employeeId)->update([
-                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[1]
+                'notification_status' => NotificationServices::$NOTIFICATION_STATUS[1],
+                'notification_read_at' => null
             ]);
             return ['success' => true, 'message' => 'All notifications marked as unread'];
         } catch (Exception $e) {

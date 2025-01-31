@@ -19,7 +19,8 @@ class NotificationModel extends Model
         'notification_message',
         'notification_type',
         'notification_status',
-        'notification_link'
+        'notification_link',
+        'notification_read_at'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -46,7 +47,8 @@ class NotificationModel extends Model
         'notification_message' => 'required|string',
         'notification_type' => 'required|in_list[info,warning,error]',
         'notification_status' => 'required|in_list[read,unread]',
-        'notification_link' => 'permit_empty|string|valid_url'
+        'notification_link' => 'permit_empty|string|valid_url',
+        'notification_read_at' => 'permit_empty'
     ];
     protected $validationMessages   = [
         'employee_id' => [

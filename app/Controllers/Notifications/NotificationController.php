@@ -19,7 +19,17 @@ class NotificationController extends BaseController
 
         $employeeId = $this->session->get('id');
 
-        $response = $this->notificationServices->getAllNotificationsByEmployeeId($employeeId);
+        $status = esc($this->request->getGet('status'));
+
+        $response = [];
+
+        if($status === 'unread'){
+            $response = $this->notificationServices->getNotificationUnreadByEmployeeId($employeeId);
+        } elseif($status === 'read'){
+            $response = $this->notificationServices->getNotificationReadByEmployeeId($employeeId);
+        } else {
+            $response = $this->notificationServices->getAllNotificationsByEmployeeId($employeeId);
+        }
 
         if($response['success']){
             $notifications = $response['data'];

@@ -1,6 +1,6 @@
 const notificationInnerElement = `
-        <div class="notification-container flex flex-col p-2 border-b border-gray-200 z-50">
-            <div class="notification-container flex flex-row">
+        <div class="flex flex-col p-2 border-b border-gray-200 z-50">
+            <div class="flex flex-row">
                 <div class="notification-icon w-8">
                     <span class="notification-icon-text m-0"></span>
                 </div>
@@ -16,7 +16,10 @@ const notificationInnerElement = `
                     </svg>
                 </button>
             </div>
-            <p class="notification-time text-xs text-gray-500 italic text-end">Just now</p>
+            <div class="flex flex-col justify-end">
+                <p class="notification-read-at text-xs text-gray-500 italic text-end">Unread</p>
+                <p class="notification-time text-xs text-gray-500 italic text-end">Just now</p>
+            </div>
         </div>
     `;
 
@@ -39,8 +42,6 @@ function markAllAsRead() {
                 document.getElementById('notification-count').parentElement.classList.remove('flex');
                 document.getElementById('no-notifications').classList.remove('hidden');
 
-                // Update session storage
-                saveNotificationsToSession([]);
             } else {
                 console.error(data.message);
             }
@@ -49,16 +50,16 @@ function markAllAsRead() {
         });
 }
 
-function updateNotificationElement(id) {
+function deleteNotificationElementDropdown(id) {
     let notificationElement = document.querySelector(`button.notification-read-button[data-id="${id}"]`)
-            .closest('.notification-li');
+        .closest('.notification-li');
     if (notificationElement) {
         notificationElement.remove();
         // Update the notification count
         let unreadCount = parseInt(notificationCountElement.textContent);
         notificationCountElement.textContent = unreadCount - 1;
 
-        if(unreadCount - 1 === 0) {
+        if (unreadCount - 1 === 0) {
             notificationCountElement.parentElement.classList.add('hidden');
             notificationCountElement.parentElement.classList.remove('flex');
         }
@@ -66,115 +67,102 @@ function updateNotificationElement(id) {
     }
 }
 
+updateNotificationPageElement = (id, status) => {
+    let buttonElement = document.querySelector(`button.page-button[data-id='${id}']`);
+    let notificationElement = buttonElement.closest('.notification-container');
+    if (notificationElement) {
+        let readAtElement = notificationElement.querySelector('p.notification-read-at');
+        let buttonReadTextElement = notificationElement.querySelector('span.button-read-text');
+        if (readAtElement) {
+            if (status === "read") {
+                readAtElement.textContent = 'Read now';
+                buttonReadTextElement.textContent = 'Mark as unread';
+                notificationElement.classList.remove('notification-container-unread');
+                notificationElement.classList.add('notification-container-read');
+                // Change buttonEvent 
+                buttonElement.addEventListener('click', function () {
+                    handleOnUnreadNotification(id, "page");
+                }); 
+
+            } else {
+                readAtElement.textContent = 'Unread';
+                buttonReadTextElement.textContent = 'Mark as read';
+                notificationElement.classList.remove('notification-container-read');
+                notificationElement.classList.add('notification-container-unread');
+                
+                // Change buttonEvent
+                buttonElement.addEventListener('click', function () {
+                    handleOnReadNotification(id, "page");
+                });
+
+                handleFetchedNotification();
+            }
+        } else {
+            console.error('Element p.notification-read-at not found');
+        }
+    }
+}
+
 function markAsRead(id) {
-    fetch('/api/notifications/mark-read/' + id)
+    return fetch('/api/notifications/mark-read/' + id)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Update session storage
-                let notifications = getNotificationsFromSession();
-
-                if (notifications) {
-                    notifications = notifications.map(notification => {
-                        if (notification.notification_id === id) {
-                            notification.read = true;
-                        }
-                        return notification;
-                    });
-                    saveNotificationsToSession(notifications);
-                }
-
-                // Update the notification element in the DOM
-                updateNotificationElement(id);
+                return true;
             } else {
-                console.error(data.message);
+                return null;
             }
         }).catch(error => {
-            console.error(error);
+            return null;
         });
 }
 
 function markAsUnread(id) {
-    fetch('/api/notifications/mark-unread/' + id)
+   return fetch('/api/notifications/mark-unread/' + id)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Update session storage
-                let notifications = getNotificationsFromSession();
-                if (notifications) {
-                    notifications = notifications.map(notification => {
-                        if (notification.notification_id === id) {
-                            notification.read = false;
-                        }
-                        return notification;
-                    });
-                    saveNotificationsToSession(notifications);
-                }
-
+                return true;
             } else {
-                console.error(data.message);
+                return null;
             }
         }).catch(error => {
-            console.error(error);
+            return null;
         });
 }
 
-async function fetchUnreadNotifications() {
-    let data = await fetch('/api/notifications')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-
-                return {
-                    success: data.success,
-                    message: data.message,
-                    notifications: data.notifications,
-                    unread_count: data.unread_count
-                };
-            } else {
-                return {
-                    success: data.success,
-                    message: data.message
-                };
+function handleOnReadNotification($id, $source) {
+    let succcess = markAsRead($id);
+    if(succcess) {
+        if($source === "notification") {
+            deleteNotificationElementDropdown($id);
+            //check location and update the page element
+            if(window.location.pathname === '/notifications') {
+                updateNotificationPageElement($id, "read");
             }
-        }).catch(error => {
-            console.error(error);
-            return {
-                success: false,
-                message: error
-            };
-        });
+        }
 
-    return data;
-}
-
-function saveNotificationsToSession(notifications) {
-    sessionStorage.setItem('notifications', JSON.stringify(notifications));
-    loadNotifications(notifications, notifications.filter(notification => !notification.read).length);
-}
-
-function getNotificationsFromSession() {
-    const notifications = sessionStorage.getItem('notifications');
-    return notifications ? JSON.parse(notifications) : null;
-}
-
-function clearNotifications() {
-    notificationsElements.querySelectorAll('.notification-container').forEach(notification => {
-        notification.remove();
-    });
-    sessionStorage.removeItem('notifications');
-}
-
-function loadSessionNotifications() {
-    let notifications = getNotificationsFromSession();
-
-    if (notifications) {
-        loadNotifications(notifications, notifications.filter(notification => !notification.read).length);
+        if($source === "page") {
+            deleteNotificationElementDropdown($id);
+            updateNotificationPageElement($id, "read");
+        }
     }
 }
 
+function handleOnUnreadNotification($id) {
+    let succcess = markAsUnread($id);
+    if(succcess) {
+
+       updateNotificationPageElement($id, "unread");
+    }else{
+        console.error("Failed to mark as unread");
+    }
+}
+    
+        
+
+
 function loadNotifications(notifications, unread_count) {
-    clearNotifications();
     if (notifications.length > 0) {
         notifications.forEach(notification => {
             let clone = notificationElement.cloneNode(true);
@@ -186,7 +174,7 @@ function loadNotifications(notifications, unread_count) {
             let dateTime = new Date(notification.notification_created_at.date);
             let time = dateTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
             let date = dateTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-            clone.querySelector('p.notification-time').textContent = date + ' ' + time;
+            clone.querySelector('p.notification-time').textContent = 'Created at ' + date + ' ' + time;
 
             if (notification.notification_type) {
                 if (notification.notification_type == 'info') {
@@ -209,7 +197,7 @@ function loadNotifications(notifications, unread_count) {
             notificationsElements.appendChild(clone);
 
             clone.querySelector('button.notification-read-button').addEventListener('click', function () {
-                markAsRead(notification.notification_id);
+                handleOnReadNotification(notification.notification_id, "notification");
             });
         });
 
@@ -227,26 +215,54 @@ function loadNotifications(notifications, unread_count) {
 }
 
 async function handleFetchedNotification() {
-    loadSessionNotifications()
 
-    let data = await fetchUnreadNotifications();
+    await fetch('/api/notifications')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadNotifications(data.notifications, data.unread_count);
+            } else {
+                errorNotificationElement.classList.remove('hidden');
+                errorNotificationElement.textContent = "Failed to fetch notifications";
+                notificationCountElement.textContent = '0';
+                notificationCountElement.parentElement.classList.add('hidden');
+                notificationCountElement.parentElement.classList.remove('flex');
+            }
+        }).catch(error => {
+            console.error(error.message);
+            errorNotificationElement.classList.remove('hidden');
+            errorNotificationElement.textContent = "Failed to fetch notifications";
+            notificationCountElement.textContent = '0';
+            notificationCountElement.parentElement.classList.add('hidden');
+            notificationCountElement.parentElement.classList.remove('flex');
+        });
 
-    if (data.success) {
-        clearNotifications();
-        loadNotifications(data.notifications, data.unread_count);
-        // Save notifications to session storage
-        saveNotificationsToSession(data.notifications);
-    } else {
-        console.error(data.message);
-        errorNotificationElement.classList.remove('hidden');
-        errorNotificationElement.textContent = data.message;
-        notificationCountElement.textContent = '0';
-        notificationCountElement.parentElement.classList.add('hidden');
-        notificationCountElement.parentElement.classList.remove('flex');
+}
+
+
+function setSelectStatus() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    if (status) {
+        document.getElementById("notification_status").value = status;
     }
 }
 
+document.getElementById("notification_status").addEventListener('change', function () {
+
+    //This is a select option with ALL, READ and UNREAD
+    const status = this.value;
+    //change parameter and reload the page
+    window.location.href = '/notifications?status=' + status;
+
+});
+
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
     handleFetchedNotification();
+    setSelectStatus();
+
 });
 

@@ -287,6 +287,7 @@ CREATE TABLE IF NOT EXISTS notifications (
     employee_id INT UNSIGNED NOT NULL,
     notification_title VARCHAR(255) NOT NULL,
     notification_message TEXT NOT NULL,
+    notification_read_at DATETIME NULL DEFAULT NULL,
     notification_type ENUM('info', 'warning', 'error') NOT NULL DEFAULT 'info',
     notification_status ENUM('read', 'unread') NOT NULL DEFAULT 'unread',
     notification_link TEXT DEFAULT NULL,
