@@ -37,7 +37,6 @@
         <div class="w-full md:w-2/6 grid grid-cols-2 gap-2 place-items-center">
             <strong class="justify-self-start">Request Priority:</strong>
             <select name="request_priority" id="request_priority" class="secondary-input min-w-40 max-w-60">
-                <p><?= $request->request_priority ?></p>
                 <?php foreach ($requestPriorities as $requestPriority): ?>
                     <option value="<?= $requestPriority ?>"
                         <?= strtolower($requestPriority) === strtolower($request->request_priority) ? 'selected' : '' ?>><?= ucfirst($requestPriority) ?></option>
