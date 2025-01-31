@@ -48,7 +48,6 @@
                     <div class="w-full border-b border-gray-200">
                         <div class="flex justify-between items-center my-2 p-2">
                             <a href="/notifications"><span class=" font-bold text-base text-center text-gray-900">Notifications</span></a>
-                            <button class="text-xs text-red-800" onclick="markAllAsRead()">Mark all as read</button>
                         </div>
                     </div>
 

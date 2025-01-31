@@ -31,24 +31,7 @@ const notificationElement = document.createElement('li');
 notificationElement.classList.add('notification-li');
 notificationElement.innerHTML = notificationInnerElement;
 
-function markAllAsRead() {
-    fetch('/api/notifications/mark-all-read')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('notifications-dropdown').innerHTML = '';
-                document.getElementById('notification-count').textContent = '0';
-                document.getElementById('notification-count').parentElement.classList.add('hidden');
-                document.getElementById('notification-count').parentElement.classList.remove('flex');
-                document.getElementById('no-notifications').classList.remove('hidden');
 
-            } else {
-                console.error(data.message);
-            }
-        }).catch(error => {
-            console.error(error);
-        });
-}
 
 function deleteNotificationElementDropdown(id) {
     let notificationElement = document.querySelector(`button.notification-read-button[data-id="${id}"]`)
