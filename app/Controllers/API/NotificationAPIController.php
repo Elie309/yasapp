@@ -79,7 +79,13 @@ class NotificationAPIController extends BaseController
                 return $this->response->setStatusCode(400)->setJSON(['success' => false, 'message' => $response['message']]);
             }
 
-            return $this->response->setStatusCode(200)->setJSON(['success' => true, 'message' => 'Notification marked as unread']);
+            $notification = $this->notificationServices->getNotificationById($notification_id);
+
+            return $this->response->setStatusCode(200)->setJSON(['success' => true, 
+            'message' => 'Notification marked as unread',
+            'notification' => $notification
+            ]
+        );
         } catch (Exception $e) {
             log_message('error', $e->getMessage());
             return $this->response->setStatusCode(500)->setJSON(['success' => false, 'message' => $e->getMessage()]);

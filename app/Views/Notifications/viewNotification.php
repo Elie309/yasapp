@@ -34,8 +34,8 @@
                             
                          ">
 
-                    <div class="flex flex-row justify-between items-center  w-full">
-                        <div class="notification-icon flex-grow-0 flex-shrink-0 
+                    <div class="flex flex-row justify-between items-center w-full">
+                        <div class="notification-icon flex-grow-0 flex-shrink-0 mr-4   
                                   <?= $notification->notification_type === 'info' ? 'notification-icon-info' : ($notification->notification_type === 'warning' ? 'notification-icon-warning' : ($notification->notification_type === 'error' ? 'notification-icon-error' : 'notification-icon-info')); ?>
                                   w-8">
                             <span class="notification-icon-text m-0">
@@ -46,7 +46,9 @@
                         <a href="<?= $notification->notification_link ?>"
                             class="flex flex-col w-8/12 space-y-2 flex-grow-1 flex-shrink-1">
                             <h2 class=" text-sm md:text-base  font-bold"><?= $notification->notification_title ?></h2>
-                            <p class="text-gray-900 text-sm"><?= $notification->notification_message ?></p>
+                            <p class="text-gray-900 text-sm text-wrap">
+                                <?= $notification->notification_message ?>
+                            </p>
                         </a>
 
 

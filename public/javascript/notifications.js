@@ -23,13 +23,15 @@ const notificationInnerElement = `
         </div>
     `;
 
-const notificationsElements = document.getElementById('notifications-dropdown');
+const notificationsElements = document.getElementById('notifications-list');
 const notificationCountElement = document.getElementById('notification-count');
 const noNotificationElement = document.getElementById('no-notifications');
 const errorNotificationElement = document.getElementById('error-notifications');
 const notificationElement = document.createElement('li');
 notificationElement.classList.add('notification-li');
 notificationElement.innerHTML = notificationInnerElement;
+
+let notificationsDropdown = [];
 
 
 
@@ -48,6 +50,8 @@ function deleteNotificationElementDropdown(id) {
         }
 
     }
+
+    notificationsDropdown = notificationsDropdown.filter(notification => notification.notification_id !== id);
 }
 
 updateNotificationPageElement = (id, status) => {
@@ -78,7 +82,7 @@ updateNotificationPageElement = (id, status) => {
                     handleOnReadNotification(id, "page");
                 });
 
-                handleFetchedNotification();
+               
             }
         } else {
             console.error('Element p.notification-read-at not found');
@@ -105,7 +109,10 @@ function markAsUnread(id) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                return true;
+                return {
+                    success: true,
+                    notification: data.notification
+                };
             } else {
                 return null;
             }
@@ -132,20 +139,20 @@ function handleOnReadNotification($id, $source) {
     }
 }
 
-function handleOnUnreadNotification($id) {
-    let succcess = markAsUnread($id);
-    if(succcess) {
-
+async function handleOnUnreadNotification($id) {
+    let success =  await markAsUnread($id);
+    if(success) {
+        notificationsDropdown.push(success.notification);
+        loadNotifications(notificationsDropdown, notificationsDropdown.length);
        updateNotificationPageElement($id, "unread");
     }else{
         console.error("Failed to mark as unread");
     }
 }
-    
-        
 
 
 function loadNotifications(notifications, unread_count) {
+    emptyNotifications();
     if (notifications.length > 0) {
         notifications.forEach(notification => {
             let clone = notificationElement.cloneNode(true);
@@ -198,12 +205,22 @@ function loadNotifications(notifications, unread_count) {
     }
 }
 
+function emptyNotifications() {
+    notificationsElements.innerHTML = '';
+    noNotificationElement.classList.add('hidden');
+    notificationCountElement.textContent = '0';
+    notificationCountElement.parentElement.classList.add('hidden');
+    notificationCountElement.parentElement.classList.remove('flex');
+}
+
 async function handleFetchedNotification() {
 
     await fetch('/api/notifications')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                emptyNotifications();
+                notificationsDropdown = data.notifications;
                 loadNotifications(data.notifications, data.unread_count);
             } else {
                 errorNotificationElement.classList.remove('hidden');

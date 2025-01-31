@@ -44,18 +44,22 @@
                         <path d="M18 17v-6c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v6H4v2h16v-2h-2zm-2 0H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6zm-4 5c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"></path>
                     </svg>
                 </button>
-                <ul id="notifications-dropdown" class="hidden">
-                    <div class="w-full border-b border-gray-200">
+                <div id="notifications-dropdown" class="hidden">
+                    <div class="w-full border-b text-center border-gray-200">
                         <div class="flex justify-between items-center my-2 p-2">
                             <a href="/notifications"><span class=" font-bold text-base text-center text-gray-900">Notifications</span></a>
                         </div>
                     </div>
-
                     <!-- No notification element -->
-                    <p id="no-notifications" class="hidden p-4 text-center text-gray-900 hover:bg-white">No notifications</p>
+                    <p id="no-notifications" class="hidden p-4 text-center text-gray-900 hover:bg-white">No new notifications</p>
                     <!-- Error notification element -->
                     <p id="error-notifications" class="hidden p-4 text-center text-red-800">Error loading notifications</p>
-                </ul>
+                    
+                    <ul id="notifications-list">
+
+                    </ul>
+
+                </div>
             </div>
             <div id="profile" class="relative flex-grow-0 ">
                 <button class="block p-2 rounded-full hover:bg-gray-600 hover:bg-opacity-70 text-white font-bold 
