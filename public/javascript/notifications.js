@@ -146,6 +146,7 @@ function handleOnUnreadNotification($id) {
 
 
 function loadNotifications(notifications, unread_count) {
+    console.log(notifications);
     if (notifications.length > 0) {
         notifications.forEach(notification => {
             let clone = notificationElement.cloneNode(true);
@@ -191,6 +192,7 @@ function loadNotifications(notifications, unread_count) {
 
     } else {
         noNotificationElement.classList.remove('hidden');
+
         notificationCountElement.textContent = '0';
         notificationCountElement.parentElement.classList.add('hidden');
         notificationCountElement.parentElement.classList.remove('flex');
@@ -231,7 +233,7 @@ function setSelectStatus() {
     }
 }
 
-document.getElementById("notification_status").addEventListener('change', function () {
+document.getElementById("notification_status")?.addEventListener('change', function () {
 
     //This is a select option with ALL, READ and UNREAD
     const status = this.value;

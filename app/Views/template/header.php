@@ -52,9 +52,9 @@
                     </div>
 
                     <!-- No notification element -->
-                    <li id="no-notifications" class="hidden p-4 text-center text-gray-900">No notifications</li>
+                    <p id="no-notifications" class="hidden p-4 text-center text-gray-900 hover:bg-white">No notifications</p>
                     <!-- Error notification element -->
-                    <li id="error-notifications" class="hidden p-4 text-center text-red-800">Error loading notifications</li>
+                    <p id="error-notifications" class="hidden p-4 text-center text-red-800">Error loading notifications</p>
                 </ul>
             </div>
             <div id="profile" class="relative flex-grow-0 ">
