@@ -146,7 +146,6 @@ function handleOnUnreadNotification($id) {
 
 
 function loadNotifications(notifications, unread_count) {
-    console.log(notifications);
     if (notifications.length > 0) {
         notifications.forEach(notification => {
             let clone = notificationElement.cloneNode(true);
