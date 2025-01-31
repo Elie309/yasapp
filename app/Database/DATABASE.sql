@@ -281,3 +281,19 @@ CREATE TABLE apartment_specifications (
 
     FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
 );
+-- Notifications
+CREATE TABLE IF NOT EXISTS notifications (
+    notification_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    employee_id INT UNSIGNED NOT NULL,
+    notification_title VARCHAR(255) NOT NULL,
+    notification_message TEXT NOT NULL,
+    notification_read_at DATETIME NULL DEFAULT NULL,
+    notification_type ENUM('info', 'warning', 'error') NOT NULL DEFAULT 'info',
+    notification_status ENUM('read', 'unread') NOT NULL DEFAULT 'unread',
+    notification_link TEXT DEFAULT NULL,
+
+    notification_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    notification_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    notification_deleted_at TIMESTAMP NULL DEFAULT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);

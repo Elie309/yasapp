@@ -106,6 +106,62 @@
         }
     }
 
+    #notifications-dropdown {
+        @apply  absolute right-0 mt-2 w-80 bg-white rounded h-96 overflow-x-hidden overflow-y-auto shadow-lg text-sm z-50;
+    }
+
+/* For every other child change bg of #notification-dropdown */
+    #notifications-dropdown li:nth-child(odd) {
+        @apply bg-gray-200 bg-opacity-40;
+    }
+
+    /* On hover */
+
+    #notifications-dropdown li:hover {
+        @apply bg-gray-400 bg-opacity-40;
+    }
+
+    .notification-container {
+        @apply p-4 shadow rounded-lg w-full flex flex-col justify-between items-center space-x-4;
+    }
+
+    .notification-container-read {
+        @apply flex items-center justify-between p-2 bg-gray-400 bg-opacity-40;
+    }
+
+    .notification-container-unread {
+        @apply flex items-center justify-between p-2 bg-white;
+    }
+
+    .notification-read-button {
+        @apply flex items-center justify-center w-8 h-12 hover:bg-gray-400 hover:bg-opacity-40 hover:fill-red-800 rounded-full ;
+    }
+
+    .settings-container {
+        @apply block mx-4 my-2 min-w-80 max-w-80 bg-white rounded-lg shadow-md;
+    }
+
+
+    .notification-title {
+        @apply text-sm font-semibold text-gray-800;
+    }
+
+    .notification-icon {
+        @apply flex items-center justify-center p-1 text-white rounded-full w-8 h-8;
+    }
+
+    .notification-icon-info {
+        @apply bg-green-500 bg-opacity-50;
+    }
+
+    .notification-icon-error {
+        @apply bg-red-500 bg-opacity-50;
+    }
+
+    .notification-icon-warning {
+        @apply bg-yellow-500 bg-opacity-50;
+    }
+
     /* Popover backdrop */
 
     [popover]::backdrop {
@@ -117,6 +173,7 @@
         @apply w-full px-8 sm:px-2 md:w-3/4 max-h-screen overflow-auto rounded-md shadow-md;
     }
 
+   
 
     /* HTML: <div class="loader"></div> */
     .loader {
@@ -191,6 +248,19 @@
 
 }
 
+.notification-container:hover {
+    transition: all 0.3s;
+    transform: scale(1.01);
+    
+    z-index: -1;
+}
+
+.settings-container:hover {
+    transition: all 0.3s;
+    transform: scale(1.02);
+    
+}
+
 .main-bg-image::before {
     content: '';
     position: fixed;
@@ -208,4 +278,26 @@
     /* Add the blur effect */
     /* filter: blur(8px);
     -webkit-filter: blur(8px); */
+}
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

@@ -1,6 +1,22 @@
-function toggleDropdown() {
-    var dropdown = document.getElementById('profile-dropdown');
+function toggleDropdown(id) {
+    var dropdown = document.getElementById(id);
     dropdown.classList.toggle('hidden');
+
+    // Ensure the dropdown can receive focus
+    dropdown.setAttribute('tabindex', '-1');
+    dropdown.focus();
+
+    // Add blur event listener to toggle dropdown again
+    dropdown.addEventListener('blur', function () {
+        setTimeout(function () {
+            dropdown.classList.add('hidden');
+        }, 100); // Adjust the timeout as needed
+    });
+
+    // Prevent blur event when clicking inside the dropdown
+    dropdown.addEventListener('mousedown', function (event) {
+        event.preventDefault();
+    });
 }
 
 function toggleSidebar() {
@@ -8,11 +24,9 @@ function toggleSidebar() {
     sidebar.classList.toggle('-translate-x-full');
 }
 
-
 function removeParent(event) {
     event.parentElement.remove();
 }
-
 
 function updateURLParameter(key, value) {
     const url = new URL(window.location.href);
@@ -27,8 +41,8 @@ function updateURLParameter(key, value) {
                 params.set(k, value);
             }
         });
-    }else {
-    // Update or add the parameter
+    } else {
+        // Update or add the parameter
         params.set(key, value);
     }
 
@@ -39,16 +53,16 @@ function updateURLParameter(key, value) {
 
 function closePopover(popoverId) {
     const popover = document.getElementById(popoverId);
-
     popover.hidePopover();
 }
 
 function showPopover(popoverId) {
     const popover = document.getElementById(popoverId);
-
     popover.showPopover();
 }
 
 function resetURL(url) {
     window.location.href = url;
 }
+
+
