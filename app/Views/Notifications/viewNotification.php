@@ -1,14 +1,8 @@
 <div class="container-main print-container max-w-4xl overflow-auto mb-10">
 
-    <div class="flex flex-row md:mt-0 items-center justify-between space-x-4">
-        <button onclick="window.location.href='/'" class="my-auto flex space-x-2 cursor-pointer no-print">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-            </svg>
-            <p>Return Home</p>
-        </button>
-        <h2 class="block main-title-page text-wrap">Notifications</h2>
+    <div class="flex flex-col sm:flex-row md:mt-0 items-center justify-between mb-4">
 
+        <h2 class=" main-title-page pl-4 md:p-0 text-center sm:text-start ">Notifications</h2>
         <!-- Mark all as read -->
         <select class="secondary-input max-w-40" name="" id="notification_status">
             <option value="all">All</option>
