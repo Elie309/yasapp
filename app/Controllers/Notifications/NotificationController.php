@@ -38,7 +38,7 @@ class NotificationController extends BaseController
         }
 
         return view("template/header") . 
-        view('Notifications/viewNotification', [
+        view('notifications/viewNotification', [
             'notifications' => $notifications,
             'notificationType' => NotificationServices::$NOTIFICATION_TYPE,
             'notificationStatus' => NotificationServices::$NOTIFICATION_STATUS
