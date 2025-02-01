@@ -13,7 +13,7 @@ class ClientModel extends Model
     protected $returnType       = \App\Entities\Clients\ClientEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['client_id', 'client_firstname', 'client_lastname', 'client_email', 'employee_id', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['client_id', 'client_firstname', 'client_lastname', 'client_email', 'employee_id'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -54,5 +54,4 @@ class ClientModel extends Model
 
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
-
 }

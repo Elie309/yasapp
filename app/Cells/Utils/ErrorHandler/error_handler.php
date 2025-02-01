@@ -19,3 +19,11 @@
         <p><?= esc(session('success')) ?></p>
     </div>
 <?php endif; ?>
+
+<!-- Hidden to be access through javascript -->
+<div class="hidden success-div" role="alert" id="success-div">
+
+</div>
+<div class="hidden error-div" role="alert" id="error-div">
+
+</div>

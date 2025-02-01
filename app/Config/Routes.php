@@ -96,6 +96,10 @@ $routes->post('requests/edit/(:num)', 'Requests\RequestController::updateRequest
 $routes->get('requests/delete/(:num)', 'Requests\RequestController::delete/$1');
 $routes->get('requests/export', 'Requests\RequestController::export');
 
+//Request API Routes
+$routes->get('api/requests/update-status/(:num)/(:segment)', 'API\RequestAPIController::updateRequestStatus/$1/$2');
+$routes->get('api/requests/update-priority/(:num)/(:alpha)', 'API\RequestAPIController::updateRequestPriority/$1/$2');
+
 
 //Listings
 $routes->get('listings', 'Listings\ListingsController::index');
@@ -108,6 +112,9 @@ $routes->get('listings/delete/(:num)', 'Listings\ListingsController::delete/$1')
 $routes->get('listings/export', 'Listings\ListingsController::export');
 
 
+//Notifications
+$routes->get('notifications', 'Notifications\NotificationController::index');
+
 
 //API
 
@@ -117,3 +124,11 @@ $routes->get('/api/locations/get-cities', 'API\LocationAPIController::getCities'
 $routes->get('/api/locations/get-subregions', 'API\LocationAPIController::getSubregions');
 $routes->get('/api/locations/get-regions', 'API\LocationAPIController::getRegions');
 $routes->get('/api/locations/get-countries', 'API\LocationAPIController::getCountries');
+
+//API Notifications
+$routes->get('/api/notifications', 'API\NotificationAPIController::unreadNotifications');
+$routes->get('/api/notifications/mark-read/(:num)', 'API\NotificationAPIController::markRead/$1');
+$routes->get('/api/notifications/mark-unread/(:num)', 'API\NotificationAPIController::markUnread/$1');
+$routes->get('/api/notifications/mark-all-read', 'API\NotificationAPIController::markAllRead');
+$routes->get('/api/notifications/mark-all-unread', 'API\NotificationAPIController::markAllUnread');
+$routes->get('/api/notifications/delete/(:num)', 'API\NotificationAPIController::delete/$1');

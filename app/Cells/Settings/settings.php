@@ -4,7 +4,7 @@
         <?php if (isset($setting['role']) && !in_array($this->getRole(), $setting['role'])) {
             continue;
         } ?>
-        <a href="<?= $setting['url'] ?>" class="block mx-4 my-2 min-w-80 max-w-80 bg-white rounded-lg r shadow-md overflow-hidden transform hover:scale-105 transition duration-300">
+        <a href="<?= $setting['url'] ?>" class="settings-container">
             <img src="<?= $setting['img'] ?>" alt="<?= $setting['title'] ?> Settings" 
                 class="w-full h-32 object-contain shadow-sm ">
             <div class="p-4 pt-2">

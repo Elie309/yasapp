@@ -1,7 +1,7 @@
 <div class="container-main">
     <div class="flex flex-row items-center">
 
-        <h2 class="main-title-page">Request</h2>
+        <h2 class="main-title-page text-start pl-4 md:p-0 md:text-center">Requests</h2>
         <a href="<?= base_url('requests/add') ?>" class=" border-2 border-gray-900 bg-white shadow-xl text-gray-900
                         font-bold size-14 rounded-full text-4xl flex items-center justify-center
                         hover:bg-gray-900 hover:text-white transition duration-300 ease-in-out">
