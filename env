@@ -66,3 +66,15 @@ app.baseURL = ''
 #--------------------------------------------------------------------
 
 # logger.threshold = 4
+
+#--------------------------------------------------------------------
+# AWS S3
+#--------------------------------------------------------------------
+
+# aws.accessKeyId = your-access-key-id
+# aws.secretAccessKey = your-secret-access-key
+# aws.bucketName = your-bucket-name
+# aws.region = eu-central-003
+# aws.endpoint = s3.eu-central-003.backblazeb2.com
+
+#--------------------------------------------------------------------

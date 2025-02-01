@@ -115,6 +115,11 @@ $routes->get('listings/export', 'Listings\ListingsController::export');
 //Notifications
 $routes->get('notifications', 'Notifications\NotificationController::index');
 
+// Uploads Routes
+$routes->get('uploads', 'Uploads\UploadController::index');
+$routes->post('uploads/upload-image', 'Uploads\UploadController::uploadImage');
+$routes->post('uploads/upload-video', 'Uploads\UploadController::uploadVideo');
+
 
 //API
 
