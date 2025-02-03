@@ -76,5 +76,7 @@ app.baseURL = ''
 # aws.bucketName = your-bucket-name
 # aws.region = eu-central-003
 # aws.endpoint = s3.eu-central-003.backblazeb2.com
+#TO PUT TO TRUE ON PRODUCTION
+# aws.ssl.verify = true
 
 #--------------------------------------------------------------------

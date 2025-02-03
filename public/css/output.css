@@ -875,7 +875,7 @@ video {
   justify-content: center;
 }
 
-.pagination-container ul>li {
+.pagination-container ul > li {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   display: inline;
@@ -885,7 +885,7 @@ video {
   border-color: rgb(55 65 81 / var(--tw-border-opacity));
 }
 
-.pagination-container ul>li:hover {
+.pagination-container ul > li:hover {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   cursor: pointer;
@@ -1122,32 +1122,32 @@ video {
 
 @keyframes l17 {
   0% {
-    background-position: 0% -100%, 50% -100%, 100% -100%
+    background-position: 0% -100%, 50% -100%, 100% -100%;
   }
 
   16.67% {
-    background-position: 0% 50%, 50% -100%, 100% -100%
+    background-position: 0% 50%, 50% -100%, 100% -100%;
   }
 
   33.33% {
-    background-position: 0% 50%, 50% 50%, 100% -100%
+    background-position: 0% 50%, 50% 50%, 100% -100%;
   }
 
   45%,
-        55% {
-    background-position: 0% 50%, 50% 50%, 100% 50%
+    55% {
+    background-position: 0% 50%, 50% 50%, 100% 50%;
   }
 
   66.67% {
-    background-position: 0% 200%, 50% 50%, 100% 50%
+    background-position: 0% 200%, 50% 50%, 100% 50%;
   }
 
   83.33% {
-    background-position: 0% 200%, 50% 200%, 100% 50%
+    background-position: 0% 200%, 50% 200%, 100% 50%;
   }
 
   100% {
-    background-position: 0% 200%, 50% 200%, 100% 200%
+    background-position: 0% 200%, 50% 200%, 100% 200%;
   }
 }
 
@@ -1170,6 +1170,33 @@ video {
   border-color: rgb(153 27 27 / var(--tw-border-opacity));
   --tw-bg-opacity: 1;
   background-color: rgb(254 226 226 / var(--tw-bg-opacity));
+}
+
+.progress-wrapper {
+  width: 100%;
+  border-radius: 0.25rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.file-progress-bar {
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 197 94 / var(--tw-bg-opacity));
+}
+
+.progress-text {
+  position: absolute;
+  inset: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
 .collapse {
@@ -2189,14 +2216,14 @@ video {
 }
 
 .main-bg-image::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
   z-index: -1;
   width: 100%;
   height: 100%;
-  background-image: url('/images/background.webp');
+  background-image: url("/images/background.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

@@ -2,309 +2,313 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer components {
-    .main-btn {
-        @apply bg-red-800 border border-red-800 text-white p-2 rounded transition-colors ease-in-out hover:border-red-800 hover:bg-red-900 focus:outline-none focus:bg-red-900;
-    }
+  .main-btn {
+    @apply bg-red-800 border border-red-800 text-white p-2 rounded transition-colors ease-in-out hover:border-red-800 hover:bg-red-900 focus:outline-none focus:bg-red-900;
+  }
 
-    .secondary-btn {
-        @apply border border-gray-700 text-gray-700 p-2 rounded transition-colors ease-in-out hover:text-white hover:bg-gray-700;
-    }
+  .secondary-btn {
+    @apply border border-gray-700 text-gray-700 p-2 rounded transition-colors ease-in-out hover:text-white hover:bg-gray-700;
+  }
 
-    .primary-btn {
-        @apply bg-white hover:bg-red-800 border border-red-800 text-red-800 hover:text-white p-2 rounded transition-colors ease-in-out focus:outline-none focus:bg-red-900
-    }
-    .primary-btn-disabled {
-        @apply bg-gray-300 border border-gray-300 text-gray-700 p-2 rounded cursor-not-allowed;
-    }
+  .primary-btn {
+    @apply bg-white hover:bg-red-800 border border-red-800 text-red-800 hover:text-white p-2 rounded transition-colors ease-in-out focus:outline-none focus:bg-red-900;
+  }
+  .primary-btn-disabled {
+    @apply bg-gray-300 border border-gray-300 text-gray-700 p-2 rounded cursor-not-allowed;
+  }
 
-    .secondary-btn-disabled {
-        @apply bg-gray-300 border border-gray-300 text-gray-700 p-2 rounded cursor-not-allowed;
-    }
+  .secondary-btn-disabled {
+    @apply bg-gray-300 border border-gray-300 text-gray-700 p-2 rounded cursor-not-allowed;
+  }
 
-    .success-div {
-        @apply text-sm my-2 bg-green-100 border border-green-800 text-green-800 text-center px-4 py-3 rounded relative;
-    }
+  .success-div {
+    @apply text-sm my-2 bg-green-100 border border-green-800 text-green-800 text-center px-4 py-3 rounded relative;
+  }
 
-    .error-div {
-        @apply text-sm my-4 bg-red-100 border border-red-800 text-red-800 text-center px-4 py-3 rounded relative;
-    }
+  .error-div {
+    @apply text-sm my-4 bg-red-100 border border-red-800 text-red-800 text-center px-4 py-3 rounded relative;
+  }
 
-    .main-title-page {
-        @apply w-full my-8 text-3xl font-bold text-center;
-    }
+  .main-title-page {
+    @apply w-full my-8 text-3xl font-bold text-center;
+  }
 
-    .secondary-title {
-        @apply w-full my-4 text-2xl font-semibold;
-    }
+  .secondary-title {
+    @apply w-full my-4 text-2xl font-semibold;
+  }
 
-    .main-input {
-        @apply w-full p-2 border border-gray-300 focus:border-red-800 rounded outline-none;
-    }
+  .main-input {
+    @apply w-full p-2 border border-gray-300 focus:border-red-800 rounded outline-none;
+  }
 
-    .main-input-readonly {
-        @apply w-full p-2 border border-gray-300 bg-gray-200 select-none rounded outline-none;
-    }
+  .main-input-readonly {
+    @apply w-full p-2 border border-gray-300 bg-gray-200 select-none rounded outline-none;
+  }
 
-    .secondary-input {
-        @apply w-full p-2 border border-gray-300 focus:border-gray-700 rounded outline-none;
-    }
+  .secondary-input {
+    @apply w-full p-2 border border-gray-300 focus:border-gray-700 rounded outline-none;
+  }
 
-    .main-label {
-        @apply my-1 block text-sm font-medium text-gray-700 text-nowrap;
-    }
+  .main-label {
+    @apply my-1 block text-sm font-medium text-gray-700 text-nowrap;
+  }
 
-    .secondary-label {
-        @apply my-1 block text-sm font-medium text-gray-700 text-wrap;
-    }
+  .secondary-label {
+    @apply my-1 block text-sm font-medium text-gray-700 text-wrap;
+  }
 
-    .main-select {
-        @apply w-full px-2 py-1 border border-gray-300 focus:border-red-800 rounded outline-none;
-    }
+  .main-select {
+    @apply w-full px-2 py-1 border border-gray-300 focus:border-red-800 rounded outline-none;
+  }
 
-    .container-main {
-        @apply container mx-auto px-3 w-full bg-gray-100 min-h-full flex flex-col mt-5;
-    }
+  .container-main {
+    @apply container mx-auto px-3 w-full bg-gray-100 min-h-full flex flex-col mt-5;
+  }
 
-    .main-checkbox {
-        @apply w-4 h-4 border focus:border-red-800 border-gray-300 rounded cursor-pointer;
-    }
+  .main-checkbox {
+    @apply w-4 h-4 border focus:border-red-800 border-gray-300 rounded cursor-pointer;
+  }
 
-    .pagination-container {
-        @apply my-8 w-full;
-    }
+  .pagination-container {
+    @apply my-8 w-full;
+  }
 
+  .pagination-container ul {
+    @apply flex flex-row items-center justify-center;
+  }
+
+  .pagination-container ul > li {
+    @apply border border-gray-700 rounded mx-1 inline;
+  }
+
+  .pagination-container ul > li:hover {
+    @apply border border-gray-700 bg-gray-700 cursor-pointer text-white rounded mx-1;
+  }
+
+  .pagination-container ul .active {
+    @apply bg-gray-700 rounded mx-1 text-white;
+  }
+
+  .pagination-container ul a {
+    @apply py-2 px-3 w-full h-full flex items-center justify-center;
+  }
+
+  /* break rows if page pagination container is in SM size */
+  @media (max-width: 640px) {
     .pagination-container ul {
-        @apply flex flex-row items-center justify-center;
+      @apply flex-wrap;
     }
 
-    .pagination-container ul>li {
-        @apply border border-gray-700 rounded mx-1 inline;
+    .pagination-container ul li {
+      @apply my-1;
+    }
+  }
+
+  #notifications-dropdown {
+    @apply absolute right-0 mt-2 w-80 bg-white rounded h-96 overflow-x-hidden overflow-y-auto shadow-lg text-sm z-50;
+  }
+
+  /* For every other child change bg of #notification-dropdown */
+  #notifications-dropdown li:nth-child(odd) {
+    @apply bg-gray-200 bg-opacity-40;
+  }
+
+  /* On hover */
+
+  #notifications-dropdown li:hover {
+    @apply bg-gray-400 bg-opacity-40;
+  }
+
+  .notification-container {
+    @apply p-4 shadow rounded-lg w-full flex flex-col justify-between items-center space-x-4;
+  }
+
+  .notification-container-read {
+    @apply flex items-center justify-between p-2 bg-gray-400 bg-opacity-40;
+  }
+
+  .notification-container-unread {
+    @apply flex items-center justify-between p-2 bg-white;
+  }
+
+  .notification-read-button {
+    @apply flex items-center justify-center w-8 h-12 hover:bg-gray-400 hover:bg-opacity-40 hover:fill-red-800 rounded-full;
+  }
+
+  .settings-container {
+    @apply block mx-4 my-2 min-w-80 max-w-80 bg-white rounded-lg shadow-md;
+  }
+
+  .notification-title {
+    @apply text-sm font-semibold text-gray-800;
+  }
+
+  .notification-icon {
+    @apply flex items-center justify-center p-1 text-white rounded-full w-8 h-8;
+  }
+
+  .notification-icon-info {
+    @apply bg-green-500 bg-opacity-50;
+  }
+
+  .notification-icon-error {
+    @apply bg-red-500 bg-opacity-50;
+  }
+
+  .notification-icon-warning {
+    @apply bg-yellow-500 bg-opacity-50;
+  }
+
+  /* Popover backdrop */
+
+  [popover]::backdrop {
+    @apply fixed inset-0 bg-black bg-opacity-50;
+  }
+
+  /* Popover content */
+  .popover {
+    @apply w-full px-8 sm:px-2 md:w-3/4 max-h-screen overflow-auto rounded-md shadow-md;
+  }
+
+  /* HTML: <div class="loader"></div> */
+  .loader {
+    width: 60px;
+    aspect-ratio: 1;
+    --_g: no-repeat radial-gradient(farthest-side, #374151 90%, #00000000);
+    background: var(--_g), var(--_g), var(--_g);
+    background-size: 25% 25%;
+    animation: l17 1s infinite;
+  }
+
+  @keyframes l17 {
+    0% {
+      background-position: 0% -100%, 50% -100%, 100% -100%;
     }
 
-    .pagination-container ul>li:hover {
-        @apply border border-gray-700 bg-gray-700 cursor-pointer text-white rounded mx-1;
+    16.67% {
+      background-position: 0% 50%, 50% -100%, 100% -100%;
     }
 
-    .pagination-container ul .active {
-        @apply bg-gray-700 rounded mx-1 text-white;
+    33.33% {
+      background-position: 0% 50%, 50% 50%, 100% -100%;
     }
 
-    .pagination-container ul a {
-        @apply py-2 px-3 w-full h-full flex items-center justify-center;
+    45%,
+    55% {
+      background-position: 0% 50%, 50% 50%, 100% 50%;
     }
 
-    /* break rows if page pagination container is in SM size */
-    @media (max-width: 640px) {
-        .pagination-container ul {
-            @apply flex-wrap;
-        }
-
-        .pagination-container ul li {
-            @apply my-1;
-        }
+    66.67% {
+      background-position: 0% 200%, 50% 50%, 100% 50%;
     }
 
-    #notifications-dropdown {
-        @apply  absolute right-0 mt-2 w-80 bg-white rounded h-96 overflow-x-hidden overflow-y-auto shadow-lg text-sm z-50;
+    83.33% {
+      background-position: 0% 200%, 50% 200%, 100% 50%;
     }
 
-/* For every other child change bg of #notification-dropdown */
-    #notifications-dropdown li:nth-child(odd) {
-        @apply bg-gray-200 bg-opacity-40;
+    100% {
+      background-position: 0% 200%, 50% 200%, 100% 200%;
     }
+  }
 
-    /* On hover */
+  .drop-zone {
+    @apply border-2 border-dashed border-gray-300 rounded p-4 flex flex-col items-center justify-center cursor-pointer;
+  }
+  .drop-zone.dragover {
+    @apply border-red-800 bg-red-100;
+  }
 
-    #notifications-dropdown li:hover {
-        @apply bg-gray-400 bg-opacity-40;
-    }
+  .progress-wrapper {
+    @apply w-full bg-gray-300 rounded;
+  }
 
-    .notification-container {
-        @apply p-4 shadow rounded-lg w-full flex flex-col justify-between items-center space-x-4;
-    }
+  .file-progress-bar {
+    @apply h-2 bg-green-500 rounded;
+  }
 
-    .notification-container-read {
-        @apply flex items-center justify-between p-2 bg-gray-400 bg-opacity-40;
-    }
-
-    .notification-container-unread {
-        @apply flex items-center justify-between p-2 bg-white;
-    }
-
-    .notification-read-button {
-        @apply flex items-center justify-center w-8 h-12 hover:bg-gray-400 hover:bg-opacity-40 hover:fill-red-800 rounded-full ;
-    }
-
-    .settings-container {
-        @apply block mx-4 my-2 min-w-80 max-w-80 bg-white rounded-lg shadow-md;
-    }
-
-
-    .notification-title {
-        @apply text-sm font-semibold text-gray-800;
-    }
-
-    .notification-icon {
-        @apply flex items-center justify-center p-1 text-white rounded-full w-8 h-8;
-    }
-
-    .notification-icon-info {
-        @apply bg-green-500 bg-opacity-50;
-    }
-
-    .notification-icon-error {
-        @apply bg-red-500 bg-opacity-50;
-    }
-
-    .notification-icon-warning {
-        @apply bg-yellow-500 bg-opacity-50;
-    }
-
-    /* Popover backdrop */
-
-    [popover]::backdrop {
-        @apply fixed inset-0 bg-black bg-opacity-50;
-    }
-
-    /* Popover content */
-    .popover {
-        @apply w-full px-8 sm:px-2 md:w-3/4 max-h-screen overflow-auto rounded-md shadow-md;
-    }
-
-   
-
-    /* HTML: <div class="loader"></div> */
-    .loader {
-        width: 60px;
-        aspect-ratio: 1;
-        --_g: no-repeat radial-gradient(farthest-side, #374151 90%, #00000000);
-        background: var(--_g), var(--_g), var(--_g);
-        background-size: 25% 25%;
-        animation: l17 1s infinite;
-    }
-
-    @keyframes l17 {
-        0% {
-            background-position: 0% -100%, 50% -100%, 100% -100%
-        }
-
-        16.67% {
-            background-position: 0% 50%, 50% -100%, 100% -100%
-        }
-
-        33.33% {
-            background-position: 0% 50%, 50% 50%, 100% -100%
-        }
-
-        45%,
-        55% {
-            background-position: 0% 50%, 50% 50%, 100% 50%
-        }
-
-        66.67% {
-            background-position: 0% 200%, 50% 50%, 100% 50%
-        }
-
-        83.33% {
-            background-position: 0% 200%, 50% 200%, 100% 50%
-        }
-
-        100% {
-            background-position: 0% 200%, 50% 200%, 100% 200%
-        }
-    }
-
-    .drop-zone {
-        @apply border-2 border-dashed border-gray-300 rounded p-4 flex flex-col items-center justify-center cursor-pointer;
-    }
-    .drop-zone.dragover {
-        @apply border-red-800 bg-red-100;
-    }
-
+  .progress-text {
+    @apply absolute inset-0 flex items-center justify-center text-xs font-semibold text-gray-700;
+  }
 }
 
 @media print {
-    .print-container {
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-        box-shadow: none;
-        font-size: 14px;
-    }
+  .print-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    font-size: 14px;
+  }
 
-    /* .break-page {
+  /* .break-page {
         page-break-before: always;
     } */
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 0;
-        /* page-break-inside: avoid; */
-    }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    /* page-break-inside: avoid; */
+  }
 
-    .print-only {
-        display: block;
-    }
+  .print-only {
+    display: block;
+  }
 
-    .no-print {
-        display: none;
-    }
-
+  .no-print {
+    display: none;
+  }
 }
 
 .notification-container:hover {
-    transition: all 0.3s;
-    transform: scale(1.01);
-    
-    z-index: -1;
+  transition: all 0.3s;
+  transform: scale(1.01);
+
+  z-index: -1;
 }
 
 .settings-container:hover {
-    transition: all 0.3s;
-    transform: scale(1.02);
-    
+  transition: all 0.3s;
+  transform: scale(1.02);
 }
 
 .main-bg-image::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
 
-    background-image: url('/images/background.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  background-image: url("/images/background.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-    /* Add the blur effect */
-    /* filter: blur(8px);
+  /* Add the blur effect */
+  /* filter: blur(8px);
     -webkit-filter: blur(8px); */
 }
 
-
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
+  background: #888;
+  border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }

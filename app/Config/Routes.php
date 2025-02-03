@@ -117,8 +117,7 @@ $routes->get('notifications', 'Notifications\NotificationController::index');
 
 // Uploads Routes
 $routes->get('uploads', 'Uploads\UploadController::index');
-$routes->post('uploads/upload-image', 'Uploads\UploadController::uploadImage');
-$routes->post('uploads/upload-video', 'Uploads\UploadController::uploadVideo');
+$routes->post('uploads', 'Uploads\UploadController::uploads');
 
 
 //API
