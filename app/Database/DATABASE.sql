@@ -1,4 +1,3 @@
-
 -- Employee TABLE
 CREATE TABLE IF NOT EXISTS employees (
     employee_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -296,4 +295,12 @@ CREATE TABLE IF NOT EXISTS notifications (
     notification_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     notification_deleted_at TIMESTAMP NULL DEFAULT NULL,
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+CREATE TABLE IF NOT EXISTS employee_subregions (
+    employee_id INT UNSIGNED NOT NULL,
+    subregion_id INT UNSIGNED NOT NULL,
+    PRIMARY KEY (employee_id, subregion_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
+    FOREIGN KEY (subregion_id) REFERENCES subregions(subregion_id)
 );

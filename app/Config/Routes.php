@@ -116,6 +116,11 @@ $routes->get('listings/export', 'Listings\ListingsController::export');
 $routes->get('notifications', 'Notifications\NotificationController::index');
 
 
+//Employee Subregion Controller
+$routes->get('settings/employee-subregions', 'Settings\EmployeeSubregionController::index');
+$routes->post('settings/employee-subregions/add', 'Settings\EmployeeSubregionController::addEmployeeSubregion');
+$routes->post('settings/employee-subregions/delete', 'Settings\EmployeeSubregionController::deleteEmployeeSubregion');
+
 //API
 
 $routes->get('/api/clients/search', 'API\ClientAPIController::search');
@@ -132,3 +137,4 @@ $routes->get('/api/notifications/mark-unread/(:num)', 'API\NotificationAPIContro
 $routes->get('/api/notifications/mark-all-read', 'API\NotificationAPIController::markAllRead');
 $routes->get('/api/notifications/mark-all-unread', 'API\NotificationAPIController::markAllUnread');
 $routes->get('/api/notifications/delete/(:num)', 'API\NotificationAPIController::delete/$1');
+
