@@ -35,8 +35,10 @@
 
     <h2 class="md:hidden main-title-page">Property of <?= esc($property->client_name) ?></h2>
 
+    <div class="no-print">
+        <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
+    </div>
 
-    <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
     <div class="my-8 bg-white p-10 shadow-md rounded-md overflow-auto text-lg w-full max-w-6xl mx-auto print-container">
 
