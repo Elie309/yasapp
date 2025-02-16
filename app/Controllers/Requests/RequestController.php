@@ -123,6 +123,9 @@ class RequestController extends BaseController
                 $this->db->transException(true)->transStart();
                 //Save the client
                 $client = $clientModel->find($clientEntity->client_id);
+                $agent_id = esc($this->request->getPost('agent_id'));
+                $clientEntity->employee_id = $agent_id;
+
 
                 $client_id = null;
 
@@ -186,8 +189,6 @@ class RequestController extends BaseController
             'requests.*,  clients.*, currencies.currency_symbol, requests.request_budget,
             CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
             cities.city_name,
-            employees.employee_id,
-            employees.employee_name,
             agents.employee_id as agent_id,
             agents.employee_name as agent_name,
             GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers,
@@ -200,7 +201,6 @@ class RequestController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('cities', 'requests.city_id = cities.city_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
-            ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
             ->where('requests.request_id', $id)
             ->groupBy('requests.request_id')
@@ -249,20 +249,16 @@ class RequestController extends BaseController
         $request = $requestModel->select(
             'requests.*, clients.*,
             currencies.currency_symbol,
-            employees.employee_id,
-            employees.employee_name,
             agents.employee_id as agent_id,
             agents.employee_name as agent_name,
             '
         )
             ->join('clients', 'requests.client_id = clients.client_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
-            ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
             ->where('requests.request_id', $id)
             ->groupStart()
-            ->where('requests.employee_id', $employee_id)
-            ->orWhere('requests.agent_id', $employee_id)
+            ->where('requests.agent_id', $employee_id)
             ->groupEnd()
             ->groupBy('requests.request_id')
             ->first();
