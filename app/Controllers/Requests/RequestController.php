@@ -280,7 +280,7 @@ class RequestController extends BaseController
         //Get the country, region and subregion to the city id
         $cityModel = new CityModel();
 
-        $city = $cityModel->select('cities.*, subregions.subregion_name, regions.region_name, countries.country_name')
+        $city = $cityModel->select('cities.*, subregions.*, regions.*, countries.country_id, countries.country_name')
             ->join('subregions', 'cities.subregion_id = subregions.subregion_id')
             ->join('regions', 'subregions.region_id = regions.region_id')
             ->join('countries', 'regions.country_id = countries.country_id')
