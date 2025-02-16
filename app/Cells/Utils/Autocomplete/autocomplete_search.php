@@ -40,6 +40,14 @@
                         fetch('<?= $searchLink ?>?search=' + query)
                             .then(response => response.json())
                             .then(data => {
+
+                                if(data.success === false) {
+                                    result.innerHTML = '<div class="p-2 list-none text-center text-lg rounded-lg">Nothing found</div>';
+                                    return;
+                                }
+
+                                data = data.data;
+
                                 let output = '<ul class="py-4 px-2">';
                                 data.forEach(item => {
                                     output +=

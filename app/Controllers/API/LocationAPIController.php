@@ -4,82 +4,155 @@ namespace App\Controllers\API;
 
 use App\Controllers\BaseController;
 use App\Models\Settings\Location\CityModel;
+use App\Models\Settings\Location\CountryModel;
+use App\Models\Settings\Location\RegionModel;
+use App\Models\Settings\Location\SubregionModel;
 
 class LocationAPIController extends BaseController
 {
     public function search()
     {
-        $search = $this->request->getGet('search');
-        $search = esc($search);
-        $search = str_replace('+', ' ', $search);
-        $search = trim($search);
+        try {
+            $search = $this->request->getGet('search');
+            $search = esc($search);
+            $search = str_replace('+', ' ', $search);
+            $search = trim($search);
 
-        $cityModel = new CityModel();
+            $cityModel = new CityModel();
 
-        $city = $cityModel->select('cities.city_id, cities.city_name, subregions.subregion_name, regions.region_name, countries.country_name')
-            ->join('subregions', 'cities.subregion_id = subregions.subregion_id', 'left')
-            ->join('regions', 'subregions.region_id = regions.region_id', 'left')
-            ->join('countries', 'regions.country_id = countries.country_id', 'left')
-            ->groupStart()
-            ->like('cities.city_name', $search)
-            ->groupEnd()
-            ->findAll();
+            $city = $cityModel->select('cities.city_id, cities.city_name, subregions.subregion_name, regions.region_name, countries.country_name')
+                ->join('subregions', 'cities.subregion_id = subregions.subregion_id', 'left')
+                ->join('regions', 'subregions.region_id = regions.region_id', 'left')
+                ->join('countries', 'regions.country_id = countries.country_id', 'left')
+                ->groupStart()
+                ->like('cities.city_name', $search)
+                ->groupEnd()
+                ->findAll();
 
-
-        return $this->response->setJSON($city);
+            return $this->response->setJSON($city);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['errors' => $e->getMessage()]);
+        }
     }
 
     public function getCities()
     {
-        $search = esc($this->request->getGet('search'));
+        try {
+            $search = esc($this->request->getGet('search'));
 
-        $cityModel = new CityModel();
+            $subregion_id = intval(esc($this->request->getGet('subregion_id')));
 
-        $cities = $cityModel->select('cities.city_id as id, cities.city_name as name')
-            ->like('cities.city_name', $search)
-            ->findAll();
+            $cityModel = new CityModel();
 
-        return $this->response->setJSON($cities);
+            $cities = $cityModel->select('cities.city_id as id, cities.city_name as name');
+
+            if($subregion_id && $subregion_id > 0){
+                $cities->where('cities.subregion_id', $subregion_id);
+            }
+
+            if($search){
+                $cities->like('cities.city_name', $search);
+            }
+
+            $cities = $cities->findAll();
+
+            return $this->response->setStatusCode(200)->setJSON([
+                'success' => true,
+                'data' => $cities
+            ]);
+
+
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'success' => false,
+                'errors' => $e->getMessage()
+            ]);
+        }
     }
 
     public function getSubregions()
     {
-        $search = esc($this->request->getGet('search'));
+        try {
+            $search = esc($this->request->getGet('search'));
 
-        $subregion = new \App\Models\Settings\Location\SubregionModel();
+            $region_id = intval(esc($this->request->getGet('region_id')));
 
-        $subregions = $subregion->select('subregions.subregion_id as id, subregions.subregion_name as name')
-            ->like('subregions.subregion_name', $search)
-            ->findAll();
+            $subregions = new SubregionModel();
 
-        return $this->response->setJSON($subregions);
+            $subregions = $subregions->select('subregions.subregion_id as id, subregions.subregion_name as name');
+            if($region_id && $region_id > 0){
+                $subregions->where('subregions.region_id', $region_id);
+            }
+            if($search){
+                $subregions->like('subregions.subregion_name', $search);
+            }
+
+            $subregions = $subregions->findAll();
+
+            return $this->response->setStatusCode(200)->setJSON([
+                'success' => true,
+                'data' => $subregions
+            ]);
+
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'success' => false,
+                'errors' => $e->getMessage()
+            ]);
+        }
     }
 
     public function getRegions()
     {
-        $search = esc($this->request->getGet('search'));
-        
-        $region = new \App\Models\Settings\Location\RegionModel();
+        try {
+            $search = esc($this->request->getGet('search'));
 
-        $regions = $region->select('regions.region_id as id, regions.region_name as name')
-            ->like('regions.region_name', $search)
-            ->findAll();
-        
+            $country_id = intval(esc($this->request->getGet('country_id')));
 
-        return $this->response->setJSON($regions);
+            $regions = new RegionModel();
+
+            $regions = $regions->select('regions.region_id as id, regions.region_name as name');
+            if($country_id && $country_id > 0){
+                $regions->where('regions.country_id', $country_id);
+            }
+            if($search){
+                $regions->like('regions.region_name', $search);
+            }
+            
+            $regions = $regions->findAll();
+
+            return $this->response->setStatusCode(200)->setJSON([
+                'success' => true,
+                'data' => $regions
+            ]);
+            
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'success' => false,
+                'errors' => $e->getMessage()
+            ]);
+        }
     }
 
     public function getCountries()
     {
-        $search = esc($this->request->getGet('search'));
-        $country = new \App\Models\Settings\Location\CountryModel();
+        try {
+            $search = esc($this->request->getGet('search'));
+            $country = new CountryModel();
 
-        $countries = $country->select('countries.country_id as id, countries.country_name as name')
-            ->like('countries.country_name', $search)
-            ->findAll();
+            $countries = $country->select('countries.country_id as id, countries.country_name as name')
+                ->like('countries.country_name', $search)
+                ->findAll();
 
-        return $this->response->setJSON($countries);
+            return $this->response->setStatusCode(200)->setJSON([
+                'success' => true,
+                'data' => $countries
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON([
+                'success' => false,
+                'errors' => $e->getMessage()
+            ]);
+        }
     }
-
-
 }

@@ -16,7 +16,6 @@ class RequestModel extends Model
         'client_id',
         'city_id',
         'currency_id',
-        'employee_id',
         'agent_id',
         'request_payment_plan',
         'request_location',
@@ -34,7 +33,6 @@ class RequestModel extends Model
         'client_id' => 'integer',
         'city_id' => 'integer',
         'currency_id' => 'integer',
-        'employee_id' => 'integer',
         'agent_id' => 'integer',
         'request_budget' => 'float',
         'created_at' => 'datetime',
@@ -55,7 +53,6 @@ class RequestModel extends Model
         'client_id' => 'required|integer',
         'city_id' => 'integer',
         'currency_id' => 'required|integer',
-        'employee_id' => 'required|integer',
         'agent_id' => 'permit_empty|integer',
         'request_payment_plan' => 'permit_empty|string',
         'request_location' => 'permit_empty|string',
@@ -78,10 +75,6 @@ class RequestModel extends Model
         'currency_id' => [
             'required' => 'Currency is required',
             'integer' => 'Currency is invalid'
-        ],
-        'employee_id' => [
-            'required' => 'Employee is required',
-            'integer' => 'Employee is invalid'
         ],
         'agent_id' => [
             'integer' => 'Agent is invalid'

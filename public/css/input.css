@@ -51,6 +51,7 @@
         @apply w-full p-2 border border-gray-300 focus:border-gray-700 rounded outline-none;
     }
 
+
     .main-label {
         @apply my-1 block text-sm font-medium text-gray-700 text-nowrap;
     }

@@ -4,7 +4,6 @@ namespace App\Controllers\Requests;
 
 use App\Controllers\BaseController;
 use App\Entities\Clients\ClientEntity;
-use App\Entities\Clients\PhoneEntity;
 use App\Entities\Requests\RequestEntity;
 use App\Models\Clients\ClientModel;
 use App\Models\Clients\PhoneModel;
@@ -54,7 +53,6 @@ class RequestController extends BaseController
 
         return view('template/header')
             . view('requests/requests', [
-                'employee_id' => $employee_id,
                 'requests' => $request,
                 'agents' => $agents,
                 'requestStates' => $this->requestStates,
@@ -66,10 +64,7 @@ class RequestController extends BaseController
 
     public function add()
     {
-
-
         $employee_id = $this->session->get('id');
-        $name = $this->session->get('name');
 
         $currencyModel = new CurrenciesModel();
         $currencies = $currencyModel->findAll();
@@ -86,9 +81,8 @@ class RequestController extends BaseController
         return view('template/header')
             . view('requests/saveRequest', [
                 'method' => 'NEW_REQUEST',
-                'employee_id' => $employee_id,
-                'employee_name' => $name,
                 'countries' => $countries,
+                'employee_id' => $employee_id,
                 'agents' => $agents,
                 'currencies' => $currencies,
                 'requestStates' => $this->requestStates,
@@ -100,8 +94,6 @@ class RequestController extends BaseController
     public function addRequest()
     {
 
-
-        $employee_id = $this->session->get('id');
 
         $clientModel = new ClientModel();
         $clientEntity = new ClientEntity();
@@ -117,7 +109,6 @@ class RequestController extends BaseController
             $phones = $this->request->getPost('phone_number');
             $countries = $this->request->getPost('country_id');
             $requestEntity->fill($this->request->getPost());
-            $requestEntity->employee_id = $employee_id;
 
 
             $isValid = $requestEntity->isValid();
@@ -132,6 +123,9 @@ class RequestController extends BaseController
                 $this->db->transException(true)->transStart();
                 //Save the client
                 $client = $clientModel->find($clientEntity->client_id);
+                $agent_id = esc($this->request->getPost('agent_id'));
+                $clientEntity->employee_id = $agent_id;
+
 
                 $client_id = null;
 
@@ -192,15 +186,14 @@ class RequestController extends BaseController
         }
 
         $request = $requestModel->select(
-            'requests.*,  clients.*,
+            'requests.*,  clients.*, currencies.currency_symbol, requests.request_budget,
             CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
+            cities.city_id,
             cities.city_name,
-            CONCAT(requests.request_budget, " ", currencies.currency_symbol) AS request_fees,
-            employees.employee_id,
-            employees.employee_name,
             agents.employee_id as agent_id,
             agents.employee_name as agent_name,
             GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers,
+            CONCAT(countries_loc.country_name, ", ", regions.region_name, ", ", subregions.subregion_name, ", ", cities.city_name, ", ", requests.request_location) as request_detailed_location,
             requests.created_at as request_created_at,
             requests.updated_at as request_updated_at
             '
@@ -210,7 +203,9 @@ class RequestController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('cities', 'requests.city_id = cities.city_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
-            ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
+            ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
+            ->join('regions', 'regions.region_id = subregions.region_id', 'left')
+            ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
             ->where('requests.request_id', $id)
             ->groupBy('requests.request_id')
@@ -247,36 +242,39 @@ class RequestController extends BaseController
 
 
         $employee_id = $this->session->get('id');
-        $name = $this->session->get('name');
 
         $id = esc($id);
+
+        if(empty($id)){
+            return redirect()->back()->with('errors', ['Invalid request']);
+        }
 
         $requestModel = new RequestModel();
 
         $request = $requestModel->select(
             'requests.*, clients.*,
             currencies.currency_symbol,
-            employees.employee_id,
-            employees.employee_name,
             agents.employee_id as agent_id,
             agents.employee_name as agent_name,
             '
         )
             ->join('clients', 'requests.client_id = clients.client_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
-            ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
             ->where('requests.request_id', $id)
             ->groupStart()
-            ->where('requests.employee_id', $employee_id)
-            ->orWhere('requests.agent_id', $employee_id)
+            ->where('requests.agent_id', $employee_id)
             ->groupEnd()
             ->groupBy('requests.request_id')
             ->first();
 
 
         if (!$request) {
-            return redirect()->back()->with('errors', ['You are not allowed to edit this request']);
+            return redirect()->to('/requests')->with('errors', ['You are not allowed to edit this request']);
+        }
+
+        if($request->agent_id !== $employee_id){
+            return redirect()->to('/requests')->with('errors', ['You are not allowed to edit this request']);
         }
 
         $phoneModel = new PhoneModel();
@@ -287,7 +285,7 @@ class RequestController extends BaseController
         //Get the country, region and subregion to the city id
         $cityModel = new CityModel();
 
-        $city = $cityModel->select('cities.*, subregions.subregion_name, regions.region_name, countries.country_name')
+        $location = $cityModel->select('cities.*, subregions.*, regions.*, countries.country_id, countries.country_name')
             ->join('subregions', 'cities.subregion_id = subregions.subregion_id')
             ->join('regions', 'subregions.region_id = regions.region_id')
             ->join('countries', 'regions.country_id = countries.country_id')
@@ -309,11 +307,9 @@ class RequestController extends BaseController
         return view('template/header')
             . view('requests/saveRequest', [
                 'method' => 'UPDATE_REQUEST',
-                'employee_id' => $employee_id,
-                'employee_name' => $name,
                 'agents' => $agents,
                 'countries' => $countries,
-                'city' => $city,
+                'location' => $location,
                 'phones' => $phones,
                 'request' => $request,
                 'currencies' => $currencies,
@@ -355,7 +351,7 @@ class RequestController extends BaseController
                     return redirect()->back()->with('errors', ['Request not found']);
                 }
 
-                if ($request->employee_id !== $this->session->get('id') && $request->agent_id !== $this->session->get('id')) {
+                if ($request->agent_id !== $this->session->get('id')) {
                     return redirect()->back()->with('errors', ['You are not allowed to edit this request']);
                 }
 
@@ -440,7 +436,7 @@ class RequestController extends BaseController
             return redirect()->back()->with('errors', ['Request not found']);
         }
 
-        if ($request->employee_id !== $this->session->get('id') && $request->agent_id !== $this->session->get('id')) {
+        if ($request->agent_id !== $this->session->get('id')) {
             return redirect()->back()->with('errors', ['You are not allowed to delete this request']);
         }
 
@@ -512,7 +508,6 @@ class RequestController extends BaseController
                     GROUP_CONCAT(CONCAT(countries.country_code, " " ,phones.phone_number) SEPARATOR ", ") as phone_numbers,
                     cities.city_name, 
                     CONCAT(FORMAT(requests.request_budget, 0), " ", currencies.currency_symbol) AS request_fees,
-                    employees.employee_name,
                     agents.employee_name as agent_name,
                     requests.created_at as request_created_at,
                     requests.updated_at as request_updated_at
@@ -522,13 +517,11 @@ class RequestController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('cities', 'requests.city_id = cities.city_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
-            ->join('employees', 'requests.employee_id = employees.employee_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left');
 
         if ($this->session->get('role') !== 'admin') {
             $request = $request->groupStart()
-                ->where('requests.employee_id', $employee_id)
-                ->orWhere('requests.agent_id', $employee_id)
+                ->where('requests.agent_id', $employee_id)
                 ->groupEnd();
         }
 

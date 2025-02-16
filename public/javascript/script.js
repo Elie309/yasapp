@@ -65,4 +65,21 @@ function resetURL(url) {
     window.location.href = url;
 }
 
+//Remove tempData if it exists
+if (sessionStorage.getItem('tempTableData')) {
+    sessionStorage.removeItem('tempTableData');
+}
+
+function formatNumbersToPrice(){
+    const numbers = document.querySelectorAll('.format-price');
+    numbers.forEach(function(number){
+        const textContent = number.textContent.trim();
+        const numericValue = parseFloat(textContent.replace(/[^0-9.-]+/g, ''));
+        
+
+        number.textContent = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(numericValue);
+    });
+}
+
+formatNumbersToPrice();
 

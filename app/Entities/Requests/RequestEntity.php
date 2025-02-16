@@ -15,7 +15,6 @@ class RequestEntity extends Entity
         'client_id' => 'integer',
         'city_id' => 'integer',
         'currency_id' => 'integer',
-        'employee_id' => 'integer',
         'agent_id' => 'integer',
         'request_budget' => 'float',
         'created_at' => 'datetime',
@@ -37,12 +36,8 @@ class RequestEntity extends Entity
             $errors[] = 'Currency is invalid';
         }
 
-        if (empty($this->employee_id) || !is_int($this->employee_id) || $this->employee_id < 1) {
-            $errors[] = 'Employee is invalid';
-        }
-
         if (empty($this->agent_id) || !is_int($this->agent_id) || $this->agent_id < 1) {
-            $errors[] = 'Employee is invalid';
+            $errors[] = 'Agent is invalid';
         }
 
         if(!is_string($this->request_location)) {
