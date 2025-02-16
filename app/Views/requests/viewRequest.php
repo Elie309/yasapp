@@ -31,9 +31,11 @@
 
     <h2 class="md:hidden main-title-page">Request Of <?= $request->client_name ?></h2>
 
-    <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
+    <div class="no-print">
+        <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
+    </div>
 
-    <div class="flex flex-col md:flex-row justify-around space-y-4 md:space-y-0 md:space-x-4 w-full">
+    <div class="no-print flex flex-col md:flex-row justify-around space-y-4 md:space-y-0 md:space-x-4 w-full">
         <div class="w-full md:w-2/6 grid grid-cols-2 gap-2 place-items-center">
             <strong class="justify-self-start">Request Priority:</strong>
             <select name="request_priority" id="request_priority" class="secondary-input min-w-40 max-w-60">
@@ -89,10 +91,9 @@
             <tr>
                 <th>Request Budget:</th>
                 <td>
-                    <?= $request->request_fees ?>
+                    <pre><span class="p-0 format-price"><?= $request->request_budget ?></span> <?= $request->currency_symbol ?></pre>
                 </td>
             </tr>
-
             <tr>
                 <th>Created At</th>
                 <td><?= esc((new DateTime($request->request_created_at))->format('D d M Y H:i:s T')) ?></td>
@@ -105,6 +106,7 @@
                 <th>Request Description:</th>
                 <td><?= $request->comments ?></td>
             </tr>
+
         </table>
     </div>
 </div>
@@ -158,6 +160,8 @@
                             successDiv.classList.remove('hidden');
                             successDiv.innerHTML = data.message;
                         } else {
+                            //Prevent changing the value of the select element
+                            requestPriority.value = '<?= $request->request_priority ?>';
                             errorDiv.classList.remove('hidden');
                             errorDiv.innerHTML = data.message;
                         }
@@ -188,6 +192,8 @@
                             successDiv.classList.remove('hidden');
                             successDiv.innerHTML = data.message;
                         } else {
+                            //Prevent changing the value of the select element
+                            requestState.value = '<?= $request->request_state ?>';
                             errorDiv.classList.remove('hidden');
                             errorDiv.innerHTML = data.message;
                         }

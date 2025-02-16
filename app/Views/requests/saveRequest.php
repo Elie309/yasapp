@@ -86,15 +86,6 @@
                 <hr class="mx-2" />
 
                 <div class="flex flex-col w-full mb-4">
-                    <h3 class="secondary-title">Employee</h3>
-                    <?php if ($method == 'NEW_REQUEST') : ?>
-                        <input type="hidden" name="employee_id" id="employee_id" value="<?= $employee_id ?>" required><br>
-                        <input type="text" class="main-input-readonly" readonly name="employee_name" id="employee_name" value="<?= $employee_name ?>" required><br>
-                    <?php elseif ($method == "UPDATE_REQUEST") : ?>
-                        <input type="hidden" name="employee_id" id="employee_id" value="<?= $request->employee_id ?>" required><br>
-                        <input type="text" class="main-input-readonly" readonly name="employee_name" id="employee_name" value="<?= $request->employee_name ?>" required><br>
-                    <?php endif; ?>
-
                     <div>
                         <label class="main-label" for="agent">Agent:</label>
 
@@ -318,10 +309,6 @@
             }
 
 
-
-            if (data.employee_id) {
-                document.getElementById('employee_id').value = data.employee_id;
-            }
 
             if (city) {
                 document.getElementById('city_id').value = city.city_id;

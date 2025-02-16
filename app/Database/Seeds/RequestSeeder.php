@@ -24,7 +24,6 @@ class RequestSeeder extends Seeder
                 'client_id' => $faker->randomElement($clientIds)['client_id'],
                 'city_id' => $faker->randomElement($cityIds)['city_id'],
                 'currency_id' => $faker->randomElement($currencyIds)['currency_id'],
-                'employee_id' => $faker->randomElement($employeeIds)['employee_id'],
                 'agent_id' => $faker->randomElement($employeeIds)['employee_id'],
                 'request_payment_plan' => $faker->randomElement(['cash to be paid directly', 'installments for over 30 years', 'loan from bank', 'other']),
                 'request_location' => $faker->address(),
