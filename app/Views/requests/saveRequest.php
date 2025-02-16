@@ -55,7 +55,9 @@
                                 'defaultCountryId' => $location->country_id,
                                 'defaultRegionId' => $location->region_id,
                                 'defaultSubregionId' => $location->subregion_id,
-                                'defaultCityId' => $location->city_id
+                                'defaultCityId' => $location->city_id,
+                                'employee_id' => $employee_id,
+                                'role' => $role
                             ]
                         ) ?>
                     <?php endif; ?>

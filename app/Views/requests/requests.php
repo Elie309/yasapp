@@ -73,8 +73,15 @@
 
         <?php
 
+        $adminHeaders = [];
+
+        if (isset($agents) && !empty($agents)) {
+            $adminHeaders['agent_name'] = 'Agent';
+        }
+        
+
+
         $tableHeaders = [
-            'agent_name' => 'Agent',
             'client_name' => 'Client',
             'phone_numbers' => 'Phones',
             'city_name' => 'City',
@@ -87,8 +94,7 @@
             'request_updated_at' => 'Updated At',
         ];
 
-        //Change the values of Status to html
-
+        $tableHeaders = array_merge($adminHeaders, $tableHeaders);
 
         ?>
 

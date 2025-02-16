@@ -83,6 +83,7 @@ class RequestController extends BaseController
                 'method' => 'NEW_REQUEST',
                 'countries' => $countries,
                 'employee_id' => $employee_id,
+                'role' => $this->session->get('role'),
                 'agents' => $agents,
                 'currencies' => $currencies,
                 'requestStates' => $this->requestStates,
@@ -315,6 +316,8 @@ class RequestController extends BaseController
                 'currencies' => $currencies,
                 'requestStates' => $this->requestStates,
                 'requestPriorities' => $this->requestPriorities,
+                'employee_id' => $employee_id,
+                'role' => $this->session->get('role'),
             ])
             . view('template/footer');
     }

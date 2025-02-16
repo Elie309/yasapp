@@ -63,7 +63,6 @@
                 <!-- Location -->
                 <div>
                     <h3 class="secondary-title">Location</h3>
-                    <input type="hidden" name="city_id" id="city_id" required><br>
 
                     <div class="flex flex-col w-full mb-4">
                         <?php if ($method == 'NEW_REQUEST'): ?>
@@ -76,7 +75,9 @@
                                     'defaultCountryId' => $location->country_id,
                                     'defaultRegionId' => $location->region_id,
                                     'defaultSubregionId' => $location->subregion_id,
-                                    'defaultCityId' => $location->city_id
+                                    'defaultCityId' => $location->city_id,
+                                    'employee_id' => $employee_id,
+                                    'role' => $role
                                 ]
                             ) ?>
                         <?php endif; ?>

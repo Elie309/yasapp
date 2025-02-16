@@ -16,7 +16,7 @@
                 <option value="">Select Region</option>
                 <?php if (isset($defaultData['regions'])): ?>
                     <?php foreach ($defaultData['regions'] as $region): ?>
-                        <option value="<?= $region->region_id ?>" <?= $region->region_id == $defaultRegionId ? 'selected' : '' ?>><?= $region->region_name ?></option>
+                        <option value="<?= $region->id ?>" <?= $region->id == $defaultRegionId ? 'selected' : '' ?>><?= $region->name ?></option>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </select>
@@ -27,7 +27,7 @@
                 <option value="">Select Subregion</option>
                 <?php if (isset($defaultData['subregions'])): ?>
                     <?php foreach ($defaultData['subregions'] as $subregion): ?>
-                        <option value="<?= $subregion->subregion_id ?>" <?= $subregion->subregion_id == $defaultSubregionId  ? 'selected' : '' ?>><?= $subregion->subregion_name ?></option>
+                        <option value="<?= $subregion->id ?>" <?= $subregion->id == $defaultSubregionId ? 'selected' : '' ?>><?= $subregion->name ?></option>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </select>
@@ -38,7 +38,7 @@
                 <option value="">Select City</option>
                 <?php if (isset($defaultData['cities'])): ?>
                     <?php foreach ($defaultData['cities'] as $city): ?>
-                        <option value="<?= $city->city_id ?>" <?= $city->city_id == $defaultCityId ? 'selected' : '' ?>><?= $city->city_name ?></option>
+                        <option value="<?= $city->id ?>" <?= $city->id == $defaultCityId ? 'selected' : '' ?>><?= $city->name ?></option>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </select>
@@ -65,8 +65,7 @@
         selectLebanon();
     <?php endif; ?>
 
-
-    function fetchRegions(countryId, callback = null) {
+    function fetchRegions(countryId) {
         if (!countryId) return;
         fetch(`<?= $searchRegionLink ?>?country_id=${countryId}`)
             .then(response => response.json())
@@ -86,13 +85,10 @@
                 });
                 regionSelect.disabled = false;
 
-                if (callback) {
-                    callback();
-                }
             });
     }
 
-    function fetchSubregions(regionId, callback = null) {
+    function fetchSubregions(regionId) {
         if (!regionId) return;
         fetch(`<?= $searchSubregionLink ?>?region_id=${regionId}`)
             .then(response => response.json())
@@ -112,13 +108,10 @@
                 });
                 subregionSelect.disabled = false;
 
-                if (callback) {
-                    callback();
-                }
             });
     }
 
-    function fetchCities(subregionId, callback = null) {
+    function fetchCities(subregionId) {
         if (!subregionId) return;
         fetch(`<?= $searchCityLink ?>?subregion_id=${subregionId}`)
             .then(response => response.json())
@@ -137,10 +130,6 @@
                     citySelect.innerHTML += `<option value="${city.id}">${city.name}</option>`;
                 });
                 citySelect.disabled = false;
-
-                if (callback) {
-                    callback();
-                }
 
             });
     }

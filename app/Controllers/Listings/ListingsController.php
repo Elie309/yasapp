@@ -124,6 +124,8 @@ class ListingsController extends BaseController
                 'apartmentGender' => $apartmentGender,
                 'propertyStatus' => $propertyStatus,
                 'apartmentTypes' => $apartmentTypes,
+                'employee_id' => $this->session->get('id'),
+                'role' => $this->session->get('role')
             ]) .
             view('template/footer');
     }
@@ -396,11 +398,14 @@ class ListingsController extends BaseController
                     'location' => $location,
                     'landDetails' => $landDetails,
                     'apartmentDetails' => $apartmentDetails,
-                    'phones' => $phones
+                    'phones' => $phones,
+                    'employee_id' => $employee_id,
+                    'role' => $role
 
                 ]) .
                 view('template/footer');
         } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
             return redirect()->to('listings')->with('errors', 'An error occurred while accessing the property');
         }
     }

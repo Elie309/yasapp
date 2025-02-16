@@ -7,6 +7,7 @@ use App\Models\Settings\Location\CountryModel;
 use App\Models\Settings\Location\RegionModel;
 use App\Models\Settings\Location\SubregionModel;
 use CodeIgniter\View\Cells\Cell;
+use App\Services\LocationServices;
 
 class LocationInternalFormCell extends Cell
 {
@@ -23,6 +24,9 @@ class LocationInternalFormCell extends Cell
 
     public $defaultData;
     public $isFetchPossible;
+
+    public $employee_id;
+    public $role;
 
     public function __construct()
     {
@@ -46,39 +50,44 @@ class LocationInternalFormCell extends Cell
         $this->setDefaultData();
     }
 
-    public function setDefaultData(){
-
-        if(!isset($this->isFetchPossible) && !$this->isFetchPossible){
+    public function setDefaultData()
+    {
+        if (!isset($this->isFetchPossible) && !$this->isFetchPossible) {
             return;
         }
 
         $this->defaultData = [];
+        $role = esc($this->employee_id);
+        $locationServices = new LocationServices();
 
-        if($this->defaultCountryId){
-            $regionModel = new RegionModel();
-            $defaultData['regions'] = $regionModel->where('country_id', $this->defaultCountryId)->findAll();
-        }else{
-            throw new \Exception('Default Country Id is required');
+        if($this->defaultRegionId) {
+            if ($role !== 'manager' && $role !== 'admin') {
+                $this->defaultData['regions'] = $locationServices->getRegionsByEmployeeId($this->employee_id);
+                $this->defaultData['subregions'] = $locationServices->getSubregionsByEmployeeId($this->employee_id);
+            } else {
+                $regionModel = new RegionModel();
+                $this->defaultData['regions'] = $regionModel->select('region_id as id, region_name as name')
+                                                           ->where('country_id', $this->defaultCountryId)
+                                                           ->findAll();
+                $subregionModel = new SubregionModel();
+                $this->defaultData['subregions'] = $subregionModel->select('subregion_id as id, subregion_name as name')
+                                                                 ->where('region_id', $this->defaultRegionId)
+                                                                 ->findAll();
+            }
+        } else {
+            throw new \Exception('Default Region/Subregion Id is required');
         }
 
-        if($this->defaultRegionId){
-            $subregionModel = new SubregionModel();
-            $defaultData['subregions'] = $subregionModel->where('region_id', $this->defaultRegionId)->findAll();
-        }else {
-            throw new \Exception('Default Region Id is required');
-        }
-
-        if($this->defaultSubregionId){
+        if ($this->defaultSubregionId) {
             $cityModel = new CityModel();
-            $defaultData['cities'] = $cityModel->where('subregion_id', $this->defaultSubregionId)->findAll();
-        }else{
+            $this->defaultData['cities'] = $cityModel->select('city_id as id, city_name as name')
+                                                     ->where('subregion_id', $this->defaultSubregionId)
+                                                     ->findAll();
+        } else {
             throw new \Exception('Default Subregion Id is required');
         }
 
-        $this->defaultData = $defaultData;
-
-
-
+        log_message('info', 'Default Data: ' . json_encode($this->defaultData));
     }
 
 }
