@@ -18,13 +18,15 @@
                     <path d="M15.5 20.75H8.5C8.16848 20.75 7.85054 20.6183 7.61612 20.3839C7.3817 20.1495 7.25 19.8315 7.25 19.5V12.5C7.25 12.1685 7.3817 11.8505 7.61612 11.6161C7.85054 11.3817 8.16848 11.25 8.5 11.25H15.5C15.8315 11.25 16.1495 11.3817 16.3839 11.6161C16.6183 11.8505 16.75 12.1685 16.75 12.5V19.5C16.75 19.8315 16.6183 20.1495 16.3839 20.3839C16.1495 20.6183 15.8315 20.75 15.5 20.75ZM8.75 19.25H15.25V12.75H8.75V19.25Z" fill="#000000" />
                 </svg>
             </button>
-            <a href="/requests/edit/<?= $request->request_id ?>" class="my-auto flex space-x-2 cursor-pointer no-print">
-                <p>Edit</p>
-                <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                    <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
-                    <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
-                </svg>
-            </a>
+            <?php if ($request->agent_id === $employee_id) : ?>
+                <a href="/requests/edit/<?= $request->request_id ?>" class="my-auto flex space-x-2 cursor-pointer no-print">
+                    <p>Edit</p>
+                    <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                        <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+                    </svg>
+                </a>
+            <?php endif; ?>
         </div>
 
     </div>
@@ -38,7 +40,7 @@
     <div class="no-print flex flex-col md:flex-row justify-around space-y-4 md:space-y-0 md:space-x-4 w-full">
         <div class="w-full md:w-2/6 grid grid-cols-2 gap-2 place-items-center">
             <strong class="justify-self-start">Request Priority:</strong>
-            <select name="request_priority" id="request_priority" class="secondary-input min-w-40 max-w-60">
+            <select name="request_priority" id="request_priority" <?= $request->agent_id !== $employee_id ? 'disabled' : '' ?> class="secondary-input min-w-40 max-w-60">
                 <?php foreach ($requestPriorities as $requestPriority): ?>
                     <option value="<?= $requestPriority ?>"
                         <?= strtolower($requestPriority) === strtolower($request->request_priority) ? 'selected' : '' ?>><?= ucfirst($requestPriority) ?></option>
@@ -47,7 +49,7 @@
         </div>
         <div class=" w-full md:w-2/6 grid grid-cols-2 gap-2 place-items-center">
             <strong class="justify-self-start">Request State:</strong>
-            <select name="request_state" id="request_state" class="secondary-input min-w-40 max-w-60">
+            <select name="request_state" id="request_state" <?= $request->agent_id !== $employee_id ? 'disabled' : '' ?> class="secondary-input min-w-40 max-w-60">
                 <?php foreach ($requestStates as $requestState): ?>
                     <option value="<?= $requestState ?>"
                         <?= strtolower($requestState) === strtolower($request->request_state) ? 'selected' : '' ?>><?= ucfirst($requestState) ?></option>
@@ -55,6 +57,17 @@
             </select>
         </div>
     </div>
+
+
+    <div class="hidden print-only w-3/4 mx-auto ">
+        <div class="grid grid-cols-4 gap-4 my-4 ">
+            <strong>Request Priority:</strong>
+            <p class="main-label"><?= ucfirst($request->request_priority) ?></p>
+            <strong>Request State:</strong>
+            <p class="main-label"><?= ucfirst($request->request_state) ?></p>
+        </div>
+    </div>
+
 
     <div class="my-8 bg-white p-10 shadow-md rounded-md overflow-auto text-lg w-full max-w-6xl mx-auto print-container">
 
@@ -91,7 +104,7 @@
             <tr>
                 <th>Request Budget:</th>
                 <td>
-                    <pre><span class="p-0 format-price"><?= $request->request_budget ?></span> <?= $request->currency_symbol ?></pre>
+                    <span class="p-0 format-price"><?= $request->request_budget ?></span><?= " " . $request->currency_symbol ?>
                 </td>
             </tr>
             <tr>
