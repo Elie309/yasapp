@@ -92,8 +92,7 @@
                 <p>Subregion: </p>
                 <span id="subregion_name"></span>
             </div>
-            <input type="hidden" name="employee_id" id="delete_employee_id">
-            <input type="hidden" name="subregion_id" id="delete_subregion_id">
+            <input type="hidden" name="employee_subregions_id" id="employee_subregions_id" value="">
             <div class="flex justify-center w-full mt-4">
                 <button type="button" class="primary-btn w-1/4 mr-4" onclick="closePopover('DeleteEmployeeSubregion')">Cancel</button>
                 <button type="submit" class="secondary-btn w-1/4">Delete</button>
@@ -109,10 +108,9 @@
             const data = JSON.parse(sessionStorage.getItem('tempTableData'));
 
             if (action === 'delete') {
-                document.getElementById('delete_employee_id').value = data.employee_id;
-                document.getElementById('delete_subregion_id').value = data.subregion_id;
                 document.getElementById('employee_name').innerText = data.employee_name;
                 document.getElementById('subregion_name').innerText = data.subregion_name;
+                document.getElementById('employee_subregions_id').value = data.employee_subregions_id;
             }
 
         }

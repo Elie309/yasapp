@@ -7,6 +7,8 @@ use App\Models\Settings\EmployeeSubregionModel;
 use App\Models\Settings\Location\SubregionModel;
 use App\Models\Settings\EmployeeModel;
 use App\Entities\Settings\EmployeeSubregionEntity;
+use Exception;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 
 /**
  * Class EmployeeSubregionController
@@ -26,61 +28,83 @@ class EmployeeSubregionController extends BaseController
 
     public function index()
     {
-        $results = $this->employeeSubregionModel->select('employee_subregions.*, employees.employee_name, subregions.subregion_name')
-            ->join('employees', 'employees.employee_id = employee_subregions.employee_id')
-            ->join('subregions', 'subregions.subregion_id = employee_subregions.subregion_id')
-            ->findAll();
+        try {
+            $results = $this->employeeSubregionModel->select('employee_subregions.*, employees.employee_name, subregions.subregion_name')
+                ->join('employees', 'employees.employee_id = employee_subregions.employee_id')
+                ->join('subregions', 'subregions.subregion_id = employee_subregions.subregion_id')
+                ->findAll();
 
-        return view("template/header") .
-            view('settings/employee_subregions', [
-                'results' => $results,
-                'employees' => $this->employeeModel->findAll(),
-                'subregions' => $this->subregionModel->findAll(),
-            ]) .
-            view("template/footer");
+            return view("template/header") .
+                view('settings/employee_subregions', [
+                    'results' => $results,
+                    'employees' => $this->employeeModel->findAll(),
+                    'subregions' => $this->subregionModel->findAll(),
+                ]) .
+                view("template/footer");
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            return redirect()->back()->with('errors', 'An error occurred while fetching data.');
+        }
     }
 
     public function addEmployeeSubregion()
     {
-        $employeeId = $this->request->getPost('employee_id');
-        $subregionId = $this->request->getPost('subregion_id');
+        try {
+            $employeeId = esc($this->request->getPost('employee_id'));
+            $subregionId = esc($this->request->getPost('subregion_id'));
 
-        if (!$this->employeeModel->find($employeeId) || !$this->subregionModel->find($subregionId)) {
-            return redirect()->back()->with('error', 'Invalid Employee or Subregion.');
-        }
+            if (!isset($employeeId) || !isset($subregionId)) {
+                return redirect()->back()->with('errors', 'Employee ID or Subregion ID is missing.');
+            }
 
-        $employeeSubregion = new EmployeeSubregionEntity();
-        $employeeSubregion->employee_id = $employeeId;
-        $employeeSubregion->subregion_id = $subregionId;
+            if (!$this->employeeModel->find($employeeId) || !$this->subregionModel->find($subregionId)) {
+                return redirect()->back()->with('errors', 'Invalid Employee or Subregion.');
+            }
 
-        if ($this->employeeSubregionModel->insert($employeeSubregion)) {
+            $employeeSubregion = new EmployeeSubregionEntity();
+            $employeeSubregion->employee_id = $employeeId;
+            $employeeSubregion->subregion_id = $subregionId;
+
+            if (!$this->employeeSubregionModel->save($employeeSubregion)) {
+                return redirect()->back()->with('errors', 'Failed to add Employee Subregion.');
+            } 
             return redirect()->to('/settings/employee-subregions')->with('success', 'Employee Subregion added successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Failed to add Employee Subregion.');
+
+        } catch (DatabaseException $e) {
+
+            if ($e->getCode() == 1062) { // Duplicate entry error code
+                return redirect()->back()->with('errors', 'Duplicate entry for Employee and Subregion.');
+            }
+            return redirect()->back()->with('errors', $e->getMessage());
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            return redirect()->back()->with('errors', $e->getMessage());
         }
     }
 
-
     public function deleteEmployeeSubregion()
     {
-        //Get posts
-        $employeeId = $this->request->getPost('employee_id');
-        $subregionId = $this->request->getPost('subregion_id');
+        try {
+            $employeeSubregionId = esc($this->request->getPost('employee_subregions_id'));
 
-        //Check if the employee subregion exists
-        $employeeSubregion = $this->employeeSubregionModel->where('employee_id', $employeeId)
-            ->where('subregion_id', $subregionId)
-            ->first();
-        
-        if (!$employeeSubregion) {
-            return redirect()->back()->with('error', 'Employee Subregion not found.');
-        }
+            if (!isset($employeeSubregionId)) {
+                return redirect()->back()->with('errors', 'Employee Subregion ID is missing.');
+            }
 
-        //Delete the employee subregion
-        if ($this->employeeSubregionModel->delete($employeeSubregion->employee_subregion_id)) {
-            return redirect()->to('/settings/employee-subregions')->with('success', 'Employee Subregion deleted successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Failed to delete Employee Subregion.');
+            $employeeSubregion = $this->employeeSubregionModel->find($employeeSubregionId);
+
+            if (!$employeeSubregion) {
+                return redirect()->back()->with('errors', 'Employee Subregion not found.');
+            }
+
+            if ($this->employeeSubregionModel->delete($employeeSubregionId)) {
+                return redirect()->to('/settings/employee-subregions')->with('success', 'Employee Subregion deleted successfully.');
+            } else {
+                return redirect()->back()->with('errors', 'Failed to delete Employee Subregion.');
+            }
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            return redirect()->back()->with('errors', 'An error occurred while deleting Employee Subregion.');
         }
     }
 }

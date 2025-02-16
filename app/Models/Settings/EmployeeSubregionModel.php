@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class EmployeeSubregionModel extends Model
 {
     protected $table            = 'employee_subregions';
-    protected $primaryKey       = ['employee_id', 'subregion_id'];
-    protected $useAutoIncrement = false;
+    protected $primaryKey       = 'employee_subregions_id';
+    protected $useAutoIncrement = true;
     protected $returnType       = \App\Entities\Settings\EmployeeSubregionEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;

@@ -354,7 +354,7 @@
         sessionStorage.setItem('tempTableData', JSON.stringify(data));
         setTimeout(() => {
             sessionStorage.removeItem('tempTableData');
-        }, 5000);
+        }, 500);
     }
 
     <?php if (!isset($addButtonRedirectLink) && isset($addButtonModelId) && isset($AddButtonName)) : ?>

@@ -65,4 +65,9 @@ function resetURL(url) {
     window.location.href = url;
 }
 
+//Remove tempData if it exists
+if (sessionStorage.getItem('tempTableData')) {
+    sessionStorage.removeItem('tempTableData');
+}
+
 

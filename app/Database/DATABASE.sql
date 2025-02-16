@@ -298,9 +298,10 @@ CREATE TABLE IF NOT EXISTS notifications (
 );
 
 CREATE TABLE IF NOT EXISTS employee_subregions (
+    employee_subregions_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     employee_id INT UNSIGNED NOT NULL,
     subregion_id INT UNSIGNED NOT NULL,
-    PRIMARY KEY (employee_id, subregion_id),
+    UNIQUE KEY unique_employee_subregion (employee_id, subregion_id),
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
     FOREIGN KEY (subregion_id) REFERENCES subregions(subregion_id)
 );

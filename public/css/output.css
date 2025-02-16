@@ -1345,10 +1345,6 @@ video {
   margin-top: 2rem;
 }
 
-.mt-1 {
-  margin-top: 0.25rem;
-}
-
 .block {
   display: block;
 }
@@ -1439,6 +1435,10 @@ video {
   width: 50%;
 }
 
+.w-1\/4 {
+  width: 25%;
+}
+
 .w-1\/6 {
   width: 16.666667%;
 }
@@ -1513,14 +1513,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-1\/4 {
-  width: 25%;
-}
-
-.w-3\/4 {
-  width: 75%;
 }
 
 .min-w-40 {
