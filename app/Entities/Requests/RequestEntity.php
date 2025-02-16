@@ -37,7 +37,7 @@ class RequestEntity extends Entity
         }
 
         if (empty($this->agent_id) || !is_int($this->agent_id) || $this->agent_id < 1) {
-            $errors[] = 'Employee is invalid';
+            $errors[] = 'Agent is invalid';
         }
 
         if(!is_string($this->request_location)) {
