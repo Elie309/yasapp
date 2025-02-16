@@ -287,7 +287,7 @@ class ListingsController extends BaseController
                 return redirect()->to('listings')->with('errors', 'Page not found');
             }
 
-            if ($property->employee_id !== $employee_id && $role !== 'admin') {
+            if ($property->employee_id !== $employee_id) {
                 return redirect()->to('listings')->with('errors', 'You are not authorized to view this page');
             }
 
@@ -545,6 +545,8 @@ class ListingsController extends BaseController
         $landDetailModel = new LandDetailsModel();
         $apartmentDetailModel = new ApartmentDetailsModel();
 
+        $employee_id = $this->session->get('id');
+
         // Get property data
         $property = $propertyModel->select('properties.*, clients.*,
         CONCAT(clients.client_firstname, " ", clients.client_lastname) as client_name,
@@ -575,7 +577,7 @@ class ListingsController extends BaseController
             return redirect()->to('listings')->with('errors', 'Page not found');
         }
 
-        if ($property->employee_id !== $this->session->get('id') && $this->session->get('role') !== 'admin') {
+        if ($property->employee_id !== $employee_id && $this->session->get('role') !== 'admin') {
             return redirect()->to('listings')->with('errors', 'You are not authorized to view this page');
         }
 
@@ -596,7 +598,8 @@ class ListingsController extends BaseController
             return redirect()->to('listings')->with('errors', 'Page not found');
         }
 
-
+        $propertyStatusModel = new PropertyStatusEntity();
+        $propertyStatuses = $propertyStatusModel->getPropertyStatuses();
 
 
         // Pass data to the view
@@ -604,6 +607,8 @@ class ListingsController extends BaseController
             'property' => $property,
             'landDetails' => $landDetails,
             'apartmentDetails' => $apartmentDetails,
+            'propertyStatuses' => $propertyStatuses,
+            'employee_id' => $employee_id
         ]) . view('template/footer');
     }
 

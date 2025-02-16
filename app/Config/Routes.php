@@ -100,6 +100,9 @@ $routes->get('requests/export', 'Requests\RequestController::export');
 $routes->get('api/requests/update-status/(:num)/(:segment)', 'API\RequestAPIController::updateRequestStatus/$1/$2');
 $routes->get('api/requests/update-priority/(:num)/(:alpha)', 'API\RequestAPIController::updateRequestPriority/$1/$2');
 
+//Listing API Routes
+$routes->get('api/listings/update-status/(:num)/(:segment)', 'API\ListingStatusAPIController::updatePropertyStatus/$1/$2');
+
 
 //Listings
 $routes->get('listings', 'Listings\ListingsController::index');
