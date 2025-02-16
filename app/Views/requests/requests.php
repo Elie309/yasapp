@@ -74,11 +74,11 @@
         <?php
 
         $tableHeaders = [
+            'agent_name' => 'Agent',
             'client_name' => 'Client',
             'phone_numbers' => 'Phones',
             'city_name' => 'City',
             'request_payment_plan' => 'Payment Plan',
-            'agent_name' => 'Agent',
             'request_fees' => 'Budget',
             'request_state' => 'State',
             'request_priority' => 'Priority',
