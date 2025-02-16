@@ -188,10 +188,12 @@ class RequestController extends BaseController
         $request = $requestModel->select(
             'requests.*,  clients.*, currencies.currency_symbol, requests.request_budget,
             CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name, 
+            cities.city_id,
             cities.city_name,
             agents.employee_id as agent_id,
             agents.employee_name as agent_name,
             GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers,
+            CONCAT(countries_loc.country_name, ", ", regions.region_name, ", ", subregions.subregion_name, ", ", cities.city_name, ", ", requests.request_location) as request_detailed_location,
             requests.created_at as request_created_at,
             requests.updated_at as request_updated_at
             '
@@ -201,6 +203,9 @@ class RequestController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('cities', 'requests.city_id = cities.city_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
+            ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
+            ->join('regions', 'regions.region_id = subregions.region_id', 'left')
+            ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
             ->where('requests.request_id', $id)
             ->groupBy('requests.request_id')
@@ -280,7 +285,7 @@ class RequestController extends BaseController
         //Get the country, region and subregion to the city id
         $cityModel = new CityModel();
 
-        $city = $cityModel->select('cities.*, subregions.*, regions.*, countries.country_id, countries.country_name')
+        $location = $cityModel->select('cities.*, subregions.*, regions.*, countries.country_id, countries.country_name')
             ->join('subregions', 'cities.subregion_id = subregions.subregion_id')
             ->join('regions', 'subregions.region_id = regions.region_id')
             ->join('countries', 'regions.country_id = countries.country_id')
@@ -304,7 +309,7 @@ class RequestController extends BaseController
                 'method' => 'UPDATE_REQUEST',
                 'agents' => $agents,
                 'countries' => $countries,
-                'city' => $city,
+                'location' => $location,
                 'phones' => $phones,
                 'request' => $request,
                 'currencies' => $currencies,

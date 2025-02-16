@@ -99,7 +99,7 @@
             </tr>
             <tr>
                 <th>Location Details</th>
-                <td><?= $request->request_location ?></td>
+                <td><?= $request->request_detailed_location ?></td>
             </tr>
             <tr>
                 <th>Request Budget:</th>

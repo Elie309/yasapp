@@ -3,7 +3,7 @@
     <div class="space-y-2 mb-4">
         <div>
             <label for="country_id" class="main-label">Country</label>
-            <select class="secondary-input" id="country_id" name="country_id" onchange="fetchRegions(this.value)">
+            <select class="secondary-input" id="country_id" onchange="fetchRegions(this.value)">
                 <option value="">Select Country</option>
                 <?php foreach ($countries as $country): ?>
                     <option value="<?= $country->country_id ?>" <?= $country->country_id == $defaultCountryId ? 'selected' : '' ?>><?= $country->country_name ?></option>
@@ -12,7 +12,7 @@
         </div>
         <div>
             <label for="region_id" class="main-label">Region</label>
-            <select class="secondary-input" id="region_id" name="region_id" <?= isset($defaultData['regions']) && count($defaultData['regions']) > 0 ? '' : 'disabled' ?> onchange="fetchSubregions(this.value)">
+            <select class="secondary-input" id="region_id" <?= isset($defaultData['regions']) && count($defaultData['regions']) > 0 ? '' : 'disabled' ?> onchange="fetchSubregions(this.value)">
                 <option value="">Select Region</option>
                 <?php if (isset($defaultData['regions'])): ?>
                     <?php foreach ($defaultData['regions'] as $region): ?>
@@ -23,7 +23,7 @@
         </div>
         <div>
             <label for="subregion_id" class="main-label">Subregion</label>
-            <select class="secondary-input" id="subregion_id" name="subregion_id" <?= isset($defaultData['subregions']) && count($defaultData['subregions']) > 0 ? '' : 'disabled' ?> onchange="fetchCities(this.value)">
+            <select class="secondary-input" id="subregion_id" <?= isset($defaultData['subregions']) && count($defaultData['subregions']) > 0 ? '' : 'disabled' ?> onchange="fetchCities(this.value)">
                 <option value="">Select Subregion</option>
                 <?php if (isset($defaultData['subregions'])): ?>
                     <?php foreach ($defaultData['subregions'] as $subregion): ?>

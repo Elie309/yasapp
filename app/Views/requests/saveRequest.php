@@ -45,42 +45,38 @@
                 <hr class="mx-2" />
 
                 <div>
-                    <h3 class="secondary-title">Location</h3>
-                    <input type="hidden" name="city_id" id="city_id" required><br>
+                    <?php if ($method == 'NEW_REQUEST'): ?>
+                        <?= view_cell('App\Cells\Utils\LocationFormHandler\LocationInternalFormCell::render') ?>
+                    <?php else : ?>
+                        <?= view_cell(
+                            'App\Cells\Utils\LocationFormHandler\LocationInternalFormCell::render',
+                            [
+                                'isFetchPossible' => true,
+                                'defaultCountryId' => $location->country_id,
+                                'defaultRegionId' => $location->region_id,
+                                'defaultSubregionId' => $location->subregion_id,
+                                'defaultCityId' => $location->city_id
+                            ]
+                        ) ?>
+                    <?php endif; ?>
 
-                    <div class="flex flex-col w-full mb-4">
-                        <div class="w-full flex flex-row my-2">
-                            <input type="text" class="main-input-readonly mr-2" placeholder="Country" readonly name="country_name" id="country_name" required>
-                            <input type="text" class="main-input-readonly" placeholder="Region" readonly name="region_name" id="region_name" required>
-                        </div>
-                        <div class="w-full flex flex-row my-2">
-                            <input type="text" class="main-input-readonly mr-2" placeholder="Subregion" readonly name="subregion_name" id="subregion_name" required>
-                            <input type="text" class="main-input-readonly " placeholder="City" readonly name="city_name" id="city_name" required>
-                        </div>
-
-                        <div class="w-full my-2 flex flex-row justify-center">
-                            <button type="button" popovertarget="location-popover" onclick="document.getElementById('search_Location').focus()" class="secondary-btn mx-auto w-5/12">Select Location</button>
-                        </div>
-
-                        <div>
-                            <label class="main-label" for="request_location">Location Details:</label>
-                            <textarea class="main-input" placeholder="Location address"
-                                name="request_location" id="request_location"></textarea>
-                        </div>
-
+                    <div>
+                        <label class="main-label" for="request_location">Location Details:</label>
+                        <textarea class="main-input" placeholder="Location address"
+                            name="request_location" id="request_location"></textarea>
                     </div>
+                    </textarea>
                 </div>
-
 
                 <hr class="mx-2" />
 
                 <div>
 
                     <h3 class="secondary-title">Payment Plan</h3>
-                    
+
                     <textarea class="main-input" placeholder="Request Payment plan options"
-                                name="request_payment_plan" id="request_payment_plan"></textarea>
-                    
+                        name="request_payment_plan" id="request_payment_plan"></textarea>
+
                 </div>
 
                 <hr class="mx-2" />
@@ -220,8 +216,6 @@
         </div>
     <?php endif; ?>
 
-    <?= view_cell('App\Cells\Settings\Location\LocationPopover\LocationPopoverCell::render') ?>
-
     <?= view_cell('App\Cells\Clients\ClientPopover\ClientPopoverCell::render', ['countries' => $countries]) ?>
 
     <script>
@@ -234,7 +228,6 @@
 
         if ($method === 'UPDATE_REQUEST' && !$data) {
             echo "var data = " . json_encode($request) . ";";
-            echo "var city = " . json_encode($city) . ";";
             echo 'var phones = ' . json_encode($phones) . ';';
             echo "data.phone_number = [];";
             echo "data.country_id = [];";
@@ -247,21 +240,10 @@
 
         if (isset($data)) {
             echo "var data = " . json_encode($data['post']) . ";";
-
-            $city = [
-                'city_id' => $data['post']['city_id'],
-                'country_name' => $data['post']['country_name'],
-                'region_name' => $data['post']['region_name'],
-                'subregion_name' => $data['post']['subregion_name'],
-                'city_name' => $data['post']['city_name']
-            ];
-
-            echo "var city = " . json_encode($city) . ";";
-
             echo "populateFields(data);";
         }
 
-      
+
 
         ?>
 
@@ -308,28 +290,6 @@
 
             }
 
-
-
-            if (city) {
-                document.getElementById('city_id').value = city.city_id;
-
-                if (city.country_name) {
-                    document.getElementById('country_name').value = city.country_name;
-                }
-
-                if (city.region_name) {
-                    document.getElementById('region_name').value = city.region_name;
-                }
-
-                if (city.subregion_name) {
-                    document.getElementById('subregion_name').value = city.subregion_name;
-                }
-
-                if (city.city_name) {
-                    document.getElementById('city_name').value = city.city_name;
-                }
-
-            }
 
             if (data.request_location) {
                 document.getElementById('request_location').value = data.request_location;
