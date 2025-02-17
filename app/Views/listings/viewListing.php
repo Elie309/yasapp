@@ -10,22 +10,31 @@
         </button>
         <h2 class="hidden md:block main-title-page text-wrap">Property of <?= esc($property->client_name) ?></h2>
 
-        <div class="flex flex-row ml-auto space-x-4 ">
-            <button onclick="window.print()" class="my-auto flex space-x-2 cursor-pointer no-print">
-                <p>Print</p>
-                <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'printer', 'class' => 'size-6']) ?>
-            </button>
-            <?php if ($property->employee_id === $employee_id) : ?>
-                <a href="/listings/edit/<?= $property->property_id ?>" class="my-auto space-x-2 flex cursor-pointer no-print">
-                    <p>Edit</p>
-                    <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'edit', 'class' => 'size-6']) ?>
-                </a>
-            <?php endif; ?>
 
-        </div>
     </div>
 
     <h2 class="md:hidden main-title-page">Property of <?= esc($property->client_name) ?></h2>
+
+
+    <div class="flex flex-row justify-around w-full items-center no-print py-2 my-4 ">
+        <a href="/listings/<?= esc($property->property_id) ?>/images" class="my-auto flex space-x-2 cursor-pointer no-print">
+            <p>Images</p>
+            <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'images', 'class' => 'size-6']) ?>
+        </a>
+
+        <button onclick="window.print()" class="my-auto flex space-x-2 cursor-pointer no-print">
+            <p>Print</p>
+            <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'printer', 'class' => 'size-6']) ?>
+        </button>
+        <?php if ($property->employee_id === $employee_id) : ?>
+            <a href="/listings/edit/<?= $property->property_id ?>" class="my-auto space-x-2 flex cursor-pointer no-print">
+                <p>Edit</p>
+                <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'edit', 'class' => 'size-6']) ?>
+            </a>
+        <?php endif; ?>
+
+    </div>
+
 
     <div class="no-print">
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>

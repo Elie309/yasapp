@@ -114,13 +114,14 @@ $routes->post('listings/edit/(:num)', 'Listings\ListingsController::updateListin
 $routes->get('listings/delete/(:num)', 'Listings\ListingsController::delete/$1');
 $routes->get('listings/export', 'Listings\ListingsController::export');
 
+$routes->get('listings/(:num)/images', 'Uploads\UploadController::index/$1');
+$routes->post('uploads', 'Uploads\UploadController::uploads');
+
 
 //Notifications
 $routes->get('notifications', 'Notifications\NotificationController::index');
 
-// Uploads Routes
-$routes->get('uploads', 'Uploads\UploadController::index');
-$routes->post('uploads', 'Uploads\UploadController::uploads');
+
 
 
 //Employee Subregion Controller
