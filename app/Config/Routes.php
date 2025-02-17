@@ -118,6 +118,10 @@ $routes->get('listings/export', 'Listings\ListingsController::export');
 //Notifications
 $routes->get('notifications', 'Notifications\NotificationController::index');
 
+// Uploads Routes
+$routes->get('uploads', 'Uploads\UploadController::index');
+$routes->post('uploads', 'Uploads\UploadController::uploads');
+
 
 //Employee Subregion Controller
 $routes->get('settings/employee-subregions', 'Settings\EmployeeSubregionController::index');

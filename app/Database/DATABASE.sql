@@ -174,6 +174,23 @@ CREATE TABLE properties (
     -- THEY ARE ADDED LATER IN THE FLOW
 );
 
+CREATE TABLE property_uploads (
+    upload_id INT AUTO_INCREMENT PRIMARY KEY,
+    property_id INT UNSIGNED NOT NULL,
+    upload_file_name VARCHAR(255) NOT NULL,
+    upload_file_type ENUM('image', 'video', 'document') NOT NULL,
+    upload_mime_type VARCHAR(100) NOT NULL,
+    upload_file_size BIGINT NOT NULL,
+    upload_storage_url TEXT NOT NULL,
+    upload_status ENUM('pending', 'uploaded', 'failed') DEFAULT 'pending',
+    upload_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    upload_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    upload_deleted_at TIMESTAMP NULL DEFAULT NULL,
+
+    FOREIGN KEY (property_id) REFERENCES properties(property_id)
+);
+
+
 
 
 CREATE TABLE land_details (
@@ -278,6 +295,10 @@ CREATE TABLE apartment_specifications (
 
     FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
 );
+
+
+
+
 -- Notifications
 CREATE TABLE IF NOT EXISTS notifications (
     notification_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
