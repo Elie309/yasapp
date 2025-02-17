@@ -85,6 +85,16 @@
                 });
                 regionSelect.disabled = false;
 
+                var subregionSelect = document.getElementById('subregion_id');
+                var citySelect = document.getElementById('city_id');
+                subregionSelect.innerHTML = '<option value="">Select Subregion</option>';
+                citySelect.innerHTML = '<option value="">Select City</option>';
+                subregionSelect.disabled = true;
+                citySelect.disabled = true;
+                subregionSelect.value = '';
+                citySelect.value = '';
+
+
             });
     }
 
@@ -107,6 +117,14 @@
                     subregionSelect.innerHTML += `<option value="${subregion.id}">${subregion.name}</option>`;
                 });
                 subregionSelect.disabled = false;
+                //Reset City
+                var citySelect = document.getElementById('city_id');
+                citySelect.innerHTML = '<option value="">Select City</option>';
+                //Disable
+                citySelect.disabled = true;
+                //value
+                citySelect.value = '';
+               
 
             });
     }
