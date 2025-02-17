@@ -37,7 +37,6 @@ class ListingStatusAPIController extends BaseController
             $propertyModel = new PropertyModel();
 
             $property = $propertyModel->find($property_id);
-            log_message('info', 'Property ID: ' . json_encode($property));
 
             if (!$property) {
                 return $this->response->setJSON(['status' => 'error', 'message' => 'property not found']);
