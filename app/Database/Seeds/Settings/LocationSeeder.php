@@ -119,9 +119,9 @@ class LocationSeeder extends Seeder
                         ]
                     ],
                     [
-                        'subregion_name' => 'Zahlé', 'cities' =>
+                        'subregion_name' => 'Zahle', 'cities' =>
                         [
-                            'Ali an Nahri', 'Anjar', 'Barelias', 'Jdita', 'Majdal Anjar', 'Qabb Ilyas', 'Rayak', 'Saadnayel', 'Taalabaya', 'Zahlé', 'Qâa er Rîm'
+                            'Ali an Nahri', 'Anjar', 'Barelias', 'Jdita', 'Majdal Anjar', 'Qabb Ilyas', 'Rayak', 'Saadnayel', 'Taalabaya', 'Zahle', 'Qâa er Rîm'
                         ]
                     ],
                 ]

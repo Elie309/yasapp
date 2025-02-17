@@ -84,6 +84,7 @@
         $tableHeaders = [
             'client_name' => 'Client',
             'phone_numbers' => 'Phones',
+            'subregion_name' => 'District',
             'city_name' => 'City',
             'request_payment_plan' => 'Payment Plan',
             'request_fees' => 'Budget',
@@ -118,10 +119,11 @@
                 'id_field' => 'request_id',
                 'searchParam' => [
                     'client_name' => 'Client Name',
-                    'city_name' => 'City Name',
                     'request_payment_plan' => 'Payment Plan',
                     'request_budget' => 'Budget',
                     'comments' => 'Comments',
+                    'city_name' => 'City',
+                    'subregion_name' => 'District',
                 ],
 
             ]

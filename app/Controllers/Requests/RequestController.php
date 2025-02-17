@@ -502,13 +502,15 @@ class RequestController extends BaseController
             'client_name' => 'clients.client_firstname',
             'employee_name' => 'employees.employee_name',
             'request_budget' => 'requests.request_budget',
-            'comments' => 'requests.comments'
+            'comments' => 'requests.comments',
+            'subregion_name' => 'subregions.subregion_name',
         ];
 
 
         $request = $requestModel->select('requests.*,
                     CONCAT(clients.client_firstname, " ", clients.client_lastname) AS client_name,
                     GROUP_CONCAT(CONCAT(countries.country_code, " " ,phones.phone_number) SEPARATOR ", ") as phone_numbers,
+                    subregions.subregion_name,
                     cities.city_name, 
                     CONCAT(FORMAT(requests.request_budget, 0), " ", currencies.currency_symbol) AS request_fees,
                     agents.employee_name as agent_name,
@@ -519,6 +521,7 @@ class RequestController extends BaseController
             ->join('phones', 'phones.client_id = clients.client_id', 'left')
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('cities', 'requests.city_id = cities.city_id', 'left')
+            ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left');
 

@@ -695,6 +695,7 @@ class ListingsController extends BaseController
             'client_name' => 'clients.client_firstname',
             'city_name' => 'cities.city_name',
             'property_price' => 'properties.property_price',
+            'subregion_name' => 'subregions.subregion_name',
         ];
 
 
@@ -703,6 +704,7 @@ class ListingsController extends BaseController
                 CONCAT(`clients`.`client_firstname`, " ", `clients`.`client_lastname`) as `client_name`,
                 GROUP_CONCAT(CONCAT(countries.country_code, " ", phones.phone_number) SEPARATOR ", ") as phone_number,
                 `employees`.`employee_name` as `employee_name`,
+                `subregions`.`subregion_name` as `subregion_name`,
                 `cities`.`city_name` as `city_name`,
                 CONCAT(FORMAT(`properties`.`property_price`, 0), " ", `currencies`.`currency_symbol`) as `property_budget`,
                 `property_status`.`property_status_name` as `property_status_name`,
@@ -717,6 +719,7 @@ class ListingsController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
             ->join('cities', 'cities.city_id = properties.city_id', 'left')
+            ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
             ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
             ->groupBy('properties.property_id');
 

@@ -87,6 +87,7 @@
         $tableHeaders = [
             'client_name' => 'Vendor',
             'phone_number' => 'Phone',
+            'subregion_name' => 'District',
             'city_name' => 'City',
             'property_land_or_apartment' => 'Land/Apartment',
             'property_status_name' => 'Status',
@@ -129,8 +130,9 @@
                 'id_field' => 'property_id',
                 'searchParam' => [
                     'client_name' => 'Vendor',
-                    'city_name' => 'City',
                     'property_price' => 'Budget',
+                    'city_name' => 'City',
+                    'subregion_name' => 'District',
                 ],
 
             ]
