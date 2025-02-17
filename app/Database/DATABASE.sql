@@ -1,4 +1,3 @@
-
 -- Employee TABLE
 CREATE TABLE IF NOT EXISTS employees (
     employee_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -98,7 +97,6 @@ CREATE TABLE IF NOT EXISTS requests (
     city_id INT UNSIGNED NOT NULL,
     currency_id INT UNSIGNED NOT NULL,
 
-    employee_id INT UNSIGNED NOT NULL,
     agent_id INT UNSIGNED NULL,
 
     request_payment_plan TEXT NULL,
@@ -118,7 +116,6 @@ CREATE TABLE IF NOT EXISTS requests (
     FOREIGN KEY (city_id) REFERENCES cities(city_id),
     FOREIGN KEY (currency_id) REFERENCES currencies(currency_id),
 
-    FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
     FOREIGN KEY (agent_id) REFERENCES employees(employee_id)
 );
 
@@ -319,3 +316,11 @@ CREATE TABLE IF NOT EXISTS notifications (
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
 
+CREATE TABLE IF NOT EXISTS employee_subregions (
+    employee_subregions_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    employee_id INT UNSIGNED NOT NULL,
+    subregion_id INT UNSIGNED NOT NULL,
+    UNIQUE KEY unique_employee_subregion (employee_id, subregion_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
+    FOREIGN KEY (subregion_id) REFERENCES subregions(subregion_id)
+);

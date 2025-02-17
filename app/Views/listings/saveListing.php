@@ -63,21 +63,24 @@
                 <!-- Location -->
                 <div>
                     <h3 class="secondary-title">Location</h3>
-                    <input type="hidden" name="city_id" id="city_id" required><br>
 
                     <div class="flex flex-col w-full mb-4">
-                        <div class="w-full flex flex-row my-2">
-                            <input type="text" class="main-input-readonly mr-2" placeholder="Country" readonly name="country_name" id="country_name" required>
-                            <input type="text" class="main-input-readonly" placeholder="Region" readonly name="region_name" id="region_name" required>
-                        </div>
-                        <div class="w-full flex flex-row my-2">
-                            <input type="text" class="main-input-readonly mr-2" placeholder="Subregion" readonly name="subregion_name" id="subregion_name" required>
-                            <input type="text" class="main-input-readonly " placeholder="City" readonly name="city_name" id="city_name" required>
-                        </div>
-
-                        <div class="w-full my-2 flex flex-row justify-center">
-                            <button type="button" popovertarget="location-popover" onclick="document.getElementById('search_Location').focus()" class="secondary-btn mx-auto w-5/12">Select Location</button>
-                        </div>
+                        <?php if ($method == 'NEW_REQUEST'): ?>
+                            <?= view_cell('App\Cells\Utils\LocationFormHandler\LocationInternalFormCell::render') ?>
+                        <?php else : ?>
+                            <?= view_cell(
+                                'App\Cells\Utils\LocationFormHandler\LocationInternalFormCell::render',
+                                [
+                                    'isFetchPossible' => true,
+                                    'defaultCountryId' => $location->country_id,
+                                    'defaultRegionId' => $location->region_id,
+                                    'defaultSubregionId' => $location->subregion_id,
+                                    'defaultCityId' => $location->city_id,
+                                    'employee_id' => $employee_id,
+                                    'role' => $role
+                                ]
+                            ) ?>
+                        <?php endif; ?>
 
                         <div>
                             <label class="main-label" for="property_location">Location Details:</label>
@@ -144,7 +147,7 @@
                         'apartmentGender' => $apartmentGender,
                         'apartmentTypes' => $apartmentTypes,
                         'tilesOptions' => $tilesOptions
-                        ]) ?>
+                    ]) ?>
 
                 </div>
 
@@ -285,24 +288,13 @@
             data.phone_id.push(phone.phone_id);
         });
 
-        var city = {
-            city_id: data.city_id,
-            country_name: data.country_name,
-            region_name: data.region_name,
-            subregion_name: data.subregion_name,
-            city_name: data.city_name
-        };
 
         if (landDetails) {
-            data = Object.assign(data, landDetails, {
-                city: city
-            });
+            data = Object.assign(data, landDetails);
         }
 
         if (apartmentDetails) {
-            data = Object.assign(data, apartmentDetails, {
-                city: city
-            });
+            data = Object.assign(data, apartmentDetails);
         }
 
 
@@ -315,15 +307,6 @@
 
     if ($data) {
 
-        $city = [
-            'city_id' => $data['post']['city_id'],
-            'country_name' => $data['post']['country_name'],
-            'region_name' => $data['post']['region_name'],
-            'subregion_name' => $data['post']['subregion_name'],
-            'city_name' => $data['post']['city_name']
-        ];
-
-        $data = array_merge($data['post'], ['city' => $city]);
 
         echo "var data = " . json_encode($data) . ";";
 
@@ -375,28 +358,6 @@
         }
 
 
-        let city = data.city;
-        if (city) {
-            document.getElementById('city_id').value = city.city_id;
-
-            if (city.country_name) {
-                document.getElementById('country_name').value = city.country_name;
-            }
-
-            if (city.region_name) {
-                document.getElementById('region_name').value = city.region_name;
-            }
-
-            if (city.subregion_name) {
-                document.getElementById('subregion_name').value = city.subregion_name;
-            }
-
-            if (city.city_name) {
-                document.getElementById('city_name').value = city.city_name;
-            }
-
-        }
-
         if (data.property_referral_name) {
             document.getElementById('property_referral_name').value = data.property_referral_name;
         }
@@ -404,11 +365,11 @@
             document.getElementById('property_referral_phone').value = data.property_referral_phone;
         }
 
-        if(data.property_rent){
+        if (data.property_rent) {
             document.getElementById('property_rent').checked = data.property_rent;
         }
 
-        if(data.property_sale){
+        if (data.property_sale) {
             document.getElementById('property_sale').checked = data.property_sale;
         }
 
@@ -475,9 +436,9 @@
             }
 
             if (data.ad_type_id) {
-            document.getElementById('result_id_ad_type_name').value = data.ad_type_id;
-            document.getElementById('search_ad_type_name').value = data.info_ad_type_name ?? data.ad_type_name;
-        }
+                document.getElementById('result_id_ad_type_name').value = data.ad_type_id;
+                document.getElementById('search_ad_type_name').value = data.info_ad_type_name ?? data.ad_type_name;
+            }
 
             if (data.ad_terrace) {
                 document.getElementById("ad_terrace").checked = data.ad_terrace;

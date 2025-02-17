@@ -21,6 +21,7 @@ use App\Models\Listings\LandDetailsModel;
 use App\Models\Listings\PropertyModel;
 use App\Models\Settings\CurrenciesModel;
 use App\Models\Settings\EmployeeModel;
+use App\Models\Settings\Location\CityModel;
 use App\Models\Settings\Location\CountryModel;
 use App\Services\ClientServices;
 use CodeIgniter\Database\Exceptions\DatabaseException;
@@ -123,6 +124,8 @@ class ListingsController extends BaseController
                 'apartmentGender' => $apartmentGender,
                 'propertyStatus' => $propertyStatus,
                 'apartmentTypes' => $apartmentTypes,
+                'employee_id' => $this->session->get('id'),
+                'role' => $this->session->get('role')
             ]) .
             view('template/footer');
     }
@@ -286,7 +289,7 @@ class ListingsController extends BaseController
                 return redirect()->to('listings')->with('errors', 'Page not found');
             }
 
-            if ($property->employee_id !== $employee_id && $role !== 'admin') {
+            if ($property->employee_id !== $employee_id) {
                 return redirect()->to('listings')->with('errors', 'You are not authorized to view this page');
             }
 
@@ -315,10 +318,6 @@ class ListingsController extends BaseController
         GROUP_CONCAT(CONCAT(countries.country_code, " ", phones.phone_number) SEPARATOR ", ") as client_phone,
         CONCAT(FORMAT(properties.property_price, 0), " ", currencies.currency_symbol) as property_budget,
         employees.employee_name as employee_name,
-        countries_loc.country_name as country_name,
-        regions.region_name as region_name,
-        subregions.subregion_name as subregion_name,
-        cities.city_name as city_name,
         property_status.property_status_name as property_status_name,
         properties.created_at as property_created_at,
         properties.updated_at as property_updated_at,
@@ -327,11 +326,7 @@ class ListingsController extends BaseController
                 ->join('phones', 'phones.client_id = clients.client_id', 'left')
                 ->join('countries', 'countries.country_id = phones.country_id', 'left')
                 ->join('employees', 'employees.employee_id = properties.employee_id', 'left')
-                ->join('cities', 'cities.city_id = properties.city_id', 'left')
                 ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
-                ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
-                ->join('regions', 'regions.region_id = subregions.region_id', 'left')
-                ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
                 ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
 
                 ->where('property_id', $property_id)
@@ -378,6 +373,14 @@ class ListingsController extends BaseController
 
             $property->property_land_or_apartment = $property->land_id !==  0 ? 'land' : 'apartment';
 
+            $cityModel = new CityModel();
+
+            $location = $cityModel->select('cities.*, subregions.*, regions.*, countries.country_id, countries.country_name')
+                ->join('subregions', 'cities.subregion_id = subregions.subregion_id')
+                ->join('regions', 'subregions.region_id = regions.region_id')
+                ->join('countries', 'regions.country_id = countries.country_id')
+                ->where('cities.city_id', $property->city_id)
+                ->first();
 
 
 
@@ -392,13 +395,17 @@ class ListingsController extends BaseController
                     'propertyStatus' => $propertyStatus,
                     'apartmentTypes' => $apartmentTypes,
                     'property' => $property,
+                    'location' => $location,
                     'landDetails' => $landDetails,
                     'apartmentDetails' => $apartmentDetails,
-                    'phones' => $phones
+                    'phones' => $phones,
+                    'employee_id' => $employee_id,
+                    'role' => $role
 
                 ]) .
                 view('template/footer');
         } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
             return redirect()->to('listings')->with('errors', 'An error occurred while accessing the property');
         }
     }
@@ -446,7 +453,7 @@ class ListingsController extends BaseController
                 return redirect()->back()->withInput()->with('errors', 'Property not found');
             }
 
-            if ($OldProperty->employee_id !== $employee_id ) {
+            if ($OldProperty->employee_id !== $employee_id) {
                 return redirect()->to('listings')->with('errors', 'You are not authorized to edit this page');
             }
 
@@ -543,6 +550,8 @@ class ListingsController extends BaseController
         $landDetailModel = new LandDetailsModel();
         $apartmentDetailModel = new ApartmentDetailsModel();
 
+        $employee_id = $this->session->get('id');
+
         // Get property data
         $property = $propertyModel->select('properties.*, clients.*,
         CONCAT(clients.client_firstname, " ", clients.client_lastname) as client_name,
@@ -573,7 +582,7 @@ class ListingsController extends BaseController
             return redirect()->to('listings')->with('errors', 'Page not found');
         }
 
-        if ($property->employee_id !== $this->session->get('id') && $this->session->get('role') !== 'admin') {
+        if ($property->employee_id !== $employee_id && $this->session->get('role') !== 'admin') {
             return redirect()->to('listings')->with('errors', 'You are not authorized to view this page');
         }
 
@@ -594,7 +603,8 @@ class ListingsController extends BaseController
             return redirect()->to('listings')->with('errors', 'Page not found');
         }
 
-
+        $propertyStatusModel = new PropertyStatusEntity();
+        $propertyStatuses = $propertyStatusModel->getPropertyStatuses();
 
 
         // Pass data to the view
@@ -602,6 +612,8 @@ class ListingsController extends BaseController
             'property' => $property,
             'landDetails' => $landDetails,
             'apartmentDetails' => $apartmentDetails,
+            'propertyStatuses' => $propertyStatuses,
+            'employee_id' => $employee_id
         ]) . view('template/footer');
     }
 
@@ -683,6 +695,7 @@ class ListingsController extends BaseController
             'client_name' => 'clients.client_firstname',
             'city_name' => 'cities.city_name',
             'property_price' => 'properties.property_price',
+            'subregion_name' => 'subregions.subregion_name',
         ];
 
 
@@ -691,6 +704,7 @@ class ListingsController extends BaseController
                 CONCAT(`clients`.`client_firstname`, " ", `clients`.`client_lastname`) as `client_name`,
                 GROUP_CONCAT(CONCAT(countries.country_code, " ", phones.phone_number) SEPARATOR ", ") as phone_number,
                 `employees`.`employee_name` as `employee_name`,
+                `subregions`.`subregion_name` as `subregion_name`,
                 `cities`.`city_name` as `city_name`,
                 CONCAT(FORMAT(`properties`.`property_price`, 0), " ", `currencies`.`currency_symbol`) as `property_budget`,
                 `property_status`.`property_status_name` as `property_status_name`,
@@ -705,6 +719,7 @@ class ListingsController extends BaseController
             ->join('countries', 'countries.country_id = phones.country_id', 'left')
             ->join('currencies', 'currencies.currency_id = properties.currency_id', 'left')
             ->join('cities', 'cities.city_id = properties.city_id', 'left')
+            ->join('subregions', 'subregions.subregion_id = cities.subregion_id', 'left')
             ->join('property_status', 'property_status.property_status_id = properties.property_status_id', 'left')
             ->groupBy('properties.property_id');
 

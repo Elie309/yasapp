@@ -19,7 +19,7 @@
 
         <div class="flex flex-col">
 
-            <div class="flex flex-col md:flex-row mb-4 flex-wrap w-full justify-center">
+            <div class="flex flex-col md:flex-row mb-4 flex-nowrap w-full justify-center">
 
                 <?php if (isset($agents) && !empty($agents)) : ?>
                     <div class="my-2 md:my-0 md:ml-4 order-2">
@@ -87,6 +87,7 @@
         $tableHeaders = [
             'client_name' => 'Vendor',
             'phone_number' => 'Phone',
+            'subregion_name' => 'District',
             'city_name' => 'City',
             'property_land_or_apartment' => 'Land/Apartment',
             'property_status_name' => 'Status',
@@ -129,8 +130,9 @@
                 'id_field' => 'property_id',
                 'searchParam' => [
                     'client_name' => 'Vendor',
-                    'city_name' => 'City',
                     'property_price' => 'Budget',
+                    'city_name' => 'City',
+                    'subregion_name' => 'District',
                 ],
 
             ]

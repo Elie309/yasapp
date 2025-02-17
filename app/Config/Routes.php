@@ -100,6 +100,9 @@ $routes->get('requests/export', 'Requests\RequestController::export');
 $routes->get('api/requests/update-status/(:num)/(:segment)', 'API\RequestAPIController::updateRequestStatus/$1/$2');
 $routes->get('api/requests/update-priority/(:num)/(:alpha)', 'API\RequestAPIController::updateRequestPriority/$1/$2');
 
+//Listing API Routes
+$routes->get('api/listings/update-status/(:num)/(:segment)', 'API\ListingStatusAPIController::updatePropertyStatus/$1/$2');
+
 
 //Listings
 $routes->get('listings', 'Listings\ListingsController::index');
@@ -120,6 +123,11 @@ $routes->get('uploads', 'Uploads\UploadController::index');
 $routes->post('uploads', 'Uploads\UploadController::uploads');
 
 
+//Employee Subregion Controller
+$routes->get('settings/employee-subregions', 'Settings\EmployeeSubregionController::index');
+$routes->post('settings/employee-subregions/add', 'Settings\EmployeeSubregionController::addEmployeeSubregion');
+$routes->post('settings/employee-subregions/delete', 'Settings\EmployeeSubregionController::deleteEmployeeSubregion');
+
 //API
 
 $routes->get('/api/clients/search', 'API\ClientAPIController::search');
@@ -136,3 +144,4 @@ $routes->get('/api/notifications/mark-unread/(:num)', 'API\NotificationAPIContro
 $routes->get('/api/notifications/mark-all-read', 'API\NotificationAPIController::markAllRead');
 $routes->get('/api/notifications/mark-all-unread', 'API\NotificationAPIController::markAllUnread');
 $routes->get('/api/notifications/delete/(:num)', 'API\NotificationAPIController::delete/$1');
+

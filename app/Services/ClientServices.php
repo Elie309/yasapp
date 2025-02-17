@@ -50,7 +50,6 @@ class ClientServices extends BaseServices
                     //Add new phone
                     $phone_detail['client_id'] = $clientEntity->client_id;
                     unset($phone_detail['phone_id']);
-                    log_message('debug', 'Phone ID: ' . json_encode($phone_detail));
                     if (!$phoneModel->save($phone_detail)) {
                         throw new InvalidArgumentException('Failed to insert phone');
                     }

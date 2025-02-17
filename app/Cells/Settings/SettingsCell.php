@@ -41,7 +41,14 @@ class SettingsCell extends Cell
             'img' => '/images/listings_attributes.webp',
             'title' => 'Listings Attributes',
             'description' => 'Manage Listings Attributes.',
-            'role' => ['admin', 'manager']
+            'role' => ['admin']
+        ],
+        [
+            'url' => '/settings/employee-subregions ',
+            'img' => '/images/lebanon-image.webp',
+            'title' => 'Employee Subregions',
+            'description' => 'Manage subregions for each employee.',
+            'role' => ['admin']
         ]
     ];
 

@@ -73,12 +73,20 @@
 
         <?php
 
+        $adminHeaders = [];
+
+        if (isset($agents) && !empty($agents)) {
+            $adminHeaders['agent_name'] = 'Agent';
+        }
+        
+
+
         $tableHeaders = [
             'client_name' => 'Client',
             'phone_numbers' => 'Phones',
+            'subregion_name' => 'District',
             'city_name' => 'City',
             'request_payment_plan' => 'Payment Plan',
-            'agent_name' => 'Agent',
             'request_fees' => 'Budget',
             'request_state' => 'State',
             'request_priority' => 'Priority',
@@ -87,8 +95,7 @@
             'request_updated_at' => 'Updated At',
         ];
 
-        //Change the values of Status to html
-
+        $tableHeaders = array_merge($adminHeaders, $tableHeaders);
 
         ?>
 
@@ -112,10 +119,11 @@
                 'id_field' => 'request_id',
                 'searchParam' => [
                     'client_name' => 'Client Name',
-                    'city_name' => 'City Name',
                     'request_payment_plan' => 'Payment Plan',
                     'request_budget' => 'Budget',
                     'comments' => 'Comments',
+                    'city_name' => 'City',
+                    'subregion_name' => 'District',
                 ],
 
             ]
