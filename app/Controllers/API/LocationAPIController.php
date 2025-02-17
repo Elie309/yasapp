@@ -17,7 +17,7 @@ class LocationAPIController extends BaseController
             $search = $this->request->getGet('search');
             $search = esc($search);
             $search = str_replace('+', ' ', $search);
-            $search = trim($search);
+
 
             $cityModel = new CityModel();
 
@@ -47,11 +47,11 @@ class LocationAPIController extends BaseController
 
             $cities = $cityModel->select('cities.city_id as id, cities.city_name as name');
 
-            if($subregion_id && $subregion_id > 0){
+            if ($subregion_id && $subregion_id > 0) {
                 $cities->where('cities.subregion_id', $subregion_id);
             }
 
-            if($search){
+            if ($search) {
                 $cities->like('cities.city_name', $search);
             }
 
@@ -61,8 +61,6 @@ class LocationAPIController extends BaseController
                 'success' => true,
                 'data' => $cities
             ]);
-
-
         } catch (\Exception $e) {
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,
@@ -76,33 +74,25 @@ class LocationAPIController extends BaseController
         try {
             $search = esc($this->request->getGet('search'));
             $region_id = intval(esc($this->request->getGet('region_id')));
-            $employee_id = intval(esc($this->session->get('id')));
+            $employee_id = intval($this->session->get('id'));
             $role = esc($this->session->get('role'));
 
-            $locationServices = new LocationServices();
+            $subregions = [];
 
-            if ($role !== 'manager' && $role !== 'admin') {
-                $subregions = $locationServices->getSubregionsByEmployeeId($employee_id);
-            } else {
+            if ($search) {
                 $subregionModel = new SubregionModel();
-                $subregions = $subregionModel->select('subregions.subregion_id as id, subregions.subregion_name as name');
-
-                if ($region_id && $region_id > 0) {
-                    $subregions->where('subregions.region_id', $region_id);
-                }
-
-                if ($search) {
-                    $subregions->like('subregions.subregion_name', $search);
-                }
-
-                $subregions = $subregions->findAll();
+                $subregions = $subregionModel->select('subregions.subregion_id as id, subregions.subregion_name as name')
+                    ->like('subregions.subregion_name', $search)
+                    ->findAll();
+            } else {
+                $locationServices = new LocationServices();
+                $subregions = $locationServices->getSubregionsByEmployeeId($employee_id, $region_id, $role);
             }
 
             return $this->response->setStatusCode(200)->setJSON([
                 'success' => true,
                 'data' => $subregions
             ]);
-
         } catch (\Exception $e) {
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,
@@ -116,33 +106,23 @@ class LocationAPIController extends BaseController
         try {
             $search = esc($this->request->getGet('search'));
             $country_id = intval(esc($this->request->getGet('country_id')));
-            $employee_id = intval(esc($this->session->get('id')));
-            $role = esc($this->session->get('role'));
 
-            $locationServices = new LocationServices();
-
-            if ($role !== 'manager' && $role !== 'admin') {
-                $regions = $locationServices->getRegionsByEmployeeId($employee_id);
-            } else {
+            if ($search) {
                 $regionModel = new RegionModel();
-                $regions = $regionModel->select('regions.region_id as id, regions.region_name as name');
-
-                if ($country_id && $country_id > 0) {
-                    $regions->where('regions.country_id', $country_id);
-                }
-
-                if ($search) {
-                    $regions->like('regions.region_name', $search);
-                }
-
-                $regions = $regions->findAll();
+                $regions = $regionModel->select('regions.region_id as id, regions.region_name as name')
+                    ->like('regions.region_name', $search)
+                    ->findAll();
+            } else {
+                $role = esc($this->session->get('role'));
+                $employee_id = intval(esc($this->session->get('id')));
+                $locationServices = new LocationServices();
+                $regions = $locationServices->getRegionsByEmployeeId($employee_id, $country_id, $role);
             }
 
             return $this->response->setStatusCode(200)->setJSON([
                 'success' => true,
                 'data' => $regions
             ]);
-
         } catch (\Exception $e) {
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,

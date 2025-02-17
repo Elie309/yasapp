@@ -46,7 +46,8 @@ class LocationInternalFormCell extends Cell
         $this->countries = $countryModel->findAll();
     }
 
-    public function mount(): void {
+    public function mount(): void
+    {
         $this->setDefaultData();
     }
 
@@ -57,23 +58,12 @@ class LocationInternalFormCell extends Cell
         }
 
         $this->defaultData = [];
-        $role = esc($this->employee_id);
+        $role = esc($this->role);
         $locationServices = new LocationServices();
 
-        if($this->defaultRegionId) {
-            if ($role !== 'manager' && $role !== 'admin') {
-                $this->defaultData['regions'] = $locationServices->getRegionsByEmployeeId($this->employee_id);
-                $this->defaultData['subregions'] = $locationServices->getSubregionsByEmployeeId($this->employee_id);
-            } else {
-                $regionModel = new RegionModel();
-                $this->defaultData['regions'] = $regionModel->select('region_id as id, region_name as name')
-                                                           ->where('country_id', $this->defaultCountryId)
-                                                           ->findAll();
-                $subregionModel = new SubregionModel();
-                $this->defaultData['subregions'] = $subregionModel->select('subregion_id as id, subregion_name as name')
-                                                                 ->where('region_id', $this->defaultRegionId)
-                                                                 ->findAll();
-            }
+        if ($this->defaultRegionId && $this->defaultCountryId) {
+            $this->defaultData['regions'] = $locationServices->getRegionsByEmployeeId($this->employee_id, $this->defaultCountryId, $role);
+            $this->defaultData['subregions'] = $locationServices->getSubregionsByEmployeeId($this->employee_id, $this->defaultRegionId, $role);
         } else {
             throw new \Exception('Default Region/Subregion Id is required');
         }
@@ -81,13 +71,10 @@ class LocationInternalFormCell extends Cell
         if ($this->defaultSubregionId) {
             $cityModel = new CityModel();
             $this->defaultData['cities'] = $cityModel->select('city_id as id, city_name as name')
-                                                     ->where('subregion_id', $this->defaultSubregionId)
-                                                     ->findAll();
+                ->where('subregion_id', $this->defaultSubregionId)
+                ->findAll();
         } else {
             throw new \Exception('Default Subregion Id is required');
         }
-
-        log_message('info', 'Default Data: ' . json_encode($this->defaultData));
     }
-
 }
