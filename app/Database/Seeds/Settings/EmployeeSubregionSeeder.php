@@ -10,15 +10,17 @@ class EmployeeSubregionSeeder extends Seeder
 {
     public function run()
     {
-        $employeeModel = new EmployeeModel();
-        $subregionModel = new SubregionModel();
-
-        $employees = $employeeModel->findAll();
-        $subregions = $subregionModel->findAll();
+        
+        $employees = $this->db->table('employees')->select('employee_id')->get()->getResult();
+        $subregions = $this->db->table('subregions')->select('subregion_id')->get()->getResult();
 
         $data = [];
 
         for ($i = 0; $i < 20; $i++) {
+            if(count($subregions) == 0) {
+                break;
+            }
+
             $employeeId = $employees[array_rand($employees)]->employee_id;
             $subregionKey = array_rand($subregions);
             $subregionId = $subregions[$subregionKey]->subregion_id;

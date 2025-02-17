@@ -19,14 +19,44 @@ class PropertySeeder extends Seeder
         $apartmentGenderData = $this->db->table('apartment_gender')->get()->getResultArray();
         $currencyData = $this->db->table('currencies')->get()->getResultArray();
 
+        $employeeIds = $this->db->table('employees')->select('employee_id')->get()->getResultArray();
+
+        //Get EmployeeSubregion data
+        $employeeSubregionData = $this->db->table('employee_subregions')->get()->getResultArray();
+
+        //Get subregions ID for each employee
+        $SubregionIds = [];
+        foreach ($employeeSubregionData as $employeeSubregion) {
+            $SubregionIds[$employeeSubregion['employee_id']][] = $employeeSubregion['subregion_id'];
+        }
+
+        //Get all cities and their IDs
+        $cityIds = [];
+
+        //Merge array of cities and subregions depending on the subregionsIds (do not add non-existing subregions)
+        foreach ($SubregionIds as $employeeId => $subregionIds) {
+            $cities = $this->db->table('cities')->whereIn('subregion_id', $subregionIds)->select('city_id')->get()->getResultArray();
+            foreach ($cities as $city) {
+                $cityIds[$employeeId][] = $city['city_id'];
+            }
+        }
+
+
         // Seed data for 'properties', 'land_details', 'apartment_details', etc.
         for ($i = 0; $i < 50; $i++) {
 
             $client = $faker->randomElement($clientData);
+
+            //Random Employee
+            $employeeId = $faker->randomElement($employeeIds)['employee_id'];
+            $cityId = $faker->randomElement($cityIds[$employeeId]);
+            unset($cityIds[$employeeId][$cityId]);
+
+
             $propertyData = [
                 'client_id' => $client['client_id'], // Get random client ID
-                'employee_id' => $client['employee_id'], // Assuming employee ID is random
-                'city_id' => $faker->numberBetween(1, 1000), // Random city ID
+                'employee_id' => $employeeId,
+                'city_id' => $cityId,
                 'property_status_id' => $faker->randomElement($propertyStatusData)['property_status_id'], // Random property status
                 'currency_id' => $faker->randomElement($currencyData)['currency_id'], // Random currency ID
                 'property_payment_plan' => $faker->randomElement(['cash to be paid directly', 'installments for over 30 years', 'loan from bank', 'other']),
@@ -56,14 +86,13 @@ class PropertySeeder extends Seeder
                     'land_extra_features' => $faker->sentence(10),
                 ];
 
-                
+
 
                 $this->db->table('land_details')->insert($landData);
                 $land_id = $this->db->insertID();
 
                 $this->db->table('properties')->where('property_id', $propertyId)->update(['land_id' => $land_id]);
-                
-            }else {
+            } else {
                 $apartmentData = [
                     'property_id' => $propertyId,
                     'ad_terrace' => $faker->boolean(),
@@ -133,6 +162,3 @@ class PropertySeeder extends Seeder
         }
     }
 }
-
-
-?>
