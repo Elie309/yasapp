@@ -210,8 +210,8 @@
                     <td><?= $apartmentDetails->ad_furnished ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
-                    <th>Furnished On Provisions</th>
-                    <td><?= $apartmentDetails->ad_furnished_on_provisions ? 'Yes' : 'No' ?></td>
+                    <th>Furnished Provision</th>
+                    <td><?= $apartmentDetails->ad_furnished_provision ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
                     <th>Elevator</th>
@@ -313,16 +313,16 @@
                     <td><?= $apartmentDetails->spec_heating_system ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
-                    <th>Heating System On Provisions</th>
-                    <td><?= $apartmentDetails->spec_heating_system_on_provisions ? 'Yes' : 'No' ?></td>
+                    <th>Heating System Provision</th>
+                    <td><?= $apartmentDetails->spec_heating_system_provision ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
                     <th>AC System</th>
                     <td><?= $apartmentDetails->spec_ac_system ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
-                    <th>AC System On Provisions</th>
-                    <td><?= $apartmentDetails->spec_ac_system_on_provisions ? 'Yes' : 'No' ?></td>
+                    <th>AC System Provision</th>
+                    <td><?= $apartmentDetails->spec_ac_system_provision ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
                     <th>Double Wall</th>

@@ -15,9 +15,9 @@ class ApartmentSpecificationsModel extends Model
     protected $allowedFields    = [
         'apartment_id',
         'spec_heating_system',
-        'spec_heating_system_on_provisions',
+        'spec_heating_system_provision',
         'spec_ac_system',
-        'spec_ac_system_on_provisions',
+        'spec_ac_system_provision',
         'spec_double_wall',
         'spec_double_glazing',
         'spec_shutters_electrical',
@@ -61,9 +61,9 @@ class ApartmentSpecificationsModel extends Model
         'spec_id' => 'permit_empty',
         'apartment_id' => 'required|integer',
         'spec_heating_system' => 'permit_empty|boolean',
-        'spec_heating_system_on_provisions' => 'permit_empty|boolean',
+        'spec_heating_system_provision' => 'permit_empty|boolean',
         'spec_ac_system' => 'permit_empty|boolean',
-        'spec_ac_system_on_provisions' => 'permit_empty|boolean',
+        'spec_ac_system_provision' => 'permit_empty|boolean',
         'spec_double_wall' => 'permit_empty|boolean',
         'spec_double_glazing' => 'permit_empty|boolean',
         'spec_shutters_electrical' => 'permit_empty|boolean',
@@ -93,13 +93,13 @@ class ApartmentSpecificationsModel extends Model
         'spec_heating_system' => [
             'boolean' => 'Heating system must be a boolean value'
         ],
-        'spec_heating_system_on_provisions' => [
+        'spec_heating_system_provision' => [
             'boolean' => 'Heating system on provisions must be a boolean value'
         ],
         'spec_ac_system' => [
             'boolean' => 'AC system must be a boolean value'
         ],
-        'spec_ac_system_on_provisions' => [
+        'spec_ac_system_provision' => [
             'boolean' => 'AC system on provisions must be a boolean value'
         ],
         'spec_double_wall' => [

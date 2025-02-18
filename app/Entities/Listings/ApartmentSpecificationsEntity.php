@@ -15,9 +15,9 @@ class ApartmentSpecificationsEntity extends Entity
 
     protected $defaultBooleans = [
         'spec_heating_system',
-        'spec_heating_system_on_provisions',
+        'spec_heating_system_provision',
         'spec_ac_system',
-        'spec_ac_system_on_provisions',
+        'spec_ac_system_provision',
         'spec_double_wall',
         'spec_double_glazing',
         'spec_shutters_electrical',
@@ -58,9 +58,9 @@ class ApartmentSpecificationsEntity extends Entity
         $this->attributes['spec_heating_system'] = $value == 'on' ? true : false;
     }
 
-    public function setSpecHeatingSystemOnProvisions(string $value)
+    public function setSpecHeatingSystemProvision(string $value)
     {
-        $this->attributes['spec_heating_system_on_provisions'] = $value == 'on' ? true : false;
+        $this->attributes['spec_heating_system_provision'] = $value == 'on' ? true : false;
     }
 
     public function setSpecAcSystem(string $value)
@@ -68,9 +68,9 @@ class ApartmentSpecificationsEntity extends Entity
         $this->attributes['spec_ac_system'] = $value == 'on' ? true : false;
     }
 
-    public function setSpecAcSystemOnProvisions(string $value)
+    public function setSpecAcSystemProvision(string $value)
     {
-        $this->attributes['spec_ac_system_on_provisions'] = $value == 'on' ? true : false;
+        $this->attributes['spec_ac_system_provision'] = $value == 'on' ? true : false;
     }
 
     public function setSpecDoubleWall(string $value)
@@ -170,9 +170,9 @@ class ApartmentSpecificationsEntity extends Entity
         return $this->attributes['spec_heating_system'] ? true : false;
     }
 
-    public function getSpecHeatingSystemOnProvisions()
+    public function getSpecHeatingSystemProvision()
     {
-        return $this->attributes['spec_heating_system_on_provisions'] ? true : false;
+        return $this->attributes['spec_heating_system_provision'] ? true : false;
     }
 
     public function getSpecAcSystem()
@@ -180,9 +180,9 @@ class ApartmentSpecificationsEntity extends Entity
         return $this->attributes['spec_ac_system'] ? true : false;
     }
 
-    public function getSpecAcSystemOnProvisions()
+    public function getSpecAcSystemProvision()
     {
-        return $this->attributes['spec_ac_system_on_provisions'] ? true : false;
+        return $this->attributes['spec_ac_system_provision'] ? true : false;
     }
 
     public function getSpecDoubleWall()

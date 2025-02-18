@@ -457,8 +457,8 @@
                 document.getElementById("ad_furnished").checked = data.ad_furnished;
             }
 
-            if (data.ad_furnished_on_provisions) {
-                document.getElementById("ad_furnished_on_provisions").checked = data.ad_furnished_on_provisions;
+            if (data.ad_furnished_provision) {
+                document.getElementById("ad_furnished_provision").checked = data.ad_furnished_provision;
             }
 
             if (data.ad_elevator) {
@@ -538,16 +538,16 @@
                 document.getElementById("spec_heating_system").checked = data.spec_heating_system;
             }
 
-            if (data.spec_heating_system_on_provisions) {
-                document.getElementById("spec_heating_system_on_provisions").checked = data.spec_heating_system_on_provisions;
+            if (data.spec_heating_system_provision) {
+                document.getElementById("spec_heating_system_provision").checked = data.spec_heating_system_provision;
             }
 
             if (data.spec_ac_system) {
                 document.getElementById("spec_ac_system").checked = data.spec_ac_system;
             }
 
-            if (data.spec_ac_system_on_provisions) {
-                document.getElementById("spec_ac_system_on_provisions").checked = data.spec_ac_system_on_provisions;
+            if (data.spec_ac_system_provision) {
+                document.getElementById("spec_ac_system_provision").checked = data.spec_ac_system_provision;
             }
 
             if (data.spec_double_wall) {

@@ -230,7 +230,7 @@ CREATE TABLE apartment_details (
     ad_roof_area INT DEFAULT 0,
 
     ad_furnished BOOLEAN DEFAULT FALSE,
-    ad_furnished_on_provisions BOOLEAN DEFAULT FALSE,
+    ad_furnished_provision BOOLEAN DEFAULT FALSE,
     ad_elevator BOOLEAN DEFAULT FALSE,
 
     ad_status_age VARCHAR(255),
@@ -275,9 +275,9 @@ CREATE TABLE apartment_specifications (
     apartment_id INT UNSIGNED NOT NULL UNIQUE,
 
     spec_heating_system BOOLEAN DEFAULT FALSE,
-    spec_heating_system_on_provisions BOOLEAN DEFAULT FALSE,
+    spec_heating_system_provision BOOLEAN DEFAULT FALSE,
     spec_ac_system BOOLEAN DEFAULT FALSE,
-    spec_ac_system_on_provisions BOOLEAN DEFAULT FALSE,
+    spec_ac_system_provision BOOLEAN DEFAULT FALSE,
     spec_double_wall BOOLEAN DEFAULT FALSE,
     spec_double_glazing BOOLEAN DEFAULT FALSE,
     spec_shutters_electrical BOOLEAN DEFAULT FALSE,

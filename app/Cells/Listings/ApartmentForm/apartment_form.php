@@ -49,9 +49,9 @@
         <input type="checkbox" id="ad_furnished" name="ad_furnished"
             class="main-checkbox">
 
-        <label class="secondary-label md:col-span-2" for="ad_furnished_on_provisions">Furnished on Provisions:</label>
-        <input type="checkbox" id="ad_furnished_on_provisions"
-            name="ad_furnished_on_provisions"
+        <label class="secondary-label md:col-span-2" for="ad_furnished_provision">Furnished Provision:</label>
+        <input type="checkbox" id="ad_furnished_provision"
+            name="ad_furnished_provision"
             class="main-checkbox ">
 
         <label class="secondary-label" for="ad_elevator">Elevator:</label>
@@ -132,14 +132,14 @@
         <label class="secondary-label" for="spec_heating_system">Heating System:</label>
         <input type="checkbox" id="spec_heating_system" name="spec_heating_system" class="main-checkbox place-self-center">
 
-        <label class="secondary-label" for="spec_heating_system_on_provisions">Heating System on Provisions:</label>
-        <input type="checkbox" id="spec_heating_system_on_provisions" name="spec_heating_system_on_provisions" class="main-checkbox place-self-center">
+        <label class="secondary-label" for="spec_heating_system_provision">Heating System Provision:</label>
+        <input type="checkbox" id="spec_heating_system_provision" name="spec_heating_system_provision" class="main-checkbox place-self-center">
 
         <label class="secondary-label" for="spec_ac_system">AC System:</label>
         <input type="checkbox" id="spec_ac_system" name="spec_ac_system" class="main-checkbox place-self-center">
 
-        <label class="secondary-label" for="spec_ac_system_on_provisions">AC System on Provisions:</label>
-        <input type="checkbox" id="spec_ac_system_on_provisions" name="spec_ac_system_on_provisions" class="main-checkbox place-self-center">
+        <label class="secondary-label" for="spec_ac_system_provision">AC System Provision:</label>
+        <input type="checkbox" id="spec_ac_system_provision" name="spec_ac_system_provision" class="main-checkbox place-self-center">
 
         <label class="secondary-label" for="spec_double_wall">Double Wall:</label>
         <input type="checkbox" id="spec_double_wall" name="spec_double_wall" class="main-checkbox place-self-center">

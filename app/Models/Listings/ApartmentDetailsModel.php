@@ -22,7 +22,7 @@ class ApartmentDetailsModel extends Model
         'ad_gender_id',
         'ad_type_id',
         'ad_furnished',
-        'ad_furnished_on_provisions',
+        'ad_furnished_provision',
         'ad_elevator',
         'ad_status_age',
         'ad_floor_level',
@@ -64,7 +64,7 @@ class ApartmentDetailsModel extends Model
         'ad_gender_id' => 'required|integer',
         'ad_type_id' => 'required|integer',
         'ad_furnished' => 'permit_empty|boolean',
-        'ad_furnished_on_provisions' => 'permit_empty|boolean',
+        'ad_furnished_provision' => 'permit_empty|boolean',
         'ad_elevator' => 'permit_empty|boolean',
         'ad_status_age' => 'string|max_length[255]',
         'ad_floor_level' => 'permit_empty|integer',
@@ -101,7 +101,7 @@ class ApartmentDetailsModel extends Model
         'ad_furnished' => [
             'boolean' => 'Furnished must be a boolean'
         ],
-        'ad_furnished_on_provisions' => [
+        'ad_furnished_provision' => [
             'boolean' => 'Furnished On Provisions must be a boolean'
         ],
         'ad_elevator' => [
