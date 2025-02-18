@@ -202,6 +202,16 @@
     animation: l17 1s infinite;
   }
 
+  .loader-red {
+    width: 60px;
+    aspect-ratio: 1;
+    --_g: no-repeat radial-gradient(farthest-side, #991b1b 90%, #00000000);
+    background: var(--_g), var(--_g), var(--_g);
+    background-size: 25% 25%;
+    animation: l17 1s infinite;
+  }
+
+
   @keyframes l17 {
     0% {
       background-position: 0% -100%, 50% -100%, 100% -100%;
