@@ -309,7 +309,7 @@
             <h2 class="secondary-title">Apartment Specifications</h2>
              <table class="view-table">
                 <tr>
-                    <th>Heating System</th>
+                    <th>Heating System Installed</th>
                     <td><?= $apartmentDetails->spec_heating_system ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
@@ -317,7 +317,7 @@
                     <td><?= $apartmentDetails->spec_heating_system_provision ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
-                    <th>AC System</th>
+                    <th>AC System Installed</th>
                     <td><?= $apartmentDetails->spec_ac_system ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>

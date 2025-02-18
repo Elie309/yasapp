@@ -129,13 +129,13 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 mb-8 items-center">
 
 
-        <label class="secondary-label" for="spec_heating_system">Heating System:</label>
+        <label class="secondary-label" for="spec_heating_system">Heating System Installed:</label>
         <input type="checkbox" id="spec_heating_system" name="spec_heating_system" class="main-checkbox place-self-center">
 
         <label class="secondary-label" for="spec_heating_system_provision">Heating System Provision:</label>
         <input type="checkbox" id="spec_heating_system_provision" name="spec_heating_system_provision" class="main-checkbox place-self-center">
 
-        <label class="secondary-label" for="spec_ac_system">AC System:</label>
+        <label class="secondary-label" for="spec_ac_system">AC System Installed:</label>
         <input type="checkbox" id="spec_ac_system" name="spec_ac_system" class="main-checkbox place-self-center">
 
         <label class="secondary-label" for="spec_ac_system_provision">AC System Provision:</label>
