@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class PropertyUploadsModel extends Model
 {
     protected $table            = 'property_uploads';
-    protected $primaryKey       = 'property_upload_id';
+    protected $primaryKey       = 'upload_id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
@@ -26,7 +26,7 @@ class PropertyUploadsModel extends Model
     protected bool $updateOnlyChanged = true;
 
     protected array $casts = [
-        'property_upload_id' => 'integer',
+        'upload_id' => 'integer',
         'property_id' => 'integer',
         'file_size' => 'integer',
         'created_at' => 'datetime',

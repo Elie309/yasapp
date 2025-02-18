@@ -13,7 +13,7 @@ class PropertyUploadsEntity extends Entity
         'upload_deleted_at',
     ];
     protected $casts   = [
-        'property_upload_id' => 'integer',
+        'upload_id' => 'integer',
         'property_id' => 'integer',
         'upload_file_size' => 'integer',
     ];

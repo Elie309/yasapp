@@ -19,7 +19,7 @@ class PropertyUploadServices
     public function create(array $data)
     {
         $entity = new PropertyUploadsEntity($data);
-        return $this->propertyUploadsModel->insert($entity);
+        return $this->propertyUploadsModel->save($entity);
     }
 
     public function read(int $id)
@@ -41,6 +41,12 @@ class PropertyUploadServices
     public function getAll()
     {
         return $this->propertyUploadsModel->findAll();
+    }
+
+    //Get by property id
+    public function getByPropertyId(int $property_id)
+    {
+        return $this->propertyUploadsModel->where('property_id', $property_id)->findAll();
     }
 }
 
