@@ -261,8 +261,6 @@
     </div>
 <?php endif; ?>
 
-<?= view_cell('App\Cells\Settings\Location\LocationPopover\LocationPopoverCell::render') ?>
-
 <?= view_cell('App\Cells\Clients\ClientPopover\ClientPopoverCell::render', ['countries' => $countries]) ?>
 
 <script>
@@ -603,7 +601,21 @@
             if (data.spec_garage) {
                 document.getElementById("spec_garage").checked = data.spec_garage;
             }
-
+            if (data.specs_jacuzzi) {
+                document.getElementById("specs_jacuzzi").checked = data.specs_jacuzzi;
+            }
+            if (data.spec_swimming_pool) {
+                document.getElementById("spec_swimming_pool").checked = data.spec_swimming_pool;
+            }
+            if (data.spec_gym) {
+                document.getElementById("spec_gym").checked = data.spec_gym;
+            }
+            if (data.spec_kitchenette) {
+                document.getElementById("spec_kitchenette").checked = data.spec_kitchenette;
+            }
+            if (data.spec_driver_room) {
+                document.getElementById("spec_driver_room").checked = data.spec_driver_room;
+            }
             if (data.spec_tiles) {
                 document.getElementById("spec_tiles").value = data.spec_tiles;
             }

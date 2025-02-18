@@ -126,6 +126,11 @@ class PropertySeeder extends Seeder
                     'spec_solar_heater' => $faker->boolean(),
                     'spec_intercom' => $faker->boolean(),
                     'spec_garage' => $faker->boolean(),
+                    'specs_jacuzzi' => $faker->boolean(),
+                    'spec_swimming_pool' => $faker->boolean(),
+                    'spec_gym' => $faker->boolean(),
+                    'spec_kitchenette' => $faker->boolean(),
+                    'spec_driver_room' => $faker->boolean(),
                 ];
 
                 $this->db->table('apartment_specifications')->insert($specificationData);

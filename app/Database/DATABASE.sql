@@ -291,6 +291,12 @@ CREATE TABLE apartment_specifications (
     spec_solar_heater BOOLEAN DEFAULT FALSE,
     spec_intercom BOOLEAN DEFAULT FALSE,
     spec_garage BOOLEAN DEFAULT FALSE,
+    specs_jacuzzi BOOLEAN DEFAULT FALSE,
+    spec_swimming_pool BOOLEAN DEFAULT FALSE,
+    spec_gym BOOLEAN DEFAULT FALSE,
+    spec_kitchenette BOOLEAN DEFAULT FALSE,
+    spec_driver_room BOOLEAN DEFAULT FALSE,
+
     spec_tiles VARCHAR(255) DEFAULT '',
 
     FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)

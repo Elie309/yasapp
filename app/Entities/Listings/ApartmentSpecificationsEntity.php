@@ -30,7 +30,12 @@ class ApartmentSpecificationsEntity extends Entity
         'spec_alarm_system',
         'spec_solar_heater',
         'spec_intercom',
-        'spec_garage'
+        'spec_garage',
+        'specs_jacuzzi',
+        'spec_swimming_pool',
+        'spec_gym',
+        'spec_kitchenette',
+        'spec_driver_room',
     ];
 
     public function fill(array $data = null)
@@ -133,6 +138,31 @@ class ApartmentSpecificationsEntity extends Entity
         $this->attributes['spec_garage'] = $value == 'on' ? true : false;
     }
 
+    public function setSpecsJacuzzi(string $value)
+    {
+        $this->attributes['specs_jacuzzi'] = $value == 'on' ? true : false;
+    }
+
+    public function setSpecSwimmingPool(string $value)
+    {
+        $this->attributes['spec_swimming_pool'] = $value == 'on' ? true : false;
+    }
+
+    public function setSpecGym(string $value)
+    {
+        $this->attributes['spec_gym'] = $value == 'on' ? true : false;
+    }
+
+    public function setSpecKitchenette(string $value)
+    {
+        $this->attributes['spec_kitchenette'] = $value == 'on' ? true : false;
+    }
+
+    public function setSpecDriverRoom(string $value)
+    {
+        $this->attributes['spec_driver_room'] = $value == 'on' ? true : false;
+    }
+
     //Getters return ONLY TRUE or FALSE
 
     public function getSpecHeatingSystem()
@@ -219,4 +249,30 @@ class ApartmentSpecificationsEntity extends Entity
     {
         return $this->attributes['spec_garage'] ? true : false;
     }
+
+    public function getSpecsJacuzzi()
+    {
+        return $this->attributes['specs_jacuzzi'] ? true : false;
+    }
+
+    public function getSpecSwimmingPool()
+    {
+        return $this->attributes['spec_swimming_pool'] ? true : false;
+    }
+
+    public function getSpecGym()
+    {
+        return $this->attributes['spec_gym'] ? true : false;
+    }
+
+    public function getSpecKitchenette()
+    {
+        return $this->attributes['spec_kitchenette'] ? true : false;
+    }
+
+    public function getSpecDriverRoom()
+    {
+        return $this->attributes['spec_driver_room'] ? true : false;
+    }
+    
 }

@@ -32,6 +32,11 @@ class ApartmentSpecificationsModel extends Model
         'spec_solar_heater',
         'spec_intercom',
         'spec_garage',
+        'specs_jacuzzi',
+        'spec_swimming_pool' ,
+        'spec_gym' ,
+        'spec_kitchenette' ,
+        'spec_driver_room',
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -73,6 +78,11 @@ class ApartmentSpecificationsModel extends Model
         'spec_solar_heater' => 'permit_empty|boolean',
         'spec_intercom' => 'permit_empty|boolean',
         'spec_garage' => 'permit_empty|boolean',
+        'specs_jacuzzi' => 'permit_empty|boolean',
+        'spec_swimming_pool' => 'permit_empty|boolean',
+        'spec_gym' => 'permit_empty|boolean',
+        'spec_kitchenette' => 'permit_empty|boolean',
+        'spec_driver_room' => 'permit_empty|boolean',
     ];
     protected $validationMessages   = [
         'spec_id' => [],
@@ -134,7 +144,22 @@ class ApartmentSpecificationsModel extends Model
         ],
         'spec_garage' => [
             'boolean' => 'Garage must be a boolean value'
-        ]
+        ],
+        'specs_jacuzzi' => [
+            'boolean' => 'Jacuzzi must be a boolean value'
+        ],
+        'spec_swimming_pool' => [
+            'boolean' => 'Swimming pool must be a boolean value'
+        ],
+        'spec_gym' => [
+            'boolean' => 'Gym must be a boolean value'
+        ],
+        'spec_kitchenette' => [
+            'boolean' => 'Kitchenette must be a boolean value'
+        ],
+        'spec_driver_room' => [
+            'boolean' => 'Driver room must be a boolean value'
+        ],
     ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;

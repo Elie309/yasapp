@@ -378,6 +378,26 @@
                     <td><?= $apartmentDetails->spec_garage ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
+                    <th>Jacuzzi</th>
+                    <td><?= $apartmentDetails->specs_jacuzzi ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Swimming Pool</th>
+                    <td><?= $apartmentDetails->spec_swimming_pool ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Gym</th>
+                    <td><?= $apartmentDetails->spec_gym ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Kitchenette</th>
+                    <td><?= $apartmentDetails->spec_kitchenette ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Driver Room</th>
+                    <td><?= $apartmentDetails->spec_driver_room ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
                     <th>Tiles</th>
                     <td><?= esc(ucfirst($apartmentDetails->spec_tiles)) ?></td>
                 </tr>

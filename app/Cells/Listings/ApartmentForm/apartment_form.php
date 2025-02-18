@@ -180,6 +180,23 @@
         <label class="secondary-label" for="spec_garage">Garage:</label>
         <input type="checkbox" id="spec_garage" name="spec_garage" class="main-checkbox place-self-center">
 
+        <label class="secondary-label" for="specs_jacuzzi">Jacuzzi:</label>
+        <input type="checkbox" id="specs_jacuzzi" name="specs_jacuzzi" class="main-checkbox place-self-center">
+
+        <label class="secondary-label" for="spec_swimming_pool">Swimming Pool:</label>
+        <input type="checkbox" id="spec_swimming_pool" name="spec_swimming_pool" class="main-checkbox place-self-center">
+
+        <label class="secondary-label" for="spec_gym">Gym:</label>
+        <input type="checkbox" id="spec_gym" name="spec_gym" class="main-checkbox place-self-center">
+
+        <label class="secondary-label" for="spec_kitchenette">Kitchenette:</label>
+        <input type="checkbox" id="spec_kitchenette" name="spec_kitchenette" class="main-checkbox place-self-center">
+
+        <label class="secondary-label" for="spec_driver_room">Driver Room:</label>
+        <input type="checkbox" id="spec_driver_room" name="spec_driver_room" class="main-checkbox place-self-center">
+
+
+
 
     </div>
 
