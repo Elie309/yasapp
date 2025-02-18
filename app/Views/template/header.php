@@ -7,13 +7,13 @@
     <title><?= $title ?? 'Dashboard' ?></title>
     <link href="<?= base_url('css/output.css') ?>" rel="stylesheet">
 
-
+    <?php if(isset($title) && $title === 'Uploads') : ?>
     <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
     <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-
+    <?php endif; ?>
     
 </head>
 

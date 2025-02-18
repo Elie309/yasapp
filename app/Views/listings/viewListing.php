@@ -55,11 +55,11 @@
 
 
 
-    <div class="my-8 bg-white p-10 shadow-md rounded-md overflow-auto text-lg w-full max-w-6xl mx-auto print-container">
+    <div class="my-8 bg-white p-2 md:p-10 shadow-md rounded-md overflow-auto w-full max-w-6xl mx-auto print-container">
 
 
         <h2 class="secondary-title">Vendor</h2>
-        <table>
+        <table class="view-table">
             <tr>
                 <th>Client</th>
                 <td><?= esc($property->client_name) ?></td>
@@ -90,7 +90,7 @@
         <div class="break-page"></div>
         <h2 class="secondary-title">Property</h2>
 
-        <table>
+        <table  class="view-table">
             <tr>
                 <th>Agent</th>
                 <td><?= esc($property->employee_name) ?></td>
@@ -150,7 +150,7 @@
 
 
             <h2 class="secondary-title">Land Details</h2>
-            <table>
+             <table class="view-table">
                 <tr>
                     <th>Land Type</th>
                     <td><?= esc($landDetails->land_type) ?></td>
@@ -179,7 +179,7 @@
             <!-- Apartment Details -->
             <div class="break-page"></div>
             <h2 class="secondary-title">Apartment Details</h2>
-            <table>
+             <table class="view-table">
                 <tr>
                     <th>Gender</th>
                     <td><?= esc($apartmentDetails->apartment_gender_name) ?></td>
@@ -248,7 +248,7 @@
 
             <!-- Apartment Partition -->
             <h2 class="secondary-title">Apartment Partition</h2>
-            <table>
+             <table class="view-table">
                 <tr>
                     <th>Salon</th>
                     <td><?= esc($apartmentDetails->partition_salon) ?></td>
@@ -307,7 +307,7 @@
 
             <!-- Apartment Specifications -->
             <h2 class="secondary-title">Apartment Specifications</h2>
-            <table>
+             <table class="view-table">
                 <tr>
                     <th>Heating System</th>
                     <td><?= $apartmentDetails->spec_heating_system ? 'Yes' : 'No' ?></td>
@@ -409,34 +409,6 @@
         <?php endif; ?>
 
     </div>
-
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        table td,
-        table th {
-            border: 1px solid lightgray;
-            padding: 8px;
-            text-align: left;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        table th {
-            font-weight: bold;
-            width: 250px;
-        }
-    </style>
 
 </div>
 

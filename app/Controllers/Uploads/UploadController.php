@@ -19,25 +19,33 @@ class UploadController extends BaseController
     }
 
     // Main view for the upload page
-    public function index()
+    public function index($property_id)
     {
-        return view("template/header") . view('uploads/upload') . view("template/footer");
+        //TODO: Check Property ID
+
+        return view("template/header", [
+            'title' => 'Uploads',
+        ]) . view('uploads/upload', [
+            'property_id' => $property_id
+        ]) . view("template/footer");
     }
 
     // Unified upload function
     public function uploads()
     {
+        $property_id = esc($this->request->getPost('property_id'));
+
+        //TODO: Check Property ID
         // Check if the request contains a FilePond file input
         if ($this->request->getFile('filepond')) {
-            return $this->handleFilePondUpload();
+            return $this->handleFilePondUpload($property_id);
         }
-        
+
         return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
             ->setJSON(['error' => 'Invalid request']);
-
     }
 
-    private function handleFilePondUpload()
+    private function handleFilePondUpload($property_id)
     {
         try {
             $file = $this->request->getFile('filepond');
@@ -66,7 +74,7 @@ class UploadController extends BaseController
                 $result = $type === 'image' ? $this->uploadAWSClientServices->uploadImage($filePath, $fileName) : $this->uploadAWSClientServices->uploadVideo($filePath, $fileName);
 
                 $data = [
-                    'property_id' =>   $this->request->getPost('property_id'),
+                    'property_id' =>   $property_id,
                     'upload_file_name' => $fileName,
                     'upload_file_type' => $type,
                     'upload_mime_type' => $mimeType, // Use updated MIME type
@@ -94,7 +102,6 @@ class UploadController extends BaseController
 
             return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
                 ->setJSON(['error' => 'Invalid file upload']);
-
         } catch (\Exception $e) {
             // Delete the file from the server if it was uploaded
             if (isset($filePath) && file_exists($filePath)) {

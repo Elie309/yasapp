@@ -60,10 +60,9 @@
     </div>
 
 
-    <div class="my-8 bg-white p-10 shadow-md rounded-md overflow-auto text-lg w-full max-w-6xl mx-auto print-container">
+    <div class="my-8 bg-white p-2 md:p-10 shadow-md rounded-md overflow-auto w-full max-w-6xl mx-auto print-container">
 
-
-        <table id="request_personal_table">
+        <table class="view-table">
             <tr>
                 <th>Client Name:</th>
                 <td><?= $request->client_name ?></td>
@@ -114,35 +113,6 @@
         </table>
     </div>
 </div>
-
-<style>
-    #request_personal_table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    #request_personal_table td {
-        border: 1px solid lightgray;
-        padding: 8px;
-        text-align: left;
-    }
-
-    #request_personal_table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    #request_personal_table tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    #request_personal_table th {
-        border: 1px solid lightgray;
-        padding: 8px;
-        text-align: left;
-        width: 250px;
-        font-weight: bold;
-    }
-</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

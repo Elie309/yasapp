@@ -1,5 +1,7 @@
 <div class="container-main">
     <div class="main-title-page">Upload Files</div>
+
+    <input hidden type="text" name="propery_id" value="<?= $property_id; ?>" />
     
     <input type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
         data-max-files="10" accept="image/*, video/*, .pdf, .doc, .docx, .txt" />
