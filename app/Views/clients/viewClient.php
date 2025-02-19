@@ -20,7 +20,7 @@
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
         <div class="flex flex-col w-full">
-            <table id="client_personal_table">
+            <table class="view-table">
                 <tr>
                     <th>Firstname:</th>
                     <td><?= $client->client_firstname ?></td>
@@ -58,32 +58,3 @@
     </div>
     <!-- TODO: ADD Listing and requests for the client -->
 </div>
-
-<style>
-    #client_personal_table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    #client_personal_table td {
-        border: 1px solid lightgray;
-        padding: 8px;
-        text-align: left;
-    }
-
-    #client_personal_table tr:nth-child(even) {
-        background-color: #f9f9f9;
-    }
-
-    #client_personal_table tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    #client_personal_table th {
-        border: 1px solid lightgray;
-        padding: 8px;
-        text-align: left;
-        width: 250px;
-        font-weight: bold;
-    }
-</style>

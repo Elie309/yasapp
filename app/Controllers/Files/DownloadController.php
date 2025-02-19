@@ -19,9 +19,6 @@ class DownloadController extends BaseController
     public function download($upload_id)
     {
 
-        //E.g:  https://yasapp.s3.eu-central-003.backblazeb2.com/images/67b4e8aa2f746.webp
-
-
         $upload = $this->propertyUploadServices->read($upload_id);
 
 

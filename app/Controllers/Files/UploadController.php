@@ -21,7 +21,7 @@ class UploadController extends BaseController
     // Main view for the upload page
     public function index($property_id)
     {
-        
+
         $propertyUploads = [];
 
         $propertyResults = $this->propertyUploadServices->getByPropertyId($property_id);
@@ -33,6 +33,23 @@ class UploadController extends BaseController
         return view("template/header", [
             'title' => 'Uploads',
         ]) . view('uploads/upload', [
+            'property_id' => $property_id,
+            'propertyUploads' => $propertyUploads
+        ]) . view("template/footer");
+    }
+    
+    public function viewFiles($property_id)
+    {
+
+        $propertyUploads = [];
+
+        $propertyResults = $this->propertyUploadServices->getByPropertyId($property_id);
+
+        if ($propertyResults) {
+            $propertyUploads = $propertyResults;
+        }
+
+        return view("template/header") . view('listings/viewFiles', [
             'property_id' => $property_id,
             'propertyUploads' => $propertyUploads
         ]) . view("template/footer");

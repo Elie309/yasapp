@@ -175,75 +175,105 @@
     @apply w-full border-collapse my-4 text-sm md:text-base;
   }
 
-    table.view-table td, table.view-table th {
+  table.view-table td,
+  table.view-table th {
     @apply border border-gray-300 p-2 text-left;
-    }
+  }
 
-    table.view-table tr:nth-child(even) {
+  table.view-table tr:nth-child(even) {
     @apply bg-gray-100;
-    }
+  }
 
-    table.view-table tr:hover {
+  table.view-table tr:hover {
     @apply bg-gray-200;
-    }
+  }
 
-    table.view-table th {
+  table.view-table th {
     @apply font-semibold w-1/4;
-    }
-
-
-  /* HTML: <div class="loader"></div> */
-  .loader {
-    width: 60px;
-    aspect-ratio: 1;
-    --_g: no-repeat radial-gradient(farthest-side, #374151 90%, #00000000);
-    background: var(--_g), var(--_g), var(--_g);
-    background-size: 25% 25%;
-    animation: l17 1s infinite;
   }
 
-  .loader-red {
-    width: 60px;
-    aspect-ratio: 1;
-    --_g: no-repeat radial-gradient(farthest-side, #991b1b 90%, #00000000);
-    background: var(--_g), var(--_g), var(--_g);
-    background-size: 25% 25%;
-    animation: l17 1s infinite;
+  .carousel-container {
+    @apply relative w-4/5 mx-auto overflow-hidden;
   }
 
+  .carousel-wrapper {
+    @apply flex transition-transform duration-500 ease-in-out w-full;
+  }
 
-  @keyframes l17 {
-    0% {
-      background-position: 0% -100%, 50% -100%, 100% -100%;
-    }
+  .carousel {
+    @apply flex;
+  }
 
-    16.67% {
-      background-position: 0% 50%, 50% -100%, 100% -100%;
-    }
+  .carousel-item {
+    @apply min-w-full box-border flex justify-center items-center h-96;
+  }
 
-    33.33% {
-      background-position: 0% 50%, 50% 50%, 100% -100%;
-    }
+  .main-media {
+    @apply max-w-full max-h-full object-contain;
+  }
 
-    45%,
-    55% {
-      background-position: 0% 50%, 50% 50%, 100% 50%;
-    }
+  .carousel-controls {
+    @apply flex justify-between mt-2.5 ;
+  }
 
-    66.67% {
-      background-position: 0% 200%, 50% 50%, 100% 50%;
-    }
+  .carousel-controls button {
+    @apply px-2.5 py-2.5 bg-gray-800 text-white border-none cursor-pointer rounded-full;
+  }
 
-    83.33% {
-      background-position: 0% 200%, 50% 200%, 100% 50%;
-    }
-
-    100% {
-      background-position: 0% 200%, 50% 200%, 100% 200%;
-    }
+  .carousel-controls button:hover {
+    @apply bg-gray-700;
   }
 }
 
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 60px;
+  aspect-ratio: 1;
+  --_g: no-repeat radial-gradient(farthest-side, #374151 90%, #00000000);
+  background: var(--_g), var(--_g), var(--_g);
+  background-size: 25% 25%;
+  animation: l17 1s infinite;
+}
+
+.loader-red {
+  width: 60px;
+  aspect-ratio: 1;
+  --_g: no-repeat radial-gradient(farthest-side, #991b1b 90%, #00000000);
+  background: var(--_g), var(--_g), var(--_g);
+  background-size: 25% 25%;
+  animation: l17 1s infinite;
+}
+
+@keyframes l17 {
+  0% {
+    background-position: 0% -100%, 50% -100%, 100% -100%;
+  }
+
+  16.67% {
+    background-position: 0% 50%, 50% -100%, 100% -100%;
+  }
+
+  33.33% {
+    background-position: 0% 50%, 50% 50%, 100% -100%;
+  }
+
+  45%,
+  55% {
+    background-position: 0% 50%, 50% 50%, 100% 50%;
+  }
+
+  66.67% {
+    background-position: 0% 200%, 50% 50%, 100% 50%;
+  }
+
+  83.33% {
+    background-position: 0% 200%, 50% 200%, 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 200%, 50% 200%, 100% 200%;
+  }
+}
 
 @media print {
   .print-container {

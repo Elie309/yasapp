@@ -17,7 +17,7 @@
 
 
     <div class="flex flex-row justify-around w-full items-center no-print py-2 my-4 ">
-        <a href="/listings/<?= esc($property->property_id) ?>/images" class="my-auto flex space-x-2 cursor-pointer no-print">
+        <a href="/listings/<?= esc($property->property_id) ?>/files" class="my-auto flex space-x-2 cursor-pointer no-print">
             <p>Images</p>
             <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'images', 'class' => 'size-6']) ?>
         </a>
