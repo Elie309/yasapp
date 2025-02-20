@@ -13,10 +13,6 @@ jobs:
             install -m 600 -D /dev/null ~/.ssh/id_rsa
             echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
             ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-        - name: Set up Node.js
-          uses: actions/setup-node@v2
-          with:
-            node-version: '22'
         - name: connect and execute commands on server
           run: |
             ssh "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" << 'EOF'
@@ -25,6 +21,8 @@ jobs:
               git pull
               rm -rf writable/cache/*
               composer install
+              export NVM_DIR=~/.nvm
+              source ~/.nvm/nvm.sh
               npm run build
             EOF
         - name: cleanup
