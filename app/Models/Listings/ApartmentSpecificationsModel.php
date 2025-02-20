@@ -15,9 +15,9 @@ class ApartmentSpecificationsModel extends Model
     protected $allowedFields    = [
         'apartment_id',
         'spec_heating_system',
-        'spec_heating_system_on_provisions',
+        'spec_heating_system_provision',
         'spec_ac_system',
-        'spec_ac_system_on_provisions',
+        'spec_ac_system_provision',
         'spec_double_wall',
         'spec_double_glazing',
         'spec_shutters_electrical',
@@ -32,6 +32,11 @@ class ApartmentSpecificationsModel extends Model
         'spec_solar_heater',
         'spec_intercom',
         'spec_garage',
+        'specs_jacuzzi',
+        'spec_swimming_pool' ,
+        'spec_gym' ,
+        'spec_kitchenette' ,
+        'spec_driver_room',
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -56,9 +61,9 @@ class ApartmentSpecificationsModel extends Model
         'spec_id' => 'permit_empty',
         'apartment_id' => 'required|integer',
         'spec_heating_system' => 'permit_empty|boolean',
-        'spec_heating_system_on_provisions' => 'permit_empty|boolean',
+        'spec_heating_system_provision' => 'permit_empty|boolean',
         'spec_ac_system' => 'permit_empty|boolean',
-        'spec_ac_system_on_provisions' => 'permit_empty|boolean',
+        'spec_ac_system_provision' => 'permit_empty|boolean',
         'spec_double_wall' => 'permit_empty|boolean',
         'spec_double_glazing' => 'permit_empty|boolean',
         'spec_shutters_electrical' => 'permit_empty|boolean',
@@ -73,6 +78,11 @@ class ApartmentSpecificationsModel extends Model
         'spec_solar_heater' => 'permit_empty|boolean',
         'spec_intercom' => 'permit_empty|boolean',
         'spec_garage' => 'permit_empty|boolean',
+        'specs_jacuzzi' => 'permit_empty|boolean',
+        'spec_swimming_pool' => 'permit_empty|boolean',
+        'spec_gym' => 'permit_empty|boolean',
+        'spec_kitchenette' => 'permit_empty|boolean',
+        'spec_driver_room' => 'permit_empty|boolean',
     ];
     protected $validationMessages   = [
         'spec_id' => [],
@@ -83,13 +93,13 @@ class ApartmentSpecificationsModel extends Model
         'spec_heating_system' => [
             'boolean' => 'Heating system must be a boolean value'
         ],
-        'spec_heating_system_on_provisions' => [
+        'spec_heating_system_provision' => [
             'boolean' => 'Heating system on provisions must be a boolean value'
         ],
         'spec_ac_system' => [
             'boolean' => 'AC system must be a boolean value'
         ],
-        'spec_ac_system_on_provisions' => [
+        'spec_ac_system_provision' => [
             'boolean' => 'AC system on provisions must be a boolean value'
         ],
         'spec_double_wall' => [
@@ -134,7 +144,22 @@ class ApartmentSpecificationsModel extends Model
         ],
         'spec_garage' => [
             'boolean' => 'Garage must be a boolean value'
-        ]
+        ],
+        'specs_jacuzzi' => [
+            'boolean' => 'Jacuzzi must be a boolean value'
+        ],
+        'spec_swimming_pool' => [
+            'boolean' => 'Swimming pool must be a boolean value'
+        ],
+        'spec_gym' => [
+            'boolean' => 'Gym must be a boolean value'
+        ],
+        'spec_kitchenette' => [
+            'boolean' => 'Kitchenette must be a boolean value'
+        ],
+        'spec_driver_room' => [
+            'boolean' => 'Driver room must be a boolean value'
+        ],
     ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;

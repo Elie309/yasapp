@@ -1,152 +1,86 @@
-<div class="container-main">
-    <div class="main-title-page">Upload Files</div>
-    <div id="drop-zone" class="drop-zone">
-        <p class="main-label">Drag & Drop files here or click to upload</p>
-        <input type="file" id="file-input" class="hidden" multiple>
+<div class="container-main print-container max-w-6xl overflow-auto">
+
+    <div class="flex flex-row md:mt-0">
+        <button onclick="window.history.back()" class="my-auto flex space-x-2 cursor-pointer no-print">
+            <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'arrow-left', 'class' => 'size-6']) ?>
+            <p>Return</p>
+        </button>
+        <h2 class="main-title-page">Upload Files</h2>
     </div>
-    <div id="file-list" class="mt-4"></div>
-    <div id="progress-container" class="progress-container hidden">
-        <progress id="progress-bar" value="0" max="100" class="w-full"></progress>
-        <button id="cancel-upload" class="secondary-btn mt-2">Cancel Upload</button>
+
+
+    <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
+    <div class="my-8 bg-white p-2 md:p-10 shadow-md rounded-md overflow-auto w-full max-w-6xl mx-auto print-container">
+
+
+        <input hidden type="text" name="property_id" value="<?= $property_id; ?>" />
+
+        <input type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
+            data-max-files="10" accept="image/*, video/*, .pdf, .doc, .docx, .txt" />
     </div>
 </div>
 
+
+
 <script>
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const fileList = document.getElementById('file-list');
-    const progressContainer = document.getElementById('progress-container');
-    const progressBar = document.getElementById('progress-bar');
-    const cancelUploadButton = document.getElementById('cancel-upload');
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputElement = document.querySelector('input[type="file"]');
+        const propertyId = document.querySelector('input[name="property_id"]').value;
 
-    let currentXHR = null;
+        const errorDiv = document.getElementById('error-div');
+        const successDiv = document.getElementById('success-div');
 
-    dropZone.addEventListener('click', () => fileInput.click());
+        FilePond.registerPlugin(
+            FilePondPluginImageEdit,
+            FilePondPluginImagePreview
+        );
 
-    fileInput.addEventListener('change', () => {
-        handleFiles(fileInput.files);
-    });
-
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dragover');
-    });
-
-    dropZone.addEventListener('dragleave', () => {
-        dropZone.classList.remove('dragover');
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-        handleFiles(e.dataTransfer.files);
-    });
-
-    cancelUploadButton.addEventListener('click', () => {
-        if (currentXHR) {
-            currentXHR.abort();
-            progressContainer.classList.add('hidden');
-            alert('Upload canceled');
-        }
-    });
-
-    window.addEventListener('beforeunload', (e) => {
-        if (currentXHR) {
-            e.preventDefault();
-            e.returnValue = '';
-        }
-    });
-
-    function handleFiles(files) {
-        fileList.innerHTML = '';
-        for (const file of files) {
-            const listItem = document.createElement('div');
-            listItem.className = 'main-input';
-            listItem.textContent = file.name;
-
-            const progressWrapper = document.createElement('div');
-            progressWrapper.className = 'progress-wrapper';
-
-            const fileProgressBar = document.createElement('div');
-            fileProgressBar.className = 'file-progress-bar';
-
-            const progressText = document.createElement('div');
-            progressText.className = 'progress-text';
-            progressText.textContent = '0%';
-
-            progressWrapper.appendChild(fileProgressBar);
-            progressWrapper.appendChild(progressText);
-            listItem.appendChild(progressWrapper);
-
-            fileList.appendChild(listItem);
-            uploadFile(file, fileProgressBar, progressText);
-        }
-    }
-
-    function uploadFile(file, fileProgressBar, progressText) {
-        const formData = new FormData();
-        let fileType = 'video';
-
-        if (file.type.startsWith('image/')) {
-            fileType = 'image';
-        } else if (file.type === 'application/pdf' ||
-            file.type === 'application/msword' ||
-            file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-            file.type === 'application/vnd.ms-powerpoint' ||
-            file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation') {
-            fileType = 'document';
-        }
-
-        formData.append(fileType, file);
-        formData.append('upload_file_type', fileType);
-        formData.append('property_id', '1');
-
-        progressContainer.classList.remove('hidden');
-        progressBar.value = 0;
-
-        currentXHR = new XMLHttpRequest();
-        currentXHR.open('POST', 'uploads', true);
-
-        // Make sure we're handling progress correctly
-        currentXHR.upload.onprogress = (event) => {
-            if (event.lengthComputable) {
-                const percentComplete = (event.loaded / event.total) * 100;
-                console.log(`Upload progress: ${percentComplete}%`);
-                fileProgressBar.style.width = percentComplete + '%';
-                progressText.textContent = Math.round(percentComplete) + '%';
-                progressBar.value = percentComplete;
-            }
-
-            
-        };
-
-      
-        currentXHR.onreadystatechange = function() {
-            if (currentXHR.readyState === 4) { // Request completed
-                if (currentXHR.status === 201) {
-                    try {
-                        const response = JSON.parse(currentXHR.responseText);
-                        //Response.url
-                        document.getElementById('file-list').innerHTML = `<a href="${response.url}" target="_blank">${file.name}</a>`;
-                    } catch (error) {
-                        console.error('Invalid JSON response:', currentXHR.responseText);
-                        alert('Unexpected server response.');
+        // Create a FilePond instance
+        FilePond.create(inputElement, {
+            allowMultiple: true,
+            allowFileTypeValidation: true,
+            allowFileSizeValidation: true,
+            acceptedFileTypes: ['image/*', 'video/*', 'application/pdf', 'application/msword', 'text/plain'],
+            server: {
+                process: {
+                    url: '/listings/uploads',
+                    method: 'POST',
+                    withCredentials: false,
+                    headers: {},
+                    ondata: (formData) => {
+                        formData.append('property_id', propertyId);
+                        return formData;
+                    },
+                    onload: (response) => {
+                        const jsonResponse = JSON.parse(response);
+                        return jsonResponse.url;
+                    },
+                    onerror: (response) => {
+                        const jsonResponse = JSON.parse(response);
+                        onError(jsonResponse.error);
+                        return jsonResponse.error;
+                    },
+                    ondataerror: (response) => {
+                        const jsonResponse = JSON.parse(response);
+                        onError(jsonResponse.error);
+                        return jsonResponse.error;
                     }
-                } else {
-                    alert('Upload failed');
                 }
-                progressContainer.classList.add('hidden');
-                currentXHR = null;
             }
-        };
+        });
 
-        currentXHR.onerror = (error) => {
-            console.error(error);
-            alert('Upload failed');
-            progressContainer.classList.add('hidden');
-            currentXHR = null;
-        };
 
-        currentXHR.send(formData);
-    }
+        function onSuccess(message) {
+            successDiv.innerHTML = `<p class="text-center w-full"> ${message} </p> `;
+            successDiv.classList.remove('hidden');
+            successDiv.classList.add('flex');
+        }
+
+        function onError(message) {
+            errorDiv.innerHTML = `<p class="text-center w-full">  ${message} </p> `;
+            errorDiv.classList.remove('hidden');
+            errorDiv.classList.add('flex');
+        }
+
+    });
 </script>

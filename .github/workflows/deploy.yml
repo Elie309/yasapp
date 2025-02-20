@@ -21,6 +21,7 @@ jobs:
               git pull
               rm -rf writable/cache/*
               composer install
+              npm run build
             EOF
         - name: cleanup
           run: rm -rf ~/.ssh

@@ -49,9 +49,9 @@
         <input type="checkbox" id="ad_furnished" name="ad_furnished"
             class="main-checkbox">
 
-        <label class="secondary-label md:col-span-2" for="ad_furnished_on_provisions">Furnished on Provisions:</label>
-        <input type="checkbox" id="ad_furnished_on_provisions"
-            name="ad_furnished_on_provisions"
+        <label class="secondary-label md:col-span-2" for="ad_furnished_provision">Furnished Provision:</label>
+        <input type="checkbox" id="ad_furnished_provision"
+            name="ad_furnished_provision"
             class="main-checkbox ">
 
         <label class="secondary-label" for="ad_elevator">Elevator:</label>
@@ -129,17 +129,17 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 mb-8 items-center">
 
 
-        <label class="secondary-label" for="spec_heating_system">Heating System:</label>
+        <label class="secondary-label" for="spec_heating_system">Heating System Installed:</label>
         <input type="checkbox" id="spec_heating_system" name="spec_heating_system" class="main-checkbox place-self-center">
 
-        <label class="secondary-label" for="spec_heating_system_on_provisions">Heating System on Provisions:</label>
-        <input type="checkbox" id="spec_heating_system_on_provisions" name="spec_heating_system_on_provisions" class="main-checkbox place-self-center">
+        <label class="secondary-label" for="spec_heating_system_provision">Heating System Provision:</label>
+        <input type="checkbox" id="spec_heating_system_provision" name="spec_heating_system_provision" class="main-checkbox place-self-center">
 
-        <label class="secondary-label" for="spec_ac_system">AC System:</label>
+        <label class="secondary-label" for="spec_ac_system">AC System Installed:</label>
         <input type="checkbox" id="spec_ac_system" name="spec_ac_system" class="main-checkbox place-self-center">
 
-        <label class="secondary-label" for="spec_ac_system_on_provisions">AC System on Provisions:</label>
-        <input type="checkbox" id="spec_ac_system_on_provisions" name="spec_ac_system_on_provisions" class="main-checkbox place-self-center">
+        <label class="secondary-label" for="spec_ac_system_provision">AC System Provision:</label>
+        <input type="checkbox" id="spec_ac_system_provision" name="spec_ac_system_provision" class="main-checkbox place-self-center">
 
         <label class="secondary-label" for="spec_double_wall">Double Wall:</label>
         <input type="checkbox" id="spec_double_wall" name="spec_double_wall" class="main-checkbox place-self-center">
@@ -179,6 +179,23 @@
 
         <label class="secondary-label" for="spec_garage">Garage:</label>
         <input type="checkbox" id="spec_garage" name="spec_garage" class="main-checkbox place-self-center">
+
+        <label class="secondary-label" for="specs_jacuzzi">Jacuzzi:</label>
+        <input type="checkbox" id="specs_jacuzzi" name="specs_jacuzzi" class="main-checkbox place-self-center">
+
+        <label class="secondary-label" for="spec_swimming_pool">Swimming Pool:</label>
+        <input type="checkbox" id="spec_swimming_pool" name="spec_swimming_pool" class="main-checkbox place-self-center">
+
+        <label class="secondary-label" for="spec_gym">Gym:</label>
+        <input type="checkbox" id="spec_gym" name="spec_gym" class="main-checkbox place-self-center">
+
+        <label class="secondary-label" for="spec_kitchenette">Kitchenette:</label>
+        <input type="checkbox" id="spec_kitchenette" name="spec_kitchenette" class="main-checkbox place-self-center">
+
+        <label class="secondary-label" for="spec_driver_room">Driver Room:</label>
+        <input type="checkbox" id="spec_driver_room" name="spec_driver_room" class="main-checkbox place-self-center">
+
+
 
 
     </div>

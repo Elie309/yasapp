@@ -15,9 +15,9 @@ class ApartmentSpecificationsEntity extends Entity
 
     protected $defaultBooleans = [
         'spec_heating_system',
-        'spec_heating_system_on_provisions',
+        'spec_heating_system_provision',
         'spec_ac_system',
-        'spec_ac_system_on_provisions',
+        'spec_ac_system_provision',
         'spec_double_wall',
         'spec_double_glazing',
         'spec_shutters_electrical',
@@ -30,7 +30,12 @@ class ApartmentSpecificationsEntity extends Entity
         'spec_alarm_system',
         'spec_solar_heater',
         'spec_intercom',
-        'spec_garage'
+        'spec_garage',
+        'specs_jacuzzi',
+        'spec_swimming_pool',
+        'spec_gym',
+        'spec_kitchenette',
+        'spec_driver_room',
     ];
 
     public function fill(array $data = null)
@@ -53,9 +58,9 @@ class ApartmentSpecificationsEntity extends Entity
         $this->attributes['spec_heating_system'] = $value == 'on' ? true : false;
     }
 
-    public function setSpecHeatingSystemOnProvisions(string $value)
+    public function setSpecHeatingSystemProvision(string $value)
     {
-        $this->attributes['spec_heating_system_on_provisions'] = $value == 'on' ? true : false;
+        $this->attributes['spec_heating_system_provision'] = $value == 'on' ? true : false;
     }
 
     public function setSpecAcSystem(string $value)
@@ -63,9 +68,9 @@ class ApartmentSpecificationsEntity extends Entity
         $this->attributes['spec_ac_system'] = $value == 'on' ? true : false;
     }
 
-    public function setSpecAcSystemOnProvisions(string $value)
+    public function setSpecAcSystemProvision(string $value)
     {
-        $this->attributes['spec_ac_system_on_provisions'] = $value == 'on' ? true : false;
+        $this->attributes['spec_ac_system_provision'] = $value == 'on' ? true : false;
     }
 
     public function setSpecDoubleWall(string $value)
@@ -133,6 +138,31 @@ class ApartmentSpecificationsEntity extends Entity
         $this->attributes['spec_garage'] = $value == 'on' ? true : false;
     }
 
+    public function setSpecsJacuzzi(string $value)
+    {
+        $this->attributes['specs_jacuzzi'] = $value == 'on' ? true : false;
+    }
+
+    public function setSpecSwimmingPool(string $value)
+    {
+        $this->attributes['spec_swimming_pool'] = $value == 'on' ? true : false;
+    }
+
+    public function setSpecGym(string $value)
+    {
+        $this->attributes['spec_gym'] = $value == 'on' ? true : false;
+    }
+
+    public function setSpecKitchenette(string $value)
+    {
+        $this->attributes['spec_kitchenette'] = $value == 'on' ? true : false;
+    }
+
+    public function setSpecDriverRoom(string $value)
+    {
+        $this->attributes['spec_driver_room'] = $value == 'on' ? true : false;
+    }
+
     //Getters return ONLY TRUE or FALSE
 
     public function getSpecHeatingSystem()
@@ -140,9 +170,9 @@ class ApartmentSpecificationsEntity extends Entity
         return $this->attributes['spec_heating_system'] ? true : false;
     }
 
-    public function getSpecHeatingSystemOnProvisions()
+    public function getSpecHeatingSystemProvision()
     {
-        return $this->attributes['spec_heating_system_on_provisions'] ? true : false;
+        return $this->attributes['spec_heating_system_provision'] ? true : false;
     }
 
     public function getSpecAcSystem()
@@ -150,9 +180,9 @@ class ApartmentSpecificationsEntity extends Entity
         return $this->attributes['spec_ac_system'] ? true : false;
     }
 
-    public function getSpecAcSystemOnProvisions()
+    public function getSpecAcSystemProvision()
     {
-        return $this->attributes['spec_ac_system_on_provisions'] ? true : false;
+        return $this->attributes['spec_ac_system_provision'] ? true : false;
     }
 
     public function getSpecDoubleWall()
@@ -219,4 +249,30 @@ class ApartmentSpecificationsEntity extends Entity
     {
         return $this->attributes['spec_garage'] ? true : false;
     }
+
+    public function getSpecsJacuzzi()
+    {
+        return $this->attributes['specs_jacuzzi'] ? true : false;
+    }
+
+    public function getSpecSwimmingPool()
+    {
+        return $this->attributes['spec_swimming_pool'] ? true : false;
+    }
+
+    public function getSpecGym()
+    {
+        return $this->attributes['spec_gym'] ? true : false;
+    }
+
+    public function getSpecKitchenette()
+    {
+        return $this->attributes['spec_kitchenette'] ? true : false;
+    }
+
+    public function getSpecDriverRoom()
+    {
+        return $this->attributes['spec_driver_room'] ? true : false;
+    }
+    
 }

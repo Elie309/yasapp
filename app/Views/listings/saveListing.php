@@ -2,9 +2,7 @@
 
     <div class="flex flex-row ">
         <button onclick="window.history.back()" class="my-auto flex space-x-2 cursor-pointer no-print">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-            </svg>
+            <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'arrow-left', 'class' => 'size-6']) ?>
             <p>Return</p>
         </button>
         <?php if ($method == 'NEW_REQUEST') : ?>
@@ -263,8 +261,6 @@
     </div>
 <?php endif; ?>
 
-<?= view_cell('App\Cells\Settings\Location\LocationPopover\LocationPopoverCell::render') ?>
-
 <?= view_cell('App\Cells\Clients\ClientPopover\ClientPopoverCell::render', ['countries' => $countries]) ?>
 
 <script>
@@ -461,8 +457,8 @@
                 document.getElementById("ad_furnished").checked = data.ad_furnished;
             }
 
-            if (data.ad_furnished_on_provisions) {
-                document.getElementById("ad_furnished_on_provisions").checked = data.ad_furnished_on_provisions;
+            if (data.ad_furnished_provision) {
+                document.getElementById("ad_furnished_provision").checked = data.ad_furnished_provision;
             }
 
             if (data.ad_elevator) {
@@ -542,16 +538,16 @@
                 document.getElementById("spec_heating_system").checked = data.spec_heating_system;
             }
 
-            if (data.spec_heating_system_on_provisions) {
-                document.getElementById("spec_heating_system_on_provisions").checked = data.spec_heating_system_on_provisions;
+            if (data.spec_heating_system_provision) {
+                document.getElementById("spec_heating_system_provision").checked = data.spec_heating_system_provision;
             }
 
             if (data.spec_ac_system) {
                 document.getElementById("spec_ac_system").checked = data.spec_ac_system;
             }
 
-            if (data.spec_ac_system_on_provisions) {
-                document.getElementById("spec_ac_system_on_provisions").checked = data.spec_ac_system_on_provisions;
+            if (data.spec_ac_system_provision) {
+                document.getElementById("spec_ac_system_provision").checked = data.spec_ac_system_provision;
             }
 
             if (data.spec_double_wall) {
@@ -605,7 +601,21 @@
             if (data.spec_garage) {
                 document.getElementById("spec_garage").checked = data.spec_garage;
             }
-
+            if (data.specs_jacuzzi) {
+                document.getElementById("specs_jacuzzi").checked = data.specs_jacuzzi;
+            }
+            if (data.spec_swimming_pool) {
+                document.getElementById("spec_swimming_pool").checked = data.spec_swimming_pool;
+            }
+            if (data.spec_gym) {
+                document.getElementById("spec_gym").checked = data.spec_gym;
+            }
+            if (data.spec_kitchenette) {
+                document.getElementById("spec_kitchenette").checked = data.spec_kitchenette;
+            }
+            if (data.spec_driver_room) {
+                document.getElementById("spec_driver_room").checked = data.spec_driver_room;
+            }
             if (data.spec_tiles) {
                 document.getElementById("spec_tiles").value = data.spec_tiles;
             }

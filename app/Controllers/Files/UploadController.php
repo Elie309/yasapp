@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Uploads;
+namespace App\Controllers\Files;
 
 use App\Controllers\BaseController;
 use App\Services\UploadAWSClientServices;
@@ -19,34 +19,64 @@ class UploadController extends BaseController
     }
 
     // Main view for the upload page
-    public function index()
+    public function index($property_id)
     {
-        return view("template/header") . view('uploads/upload') . view("template/footer");
+
+        $propertyUploads = [];
+
+        $propertyResults = $this->propertyUploadServices->getByPropertyId($property_id);
+
+        if ($propertyResults) {
+            $propertyUploads = $propertyResults;
+        }
+
+        return view("template/header", [
+            'title' => 'Uploads',
+        ]) . view('uploads/upload', [
+            'property_id' => $property_id,
+            'propertyUploads' => $propertyUploads
+        ]) . view("template/footer");
+    }
+    
+    public function viewFiles($property_id)
+    {
+
+        $propertyUploads = [];
+
+        $propertyResults = $this->propertyUploadServices->getByPropertyId($property_id);
+
+        if ($propertyResults) {
+            $propertyUploads = $propertyResults;
+        }
+
+        return view("template/header") . view('listings/viewFiles', [
+            'property_id' => $property_id,
+            'propertyUploads' => $propertyUploads
+        ]) . view("template/footer");
     }
 
     // Unified upload function
     public function uploads()
     {
-        //Check type of upload
-        $type = $this->request->getPost('upload_file_type');
-        if ($type === 'document') {
-            return $this->handleUpload('document');
-        } else if ($type === 'image') {
-            return $this->handleUpload('image');
-        } elseif ($type === 'video') {
-            return $this->handleUpload('video');
-        } else {
-            return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
-                ->setJSON(['error' => 'Invalid upload type']);
+        $property_id = esc($this->request->getPost('property_id'));
+
+        //TODO: Check Property ID
+        // Check if the request contains a FilePond file input
+        if ($this->request->getFile('filepond')) {
+            return $this->handleFilePondUpload($property_id);
         }
+
+        return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
+            ->setJSON(['error' => 'Invalid request']);
     }
 
-    private function handleUpload($type)
+    private function handleFilePondUpload($property_id)
     {
         try {
-            $file = $this->request->getFile($type);
-            if ($file->isValid() && !$file->hasMoved()) {
+            $file = $this->request->getFile('filepond');
+            $type = $this->determineFileType($file);
 
+            if ($file->isValid() && !$file->hasMoved()) {
                 // Verify the type of the uploaded file
                 if (!$this->verifyUploadType($file, $type)) {
                     return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
@@ -68,9 +98,8 @@ class UploadController extends BaseController
 
                 $result = $type === 'image' ? $this->uploadAWSClientServices->uploadImage($filePath, $fileName) : $this->uploadAWSClientServices->uploadVideo($filePath, $fileName);
 
-
                 $data = [
-                    'property_id' => $this->request->getPost('property_id'),
+                    'property_id' =>   $property_id,
                     'upload_file_name' => $fileName,
                     'upload_file_type' => $type,
                     'upload_mime_type' => $mimeType, // Use updated MIME type
@@ -85,7 +114,7 @@ class UploadController extends BaseController
                 } else {
                     $this->uploadAWSClientServices->deleteFile($result);
 
-                    //Delete the file from the server if it was uploaded
+                    // Delete the file from the server if it was uploaded
                     if (isset($filePath) && file_exists($filePath)) {
                         unlink($filePath);
                     }
@@ -94,20 +123,22 @@ class UploadController extends BaseController
                         ->setJSON(['error' => 'Failed to save upload details to database']);
                 }
             }
+
+
             return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
                 ->setJSON(['error' => 'Invalid file upload']);
         } catch (\Exception $e) {
-            //Delete the file from the server if it was uploaded
+            // Delete the file from the server if it was uploaded
             if (isset($filePath) && file_exists($filePath)) {
                 unlink($filePath);
             }
-            //Delete the file from AWS if it was uploaded
+            // Delete the file from AWS if it was uploaded
             if (isset($result)) {
                 $this->uploadAWSClientServices->deleteFile($result);
             }
-            log_message('error', 'Error uploading ' . $type . ': ' . $e->getMessage());
+            log_message('error', 'Error uploading file: ' . $e->getMessage());
             return $this->response->setStatusCode(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR)
-                ->setJSON(['error' => 'An error occurred while uploading the ' . $type]);
+                ->setJSON(['error' => 'An error occurred while uploading the file']);
         }
     }
 
@@ -135,5 +166,17 @@ class UploadController extends BaseController
         ];
 
         return in_array($mimeType, $validMimeTypes[$type]);
+    }
+
+    private function determineFileType($file)
+    {
+        $mimeType = $file->getMimeType();
+        if (strpos($mimeType, 'image/') === 0) {
+            return 'image';
+        } elseif (strpos($mimeType, 'video/') === 0) {
+            return 'video';
+        } else {
+            return 'document';
+        }
     }
 }
