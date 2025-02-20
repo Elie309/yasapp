@@ -553,7 +553,9 @@ class ListingsController extends BaseController
         $employee_id = $this->session->get('id');
 
         // Get property data
-        $property = $propertyModel->select('properties.*, clients.*,
+        $property = $propertyModel->select('properties.*,
+        properties.employee_id as employee_id,
+        clients.client_email,
         CONCAT(clients.client_firstname, " ", clients.client_lastname) as client_name,
         GROUP_CONCAT(CONCAT(countries.country_code, " ", phones.phone_number) SEPARATOR ", ") as client_phone,
         CONCAT(FORMAT(properties.property_price, 0), " ", currencies.currency_symbol) as property_budget,
