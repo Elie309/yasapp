@@ -1,35 +1,52 @@
 <div class="flex justify-end space-x-4 my-4">
+    <!-- Download one file -->
     <button id="downloadCurrent"
         class=" <?= empty($uploads) ? 'secondary-btn-disabled' : 'secondary-btn' ?> flex flex-row items-center space-x-2 text-sm"
         <?= empty($uploads) ? 'disabled' : '' ?>>
         <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "download", "class" => "size-6"]) ?>
         <span>Download</span>
     </button>
-    <!-- <button id="downloadAll" class="<?= empty($uploads) ? 'primary-btn-disabled' : 'primary-btn' ?> flex flex-row items-center text-sm"
+
+
+    <!-- Download all files -->
+    <button id="downloadAll"
+        class="<?= empty($uploads) ? 'primary-btn-disabled' : 'primary-btn' ?> 
+                flex flex-row items-center  text-sm stroke-red-800 
+                hover:stroke-white space-x-2
+                "
         <?= empty($uploads) ? 'disabled' : '' ?>>
-        Download All Files
-    </button> -->
+        <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "download-all", "class" => "size-6"]) ?>
+        Download All
+    </button>
 
     <a href="uploads" class="secondary-btn text-sm stroke-gray-900 hover:stroke-white flex flex-row items-center space-x-2">
         <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "upload", "class" => "size-6"]) ?>
         <span>Upload Files</span>
     </a>
+
+    <!-- Delete current file -->
+    <button id="deleteCurrent" 
+        class="<?= empty($uploads) ? 'primary-btn-disabled' : 'primary-btn' ?>
+        flex flex-row items-center space-x-2 text-sm stroke-red-800 hover:stroke-white"
+        <?= empty($uploads) ? 'disabled' : '' ?>>
+        <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "trash", "class" => "size-6 "]) ?>
+        <span>Delete</span>
 </div>
 <?php if (!empty($uploads)): ?>
 
     <div class="carousel-container">
         <div class="carousel-wrapper">
-            <div class="carousel">
+            <div class="carousel mx-auto">
                 <?php foreach ($uploads as $index => $upload): ?>
                     <?php if ($upload['upload_file_type'] === 'video'): ?>
-                        <div class="carousel-item w-full">
-                            <video class="main-media" controls>
+                        <div class="carousel-item w-full <?= $index === 0 ? 'active' : '' ?>" data-upload-id="<?= $upload['upload_id'] ?>">
+                            <video class="main-media mx-auto" controls>
                                 <source src="<?= $upload['upload_storage_url'] ?>" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                     <?php elseif ($upload['upload_file_type'] === 'image'): ?>
-                        <div class="carousel-item">
+                        <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>" data-upload-id="<?= $upload['upload_id'] ?>">
                             <img src="<?= $upload['upload_storage_url'] ?>" alt="Main Media" class="main-media">
                         </div>
                     <?php endif; ?>
@@ -68,6 +85,8 @@
             function showMedia(index) {
                 const offset = -index * 100;
                 carouselWrapper.style.transform = `translateX(${offset}%)`;
+                document.querySelector('.carousel-item.active').classList.remove('active');
+                carouselItems[index].classList.add('active');
             }
 
             prevBtn.addEventListener('click', function() {
@@ -143,15 +162,52 @@
 
         // Download current file
         document.getElementById('downloadCurrent').addEventListener('click', function() {
-            const activeItem = document.querySelector('#propertyImages .carousel-item.active');
+            const activeItem = document.querySelector('.carousel-item.active');
             const uploadId = activeItem.dataset.uploadId;
             downloadFile(`/listings/download/${uploadId}`);
         });
 
-        // // Download all files
-        // document.getElementById('downloadAll').addEventListener('click', function() {
-        //     const propertyId = document.querySelector('input[name="property_id"]').value;
-        //     downloadFile(`/listings/download-all/${propertyId}`);
-        // });
+        // Download all files
+        document.getElementById('downloadAll').addEventListener('click', function() {
+            const entity_id = "<?= $entity_id ?>";
+            downloadFile(`/listings/download-all/${entity_id}`);
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                document.getElementById('prevBtn').click();
+            } else if (event.key === 'ArrowRight') {
+                document.getElementById('nextBtn').click();
+            }
+        });
+
+        // Delete current file
+        document.getElementById('deleteCurrent').addEventListener('click', function() {
+            const activeItem = document.querySelector('.carousel-item.active');
+            const uploadId = activeItem.dataset.uploadId;
+            if (confirm('Are you sure you want to delete this file?')) {
+                showLoading();
+                fetch(`/listings/delete-upload/${uploadId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert('Failed to delete file');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting file:', error);
+                    })
+                    .finally(() => {
+                        hideLoading();
+                    });
+            }
+        });
+
     </script>
 <?php endif; ?>

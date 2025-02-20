@@ -7,5 +7,6 @@ use CodeIgniter\View\Cells\Cell;
 class CarouselCell extends Cell
 {
     public $uploads;
+    public $entity_id;
 
 }

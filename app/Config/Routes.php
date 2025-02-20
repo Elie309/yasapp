@@ -114,11 +114,12 @@ $routes->post('listings/edit/(:num)', 'Listings\ListingsController::updateListin
 $routes->get('listings/delete/(:num)', 'Listings\ListingsController::delete/$1');
 $routes->get('listings/export', 'Listings\ListingsController::export');
 
-$routes->get('listings/(:num)/files', 'Files\UploadController::viewFiles/$1');
 $routes->get('listings/(:num)/uploads', 'Files\UploadController::index/$1');
+$routes->get('listings/(:num)/files', 'Files\UploadController::viewFiles/$1');
 $routes->post('listings/uploads', 'Files\UploadController::uploads');
 $routes->post('listings/download/(:num)', 'Files\DownloadController::download/$1');
 $routes->post('listings/download-all/(:num)', 'Files\DownloadController::downloadAll/$1');
+$routes->delete('listings/delete-upload/(:num)', 'Files\UploadController::delete/$1');
 
 
 //Notifications

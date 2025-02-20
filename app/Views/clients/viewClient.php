@@ -56,5 +56,4 @@
             </table>
         </div>
     </div>
-    <!-- TODO: ADD Listing and requests for the client -->
 </div>

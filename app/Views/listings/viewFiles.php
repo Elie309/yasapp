@@ -14,7 +14,12 @@
 
         
 
-        <?= view_cell('\App\Cells\Utils\Carousel\CarouselCell::render', ['uploads' => $propertyUploads]) ?>
+        <?= view_cell('\App\Cells\Utils\Carousel\CarouselCell::render', 
+        [
+            'uploads' => $propertyUploads,
+            'entity_id' => $property_id
+
+        ]) ?>
 
         <div class="mt-4 mb-8">
             <h3 class="main-title-page">Documents</h3>
