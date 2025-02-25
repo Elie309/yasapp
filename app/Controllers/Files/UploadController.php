@@ -60,8 +60,6 @@ class UploadController extends BaseController
             if (!$uploadOwner) {
                 return redirect()->back()->with('errors', 'You are not authorized to upload files for this property');
             }
-        }else{
-            $uploadOwner = true;
         }
 
         $propertyResults = $this->propertyUploadServices->getByPropertyId($property_id);
