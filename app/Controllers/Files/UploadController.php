@@ -25,7 +25,6 @@ class UploadController extends BaseController
 
         // Verify if the employee is allowed to upload for this property
         if (!$this->propertyUploadServices->verifyEmployeeForProperty($property_id, $employee_id)) {
-           
             return redirect()->back()->with('errors', 'You are not authorized to upload files for this property');
         }
 
@@ -53,10 +52,12 @@ class UploadController extends BaseController
 
         $employee_id = $this->session->get('id');
         $role = $this->session->get('role');
+        $uploadOwner = false;
 
         if ($role !== 'admin') {
             // Verify if the employee is allowed to view files for this property
-            if (!$this->propertyUploadServices->verifyEmployeeForProperty($property_id, $employee_id)) {
+            $uploadOwner = $this->propertyUploadServices->verifyEmployeeForProperty($property_id, $employee_id);
+            if (!$uploadOwner) {
                 return redirect()->back()->with('errors', 'You are not authorized to upload files for this property');
             }
         }
@@ -70,7 +71,8 @@ class UploadController extends BaseController
 
         return view("template/header") . view('listings/viewFiles', [
             'property_id' => $property_id,
-            'propertyUploads' => $propertyUploads
+            'propertyUploads' => $propertyUploads,
+            'uploadOwner' => $uploadOwner,
         ]) . view("template/footer");
     }
 

@@ -1,9 +1,12 @@
 <div class="flex justify-end space-x-4 my-4">
-    <!-- Upload Files -->
-    <a href="upload" class="secondary-btn text-sm stroke-gray-800 hover:stroke-white flex flex-row items-center space-x-2">
-        <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "upload", "class" => "size-6"]) ?>
-        <span>Upload Files</span>
-    </a>
+
+    <?php if ($uploadOwner): ?>
+        <!-- Upload Files -->
+        <a href="upload" class="secondary-btn text-sm stroke-gray-800 hover:stroke-white flex flex-row items-center space-x-2">
+            <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "upload", "class" => "size-6"]) ?>
+            <span>Upload Files</span>
+        </a>
+    <?php endif; ?>
 
     <!-- Settings Popover -->
     <div class="relative">
@@ -36,16 +39,18 @@
                         <span>Download All</span>
                     </button>
                 </li>
-                <li>
-                    <button <?= empty($uploads) ? 'disabled' : '' ?>
-                        class="w-full text-left text-sm stroke-red-800 hover:stroke-white hover:bg-red-800
+                <?php if ($uploadOwner): ?>
+                    <li>
+                        <button <?= empty($uploads) ? 'disabled' : '' ?>
+                            class="w-full text-left text-sm stroke-red-800 hover:stroke-white hover:bg-red-800
                         flex flex-row px-2 py-4 items-center space-x-2 text-red-800 hover:text-white
                         <?= empty($uploads) ? '' : '' ?> "
-                        popovertarget="deleteCarousel-popover">
-                        <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "trash", "class" => "size-6"]) ?>
-                        <span>Delete</span>
-                    </button>
-                </li>
+                            popovertarget="deleteCarousel-popover">
+                            <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "trash", "class" => "size-6"]) ?>
+                            <span>Delete</span>
+                        </button>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
 
@@ -239,32 +244,35 @@
             }
         });
 
-        // Delete current file
-        document.getElementById('deleteCurrent').addEventListener('click', function() {
-            const activeItem = document.querySelector('.carousel-item.active');
-            const uploadId = activeItem.dataset.uploadId;
-            closePopover('deleteCarousel-popover');
+        <?php if ($uploadOwner): ?>
+            // Delete current file
+            document.getElementById('deleteCurrent').addEventListener('click', function() {
+                const activeItem = document.querySelector('.carousel-item.active');
+                const uploadId = activeItem.dataset.uploadId;
+                closePopover('deleteCarousel-popover');
 
-            showLoading();
-            fetch(`/listings/delete-upload/${uploadId}`, {
-                    method: 'delete',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        location.reload();
-                    }
-                })
-                .catch(error => {
-                    onError('An error occurred while deleting the file');
-                    console.error('Error deleting file:', error);
-                })
-                .finally(() => {
-                    hideLoading();
-                });
-        });
+                showLoading();
+                fetch(`/listings/delete-upload/${uploadId}`, {
+                        method: 'delete',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        }
+                    })
+                    .catch(error => {
+                        onError('An error occurred while deleting the file');
+                        console.error('Error deleting file:', error);
+                    })
+                    .finally(() => {
+                        hideLoading();
+                    });
+            });
+
+        <?php endif; ?>
 
         function onSuccess(message) {
             successDiv.innerHTML = `<p class="text-center w-full"> ${message} </p> `;
