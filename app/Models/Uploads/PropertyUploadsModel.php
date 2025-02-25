@@ -9,11 +9,12 @@ class PropertyUploadsModel extends Model
     protected $table            = 'property_uploads';
     protected $primaryKey       = 'upload_id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $returnType       = \App\Entities\Uploads\PropertyUploadsEntity::class;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
         'property_id',
+        'employee_id',
         'upload_file_name',
         'upload_file_type',
         'upload_mime_type',
@@ -27,6 +28,7 @@ class PropertyUploadsModel extends Model
 
     protected array $casts = [
         'upload_id' => 'integer',
+        'employee_id' => 'integer',
         'property_id' => 'integer',
         'file_size' => 'integer',
         'created_at' => 'datetime',
@@ -44,6 +46,7 @@ class PropertyUploadsModel extends Model
     // Validation
     protected $validationRules      = [
         'property_id' => 'required|integer',
+        'employee_id' => 'required|integer',
         'upload_file_name' => 'required|string|max_length[255]',
         'upload_file_type' => 'required|in_list[image,video,document]',
         'upload_mime_type' => 'required|string|max_length[100]',
@@ -55,6 +58,10 @@ class PropertyUploadsModel extends Model
         'property_id' => [
             'required' => 'Property ID is required',
             'integer' => 'Property ID must be an integer'
+        ],
+        'employee_id' => [
+            'required' => 'Employee ID is required',
+            'integer' => 'Employee ID must be an integer'
         ],
         'upload_file_name' => [
             'required' => 'File name is required',

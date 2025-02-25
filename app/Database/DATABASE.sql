@@ -177,6 +177,7 @@ CREATE TABLE properties (
 CREATE TABLE property_uploads (
     upload_id INT AUTO_INCREMENT PRIMARY KEY,
     property_id INT UNSIGNED NOT NULL,
+    employee_id INT UNSIGNED NOT NULL,
     upload_file_name VARCHAR(255) NOT NULL,
     upload_file_type ENUM('image', 'video', 'document') NOT NULL,
     upload_mime_type VARCHAR(100) NOT NULL,

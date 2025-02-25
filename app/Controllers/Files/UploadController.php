@@ -19,8 +19,15 @@ class UploadController extends BaseController
     }
 
     // Main view for the upload page
-    public function index($property_id)
+    public function uploadPage($property_id)
     {
+        $employee_id = $this->session->get('id');
+
+        // Verify if the employee is allowed to upload for this property
+        if (!$this->propertyUploadServices->verifyEmployeeForProperty($property_id, $employee_id)) {
+           
+            return redirect()->back()->with('errors', 'You are not authorized to upload files for this property');
+        }
 
         $propertyUploads = [];
 
@@ -30,6 +37,7 @@ class UploadController extends BaseController
             $propertyUploads = $propertyResults;
         }
 
+
         return view("template/header", [
             'title' => 'Uploads',
         ]) . view('uploads/upload', [
@@ -37,13 +45,24 @@ class UploadController extends BaseController
             'propertyUploads' => $propertyUploads
         ]) . view("template/footer");
     }
-    
+
     public function viewFiles($property_id)
     {
 
         $propertyUploads = [];
 
+        $employee_id = $this->session->get('id');
+        $role = $this->session->get('role');
+
+        if ($role !== 'admin') {
+            // Verify if the employee is allowed to view files for this property
+            if (!$this->propertyUploadServices->verifyEmployeeForProperty($property_id, $employee_id)) {
+                return redirect()->back()->with('errors', 'You are not authorized to upload files for this property');
+            }
+        }
+
         $propertyResults = $this->propertyUploadServices->getByPropertyId($property_id);
+
 
         if ($propertyResults) {
             $propertyUploads = $propertyResults;
@@ -60,17 +79,28 @@ class UploadController extends BaseController
     {
         $property_id = esc($this->request->getPost('property_id'));
 
-        //TODO: Check Property ID
-        // Check if the request contains a FilePond file input
+        if (!$property_id) {
+            return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
+                ->setJSON(['error' => 'Invalid request']);
+        }
+
+        $employee_id = $this->session->get('id');
+
+        if (!$this->propertyUploadServices->verifyEmployeeForProperty($property_id, $employee_id)) {
+            return $this->response->setStatusCode(ResponseInterface::HTTP_FORBIDDEN)
+                ->setJSON(['error' => 'You are not authorized to upload files for this property']);
+        }
+
+
         if ($this->request->getFile('filepond')) {
-            return $this->handleFilePondUpload($property_id);
+            return $this->handleFilePondUpload($property_id, $employee_id);
         }
 
         return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
             ->setJSON(['error' => 'Invalid request']);
     }
 
-    private function handleFilePondUpload($property_id)
+    private function handleFilePondUpload($property_id, $employee_id)
     {
         try {
             $file = $this->request->getFile('filepond');
@@ -96,10 +126,21 @@ class UploadController extends BaseController
                     $fileSize = $file->getSize();
                 }
 
-                $result = $type === 'image' ? $this->uploadAWSClientServices->uploadImage($filePath, $fileName) : $this->uploadAWSClientServices->uploadVideo($filePath, $fileName);
+                // $result = $type === 'image' ? 
+                //     $this->uploadAWSClientServices->uploadImage($filePath, $fileName) : 
+                //     $this->uploadAWSClientServices->uploadVideo($filePath, $fileName);
+
+                if($type === 'image'){
+                    $result = $this->uploadAWSClientServices->uploadImage($filePath, $fileName);
+                }elseif($type === 'video'){
+                    $result = $this->uploadAWSClientServices->uploadVideo($filePath, $fileName);
+                }else{
+                    $result = $this->uploadAWSClientServices->uploadDocument($filePath, $fileName);
+                }
 
                 $data = [
                     'property_id' =>   $property_id,
+                    'employee_id' => $employee_id,
                     'upload_file_name' => $fileName,
                     'upload_file_type' => $type,
                     'upload_mime_type' => $mimeType, // Use updated MIME type
@@ -160,7 +201,11 @@ class UploadController extends BaseController
     {
         $mimeType = $file->getMimeType();
         $validMimeTypes = [
-            'document' => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            'document' => ['application/pdf', 'application/msword', 
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        ],
             'image' => ['image/jpeg', 'image/png', 'image/webp'],
             'video' => ['video/mp4', 'video/x-msvideo', 'video/x-matroska']
         ];

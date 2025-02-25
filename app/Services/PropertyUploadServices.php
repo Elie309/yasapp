@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Uploads;
 
@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Uploads\PropertyUploadsModel;
 use App\Entities\Uploads\PropertyUploadsEntity;
+use App\Models\Listings\PropertyModel;
 
 class PropertyUploadServices
 {
@@ -48,5 +49,14 @@ class PropertyUploadServices
     {
         return $this->propertyUploadsModel->where('property_id', $property_id)->findAll();
     }
-}
 
+    public function verifyEmployeeForProperty(int $property_id, int $employee_id): bool
+    {
+        $propertyModel = new PropertyModel();
+
+        $property = $propertyModel->where('property_id', $property_id)
+            ->where('employee_id', $employee_id)
+            ->first();
+        return $property !== null;
+    }
+}

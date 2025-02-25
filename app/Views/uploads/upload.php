@@ -16,7 +16,7 @@
         <input hidden type="text" name="property_id" value="<?= $property_id; ?>" />
 
         <input type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
-            data-max-files="10" accept="image/*, video/*, .pdf, .doc, .docx, .txt" />
+            data-max-files="10" accept="image/*, video/*, .pdf, .doc, .docx, .txt, xlsx" />
     </div>
 </div>
 
