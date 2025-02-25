@@ -52,14 +52,11 @@ class UploadController extends BaseController
 
         $employee_id = $this->session->get('id');
         $role = $this->session->get('role');
-        $uploadOwner = false;
 
-        if ($role !== 'admin') {
-            // Verify if the employee is allowed to view files for this property
-            $uploadOwner = $this->propertyUploadServices->verifyEmployeeForProperty($property_id, $employee_id);
-            if (!$uploadOwner) {
-                return redirect()->back()->with('errors', 'You are not authorized to upload files for this property');
-            }
+        // Verify if the employee is allowed to view files for this property
+        $uploadOwner = $this->propertyUploadServices->verifyEmployeeForProperty($property_id, $employee_id);
+        if (!$uploadOwner && $role !== 'admin') {
+            return redirect()->back()->with('errors', 'You are not authorized to upload files for this property');
         }
 
         $propertyResults = $this->propertyUploadServices->getByPropertyId($property_id);
@@ -132,11 +129,11 @@ class UploadController extends BaseController
                 //     $this->uploadAWSClientServices->uploadImage($filePath, $fileName) : 
                 //     $this->uploadAWSClientServices->uploadVideo($filePath, $fileName);
 
-                if($type === 'image'){
+                if ($type === 'image') {
                     $result = $this->uploadAWSClientServices->uploadImage($filePath, $fileName);
-                }elseif($type === 'video'){
+                } elseif ($type === 'video') {
                     $result = $this->uploadAWSClientServices->uploadVideo($filePath, $fileName);
-                }else{
+                } else {
                     $result = $this->uploadAWSClientServices->uploadDocument($filePath, $fileName);
                 }
 
@@ -203,11 +200,15 @@ class UploadController extends BaseController
     {
         $mimeType = $file->getMimeType();
         $validMimeTypes = [
-            'document' => ['application/pdf', 'application/msword', 
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-        ],
+            'document' => [
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/vnd.ms-powerpoint',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+            ],
             'image' => ['image/jpeg', 'image/png', 'image/webp'],
             'video' => ['video/mp4', 'video/x-msvideo', 'video/x-matroska']
         ];
