@@ -9,7 +9,8 @@
     <?php endif; ?>
 
     <!-- Settings Popover -->
-    <div class="relative">
+    <div class="relative ">
+
         <button id="settingsBtn"
             popovertarget="settingsPopover"
             <?= empty($uploads) ? 'disabled' : '' ?>
@@ -24,7 +25,7 @@
                 <li>
                     <button id="downloadCurrent" <?= empty($uploads) ? 'disabled' : '' ?>
                         class="w-full text-left text-sm stroke-gray-800 hover:stroke-white hover:bg-gray-800
-                        flex flex-row px-2 py-4 items-center space-x-2 hover:text-white
+                        flex flex-row px-2 py-4 items-center space-x-2 hover:text-white hover:rounded-t-md
                         <?= empty($uploads) ? '' : '' ?> ">
                         <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "download", "class" => "size-6"]) ?>
                         <span>Download</span>
@@ -33,7 +34,7 @@
                 <li>
                     <button id="downloadAll" <?= empty($uploads) ? 'disabled' : '' ?>
                         class="w-full text-left text-sm stroke-gray-800 hover:stroke-white hover:bg-gray-800
-                        flex flex-row px-2 py-4 items-center space-x-2 hover:text-white
+                        flex flex-row px-2 py-4 items-center space-x-2 hover:text-white <?= !$uploadOwner ? 'hover:rounded-b-md' : '' ?>
                         <?= empty($uploads) ? '' : '' ?> ">
                         <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "download-all", "class" => "size-6"]) ?>
                         <span>Download All</span>
@@ -43,7 +44,7 @@
                     <li>
                         <button <?= empty($uploads) ? 'disabled' : '' ?>
                             class="w-full text-left text-sm stroke-red-800 hover:stroke-white hover:bg-red-800
-                        flex flex-row px-2 py-4 items-center space-x-2 text-red-800 hover:text-white
+                        flex flex-row px-2 py-4 items-center space-x-2 text-red-800 hover:text-white hover:rounded-b-md
                         <?= empty($uploads) ? '' : '' ?> "
                             popovertarget="deleteCarousel-popover">
                             <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "trash", "class" => "size-6"]) ?>
