@@ -38,7 +38,11 @@
             }
             ?>
             <?php if (!$documentsAvailable): ?>
-                <p class="text-center">No documents Available</p>
+                <div class="flex flex-row items-center justify-center max-w-lg h-20 mx-auto outline-gray-500
+                         outline-dashed  rounded-lg p-4 text-gray-500 select-none">
+                    <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "file", "class" => "size-10 fill-gray-500"]) ?>
+                    <p class="text-center text-sm">No documents available</p>
+                </div>
             <?php else : ?>
                 <div class="flex flex-col gap-2">
                     <?php foreach ($propertyUploads as $upload): ?>

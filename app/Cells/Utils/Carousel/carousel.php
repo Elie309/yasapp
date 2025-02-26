@@ -92,7 +92,12 @@
     </div>
 <?php else : ?>
     <!-- TODO: Make it better -->
-    <p class="text-center">No media available</p>
+    <div class="flex flex-col items-center justify-center max-w-lg h-80 mx-auto outline-gray-500
+    outline-dashed  rounded-lg p-4 text-gray-500 select-none">
+        <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "no-images", "class" => "size-16 fill-gray-500"]) ?>
+        <p class="text-center text-sm">No media available</p>
+    </div>
+
 <?php endif; ?>
 
 <?php if (!empty($uploads)): ?>
@@ -102,7 +107,7 @@
 
     <div popover id="deleteCarousel-popover" class="popover px-8 max-w-md">
         <div class="flex flex-col w-full justify-center">
-            <h3 class="secondary-title text-lg md:text-2xl text-center">Are you sure you want to delete this property?</h3>
+            <h3 class="secondary-title text-lg md:text-2xl text-center">Are you sure you want to delete this video/image?</h3>
             <div class="grid grid-cols-2 gap-4 w-full my-4">
                 <div class=" w-full">
                     <button type="button" class="primary-btn w-full cursor-pointer" onclick="closePopover('deleteCarousel-popover')">Cancel</button>
