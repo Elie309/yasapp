@@ -223,6 +223,13 @@
   .carousel-controls button:hover {
     @apply bg-gray-700;
   }
+
+  .chart-container {
+    @apply w-1/2 flex flex-row flex-wrap items-center justify-center;
+  }
+  .chart-container canvas {
+    @apply w-full h-96;
+  }
 }
 
 /* HTML: <div class="loader"></div> */

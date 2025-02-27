@@ -150,3 +150,25 @@ $routes->get('/api/notifications/mark-all-read', 'API\NotificationAPIController:
 $routes->get('/api/notifications/mark-all-unread', 'API\NotificationAPIController::markAllUnread');
 $routes->get('/api/notifications/delete/(:num)', 'API\NotificationAPIController::delete/$1');
 
+// Chart Routes
+$routes->group('charts', function($routes) {
+    // Requests Charts
+    $routes->get('requests/status', 'Charts\RequestsChartsController::requestsByStatus');
+    $routes->get('requests/priority', 'Charts\RequestsChartsController::requestsByPriority');
+    $routes->get('requests/city', 'Charts\RequestsChartsController::requestsByCity');
+    $routes->get('requests/overtime', 'Charts\RequestsChartsController::requestsOverTime');
+    $routes->get('requests/average-budget', 'Charts\RequestsChartsController::averageRequestBudgetByPriority');
+
+    // Listings Charts
+    $routes->get('listings/status', 'Charts\ListingsChartsController::propertyStatusDistribution');
+    $routes->get('listings/city', 'Charts\ListingsChartsController::propertyListingsByCity');
+    $routes->get('listings/type', 'Charts\ListingsChartsController::propertyTypeBreakdown');
+    $routes->get('listings/sale-vs-rent', 'Charts\ListingsChartsController::saleVsRentProperties');
+    $routes->get('listings/average-price', 'Charts\ListingsChartsController::averagePropertyPriceByCity');
+    $routes->get('listings/size-distribution', 'Charts\ListingsChartsController::propertySizeDistribution');
+
+    // Employees Charts
+    $routes->get('employees/role-distribution', 'Charts\EmployeesChartsController::employeeRoleDistribution');
+    $routes->get('employees/count-overtime', 'Charts\EmployeesChartsController::employeeCountOverTime');
+});
+

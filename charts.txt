@@ -1,19 +1,13 @@
 Here are some useful charts you could generate from your database for your website:
 
 ### **Employee Insights**
-1. **Employee Role Distribution** (Pie Chart)  
-   - Shows the proportion of employees by role (admin, manager, user).  
-2. **Employee Status Overview** (Bar Chart)  
-   - Displays the count of active vs. inactive employees.  
 3. **Employee Count Over Time** (Line Chart)  
    - Tracks how the number of employees has grown over time based on `created_at`.  
-4. **Employee Birthdays by Month** (Bar Chart)  
-   - Shows the number of employees born in each month.  
 
 ### **Client & Requests Analytics**
 5. **Clients Per Employee** (Bar Chart)  
    - Displays the number of clients assigned to each employee.  
-6. **Requests by Status** (Pie or Bar Chart)  
+6. **Requests by Status** (Pie or Bar Chart)
    - Shows the distribution of requests (pending, finishing, rejected, etc.).  
 7. **Requests by Priority** (Pie Chart)  
    - Breaks down requests into low, medium, and high priority.  
@@ -46,14 +40,6 @@ Here are some useful charts you could generate from your database for your websi
 19. **Requests by Region/Subregion** (Heatmap)  
    - Highlights the regions/subregions with the highest request activity.  
 
-### **Notification & System Activity**
-20. **Unread vs. Read Notifications** (Pie Chart)  
-   - Shows the number of notifications read vs. unread.  
-21. **Notifications by Type** (Bar Chart)  
-   - Breaks down notifications into info, warning, and error categories.  
-22. **Employee Notifications Received Over Time** (Line Chart)  
-   - Tracks how many notifications employees receive over time.  
-
 
 Here are SQL queries for the suggested charts:
 
@@ -67,13 +53,6 @@ FROM employees
 GROUP BY employee_role;
 ```
 
-#### 2️⃣ Employee Status Overview (Bar Chart)
-```sql
-SELECT employee_status, COUNT(*) AS total 
-FROM employees 
-GROUP BY employee_status;
-```
-
 #### 3️⃣ Employee Count Over Time (Line Chart)
 ```sql
 SELECT DATE(created_at) AS date, COUNT(*) AS total_employees 
@@ -82,13 +61,6 @@ GROUP BY DATE(created_at)
 ORDER BY date;
 ```
 
-#### 4️⃣ Employee Birthdays by Month (Bar Chart)
-```sql
-SELECT MONTH(employee_birthday) AS birth_month, COUNT(*) AS total 
-FROM employees 
-WHERE employee_birthday IS NOT NULL 
-GROUP BY birth_month 
-ORDER BY birth_month;
 ```
 
 ---
