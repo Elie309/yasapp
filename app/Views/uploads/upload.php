@@ -12,11 +12,12 @@
     <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
     <div class="my-8 bg-white p-2 md:p-10 shadow-md rounded-md overflow-auto w-full max-w-6xl mx-auto print-container">
 
+        <h3 class="secondary-title text-gray-500 text-center">Uploads images, videos and documents</h3>
 
         <input hidden type="text" name="property_id" value="<?= $property_id; ?>" />
 
         <input type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
-            data-max-files="10" accept="image/*, video/*, .pdf, .doc, .docx, .txt" />
+            data-max-files="10" accept="image/*, video/*, .pdf, .doc, .docx, .txt, xlsx" />
     </div>
 </div>
 

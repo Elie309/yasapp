@@ -8,5 +8,6 @@ class CarouselCell extends Cell
 {
     public $uploads;
     public $entity_id;
+    public $uploadOwner;
 
 }

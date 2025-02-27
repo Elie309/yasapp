@@ -66,6 +66,20 @@ class UploadAWSClientServices
             throw new \Exception('AWS Error: ' . $e->getMessage());
         }
     }
+
+    public function uploadDocument($filePath, $fileName){
+        try {
+            $result = $this->s3Client->putObject([
+                'Bucket' => $this->bucketName,
+                'Key'    => 'documents/' . $fileName,
+                'SourceFile' => $filePath,
+                'ACL'    => 'public-read', // Adjust the ACL as needed
+            ]);
+            return $result['ObjectURL'];
+        } catch (AwsException $e) {
+            throw new \Exception('AWS Error: ' . $e->getMessage());
+        }
+    }
     
 
     public function deleteFile($url)

@@ -38,7 +38,7 @@ class DeleteController extends BaseController
         }
 
         try {
-            $this->uploadAWSClientServices->deleteFile($upload['upload_storage_url']);
+            $this->uploadAWSClientServices->deleteFile($upload->upload_storage_url);
             $this->propertyUploadServices->delete($upload_id);
 
             return $this->response->setStatusCode(ResponseInterface::HTTP_OK)

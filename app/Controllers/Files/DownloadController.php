@@ -23,7 +23,7 @@ class DownloadController extends BaseController
 
 
         if ($upload) {
-            $file = $upload['upload_storage_url'];
+            $file = $upload->upload_storage_url;
             $path = pathinfo($file);
             $filename = $path['basename'];
 
@@ -62,10 +62,10 @@ class DownloadController extends BaseController
 
                 foreach ($uploads as $upload) {
                     // Download the file content from the third-party URL
-                    $fileContent = file_get_contents($upload['upload_storage_url']);
+                    $fileContent = file_get_contents($upload->upload_storage_url);
                     if ($fileContent !== false) {
                         // Add the file content to the Zip archive
-                        $zip->addFromString($property->property_name . '/' . $upload['upload_file_name'], $fileContent);
+                        $zip->addFromString($property->property_name . '/' . $upload->upload_file_name, $fileContent);
                     }
                 }
 
