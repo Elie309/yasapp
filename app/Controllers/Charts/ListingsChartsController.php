@@ -11,8 +11,8 @@ class ListingsChartsController extends BaseController
     public function propertyStatusDistribution()
     {
         $model = new PropertyModel();
-        $data = $model->select('ps.property_status_name, COUNT(p.property_id) AS total')
-                      ->join('property_status ps', 'p.property_status_id = ps.property_status_id')
+        $data = $model->select('ps.property_status_name, COUNT(properties.property_id) AS total')
+                      ->join('property_status ps', 'properties.property_status_id = ps.property_status_id')
                       ->groupBy('ps.property_status_name')
                       ->findAll();
 
@@ -22,8 +22,8 @@ class ListingsChartsController extends BaseController
     public function propertyListingsByCity()
     {
         $model = new PropertyModel();
-        $data = $model->select('ci.city_name, COUNT(p.property_id) AS total_properties')
-                      ->join('cities ci', 'p.city_id = ci.city_id')
+        $data = $model->select('ci.city_name, COUNT(properties.property_id) AS total_properties')
+                      ->join('cities ci', 'properties.city_id = ci.city_id')
                       ->groupBy('ci.city_name')
                       ->orderBy('total_properties', 'DESC')
                       ->findAll();
@@ -58,8 +58,8 @@ class ListingsChartsController extends BaseController
     public function averagePropertyPriceByCity()
     {
         $model = new PropertyModel();
-        $data = $model->select('ci.city_name, AVG(p.property_price) AS avg_price')
-                      ->join('cities ci', 'p.city_id = ci.city_id')
+        $data = $model->select('ci.city_name, AVG(properties.property_price) AS avg_price')
+                      ->join('cities ci', 'properties.city_id = ci.city_id')
                       ->groupBy('ci.city_name')
                       ->orderBy('avg_price', 'DESC')
                       ->findAll();

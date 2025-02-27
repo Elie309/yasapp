@@ -31,8 +31,8 @@ class RequestsChartsController extends BaseController
     public function requestsByCity()
     {
         $model = new RequestModel();
-        $data = $model->select('ci.city_name, COUNT(r.request_id) AS total_requests')
-                      ->join('cities ci', 'r.city_id = ci.city_id')
+        $data = $model->select('ci.city_name, COUNT(requests.request_id) AS total_requests')
+                      ->join('cities ci', 'requests.city_id = ci.city_id')
                       ->groupBy('ci.city_name')
                       ->orderBy('total_requests', 'DESC')
                       ->findAll();
