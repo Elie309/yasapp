@@ -225,10 +225,10 @@
   }
 
   .chart-container {
-    @apply w-1/2 flex flex-row flex-wrap items-center justify-center;
+    @apply w-full h-96 flex flex-row flex-wrap items-center justify-center;
   }
   .chart-container canvas {
-    @apply w-full h-96;
+    @apply w-full h-full;
   }
 }
 

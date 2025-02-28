@@ -1,44 +1,49 @@
-<div class="flex-1 p-6">
-    <div class="bg-white p-4 shadow rounded mt-4">
-        <h2 class="text-xl font-bold mb-4">Charts</h2>
-        <div class="chart-container">
-            <canvas id="requestsByStatusChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="requestsByPriorityChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="requestsByCityChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="requestsOverTimeChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="averageRequestBudgetByPriorityChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="propertyStatusDistributionChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="propertyListingsByCityChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="propertyTypeBreakdownChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="saleVsRentPropertiesChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="averagePropertyPriceByCityChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="propertySizeDistributionChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="employeeRoleDistributionChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <canvas id="employeeCountOverTimeChart"></canvas>
+<div class="container-main max-w-6xl">
+
+    <h2 class="main-title-page">Dashboard</h2>
+
+    <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="chart-container">
+                <canvas id="requestsByStatusChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="requestsByPriorityChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="requestsByCityChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="requestsOverTimeChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="averageRequestBudgetByPriorityChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="propertyStatusDistributionChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="propertyListingsByCityChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="propertyTypeBreakdownChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="saleVsRentPropertiesChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="averagePropertyPriceByCityChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="propertySizeDistributionChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="employeeRoleDistributionChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="employeeCountOverTimeChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
