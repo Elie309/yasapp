@@ -20,7 +20,7 @@ class NotificationSeeder extends Seeder
         $notificationStatuses = $notificationsServices::$NOTIFICATION_STATUS;
 
         //Generate 100 notifications
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 300; $i++) {
             $employee = $employees[array_rand($employees)];
             $type = array_rand($notificationTypes);
             $status = array_rand($notificationStatuses);

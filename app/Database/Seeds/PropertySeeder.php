@@ -43,7 +43,7 @@ class PropertySeeder extends Seeder
 
 
         // Seed data for 'properties', 'land_details', 'apartment_details', etc.
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 200; $i++) {
 
             $client = $faker->randomElement($clientData);
 
