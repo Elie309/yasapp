@@ -102,16 +102,17 @@
 
 
     </div>
+</div>
 
-    <script>
-        function setFormDetails(action) {
-            const data = JSON.parse(sessionStorage.getItem('tempTableData'));
+<script>
+    function setFormDetails(action) {
+        const data = JSON.parse(sessionStorage.getItem('tempTableData'));
 
-            if (action === 'delete') {
-                document.getElementById('employee_name').innerText = data.employee_name;
-                document.getElementById('subregion_name').innerText = data.subregion_name;
-                document.getElementById('employee_subregions_id').value = data.employee_subregions_id;
-            }
-
+        if (action === 'delete') {
+            document.getElementById('employee_name').innerText = data.employee_name;
+            document.getElementById('subregion_name').innerText = data.subregion_name;
+            document.getElementById('employee_subregions_id').value = data.employee_subregions_id;
         }
-    </script>
+
+    }
+</script>

@@ -99,4 +99,5 @@
         renderChart('/charts/employees/role-distribution', document.getElementById('employeeRoleDistributionChart'), 'pie', 'employee_role', 'total');
         renderChart('/charts/employees/count-overtime', document.getElementById('employeeCountOverTimeChart'), 'line', 'date', 'total_employees');
     });
+    
 </script>

@@ -36,51 +36,40 @@ class UploadAWSClientServices
         $this->bucketName = getenv('aws.bucketName');
     }
 
-    public function uploadImage($filePath, $fileName)
+    private function uploadFile($filePath, $fileName, $folder)
     {
         try {
             $result = $this->s3Client->putObject([
                 'Bucket' => $this->bucketName,
-                'Key'    => 'images/' . $fileName,
+                'Key'    => $folder . '/' . $fileName,
                 'SourceFile' => $filePath,
                 'ACL'    => 'public-read', // Adjust the ACL as needed
             ]);
             return $result['ObjectURL'];
-
         } catch (AwsException $e) {
             throw new \Exception('AWS Error: ' . $e->getMessage());
         }
+    }
+
+    public function uploadImage($filePath, $fileName)
+    {
+        return $this->uploadFile($filePath, $fileName, 'images');
     }
 
     public function uploadVideo($filePath, $fileName)
     {
-        try {
-            $result = $this->s3Client->putObject([
-                'Bucket' => $this->bucketName,
-                'Key'    => 'videos/' . $fileName,
-                'SourceFile' => $filePath,
-                'ACL'    => 'public-read', // Adjust the ACL as needed
-            ]);
-            return $result['ObjectURL'];
-        } catch (AwsException $e) {
-            throw new \Exception('AWS Error: ' . $e->getMessage());
-        }
+        return $this->uploadFile($filePath, $fileName, 'videos');
     }
 
-    public function uploadDocument($filePath, $fileName){
-        try {
-            $result = $this->s3Client->putObject([
-                'Bucket' => $this->bucketName,
-                'Key'    => 'documents/' . $fileName,
-                'SourceFile' => $filePath,
-                'ACL'    => 'public-read', // Adjust the ACL as needed
-            ]);
-            return $result['ObjectURL'];
-        } catch (AwsException $e) {
-            throw new \Exception('AWS Error: ' . $e->getMessage());
-        }
+    public function uploadDocument($filePath, $fileName)
+    {
+        return $this->uploadFile($filePath, $fileName, 'documents');
     }
-    
+
+    public function uploadBackup($filePath, $fileName)
+    {
+        return $this->uploadFile($filePath, $fileName, 'backups');
+    }
 
     public function deleteFile($url)
     {

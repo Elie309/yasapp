@@ -133,6 +133,13 @@ $routes->get('settings/employee-subregions', 'Settings\EmployeeSubregionControll
 $routes->post('settings/employee-subregions/add', 'Settings\EmployeeSubregionController::addEmployeeSubregion');
 $routes->post('settings/employee-subregions/delete', 'Settings\EmployeeSubregionController::deleteEmployeeSubregion');
 
+
+// Backup Routes
+$routes->get('settings/backup', 'Settings\BackupController::index');
+$routes->post('settings/backup/backup-database', 'Settings\BackupController::backupDatabase');
+$routes->post('settings/backup/download', 'Settings\BackupController::downloadBackup/$1');
+$routes->post('settings/backup/delete', 'Settings\BackupController::deleteBackup/$1');
+
 //API
 
 $routes->get('/api/clients/search', 'API\ClientAPIController::search');
