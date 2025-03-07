@@ -19,23 +19,32 @@ class BackupServices extends BaseServices
      */
     public function backupDatabase()
     {
-        $backupFile = FCPATH . 'backups/db_backup_' . date('Y-m-d_H-i-s') . '.sql';
+        $backupFile = FCPATH . 'backups/DB-BACKUP-' . date('Y-m-d-H:i:s') . '.sql';
 
         try {
             $this->db->query("SET FOREIGN_KEY_CHECKS=0;");
 
-            $tables = $this->db->query("SHOW TABLES");
+            $tables = $this->db->query("SHOW TABLES")->getResultArray(); // Ensure an array is returned
             $backupSQL = "-- Database Backup for `{$this->db->database}` \n-- Generated on " . date('Y-m-d H:i:s') . "\n\n";
+            
+            $backupSQL .= "CREATE SCHEMA IF NOT EXISTS `{$this->db->database}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\n";
+            $backupSQL .= "USE `{$this->db->database}`;\n";
+
+            $backupSQL .= "SET AUTOCOMMIT = 0;\n";
+            $backupSQL .= "START TRANSACTION;\n";            
+            $backupSQL .= "SET FOREIGN_KEY_CHECKS=0;\n";
+
+
 
             foreach ($tables as $tableRow) {
-                $table = current($tableRow);
-
+                $table = reset($tableRow);
+            
                 // Get CREATE TABLE statement
-                $createTable = $this->db->query("SHOW CREATE TABLE `$table`")['Create Table'];
-                $backupSQL .= "-- Table structure for `$table` \nDROP TABLE IF EXISTS `$table`;\n$createTable;\n\n";
-
-                // Get data
-                $rows = $this->db->query("SELECT * FROM `$table`");
+                $createTable = $this->db->query("SHOW CREATE TABLE `$table`")->getRowArray();
+                $backupSQL .= "-- Table structure for `$table` \nDROP TABLE IF EXISTS `$table`;\n" . $createTable['Create Table'] . ";\n\n";
+            
+                // Get table data
+                $rows = $this->db->query("SELECT * FROM `$table`")->getResultArray();
                 if (!empty($rows)) {
                     $backupSQL .= "-- Data for `$table` \n";
                     foreach ($rows as $row) {
@@ -48,7 +57,7 @@ class BackupServices extends BaseServices
                                 return "'" . addslashes($value) . "'";
                             }
                         }, array_values($row));
-
+            
                         $columns = implode("`, `", array_keys($row));
                         $valuesString = implode(", ", $values);
                         $backupSQL .= "INSERT INTO `$table` (`$columns`) VALUES ($valuesString);\n";
@@ -56,8 +65,12 @@ class BackupServices extends BaseServices
                     $backupSQL .= "\n";
                 }
             }
+            
 
             $backupSQL .= "SET FOREIGN_KEY_CHECKS=1;\n";
+            $backupSQL .= "COMMIT;\n";
+            $backupSQL .= "SET AUTOCOMMIT = 1;\n";
+
 
             // Save backup locally
             if (!file_exists(FCPATH . 'backups')) {
@@ -80,12 +93,17 @@ class BackupServices extends BaseServices
 
                 if ($saved) {
                     // Delete local backup
-                    unlink($backupFile);
+
+                    $size = filesize($backupFile);
+                    $basename = basename($backupFile);
+
+                    // unlink($backupFile);
+
                     return [
                         'success' => true,
                         'backup_id' => $backupModel->getInsertID(),
-                        'backup_name' => basename($backupFile),
-                        'backup_file_size' => filesize($backupFile),
+                        'backup_name' => $basename,
+                        'backup_file_size' => $size,
                         'backup_file_path' => $backupUrl,
                     ];
                 } else {
@@ -103,6 +121,7 @@ class BackupServices extends BaseServices
                 ];
             }
         } catch (Exception $e) {
+            log_message('error', 'Database backup failed: ' . print_r($e));
             return [
                 'error' => 'Database backup failed: ' . $e->getMessage(),
                 'success' => false
@@ -118,7 +137,9 @@ class BackupServices extends BaseServices
     {
         try {
             $backupModel = new BackupLogsModel();
-            $backups = $backupModel->findAll();
+            // Find newest to oldest
+            $backups = $backupModel->orderBy('backup_created_at', 'DESC')->findAll();
+
             return [
                 'success' => true,
                 'backups' => $backups

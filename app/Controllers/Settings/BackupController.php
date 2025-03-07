@@ -70,12 +70,14 @@ class BackupController extends BaseController
     }
 
     // Delete backup
-    public function deleteBackup($backupId)
+    public function deleteBackup()
     {
 
         if($this->session->get('role') != 'admin'){
             return redirect()->back()->with('errors', 'You are not authorized to delete this record');
         }
+
+        $backupId = $this->request->getPost('backup_id');
 
         $backupServices = new BackupServices();
         $backup = $backupServices->deleteBackup($backupId);

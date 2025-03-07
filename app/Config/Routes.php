@@ -138,7 +138,7 @@ $routes->post('settings/employee-subregions/delete', 'Settings\EmployeeSubregion
 $routes->get('settings/backup', 'Settings\BackupController::index');
 $routes->post('settings/backup/backup-database', 'Settings\BackupController::backupDatabase');
 $routes->post('settings/backup/download', 'Settings\BackupController::downloadBackup/$1');
-$routes->post('settings/backup/delete', 'Settings\BackupController::deleteBackup/$1');
+$routes->post('settings/backup/delete', 'Settings\BackupController::deleteBackup');
 
 //API
 

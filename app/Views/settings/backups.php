@@ -23,7 +23,7 @@
                 'name' => 'Download',
                 'popovertarget' => 'DownloadBackup',
                 'functions' => "setFormDetails('download');",
-                'img' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="<?= $class ?>">
+                'img' => '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="size-6 ">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                             </svg>',
                 'class' => 'hover:stroke-blue-500 hover:text-blue-500'
@@ -48,6 +48,7 @@
                 'tableData' => $backups,
                 'addButtonModelId' => 'createBackup',
                 'AddButtonName' => 'Create Backup',
+                'addButtonModelAdditionalFn' => 'sendCreateDatabaseBackup()',
                 'modelIdOnClickRow' => '',
                 'JSFunctionToRunOnClickRow' => '', //This function is present in the form cell of currencies
                 'classOnClickRow' => '',
@@ -59,12 +60,12 @@
     </div>
 </div>
 
-<div popover class="popover max-w-lg" id="createBackup">
-    <div>
-        <h3 class="secondary-title">
-            Are you sure you want to create a backup?
-        </h3>
-        <form action="/settings/backup/backup-database"></form>
+<div class="hidden" id="createBackup">
+    <div class="p-4">
+        <h2 class="text-2xl font-bold mb-4">Create Backup</h2>
+        <form id="createBackupForm" action="/settings/backup/backup-database" method="post">
+            <button type="submit" class="secondary-btn w-1/4">Create</button>
+        </form>
     </div>
 </div>
 
@@ -75,9 +76,9 @@
         <form id="deleteBackupForm" action="/settings/backup/delete" method="post">
 
             <p class="text-lg font-semibold text-center">Are you sure you want to delete this backup?</p>
-            <div class="mt-4 text-gray-500 w-1/2 mx-auto">
-                <p>Backup:</p>
-                <span id="backup_name"></span>
+            <div class="mt-4 text-gray-500 text-center">
+                <p class="font-semibold">Backup:</p>
+                <p id="backup_name_delete_text"></p>
             </div>
             <input type="hidden" name="backup_id" id="backup_id" value="">
             <div class="flex justify-center w-full mt-4">
@@ -92,11 +93,16 @@
 </div>
 
 <script>
+
+    function sendCreateDatabaseBackup() {
+        document.getElementById('createBackupForm').submit();
+    }
+
     function setFormDetails(action) {
         const data = JSON.parse(sessionStorage.getItem('tempTableData'));
         if (action === 'delete') {
 
-            document.getElementById('backup_name').innerText = data.backup_name;
+            document.getElementById('backup_name_delete_text').innerText = data.backup_name;
             document.getElementById('backup_id').value = data.backup_id;
 
         }
