@@ -15,34 +15,38 @@
 
     <h2 class="md:hidden main-title-page">Property of <?= esc($property->client_name) ?></h2>
 
-
-    <div class="flex flex-row justify-around w-full items-center no-print py-2 my-4 ">
-        <a href="/listings/<?= esc($property->property_id) ?>/files" class="my-auto flex space-x-2 cursor-pointer no-print">
+ <!-- Action buttons -->
+ <div class="flex flex-row justify-around w-full items-center no-print py-3 my-5 bg-gray-50 rounded-lg shadow-sm">
+        <a href="/listings/<?= esc($property->property_id) ?>/files" class="group flex space-x-2 cursor-pointer no-print hover:text-red-600 transition-colors p-2">
             <p>Images</p>
-            <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'images', 'class' => 'size-6']) ?>
+            <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'images', 'class' => 'group-hover:fill-red-400 size-6 ml-1']) ?>
         </a>
 
-        <button onclick="window.print()" class="my-auto flex space-x-2 cursor-pointer no-print">
+        <div class="h-8 w-px bg-gray-300 hidden md:block"></div>
+
+        <button onclick="window.print()" class="group flex space-x-2 cursor-pointer no-print hover:text-red-600 transition-colors p-2">
             <p>Print</p>
-            <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'printer', 'class' => 'size-6']) ?>
+            <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'printer', 'class' => 'group-hover:stroke-red-400 size-6 ml-1']) ?>
         </button>
+
         <?php if ($property->employee_id === $employee_id) : ?>
-            <a href="/listings/edit/<?= $property->property_id ?>" class="my-auto space-x-2 flex cursor-pointer no-print">
+            <div class="h-8 w-px bg-gray-300 hidden md:block"></div>
+            
+            <a href="/listings/edit/<?= $property->property_id ?>" class="flex space-x-2 cursor-pointer no-print hover:text-red-600 transition-colors p-2">
                 <p>Edit</p>
-                <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'edit', 'class' => 'size-6']) ?>
+                <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'edit', 'class' => 'size-6 ml-1']) ?>
             </a>
         <?php endif; ?>
-
     </div>
-
 
     <div class="no-print">
         <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
     </div>
 
-    <div class="no-print flex flex-col md:flex-row justify-around space-y-4 md:space-y-0 md:space-x-4 w-full">
-        <div class=" w-full md:w-3/6 grid grid-cols-2 gap-2 place-items-center">
-            <strong>Property State:</strong>
+    <!-- Property state selection -->
+    <div class="no-print flex flex-col md:flex-row justify-around space-y-4 md:space-y-0 md:space-x-4 w-full mb-6">
+        <div class="w-full md:w-3/6 grid grid-cols-2 gap-2 place-items-center bg-white p-4 rounded-lg shadow-sm">
+            <strong class="text-gray-700">Property State:</strong>
             <select id="property-state" <?= $property->employee_id !== $employee_id ? 'disabled' : '' ?>
                 class="secondary-input min-w-40 max-w-60">
                 <?php foreach ($propertyStatuses as $propertyState): ?>
@@ -54,11 +58,10 @@
     </div>
 
 
-
     <div class="my-8 bg-white p-2 md:p-10 shadow-md rounded-md overflow-auto w-full max-w-6xl mx-auto print-container">
 
 
-        <h2 class="secondary-title">Vendor</h2>
+        <h2 class="secondary-title">Vendor Information</h2>
         <table class="view-table">
             <tr>
                 <th>Client</th>
@@ -88,7 +91,7 @@
         <br class="no-print">
 
         <div class="break-page"></div>
-        <h2 class="secondary-title">Property</h2>
+        <h2 class="secondary-title">Property Details</h2>
 
         <table  class="view-table">
             <tr>
