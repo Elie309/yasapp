@@ -4,8 +4,7 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Session\Handlers\BaseHandler;
-use CodeIgniter\Session\Handlers\FileHandler;
-
+use CodeIgniter\Session\Handlers\DatabaseHandler;
 class Session extends BaseConfig
 {
     /**
@@ -21,7 +20,7 @@ class Session extends BaseConfig
      *
      * @var class-string<BaseHandler>
      */
-    public string $driver = FileHandler::class;
+    public string $driver = DatabaseHandler::class;
 
     /**
      * --------------------------------------------------------------------------
@@ -69,7 +68,7 @@ class Session extends BaseConfig
      * WARNING: If you're using the database driver, don't forget to update
      *          your session table's PRIMARY KEY when changing this setting.
      */
-    public bool $matchIP = false;
+    public bool $matchIP = true;
 
     /**
      * --------------------------------------------------------------------------

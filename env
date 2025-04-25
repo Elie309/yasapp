@@ -58,9 +58,12 @@ app.baseURL = ''
 # SESSION
 #--------------------------------------------------------------------
 
-# session.driver = 'CodeIgniter\Session\Handlers\FileHandler'
-# session.savePath = null
-
+# session.driver = 'CodeIgniter\Session\Handlers\DatabaseHandler'
+# session.cookieName = yas_
+# session.expiration = 7200
+# session.savePath = yas_sessions
+# session.matchIP = true
+# session.timeToUpdate = 300
 #--------------------------------------------------------------------
 # LOGGER
 #--------------------------------------------------------------------

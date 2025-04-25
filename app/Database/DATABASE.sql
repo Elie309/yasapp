@@ -332,6 +332,16 @@ CREATE TABLE IF NOT EXISTS employee_subregions (
     FOREIGN KEY (subregion_id) REFERENCES subregions(subregion_id)
 );
 
+CREATE TABLE yas_sessions (
+    `id` varchar(128) NOT NULL,
+    `ip_address` varchar(45) NOT NULL,
+    `timestamp` int unsigned DEFAULT 0 NOT NULL,
+    `data` blob NOT NULL,
+    PRIMARY KEY (`id`),
+
+    KEY `yas_sessions_timestamp` (`timestamp`)
+);
+
 
 CREATE TABLE IF NOT EXISTS backup_logs (
     backup_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
