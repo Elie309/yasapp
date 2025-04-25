@@ -59,10 +59,7 @@ class RequestSeeder extends Seeder
                 'request_budget' => $faker->randomFloat(2, 10000, 1000000),
                 'request_state' => $faker->randomElement(['pending', 'finishing', 'rejected', 'cancelled', 'on-hold', 'on-track']),
                 'request_priority' => $faker->randomElement(['low', 'medium', 'high']),
-                'comments' => $faker->text(),
-                'created_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
-                'updated_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
-                'deleted_at' => null,
+                'request_comments' => $faker->text(),
             ];
         }
 

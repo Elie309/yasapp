@@ -88,17 +88,18 @@ $routes->get('clients/export', 'Clients\ClientsController::export');
 
 //REQUESTS
 $routes->get('requests', 'Requests\RequestController::index');
-$routes->get('requests/(:num)', 'Requests\RequestController::view/$1');
 $routes->get('requests/add', 'Requests\RequestController::add');
 $routes->post('requests/add', 'Requests\RequestController::addRequest');
-$routes->get('requests/edit/(:num)', 'Requests\RequestController::edit/$1');
-$routes->post('requests/edit/(:num)', 'Requests\RequestController::updateRequest/$1');
-$routes->get('requests/delete/(:num)', 'Requests\RequestController::delete/$1');
+$routes->get('requests/edit/(:segment)', 'Requests\RequestController::edit/$1');
+$routes->post('requests/edit/(:segment)', 'Requests\RequestController::updateRequest/$1');
+$routes->get('requests/delete/(:segment)', 'Requests\RequestController::delete/$1');
 $routes->get('requests/export', 'Requests\RequestController::export');
+$routes->get('requests/(:segment)', 'Requests\RequestController::view/$1');
+
 
 //Request API Routes
-$routes->get('api/requests/update-status/(:num)/(:segment)', 'API\RequestAPIController::updateRequestStatus/$1/$2');
-$routes->get('api/requests/update-priority/(:num)/(:alpha)', 'API\RequestAPIController::updateRequestPriority/$1/$2');
+$routes->get('api/requests/update-status/(:segment)/(:segment)', 'API\RequestAPIController::updateRequestStatus/$1/$2');
+$routes->get('api/requests/update-priority/(:segment)/(:alpha)', 'API\RequestAPIController::updateRequestPriority/$1/$2');
 
 //Listing API Routes
 $routes->get('api/listings/update-status/(:num)/(:segment)', 'API\ListingStatusAPIController::updatePropertyStatus/$1/$2');

@@ -22,7 +22,7 @@ class RequestModel extends Model
         'request_budget',
         'request_state',
         'request_priority',
-        'comments'
+        'request_comments'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -35,8 +35,6 @@ class RequestModel extends Model
         'currency_id' => 'integer',
         'agent_id' => 'integer',
         'request_budget' => 'float',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     protected array $castHandlers = [];
@@ -44,9 +42,9 @@ class RequestModel extends Model
     // Dates
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    protected $createdField  = 'request_created_at';
+    protected $updatedField  = 'request_updated_at';
+    protected $deletedField  = 'request_deleted_at';
 
     // Validation
     protected $validationRules      = [
@@ -59,10 +57,7 @@ class RequestModel extends Model
         'request_budget' => 'required|integer',
         'request_state' => 'required|in_list[pending,finishing,rejected,cancelled,on-hold,on-track]',
         'request_priority' => 'required|in_list[low,medium,high]',
-        'comments' => 'permit_empty|string',
-        'created_at' => 'permit_empty|valid_date',
-        'updated_at' => 'permit_empty|valid_date',
-        'deleted_at' => 'permit_empty|valid_date'
+        'request_comments' => 'permit_empty|string',
     ];
     protected $validationMessages   = [
         'client_id' => [
@@ -97,6 +92,10 @@ class RequestModel extends Model
             'required' => 'Request Priority is required',
             'in_list' => 'Request Priority must be one of: low, medium, high'
         ],
+        'request_comments' => [
+            'string' => 'Comments must be a string'
+        ],
+
     ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -111,4 +110,10 @@ class RequestModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    // Find by requestCode
+    public function findByRequestCode($requestCode)
+    {
+        return $this->where('request_code', $requestCode)->first();
+    }
 }

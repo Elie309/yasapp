@@ -9,7 +9,7 @@ class RequestEntity extends Entity
 {
     protected $datamap = [];
     
-    protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates   = ['request_created_at', 'request_updated_at', 'request_deleted_at'];
     protected $casts = [
         'request_id' => 'integer',
         'client_id' => 'integer',
@@ -17,9 +17,9 @@ class RequestEntity extends Entity
         'currency_id' => 'integer',
         'agent_id' => 'integer',
         'request_budget' => 'float',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime'
+        'request_created_at' => 'datetime',
+        'request_updated_at' => 'datetime',
+        'request_deleted_at' => 'datetime'
     ];
 
 
@@ -56,7 +56,7 @@ class RequestEntity extends Entity
             $errors[] = 'Request priority is invalid';
         }
 
-        if (!is_string($this->comments)) {
+        if (!is_string($this->request_comments)) {
             $errors[] = 'Comments are invalid';
         }
 

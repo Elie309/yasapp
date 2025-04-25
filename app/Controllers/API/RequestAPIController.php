@@ -21,14 +21,14 @@ class RequestAPIController extends BaseController
         $this->employee_id = session()->get('id');
     }
 
-    public function updateRequestStatus($id, $status)
+    public function updateRequestStatus($code, $status)
     {
 
 
-        $request_id = esc($id);
+        $request_code = esc($code);
         $status = esc($status);
 
-        if($request_id == '' || $status == ''){
+        if($request_code == '' || $status == ''){
             return $this->response->setJSON(['success' => false,'status' => 'error', 'message' => 'Invalid request status update']);
         }
 
@@ -38,7 +38,7 @@ class RequestAPIController extends BaseController
 
         $requestModel = new RequestModel();
 
-        $request = $requestModel->find($request_id);
+        $request = $requestModel->findByRequestCode($request_code);
 
         if(!$request){
             return $this->response->setJSON(['status' => 'error', 'message' => 'Request not found']);
@@ -52,20 +52,20 @@ class RequestAPIController extends BaseController
             return $this->response->setJSON(['success' => false, 'status' => 'error', 'message' => 'You are not authorized to update this request status']);
         }
 
-        if(!$requestModel->update($id, ['request_state' => $status])){
+        if(!$requestModel->update($code, ['request_state' => $status])){
             return $this->response->setJSON(['success' => false,'status' => 'error', 'message' => 'Failed to update request status']);
         }
 
         return $this->response->setJSON(['success' => true,'status' => 'success', 'message' => 'Request status updated successfully']);
     }
 
-    public function updateRequestPriority($id, $priority)
+    public function updateRequestPriority($code, $priority)
     {
 
-        $request_id = esc($id);
+        $request_code = esc($code);
         $priority = esc($priority);
 
-        if($request_id == '' || $priority == ''){
+        if($request_code == '' || $priority == ''){
             return $this->response->setJSON(['success' => false, 'status' => 'error', 'message' => 'Invalid request priority update']);
         }
 
@@ -75,7 +75,7 @@ class RequestAPIController extends BaseController
 
         $requestModel = new RequestModel();
 
-        $request = $requestModel->find($request_id);
+        $request = $requestModel->findByRequestCode($request_code);
 
         if(!$request){
             return $this->response->setJSON(['success' => false, 'status' => 'error', 'message' => 'Request not found']);
@@ -89,7 +89,7 @@ class RequestAPIController extends BaseController
             return $this->response->setJSON(['success' => false, 'status' => 'error', 'message' => 'You are not authorized to update this request priority']);
         }
 
-        if(!$requestModel->update($id, ['request_priority' => $priority])){
+        if(!$requestModel->update($code, ['request_priority' => $priority])){
             return $this->response->setJSON(['success' => false, 'status' => 'error', 'message' => 'Failed to update request priority']);
         }
 

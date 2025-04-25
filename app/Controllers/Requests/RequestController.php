@@ -175,14 +175,14 @@ class RequestController extends BaseController
         }
     }
 
-    public function view($id)
+    public function view($code)
     {
 
         $employee_id = $this->session->get('id');
 
         $requestModel = new RequestModel();
 
-        if (empty($id) || empty($employee_id)) {
+        if (empty($code) || empty($employee_id)) {
             return redirect()->back()->with('errors', ['Invalid request']);
         }
 
@@ -195,8 +195,6 @@ class RequestController extends BaseController
             agents.employee_name as agent_name,
             GROUP_CONCAT(CONCAT(countries.country_code, phones.phone_number) SEPARATOR ", ") as phone_numbers,
             CONCAT(countries_loc.country_name, ", ", regions.region_name, ", ", subregions.subregion_name, ", ", cities.city_name, ", ", requests.request_location) as request_detailed_location,
-            requests.created_at as request_created_at,
-            requests.updated_at as request_updated_at
             '
         )
             ->join('clients', 'requests.client_id = clients.client_id', 'left')
@@ -208,8 +206,8 @@ class RequestController extends BaseController
             ->join('regions', 'regions.region_id = subregions.region_id', 'left')
             ->join('countries as countries_loc', 'countries_loc.country_id = regions.country_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
-            ->where('requests.request_id', $id)
-            ->groupBy('requests.request_id')
+            ->where('requests.request_code', $code)
+            ->groupBy('requests.request_code')
             ->first();
 
 
@@ -238,15 +236,15 @@ class RequestController extends BaseController
     }
 
 
-    public function edit($id)
+    public function edit($code)
     {
 
 
         $employee_id = $this->session->get('id');
 
-        $id = esc($id);
+        $code = esc($code);
 
-        if(empty($id)){
+        if(empty($code) || empty($employee_id)){
             return redirect()->back()->with('errors', ['Invalid request']);
         }
 
@@ -262,11 +260,11 @@ class RequestController extends BaseController
             ->join('clients', 'requests.client_id = clients.client_id', 'left')
             ->join('currencies', 'requests.currency_id = currencies.currency_id', 'left')
             ->join('employees as agents', 'requests.agent_id = agents.employee_id', 'left')
-            ->where('requests.request_id', $id)
+            ->where('requests.request_code', $code)
             ->groupStart()
             ->where('requests.agent_id', $employee_id)
             ->groupEnd()
-            ->groupBy('requests.request_id')
+            ->groupBy('requests.request_code')
             ->first();
 
 
@@ -463,16 +461,16 @@ class RequestController extends BaseController
         $requests = $requests->findAll();
 
         $filename = 'requests_export_' . date('Ymd') . '.xlsx';
+        
         $header = [
-            'request_id' => 'Request ID',
+            'request_code' => 'Request code',
             'client_name' => 'Client Name',
             'city_name' => 'City Name',
             'request_budget' => 'Request Budget',
             'request_state' => 'Request State',
             'request_priority' => 'Request Priority',
-            'employee_name' => 'Employee Name',
             'agent_name' => 'Agent Name',
-            'comments' => 'Comments',
+            'request_comments' => 'Comments',
             'request_created_at' => 'Created At',
             'request_updated_at' => 'Updated At'
         ];
@@ -502,7 +500,7 @@ class RequestController extends BaseController
             'client_name' => 'clients.client_firstname',
             'employee_name' => 'employees.employee_name',
             'request_budget' => 'requests.request_budget',
-            'comments' => 'requests.comments',
+            'request_comments' => 'requests.request_comments',
             'subregion_name' => 'subregions.subregion_name',
         ];
 
@@ -514,8 +512,6 @@ class RequestController extends BaseController
                     cities.city_name, 
                     CONCAT(FORMAT(requests.request_budget, 0), " ", currencies.currency_symbol) AS request_fees,
                     agents.employee_name as agent_name,
-                    requests.created_at as request_created_at,
-                    requests.updated_at as request_updated_at
                     ')
             ->join('clients', 'requests.client_id = clients.client_id', 'left')
             ->join('phones', 'phones.client_id = clients.client_id', 'left')
@@ -531,7 +527,7 @@ class RequestController extends BaseController
                 ->groupEnd();
         }
 
-        $request = $request->groupBy('requests.request_id');
+        $request = $request->groupBy('requests.request_code');
 
 
         if (!empty($search) && !empty($searchParam) && isset($param[$searchParam])) {
@@ -567,17 +563,17 @@ class RequestController extends BaseController
         }
 
         if (!empty($startDateParam)) {
-            $request = $request->where('requests.created_at >=', $startDateParam);
+            $request = $request->where('requests.request_created_at >=', $startDateParam);
         }
 
         if (!empty($endDateParam)) {
-            $request = $request->where('requests.created_at <=', $endDateParam);
+            $request = $request->where('requests.request_created_at <=', $endDateParam);
         }
 
 
 
         //Order by created_at
-        $request = $request->orderBy('requests.created_at', 'DESC');
+        $request = $request->orderBy('requests.request_created_at', 'DESC');
 
 
         return $request;

@@ -90,7 +90,7 @@
             'request_fees' => 'Budget',
             'request_state' => 'State',
             'request_priority' => 'Priority',
-            'comments' => 'Comments',
+            'request_comments' => 'Comments',
             'request_created_at' => 'Created At',
             'request_updated_at' => 'Updated At',
         ];
@@ -116,12 +116,12 @@
                 'searchParamActive' => true,
                 'redirectOnClickRow' => 'requests',
                 'dataRowActive' => false,
-                'id_field' => 'request_id',
+                'id_field' => 'request_code',
                 'searchParam' => [
                     'client_name' => 'Client Name',
                     'request_payment_plan' => 'Payment Plan',
                     'request_budget' => 'Budget',
-                    'comments' => 'Comments',
+                    'request_comments' => 'Comments',
                     'city_name' => 'City',
                     'subregion_name' => 'District',
                 ],

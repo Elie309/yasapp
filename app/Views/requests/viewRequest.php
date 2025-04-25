@@ -13,7 +13,7 @@
                 <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'printer', 'class' => 'size-6']) ?>
             </button>
             <?php if ($request->agent_id === $employee_id) : ?>
-                <a href="/requests/edit/<?= $request->request_id ?>" class="my-auto flex space-x-2 cursor-pointer no-print">
+                <a href="/requests/edit/<?= $request->request_code ?>" class="my-auto flex space-x-2 cursor-pointer no-print">
                     <p>Edit</p>
                     <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'edit', 'class' => 'size-6']) ?>
                 </a>
@@ -107,7 +107,7 @@
             </tr>
             <tr>
                 <th>Request Description:</th>
-                <td><?= $request->comments ?></td>
+                <td><?= $request->request_comments ?></td>
             </tr>
 
         </table>
@@ -124,10 +124,10 @@
 
         requestPriority.addEventListener('change', async function() {
             const priority = requestPriority.value;
-            const request_id = <?= $request->request_id ?>;
+            const request_code = "<?= $request->request_code ?>";
             try {
 
-                await fetch(`/api/requests/update-priority/${request_id}/${priority}`)
+                await fetch(`/api/requests/update-priority/${request_code}/${priority}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
@@ -155,11 +155,11 @@
 
         requestState.addEventListener('change', async function() {
             const state = requestState.value;
-            const request_id = <?= $request->request_id ?>;
+            const request_code = "<?= $request->request_code ?>";
 
             try {
 
-                await fetch(`/api/requests/update-status/${request_id}/${state}`)
+                await fetch(`/api/requests/update-status/${request_code}/${state}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {

@@ -21,7 +21,7 @@
         <?php if ($method == 'NEW_REQUEST') : ?>
             <form action="/requests/add" method="POST">
             <?php elseif ($method == "UPDATE_REQUEST") : ?>
-                <form action="/requests/edit/<?= $request->request_id ?>" method="POST">
+                <form action="/requests/edit/<?= $request->request_code ?>" method="POST">
                 <?php endif; ?>
 
 
@@ -167,8 +167,8 @@
                 <hr class="mx-2" />
 
                 <div>
-                    <label class="main-label" for="comments">Comments:</label>
-                    <textarea class="secondary-input" rows="5" name="comments" id="comments"></textarea><br>
+                    <label class="main-label" for="request_comments">Comments:</label>
+                    <textarea class="secondary-input" rows="5" name="request_comments" id="request_comments"></textarea><br>
                 </div>
 
                 <?php if ($method == 'UPDATE_REQUEST') : ?>
@@ -205,7 +205,7 @@
                         <button type="button" class="primary-btn w-full cursor-pointer" onclick="closePopover('delete-popover')">Cancel</button>
                     </div>
                     <div class="w-full">
-                        <button onclick="window.location.href='/requests/delete/<?= $request->request_id ?>'"
+                        <button onclick="window.location.href='/requests/delete/<?= $request->request_code ?>'"
                             class="secondary-btn w-full cursor-pointer text-center">
                             Confirm
                         </button>
@@ -317,8 +317,8 @@
                 document.getElementById('request_state').value = data.request_state;
             }
 
-            if (data.comments) {
-                document.getElementById('comments').value = data.comments;
+            if (data.request_comments) {
+                document.getElementById('request_comments').value = data.request_comments;
             }
 
 
