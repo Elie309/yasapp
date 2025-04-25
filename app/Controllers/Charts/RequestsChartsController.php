@@ -65,9 +65,9 @@ class RequestsChartsController extends BaseController
     {
         try {
             $model = new RequestModel();
-            $data = $model->select('DATE(created_at) AS date, COUNT(*) AS total_requests')
+            $data = $model->select('DATE(request_created_at) AS date, COUNT(*) AS total_requests')
                           ->where('agent_id', $this->employee_id)
-                          ->groupBy('DATE(created_at)')
+                          ->groupBy('DATE(request_created_at)')
                           ->orderBy('date')
                           ->findAll();
 
