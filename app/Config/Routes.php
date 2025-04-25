@@ -5,9 +5,9 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'HomeController::index');
+$routes->get('/', 'DashboardController::index');
 
-$routes->get('dashboard', 'HomeController::index');
+$routes->get('dashboard', 'DashboardController::index');
 
 //AUTHENTICATION
 
@@ -172,7 +172,6 @@ $routes->group('charts', function($routes) {
     $routes->get('listings/type', 'Charts\ListingsChartsController::propertyTypeBreakdown');
     $routes->get('listings/sale-vs-rent', 'Charts\ListingsChartsController::saleVsRentProperties');
     $routes->get('listings/average-price', 'Charts\ListingsChartsController::averagePropertyPriceByCity');
-    $routes->get('listings/size-distribution', 'Charts\ListingsChartsController::propertySizeDistribution');
 
     // Employees Charts
     $routes->get('employees/role-distribution', 'Charts\EmployeesChartsController::employeeRoleDistribution');
