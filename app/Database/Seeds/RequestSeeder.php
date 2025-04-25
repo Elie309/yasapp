@@ -41,7 +41,7 @@ class RequestSeeder extends Seeder
 
         // Seed Requests
         $requests = [];
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 200; $i++) {
 
             //Random Employee
             $employeeId = $faker->randomElement($employeeIds)['employee_id'];

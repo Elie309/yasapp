@@ -16,7 +16,7 @@ class EmployeeSubregionSeeder extends Seeder
 
         $data = [];
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             if(count($subregions) == 0) {
                 break;
             }

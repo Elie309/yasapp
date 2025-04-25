@@ -648,7 +648,6 @@ class ListingsController extends BaseController
             'employee_name' => 'Employee',
             'city_name' => 'City',
             'property_land_or_apartment' => 'Land/Apartment',
-            'apartment_type_name' => 'Type',
             'property_status_name' => 'Status',
             'property_budget' => 'Price',
             'property_dimension' => 'Size',

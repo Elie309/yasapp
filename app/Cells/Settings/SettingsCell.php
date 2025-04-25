@@ -49,6 +49,13 @@ class SettingsCell extends Cell
             'title' => 'Employee Subregions',
             'description' => 'Manage subregions for each employee.',
             'role' => ['admin']
+        ],
+        [
+            'url' => '/settings/backup',
+            'img' => '/images/backup.webp',
+            'title' => 'Backup',
+            'description' => 'Backup Database.',
+            'role' => ['admin']
         ]
     ];
 

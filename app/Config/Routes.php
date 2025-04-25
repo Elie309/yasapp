@@ -5,9 +5,9 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'HomeController::index');
+$routes->get('/', 'DashboardController::index');
 
-$routes->get('dashboard', 'HomeController::index');
+$routes->get('dashboard', 'DashboardController::index');
 
 //AUTHENTICATION
 
@@ -133,6 +133,13 @@ $routes->get('settings/employee-subregions', 'Settings\EmployeeSubregionControll
 $routes->post('settings/employee-subregions/add', 'Settings\EmployeeSubregionController::addEmployeeSubregion');
 $routes->post('settings/employee-subregions/delete', 'Settings\EmployeeSubregionController::deleteEmployeeSubregion');
 
+
+// Backup Routes
+$routes->get('settings/backup', 'Settings\BackupController::index');
+$routes->post('settings/backup/backup-database', 'Settings\BackupController::backupDatabase');
+$routes->post('settings/backup/download', 'Settings\BackupController::downloadBackup/$1');
+$routes->post('settings/backup/delete', 'Settings\BackupController::deleteBackup');
+
 //API
 
 $routes->get('/api/clients/search', 'API\ClientAPIController::search');
@@ -149,4 +156,25 @@ $routes->get('/api/notifications/mark-unread/(:num)', 'API\NotificationAPIContro
 $routes->get('/api/notifications/mark-all-read', 'API\NotificationAPIController::markAllRead');
 $routes->get('/api/notifications/mark-all-unread', 'API\NotificationAPIController::markAllUnread');
 $routes->get('/api/notifications/delete/(:num)', 'API\NotificationAPIController::delete/$1');
+
+// Chart Routes
+$routes->group('charts', function($routes) {
+    // Requests Charts
+    $routes->get('requests/status', 'Charts\RequestsChartsController::requestsByStatus');
+    $routes->get('requests/priority', 'Charts\RequestsChartsController::requestsByPriority');
+    $routes->get('requests/city', 'Charts\RequestsChartsController::requestsByCity');
+    $routes->get('requests/overtime', 'Charts\RequestsChartsController::requestsOverTime');
+    $routes->get('requests/average-budget', 'Charts\RequestsChartsController::averageRequestBudgetByPriority');
+
+    // Listings Charts
+    $routes->get('listings/status', 'Charts\ListingsChartsController::propertyStatusDistribution');
+    $routes->get('listings/city', 'Charts\ListingsChartsController::propertyListingsByCity');
+    $routes->get('listings/type', 'Charts\ListingsChartsController::propertyTypeBreakdown');
+    $routes->get('listings/sale-vs-rent', 'Charts\ListingsChartsController::saleVsRentProperties');
+    $routes->get('listings/average-price', 'Charts\ListingsChartsController::averagePropertyPriceByCity');
+
+    // Employees Charts
+    $routes->get('employees/role-distribution', 'Charts\EmployeesChartsController::employeeRoleDistribution');
+    $routes->get('employees/count-overtime', 'Charts\EmployeesChartsController::employeeCountOverTime');
+});
 
