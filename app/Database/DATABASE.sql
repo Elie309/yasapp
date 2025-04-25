@@ -93,6 +93,8 @@ CREATE TABLE IF NOT EXISTS currencies (
 CREATE TABLE IF NOT EXISTS requests (
     request_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
+    request_code VARCHAR(20) NOT NULL UNIQUE,
+
     client_id INT UNSIGNED NOT NULL,
     city_id INT UNSIGNED NOT NULL,
     currency_id INT UNSIGNED NOT NULL,
@@ -105,11 +107,11 @@ CREATE TABLE IF NOT EXISTS requests (
     request_state ENUM('pending', 'finishing', 'rejected', 'cancelled', 'on-hold', 'on-track') NOT NULL DEFAULT 'pending',
     request_priority ENUM('low', 'medium', 'high') NOT NULL DEFAULT 'medium',
 
-    comments TEXT,
+    request_comments TEXT,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP NULL DEFAULT NULL,
+    request_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    request_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    request_deleted_at TIMESTAMP NULL DEFAULT NULL,
 
 
     FOREIGN KEY (client_id) REFERENCES clients(client_id),
@@ -130,7 +132,6 @@ CREATE TABLE property_status (
 CREATE TABLE properties (
     property_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
-    
     client_id INT UNSIGNED NOT NULL,
     employee_id INT UNSIGNED NOT NULL,
     currency_id INT UNSIGNED NOT NULL,
