@@ -25,7 +25,7 @@
                 'tableData' => $data_location,
                 'addButtonModelId' => '',
                 'dataRowActive' =>false,
-                'AddButtonName' => 'Add Location',
+                'AddButtonName' => 'Edit Locations',
                 'addButtonRedirectLink' => 'locations/add',
                 'isOnClickRowActive' => false,
                 'modelIdOnClickRow' => '',
