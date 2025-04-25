@@ -1,33 +1,30 @@
-<div class="container-main print-container max-w-6xl overflow-auto">
-
-
-    <div class="flex flex-row md:mt-0">
-        <button onclick="window.history.back()" class="my-auto flex space-x-2 cursor-pointer no-print">
+<div class="container-main print-container max-w-6xl overflow-auto mx-auto">
+    <div class="flex flex-row items-center mb-6 md:mt-4">
+        <button onclick="window.history.back()" class="my-auto flex items-center space-x-2 cursor-pointer no-print hover:text-gray-600 transition-colors">
             <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'arrow-left', 'class' => 'size-6']) ?>
             <p>Return</p>
         </button>
-        <h2 class="main-title-page">Files</h2>
+        <h2 class="main-title-page ml-4">Files</h2>
     </div>
 
     <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
+    <div class="my-8 bg-white p-4 md:p-10 shadow-md rounded-md overflow-auto w-full max-w-6xl mx-auto print-container">
+        <!-- Image Gallery -->
+        <div class="mb-10">
+            <?= view_cell(
+                '\App\Cells\Utils\Carousel\CarouselCell::render',
+                [
+                    'uploads' => $propertyUploads,
+                    'entity_id' => $property_id,
+                    'uploadOwner' => $uploadOwner
+                ]
+            ) ?>
+        </div>
 
-    <div class="my-8 bg-white p-2 md:p-10 shadow-md rounded-md overflow-auto w-full max-w-6xl mx-auto print-container">
-
-
-
-        <?= view_cell(
-            '\App\Cells\Utils\Carousel\CarouselCell::render',
-            [
-                'uploads' => $propertyUploads,
-                'entity_id' => $property_id,
-                'uploadOwner' => $uploadOwner
-
-            ]
-        ) ?>
-
-        <div class="mt-4 mb-8">
-            <h3 class="main-title-page">Documents</h3>
+        <!-- Documents Section -->
+        <div class="mt-8 mb-8">
+            <h3 class="main-title-page text-xl mb-4 pb-2 border-b border-gray-200">Documents</h3>
             <?php
             $documentsAvailable = false;
             foreach ($propertyUploads as $upload) {
@@ -39,21 +36,22 @@
             ?>
             <?php if (!$documentsAvailable): ?>
                 <div class="flex flex-row items-center justify-center max-w-lg h-20 mx-auto outline-gray-500
-                         outline-dashed  rounded-lg p-4 text-gray-500 select-none">
+                         outline-dashed rounded-lg p-4 text-gray-500 select-none">
                     <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => "file", "class" => "size-10 fill-gray-500"]) ?>
-                    <p class="text-center text-sm">No documents available</p>
+                    <p class="text-center text-sm ml-2">No documents available</p>
                 </div>
             <?php else : ?>
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col gap-3">
                     <?php foreach ($propertyUploads as $upload): ?>
                         <?php if ($upload->upload_file_type === 'document'): ?>
-                            <div class="flex items-center justify-between p-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">
-                                <a href="<?= $upload->upload_storage_url; ?>" target="_blank" class="flex items-center">
+                            <div class="flex items-center justify-between p-3 border border-gray-300 rounded hover:bg-gray-100 transition-colors">
+                                <a href="<?= $upload->upload_storage_url; ?>" target="_blank" class="flex items-center flex-grow hover:text-blue-600 transition-colors">
                                     <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'file', 'class' => 'size-6 fill-gray-700']) ?>
-                                    <span class="ml-2 text-lg text-gray-800"><?= $upload->upload_file_name; ?></span>
+                                    <span class="ml-3 text-lg text-gray-800"><?= $upload->upload_file_name; ?></span>
                                 </a>
                                 <?php if ($uploadOwner): ?>
-                                    <button class="stroke-red-600 hover:stroke-red-800" onclick="confirmDeleteDocument('<?= $upload->upload_id ?>')">
+                                    <button class="stroke-red-600 hover:stroke-red-800 p-2 rounded-full hover:bg-red-50 transition-colors ml-2" 
+                                            onclick="confirmDeleteDocument('<?= $upload->upload_id ?>')">
                                         <?= view_cell('App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'trash', 'class' => 'size-6']) ?>
                                     </button>
                                 <?php endif; ?>

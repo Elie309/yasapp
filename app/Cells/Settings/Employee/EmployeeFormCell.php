@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cells\Settings\EMployee;
+namespace App\Cells\Settings\Employee;
 
 use CodeIgniter\View\Cells\Cell;
 

@@ -164,33 +164,37 @@ class NotificationServices extends BaseServices
     /**
      * Get all read notifications by employee ID.
      * @param int $employeeId
-     * @return array
      * @param int|null $limit
+     * @param int|null $offset
+     * @return array
      */
-    public function getNotificationReadByEmployeeId($employeeId, $limit = null)
+    public function getNotificationReadByEmployeeId($employeeId, $limit = null, $offset = 0)
     {
-        return $this->getNotificationsByEmployeeIdHelper($employeeId, NotificationServices::$NOTIFICATION_STATUS[0], $limit);
+        return $this->getNotificationsByEmployeeIdHelper($employeeId, NotificationServices::$NOTIFICATION_STATUS[0], $limit, $offset);
     }
 
     /**
      * Get all unread notifications by employee ID.
      * @param int $employeeId
-     * @return array
      * @param int|null $limit
+     * @param int|null $offset
+     * @return array
      */
-    public function getNotificationUnreadByEmployeeId($employeeId, $limit = null)
+    public function getNotificationUnreadByEmployeeId($employeeId, $limit = null, $offset = 0)
     {
-        return $this->getNotificationsByEmployeeIdHelper($employeeId, NotificationServices::$NOTIFICATION_STATUS[1], $limit);
+        return $this->getNotificationsByEmployeeIdHelper($employeeId, NotificationServices::$NOTIFICATION_STATUS[1], $limit, $offset);
     }
 
     /**
      * Get all notifications.
      * @param int $employeeId
+     * @param int|null $limit
+     * @param int|null $offset
      * @return array
      */
-    public function getAllNotificationsByEmployeeId($employeeId)
+    public function getAllNotificationsByEmployeeId($employeeId, $limit = null, $offset = 0)
     {
-        return $this->getNotificationsByEmployeeIdHelper($employeeId);
+        return $this->getNotificationsByEmployeeIdHelper($employeeId, -1, $limit, $offset);
     }
 
     /**
@@ -227,24 +231,92 @@ class NotificationServices extends BaseServices
         return $this->notificationModel->where('notification_id', $notificationId)->where('employee_id', $employeeId)->countAllResults() > 0;
     }
 
+    /**
+     * Paginate all notifications for an employee.
+     * 
+     * @param int $employeeId
+     * @param int $perPage
+     * @param int $group null for default group
+     * @return array
+     */
+    public function paginateAllNotifications($employeeId, $perPage = 10)
+    {
+        try {
+            $builder = $this->notificationModel->where('employee_id', $employeeId)
+                                              ->orderBy('notification_created_at', 'DESC');
+            
+            $data = $builder->paginate($perPage);
+            $pager = $this->notificationModel->pager;
+            
+            return [
+                'success' => true, 
+                'message' => 'Notifications retrieved successfully', 
+                'data' => $data, 
+                'pager' => $pager
+            ];
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Paginate notifications by status for an employee.
+     * 
+     * @param int $employeeId
+     * @param string $status
+     * @param int $perPage
+     * @return array
+     */
+    public function paginateNotificationsByStatus($employeeId, $status, $perPage = 10)
+    {
+        try {
+            $builder = $this->notificationModel->where('employee_id', $employeeId)
+                                              ->where('notification_status', $status)
+                                              ->orderBy('notification_created_at', 'DESC');
+            
+            $data = $builder->paginate($perPage);
+            $pager = $this->notificationModel->pager;
+            
+            return [
+                'success' => true, 
+                'message' => 'Notifications retrieved successfully', 
+                'data' => $data, 
+                'pager' => $pager
+            ];
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
 
     /**
      * Get notifications by employee ID.
      *
      * @param int $employeeId
+     * @param int $status
+     * @param int|null $limit
+     * @param int|null $offset
      * @return array
      */
-    private function getNotificationsByEmployeeIdHelper($employeeId, $status = -1, $limit = null)
+    private function getNotificationsByEmployeeIdHelper($employeeId, $status = -1, $limit = null, $offset = 0)
     {
         try {
             $notifications = $this->notificationModel->where('employee_id', $employeeId);
             if($status != -1) {
                 $notifications = $notifications->where('notification_status', $status);
             }
-
-            $notifications = $notifications->orderBy('notification_created_at', 'DESC')->findAll($limit);
-
-            $count = count($notifications);
+            
+            // Count total before applying limit/offset
+            $count = $notifications->countAllResults(false);
+            
+            $notifications = $notifications->orderBy('notification_created_at', 'DESC');
+            
+            if ($limit !== null) {
+                $notifications = $notifications->findAll($limit, $offset);
+            } else {
+                $notifications = $notifications->findAll();
+            }
 
             return ['success' => true, 'message' => 'Notifications retrieved successfully', 'data' => $notifications, 'count' => $count];
         } catch (Exception $e) {
