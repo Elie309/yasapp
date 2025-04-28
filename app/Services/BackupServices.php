@@ -42,6 +42,8 @@ class BackupServices extends BaseServices
                 throw new Exception("Command failed: " . implode("\n", $output));
             }
 
+            log_message('info', 'Database backup created successfully: ' . $backupFile);
+
             // Check if the backup file was created
             if (!file_exists($backupFile)) {
                 unlink($backupFile); // Clean up if the file doesn't exist
