@@ -29,11 +29,11 @@ class BackupServices extends BaseServices
             }
 
             // Generate backup filename
-            $backupFilename = 'DB-BACKUP-' . date('Y-m-d-H-i-s') . '.sql';
+            $backupFilename = 'DB-BACKUP-' . date('Y-m-d_H-i-s') . '.sql';
             $backupFile = $this->backupDirectory . $backupFilename;
 
             // Execute the DbBackup command
-            $command = ROOTPATH . "spark db:backup --filename=". $backupFilename ." --path=" . $this->backupDirectory."/";
+            $command = ROOTPATH . "spark db:backup --filename ". $backupFilename ." --path " . $this->backupDirectory."/";
             $output = [];
             $returnVar = 0;
             exec($command, $output, $returnVar);
