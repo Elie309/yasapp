@@ -46,12 +46,12 @@ class DatabaseBackupTask
                 
                 foreach ($oldBackups as $backup) {
                     // Delete from S3
-                    $uploadAWSClient->deleteFile($backup['backup_url']);
+                    $uploadAWSClient->deleteFile($backup->backup_url);
                     
                     // Delete from database
-                    $backupModel->delete($backup['backup_id']);
+                    $backupModel->delete($backup->backup_id);
                     
-                    log_message('info', 'Task: Deleted old backup: ' . $backup['backup_name']);
+                    log_message('info', 'Task: Deleted old backup: ' . $backup->backup_name);
                 }
                 
                 log_message('info', 'Task: Cleaned up ' . count($oldBackups) . ' old database backups');

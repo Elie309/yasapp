@@ -113,17 +113,17 @@ class BackupServices extends BaseServices
                 
                 foreach ($oldBackups as $backup) {
                     // Delete from S3
-                    $uploadAWSClient->deleteFile($backup['backup_url']);
+                    $uploadAWSClient->deleteFile($backup->backup_url);
                     
                     // Delete from database
-                    $backupModel->delete($backup['backup_id']);
+                    $backupModel->delete($backup->backup_id);
 
                     //Delete local backup file if exists
-                    if (file_exists($this->backupDirectory . '/' . $backup['backup_name'])) {
+                    if (file_exists($this->backupDirectory . '/' . $backup->backup_name)) {
                         unlink($backup['backup_file_path']);
                     }
                     
-                    log_message('info', 'Deleted old backup: ' . $backup['backup_name']);
+                    log_message('info', 'Deleted old backup: ' . $backup->backup_name);
                 }
             }
         } catch (Exception $e) {
@@ -197,12 +197,12 @@ class BackupServices extends BaseServices
 
             if ($backup) {
                 $uploadAWSClient = new UploadAWSClientServices();
-                $uploadAWSClient->deleteFile($backup['backup_url']);
+                $uploadAWSClient->deleteFile($backup->backup_url);
                 $backupModel->delete($backupId);
 
                 //Delete local backup file if exists
-                if (file_exists($this->backupDirectory . '/' . $backup['backup_name'])) {
-                    unlink($this->backupDirectory . '/' . $backup['backup_name']);
+                if (file_exists($this->backupDirectory . '/' . $backup->backup_name)) {
+                    unlink($this->backupDirectory . '/' . $backup->backup_name);
                 }
 
                 return [

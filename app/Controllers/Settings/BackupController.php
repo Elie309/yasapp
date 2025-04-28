@@ -50,7 +50,7 @@ class BackupController extends BaseController
         $backup = $backupServices->getBackup($backupId);
         if($backup['success']){
             // Get file URL from S3
-            $fileUrl = $backup['backup']['backup_url'];
+            $fileUrl = $backup['backup']->backup_url;
             
             try {
                 // Get file content from S3
