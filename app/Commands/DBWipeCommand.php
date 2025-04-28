@@ -6,7 +6,7 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use Config\Database;
 
-class DbWipe extends BaseCommand
+class DBWipeCommand extends BaseCommand
 {
     /**
      * The Command's Group

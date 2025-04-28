@@ -6,7 +6,7 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use Config\Database;
 
-class DbBackup extends BaseCommand
+class DBBackupCommand extends BaseCommand
 {
     /**
      * The Command's Group
