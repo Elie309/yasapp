@@ -65,7 +65,7 @@ class DBBackupCommand extends BaseCommand
         // Create backup directory if it doesn't exist
         $backupPath = $params['path'] ?? WRITEPATH . 'backups/';
         if (!is_dir($backupPath)) {
-            mkdir($backupPath, 0755, true);
+            mkdir($backupPath, 755, true);
         }
     
         // Generate backup filename

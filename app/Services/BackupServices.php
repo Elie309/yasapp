@@ -9,7 +9,7 @@ use CodeIgniter\I18n\Time;
 class BackupServices extends BaseServices
 {
 
-    protected $backupDirectory = FCPATH . 'backups';
+    protected $backupDirectory = WRITEPATH . 'backups/';
 
     public function __construct()
     {
@@ -25,12 +25,12 @@ class BackupServices extends BaseServices
         try {
             // Create backup directory if it doesn't exist
             if (!file_exists($this->backupDirectory)) {
-                mkdir($this->backupDirectory, 0777, true);
+                mkdir($this->backupDirectory, 755, true);
             }
 
             // Generate backup filename
             $backupFilename = 'DB-BACKUP-' . date('Y-m-d-H-i-s') . '.sql';
-            $backupFile = $this->backupDirectory . '/' . $backupFilename;
+            $backupFile = $this->backupDirectory . $backupFilename;
 
             // Execute the DbBackup command
             $command = ROOTPATH . "spark db:backup --filename={$backupFilename} --path={$this->backupDirectory}/";
