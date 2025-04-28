@@ -69,7 +69,7 @@ class DBBackupCommand extends BaseCommand
         }
     
         // Generate backup filename
-        $defaultFilename = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
+        $defaultFilename = 'DB-BACKUP-' . date('Y-m-d_H-i-s') . '.sql';
         $filename = $params['filename'] ?? $defaultFilename;
         $backupFile = $backupPath . $filename;
     
