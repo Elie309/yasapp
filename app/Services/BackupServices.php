@@ -33,7 +33,7 @@ class BackupServices extends BaseServices
             $backupFile = $this->backupDirectory . $backupFilename;
 
             // Execute the DbBackup command
-            $command = ROOTPATH . "spark db:backup --filename={$backupFilename} --path={$this->backupDirectory}/";
+            $command = ROOTPATH . "spark db:backup --filename=". $backupFilename ." --path=" . $this->backupDirectory."/";
             $output = [];
             $returnVar = 0;
             exec($command, $output, $returnVar);
