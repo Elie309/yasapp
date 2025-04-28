@@ -93,10 +93,6 @@ class DbWipe extends BaseCommand
             CLI::write('Dropping tables...', 'yellow');
             
             foreach ($tables as $table) {
-                // Make sure we're not dropping migration table if it exists
-                if ($table === $prefix . 'migrations') {
-                    continue;
-                }
                 
                 $db->query("DROP TABLE IF EXISTS `{$table}`");
                 CLI::write("Dropped table: {$table}", 'green');
