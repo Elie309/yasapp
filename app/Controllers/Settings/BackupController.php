@@ -42,7 +42,6 @@ class BackupController extends BaseController
     // Download backup
     public function downloadBackup($backupId)
     {
-
         if($this->session->get('role') != 'admin'){
             return redirect()->back()->with('errors', 'You are not authorized to download this record');
         }
@@ -50,23 +49,35 @@ class BackupController extends BaseController
         $backupServices = new BackupServices();
         $backup = $backupServices->getBackup($backupId);
         if($backup['success']){
-            // Download backup from URL
-            // Get files content
-
-            $file = $backup['backup']['backup_url'];
-            $fileContent = file_get_contents($file);
-            $fileName = basename($file);
-
-            // Force download
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . $fileName . '"');
-            header('Content-Length: ' . strlen($fileContent));
-            header('Connection: close');
-
+            // Get file URL from S3
+            $fileUrl = $backup['backup']['backup_url'];
+            
+            try {
+                // Get file content from S3
+                $fileContent = file_get_contents($fileUrl);
+                if ($fileContent === false) {
+                    throw new \Exception("Unable to fetch file from S3");
+                }
+                
+                $fileName = basename($fileUrl);
+                
+                // Force download
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename="' . $fileName . '"');
+                header('Content-Length: ' . strlen($fileContent));
+                header('Cache-Control: no-cache, no-store, must-revalidate');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                
+                // Output file content and exit
+                echo $fileContent;
+                exit;
+            } catch (\Exception $e) {
+                return redirect()->to('/settings/backup')->with('errors', 'Error downloading backup: ' . $e->getMessage());
+            }
         }
 
         return redirect()->to('/settings/backup')->with('errors', $backup['error']);
-
     }
 
     // Delete backup

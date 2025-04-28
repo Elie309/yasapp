@@ -4,9 +4,12 @@ namespace App\Services;
 
 use App\Models\Settings\BackupLogsModel;
 use Exception;
+use CodeIgniter\I18n\Time;
 
 class BackupServices extends BaseServices
 {
+
+    protected $backupDirectory = FCPATH . 'backups';
 
     public function __construct()
     {
@@ -19,113 +22,109 @@ class BackupServices extends BaseServices
      */
     public function backupDatabase()
     {
-        $backupFile = FCPATH . 'backups/DB-BACKUP-' . date('Y-m-d-H:i:s') . '.sql';
-
         try {
-            $this->db->query("SET FOREIGN_KEY_CHECKS=0;");
-
-            $tables = $this->db->query("SHOW TABLES")->getResultArray(); // Ensure an array is returned
-            $backupSQL = "-- Database Backup for `{$this->db->database}` \n-- Generated on " . date('Y-m-d H:i:s') . "\n\n";
-            
-            $backupSQL .= "CREATE SCHEMA IF NOT EXISTS `{$this->db->database}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\n";
-            $backupSQL .= "USE `{$this->db->database}`;\n";
-
-            $backupSQL .= "SET AUTOCOMMIT = 0;\n";
-            $backupSQL .= "START TRANSACTION;\n";            
-            $backupSQL .= "SET FOREIGN_KEY_CHECKS=0;\n";
-
-
-
-            foreach ($tables as $tableRow) {
-                $table = reset($tableRow);
-            
-                // Get CREATE TABLE statement
-                $createTable = $this->db->query("SHOW CREATE TABLE `$table`")->getRowArray();
-                $backupSQL .= "-- Table structure for `$table` \nDROP TABLE IF EXISTS `$table`;\n" . $createTable['Create Table'] . ";\n\n";
-            
-                // Get table data
-                $rows = $this->db->query("SELECT * FROM `$table`")->getResultArray();
-                if (!empty($rows)) {
-                    $backupSQL .= "-- Data for `$table` \n";
-                    foreach ($rows as $row) {
-                        $values = array_map(function ($value) {
-                            if (is_null($value)) {
-                                return "NULL";
-                            } elseif ($value === '') {
-                                return "''";
-                            } else {
-                                return "'" . addslashes($value) . "'";
-                            }
-                        }, array_values($row));
-            
-                        $columns = implode("`, `", array_keys($row));
-                        $valuesString = implode(", ", $values);
-                        $backupSQL .= "INSERT INTO `$table` (`$columns`) VALUES ($valuesString);\n";
-                    }
-                    $backupSQL .= "\n";
-                }
+            // Create backup directory if it doesn't exist
+            if (!file_exists($this->backupDirectory)) {
+                mkdir($this->backupDirectory, 0777, true);
             }
-            
 
-            $backupSQL .= "SET FOREIGN_KEY_CHECKS=1;\n";
-            $backupSQL .= "COMMIT;\n";
-            $backupSQL .= "SET AUTOCOMMIT = 1;\n";
+            // Generate backup filename
+            $backupFilename = 'DB-BACKUP-' . date('Y-m-d-H-i-s') . '.sql';
+            $backupFile = $this->backupDirectory . '/' . $backupFilename;
 
+            // Execute the DbBackup command
+            $command = ROOTPATH . "spark db:backup --filename={$backupFilename} --path={$this->backupDirectory}/";
+            $output = [];
+            $returnVar = 0;
+            exec($command, $output, $returnVar);
 
-            // Save backup locally
-            if (!file_exists(FCPATH . 'backups')) {
-                mkdir(FCPATH . 'backups', 0777, true);
+            if ($returnVar !== 0) {
+                throw new Exception("Database backup command failed: " . implode("\n", $output));
             }
-            file_put_contents($backupFile, $backupSQL);
+
+            // Check if the backup file was created
+            if (!file_exists($backupFile)) {
+                throw new Exception("Backup file was not created");
+            }
 
             // Upload backup to AWS S3
             $uploadAWSClient = new UploadAWSClientServices();
-            $backupUrl = $uploadAWSClient->uploadBackup($backupFile, basename($backupFile));
+            $backupUrl = $uploadAWSClient->uploadBackup($backupFile, $backupFilename);
 
-            if ($backupUrl) {
-                // Save backup to database
-                $backupModel = new BackupLogsModel();
-                $saved = $backupModel->save([
-                    'backup_name' => basename($backupFile),
-                    'backup_file_size' => filesize($backupFile),
-                    'backup_file_path' => $backupUrl,
-                ]);
-
-                if ($saved) {
-                    // Delete local backup
-
-                    $size = filesize($backupFile);
-                    $basename = basename($backupFile);
-
-                    // unlink($backupFile);
-
-                    return [
-                        'success' => true,
-                        'backup_id' => $backupModel->getInsertID(),
-                        'backup_name' => $basename,
-                        'backup_file_size' => $size,
-                        'backup_file_path' => $backupUrl,
-                    ];
-                } else {
-                    $uploadAWSClient->deleteFile($backupUrl);
-
-                    return [
-                        'error' => 'Database backup failed: Unable to save backup to database',
-                        'success' => false
-                    ];
-                }
-            } else {
-                return [
-                    'error' => 'Database backup failed: Unable to upload backup to AWS S3',
-                    'success' => false
-                ];
+            if (!$backupUrl) {
+                throw new Exception("Failed to upload backup to S3");
             }
+
+            // Save backup to database
+            $backupModel = new BackupLogsModel();
+            $saved = $backupModel->save([
+                'backup_name' => $backupFilename,
+                'backup_file_size' => filesize($backupFile),
+                'backup_file_path' => $backupFile,
+                'backup_url' => $backupUrl
+            ]);
+
+            if (!$saved) {
+                // Delete the S3 file if database record creation failed
+                $uploadAWSClient->deleteFile($backupUrl);
+                throw new Exception("Failed to save backup record to database");
+            }
+
+            // Delete local backup file after successful S3 upload
+            // unlink($backupFile);
+
+            // Clean up old backups (older than 30 days)
+            $this->cleanupOldBackups();
+
+            return [
+                'success' => true,
+                'backup_id' => $backupModel->getInsertID(),
+                'backup_name' => $backupFilename,
+                'backup_file_size' => filesize($backupFile),
+                'backup_url' => $backupUrl,
+            ];
         } catch (Exception $e) {
-            log_message('error', 'Database backup failed: ' . print_r($e));
+            log_message('error', 'Database backup failed: ' . $e->getMessage());
             return [
                 'error' => 'Database backup failed: ' . $e->getMessage(),
                 'success' => false
             ];
+        }
+    }
+
+    /**
+     * Delete backups older than 30 days
+     * @return void
+     */
+    private function cleanupOldBackups()
+    {
+        try {
+            $backupModel = new BackupLogsModel();
+            $thirtyDaysAgo = new Time('-30 days');
+
+            // Find backups older than 30 days
+            $oldBackups = $backupModel->where('backup_created_at <', $thirtyDaysAgo->toDateTimeString())->findAll();
+
+            if (!empty($oldBackups)) {
+                $uploadAWSClient = new UploadAWSClientServices();
+                
+                foreach ($oldBackups as $backup) {
+                    // Delete from S3
+                    $uploadAWSClient->deleteFile($backup['backup_url']);
+                    
+                    // Delete from database
+                    $backupModel->delete($backup['backup_id']);
+
+                    //Delete local backup file if exists
+                    if (file_exists($this->backupDirectory . '/' . $backup['backup_name'])) {
+                        unlink($backup['backup_file_path']);
+                    }
+                    
+                    log_message('info', 'Deleted old backup: ' . $backup['backup_name']);
+                }
+            }
+        } catch (Exception $e) {
+            log_message('error', 'Cleanup of old backups failed: ' . $e->getMessage());
         }
     }
 
@@ -181,8 +180,6 @@ class BackupServices extends BaseServices
         }
     }
 
-
-
     /**
      * Delete backup
      * @param int $backupId
@@ -197,8 +194,14 @@ class BackupServices extends BaseServices
 
             if ($backup) {
                 $uploadAWSClient = new UploadAWSClientServices();
-                $uploadAWSClient->deleteFile($backup->backup_file_path);
+                $uploadAWSClient->deleteFile($backup['backup_url']);
                 $backupModel->delete($backupId);
+
+                //Delete local backup file if exists
+                if (file_exists($this->backupDirectory . '/' . $backup['backup_name'])) {
+                    unlink($this->backupDirectory . '/' . $backup['backup_name']);
+                }
+
                 return [
                     'success' => true
                 ];
