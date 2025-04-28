@@ -46,9 +46,9 @@ class Tasks extends BaseTasks
     public function init(Scheduler $schedule)
     {
 
-        $schedule->shell('php spark backup:tasks run')->daily('2:00 am');
+        $schedule->shell('php spark task:backup run')->daily('2:00 am');
 
-        $schedule->shell('php spark backup:tasks cleanup')->mondays('4:00 am');
+        $schedule->shell('php spark task:backup cleanup')->mondays('4:00 am');
 
        
     }
