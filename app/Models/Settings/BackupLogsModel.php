@@ -16,6 +16,7 @@ class BackupLogsModel extends Model
         'backup_name',
         'backup_file_size',
         'backup_file_path',
+        'backup_url',
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -36,6 +37,7 @@ class BackupLogsModel extends Model
         'backup_name' => 'required|string|max_length[255]',
         'backup_file_size' => 'required|numeric',
         'backup_file_path' => 'required|string',
+        'backup_url' => 'required|string|url',
     ];
     protected $validationMessages   = [
         'backup_name' => [
@@ -50,6 +52,11 @@ class BackupLogsModel extends Model
         'backup_file_path' => [
             'required' => 'Backup file path is required',
             'string' => 'Backup file path must be a string',
+        ],
+        'backup_url' => [
+            'required' => 'Backup URL is required',
+            'string' => 'Backup URL must be a string',
+            'url' => 'Backup URL must be a valid URL',
         ],
     ];
     protected $skipValidation       = false;

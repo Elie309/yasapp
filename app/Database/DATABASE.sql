@@ -348,6 +348,7 @@ CREATE TABLE IF NOT EXISTS backup_logs (
     backup_name VARCHAR(255) NOT NULL,
     backup_file_size BIGINT NOT NULL,
     backup_file_path TEXT NOT NULL,
+    backup_url TEXT NOT NULL,
     backup_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     backup_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     backup_deleted_at TIMESTAMP NULL DEFAULT NULL
