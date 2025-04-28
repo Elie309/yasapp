@@ -39,11 +39,12 @@ class BackupServices extends BaseServices
             exec($command, $output, $returnVar);
 
             if ($returnVar !== 0) {
-                throw new Exception("Database backup command failed: " . implode("\n", $output));
+                throw new Exception("Command failed: " . implode("\n", $output));
             }
 
             // Check if the backup file was created
             if (!file_exists($backupFile)) {
+                unlink($backupFile); // Clean up if the file doesn't exist
                 throw new Exception("Backup file was not created");
             }
 

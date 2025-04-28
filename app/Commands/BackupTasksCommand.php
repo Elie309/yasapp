@@ -55,15 +55,29 @@ class BackupTasksCommand extends BaseCommand
             case 'run':
                 CLI::write('Running database backup task...', 'yellow');
                 $task = new \App\Tasks\DatabaseBackupTask();
-                $task->dailyBackup();
-                CLI::write('Database backup task completed.', 'green');
+                $result = $task->dailyBackup();
+                
+                if (isset($result['success']) && $result['success']) {
+                    CLI::write('Database backup task completed successfully.', 'green');
+                    CLI::write('Backup file: ' . ($result['backup_name'] ?? 'Unknown'), 'white');
+                } else {
+                    CLI::error('Database backup task failed: ' . ($result['error'] ?? 'Unknown error'));
+                }
                 break;
                 
             case 'cleanup':
                 CLI::write('Running backup cleanup task...', 'yellow');
                 $task = new \App\Tasks\DatabaseBackupTask();
-                $task->cleanupOldBackups();
-                CLI::write('Backup cleanup task completed.', 'green');
+                $result = $task->cleanupOldBackups();
+                
+                if (isset($result['success']) && $result['success']) {
+                    CLI::write('Backup cleanup task completed successfully.', 'green');
+                    if (isset($result['count'])) {
+                        CLI::write('Cleaned up ' . $result['count'] . ' old backups.', 'white');
+                    }
+                } else {
+                    CLI::error('Backup cleanup task failed: ' . ($result['error'] ?? 'Unknown error'));
+                }
                 break;
                 
             case 'help':

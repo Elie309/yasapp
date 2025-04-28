@@ -10,7 +10,7 @@ class DatabaseBackupTask
     /**
      * Run the daily database backup task
      * 
-     * @return void
+     * @return array
      */
     public function dailyBackup()
     {
@@ -22,13 +22,15 @@ class DatabaseBackupTask
         } else {
             log_message('error', 'Automated daily database backup failed: ' . $result['error']);
         }
+        
+        return $result;
     }
     
     /**
      * Run the backup cleanup task (remove backups older than 30 days)
      * This is already done in BackupServices but can be run separately if needed
      * 
-     * @return void
+     * @return array
      */
     public function cleanupOldBackups()
     {
@@ -53,11 +55,23 @@ class DatabaseBackupTask
                 }
                 
                 log_message('info', 'Task: Cleaned up ' . count($oldBackups) . ' old database backups');
+                return [
+                    'success' => true,
+                    'count' => count($oldBackups)
+                ];
             } else {
                 log_message('info', 'Task: No old backups to clean up');
+                return [
+                    'success' => true,
+                    'count' => 0
+                ];
             }
         } catch (\Exception $e) {
             log_message('error', 'Task: Cleanup of old backups failed: ' . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
         }
     }
 }
