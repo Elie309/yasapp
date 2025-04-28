@@ -37,7 +37,7 @@ class BackupLogsModel extends Model
         'backup_name' => 'required|string|max_length[255]',
         'backup_file_size' => 'required|numeric',
         'backup_file_path' => 'required|string',
-        'backup_url' => 'required|string|url',
+        'backup_url' => 'required|string',
     ];
     protected $validationMessages   = [
         'backup_name' => [
