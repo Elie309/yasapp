@@ -121,12 +121,12 @@
         if (action === 'delete') {
             document.getElementById('backup_name_delete_text').innerText = data.backup_name;
             document.getElementById('backup_size_delete_text').innerText = `Size: ${data.backup_file_size}`;
-            document.getElementById('backup_date_delete_text').innerText = `Created: ${formatDate(data.backup_created_at)}`;
+            document.getElementById('backup_date_delete_text').innerText = `Created: ${data.backup_created_at}`;
             document.getElementById('backup_id').value = data.backup_id;
         } else if (action === 'download') {
             document.getElementById('backup_name_download_text').innerText = data.backup_name;
             document.getElementById('backup_size_download_text').innerText = `Size: ${data.backup_file_size}`;
-            document.getElementById('backup_date_download_text').innerText = `Created: ${formatDate(data.backup_created_at)}`;
+            document.getElementById('backup_date_download_text').innerText = `Created: ${data.backup_created_at}`;
             document.getElementById('download_backup_id').value = data.backup_id;
         }
     }

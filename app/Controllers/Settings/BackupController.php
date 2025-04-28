@@ -40,11 +40,13 @@ class BackupController extends BaseController
     }
 
     // Download backup
-    public function downloadBackup($backupId)
+    public function downloadBackup()
     {
         if($this->session->get('role') != 'admin'){
             return redirect()->back()->with('errors', 'You are not authorized to download this record');
         }
+
+        $backupId = esc($this->request->getPost('backup_id'));
 
         $backupServices = new BackupServices();
         $backup = $backupServices->getBackup($backupId);
