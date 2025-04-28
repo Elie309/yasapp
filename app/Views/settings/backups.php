@@ -117,29 +117,54 @@
     }
 
     function setFormDetails(action) {
-        const data = JSON.parse(sessionStorage.getItem('tempTableData'));
-        if (action === 'delete') {
-            document.getElementById('backup_name_delete_text').innerText = data.backup_name;
-            document.getElementById('backup_size_delete_text').innerText = `Size: ${data.backup_file_size}`;
-            document.getElementById('backup_date_delete_text').innerText = `Created: ${data.backup_created_at}`;
-            document.getElementById('backup_id').value = data.backup_id;
-        } else if (action === 'download') {
-            document.getElementById('backup_name_download_text').innerText = data.backup_name;
-            document.getElementById('backup_size_download_text').innerText = `Size: ${data.backup_file_size}`;
-            document.getElementById('backup_date_download_text').innerText = `Created: ${data.backup_created_at}`;
-            document.getElementById('download_backup_id').value = data.backup_id;
+        try {
+            const tempData = sessionStorage.getItem('tempTableData');
+            
+            if (!tempData) {
+                console.error('No data found in sessionStorage');
+                return;
+            }
+            
+            const data = JSON.parse(tempData);
+            
+            if (!data) {
+                console.error('Failed to parse data from sessionStorage');
+                return;
+            }
+            
+            if (action === 'delete') {
+                document.getElementById('backup_name_delete_text').innerText = data.backup_name || 'Unknown';
+                document.getElementById('backup_size_delete_text').innerText = `Size: ${data.backup_file_size || 'Unknown'}`;
+                document.getElementById('backup_date_delete_text').innerText = `Created: ${data.backup_created_at ? formatDate(data.backup_created_at) : 'Unknown date'}`;
+                document.getElementById('backup_id').value = data.backup_id || '';
+            } else if (action === 'download') {
+                document.getElementById('backup_name_download_text').innerText = data.backup_name || 'Unknown';
+                document.getElementById('backup_size_download_text').innerText = `Size: ${data.backup_file_size || 'Unknown'}`;
+                document.getElementById('backup_date_download_text').innerText = `Created: ${data.backup_created_at ? formatDate(data.backup_created_at) : 'Unknown date'}`;
+                document.getElementById('download_backup_id').value = data.backup_id || '';
+            }
+        } catch (error) {
+            console.error('Error setting form details:', error);
         }
     }
 
     function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                return 'Invalid date';
+            }
+            return date.toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return 'Invalid date';
+        }
     }
 
     function closePopover(id) {

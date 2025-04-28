@@ -112,7 +112,7 @@
 
             <div class="relative mb-8 bg-white shadow-lg rounded-lg overflow-hidden border border-gray-100">
                 <div id="dashboard-loader"
-                    class="absolute w-full h-full bg-white z-50 flex items-center justify-center">
+                    class="absolute w-full h-full bg-white z-50 flex items-start mt-10 justify-center">
                     <div class="flex flex-col items-center">
                         <div class="loader-red"></div>
                         <p class="mt-4 text-gray-700 font-medium">Loading dashboard data...</p>
