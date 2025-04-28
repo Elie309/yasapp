@@ -62,7 +62,7 @@ app.baseURL = ''
 # session.cookieName = yas_
 # session.expiration = 7200
 # session.savePath = yas_sessions
-# session.matchIP = true
+# session.matchIP = false
 # session.timeToUpdate = 300
 #--------------------------------------------------------------------
 # LOGGER
