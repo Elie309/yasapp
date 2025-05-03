@@ -52,7 +52,7 @@
     <!-- Top Navigation Bar -->
     <nav class="bg-gray-900 px-4 py-3 flex justify-between items-center drop-shadow-2xl no-print text-lg sticky top-0 z-40">
         <div class="flex items-center">
-            <a href="/"><img src="<?= base_url('logo.webp') ?>" alt="Logo" class="h-14 mr-4"></a>
+            <a href="/"><img src="<?= base_url('logo.webp') ?>" alt="Logo" class="h-14 ml-8"></a>
         </div>
         
         <button id="sidebar-toggle" class="lg:hidden text-3xl text-white focus:outline-none mr-4 hover:text-red-500 transition-colors" onclick="toggleSidebar()">
@@ -154,7 +154,7 @@
                     <ul class="font-bold space-y-1">
                         <li>
                             <a href="/listings">
-                                <div class="flex items-center p-4 font-bold rounded-lg hover:bg-gray-800 <?= current_url(true)->getPath() == '/listings' ? 'bg-gray-800 border-l-4 border-red-800' : '' ?> transition-colors space-x-4">
+                                <div class="flex items-center p-4 font-bold rounded-lg hover:bg-gray-800 <?= str_contains(current_url(true)->getPath(), '/listings') ? 'bg-gray-800 border-l-4 border-red-800' : '' ?> transition-colors space-x-4">
                                     <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'listings', 'viewBox' => '0 0 512 512', 'fill' => 'currentColor', 'class' => 'size-6 fill-white']) ?>
                                     <p>Listings</p>
                                 </div>
@@ -162,7 +162,7 @@
                         </li>
                         <li>
                             <a href="/requests">
-                                <div class="flex items-center p-4 font-bold rounded-lg hover:bg-gray-800 <?= current_url(true)->getPath() == '/requests' ? 'bg-gray-800 border-l-4 border-red-800' : '' ?> transition-colors space-x-4">
+                                <div class="flex items-center p-4 font-bold rounded-lg hover:bg-gray-800 <?= str_contains(current_url(true)->getPath(), '/requests') ? 'bg-gray-800 border-l-4 border-red-800' : '' ?> transition-colors space-x-4">
                                     <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'requests', 'viewBox' => '0 0 32 32', 'fill' => 'currentColor', 'class' => 'size-6 fill-white']) ?>
                                     <p>Requests</p>
                                 </div>
@@ -170,7 +170,7 @@
                         </li>
                         <li>
                             <a href="/notifications">
-                                <div class="flex items-center p-4 font-bold rounded-lg hover:bg-gray-800 transition-colors space-x-4">
+                                <div class="flex items-center p-4 font-bold rounded-lg hover:bg-gray-800 transition-colors space-x-4  <?= str_contains(current_url(true)->getPath(), '/notifications') ? 'bg-gray-800 border-l-4 border-red-800' : '' ?>">
                                     <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'bell', 'viewBox' => '0 0 24 24', 'fill' => 'currentColor', 'class' => 'size-6 fill-white rounded-full']) ?>
                                     <p>Notifications</p>
                                 </div>
@@ -178,7 +178,7 @@
                         </li>
                         <li>
                             <a href="/settings">
-                                <div class="flex items-center p-4 font-bold rounded-lg hover:bg-gray-800 transition-colors space-x-4">
+                                <div class="flex items-center p-4 font-bold rounded-lg hover:bg-gray-800 transition-colors space-x-4  <?= str_contains(current_url(true)->getPath(),'/settings') ? 'bg-gray-800 border-l-4 border-red-800' : '' ?>">
                                     <?= view_cell('\App\Cells\Utils\Icons\IconsCell::render', ['icon' => 'settings', 'viewBox' => '0 0 24 24', 'fill' => 'currentColor', 'class' => 'size-6 stroke-white']) ?>
                                     <p>Settings</p>
                                 </div>
