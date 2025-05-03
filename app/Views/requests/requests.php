@@ -30,16 +30,6 @@
                         </select>
                     </div>
                 <?php endif; ?>
-                <div class="my-2 md:my-0 md:ml-4 order-3">
-                    <label for="request_state" class="main-label mr-2 text-wrap">Request State:</label>
-                    <select name="request_state" id="request_state" class="secondary-input min-w-40">
-                        <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
-                        <?php foreach ($requestStates as $requestState): ?>
-                            <option value="<?= $requestState ?>"
-                                <?= isset($_GET['requestState']) && $_GET['requestState'] === $requestState ? 'selected' : '' ?>><?= ucfirst($requestState) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
                 <div class="my-2 md:my-0 md:ml-4 order-4">
                     <label for="request_priority" class="main-label mr-2 text-wrap">Request Priority:</label>
                     <select name="request_priority" id="request_priority" class="secondary-input min-w-40">
@@ -50,6 +40,17 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div class="my-2 md:my-0 md:ml-4 order-3">
+                    <label for="request_state" class="main-label mr-2 text-wrap">Request State:</label>
+                    <select name="request_state" id="request_state" class="secondary-input min-w-40">
+                        <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
+                        <?php foreach ($requestStates as $requestState): ?>
+                            <option value="<?= $requestState ?>"
+                                <?= isset($_GET['requestState']) && $_GET['requestState'] === $requestState ? 'selected' : '' ?>><?= ucfirst($requestState) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
                 <div class="my-2 md:my-0 md:ml-4 order-1 md:order-5 flex items-end">
                     <button class="secondary-btn w-full min-w-40 " onclick='resetURL("requests")'>Clear Filter</button>
                 </div>
@@ -78,7 +79,7 @@
         if (isset($agents) && !empty($agents)) {
             $adminHeaders['agent_name'] = 'Agent';
         }
-        
+
 
 
         $tableHeaders = [
