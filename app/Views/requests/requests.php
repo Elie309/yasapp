@@ -30,7 +30,7 @@
                         </select>
                     </div>
                 <?php endif; ?>
-                <div class="my-2 md:my-0 md:ml-4 order-4">
+                <div class="my-2 md:my-0 md:ml-4 order-3">
                     <label for="request_priority" class="main-label mr-2 text-wrap">Request Priority:</label>
                     <select name="request_priority" id="request_priority" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['requestPriority']) ? '' : 'selected' ?>>All</option>
@@ -40,7 +40,7 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="my-2 md:my-0 md:ml-4 order-3">
+                <div class="my-2 md:my-0 md:ml-4 order-4">
                     <label for="request_state" class="main-label mr-2 text-wrap">Request State:</label>
                     <select name="request_state" id="request_state" class="secondary-input min-w-40">
                         <option value="" <?= isset($_GET['requestState']) ? '' : 'selected' ?>>All</option>
