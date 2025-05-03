@@ -1,6 +1,6 @@
 <div class="container-main print-container max-w-6xl overflow-auto">
 
-    <img class="mx-auto hidden print-only w-64" src="/logo.png" alt="">
+    <img class="mx-auto hidden print-only w-64" src="/logo.webp" alt="">
 
     <!-- Property Details -->
     <div class="flex flex-row">

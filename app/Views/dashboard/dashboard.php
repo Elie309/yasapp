@@ -111,13 +111,7 @@
             </div>
 
             <div class="relative mb-8 bg-white shadow-lg rounded-lg overflow-hidden border border-gray-100">
-                <div id="dashboard-loader"
-                    class="absolute w-full h-full bg-white z-50 flex items-start mt-10 justify-center">
-                    <div class="flex flex-col items-center">
-                        <div class="loader-red"></div>
-                        <p class="mt-4 text-gray-700 font-medium">Loading dashboard data...</p>
-                    </div>
-                </div>
+
 
                 <div class="p-6 md:p-8 lg:p-10">
                     <!-- Request Analytics Section -->
@@ -137,35 +131,35 @@
                         </div>
                         <div id="request-charts" class="section-content grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Requests by Status</h4>
+                                <h4 class="">Requests by Status</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                                 </div>
                                 <canvas id="requestsByStatusChart" class="hidden"></canvas>
                             </div>
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Requests by Priority</h4>
+                                <h4 class="">Requests by Priority</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                                 </div>
                                 <canvas id="requestsByPriorityChart" class="hidden"></canvas>
                             </div>
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Requests by City</h4>
+                                <h4 class="">Requests by City</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                                 </div>
                                 <canvas id="requestsByCityChart" class="hidden"></canvas>
                             </div>
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Requests Over Time</h4>
+                                <h4 class="">Requests Over Time</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                                 </div>
                                 <canvas id="requestsOverTimeChart" class="hidden"></canvas>
                             </div>
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Avg. Request Budget</h4>
+                                <h4 class="">Avg. Request Budget</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                                 </div>
@@ -191,35 +185,35 @@
                         </div>
                         <div id="property-charts" class="section-content grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Property Status Distribution</h4>
+                                <h4 class="">Property Status Distribution</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
                                 </div>
                                 <canvas id="propertyStatusDistributionChart" class="hidden"></canvas>
                             </div>
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Properties by City</h4>
+                                <h4 class="">Properties by City</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
                                 </div>
                                 <canvas id="propertyListingsByCityChart" class="hidden"></canvas>
                             </div>
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Property Type Breakdown</h4>
+                                <h4 class="">Property Type Breakdown</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
                                 </div>
                                 <canvas id="propertyTypeBreakdownChart" class="hidden"></canvas>
                             </div>
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Sale vs Rent Properties</h4>
+                                <h4 class="">Sale vs Rent Properties</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
                                 </div>
                                 <canvas id="saleVsRentPropertiesChart" class="hidden"></canvas>
                             </div>
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="text-center font-medium text-gray-700 mb-4">Avg. Property Price by City</h4>
+                                <h4 class="">Avg. Property Price by City</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
                                 </div>
@@ -248,14 +242,14 @@
                             </div>
                             <div id="employee-charts" class="section-content grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
                                 <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                    <h4 class="text-center font-medium text-gray-700 mb-4">Employee Role Distribution</h4>
+                                    <h4 class="">Employee Role Distribution</h4>
                                     <div class="chart-loader flex justify-center items-center py-16">
                                         <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
                                     </div>
                                     <canvas id="employeeRoleDistributionChart" class="hidden"></canvas>
                                 </div>
                                 <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                    <h4 class="text-center font-medium text-gray-700 mb-4">Employee Count Over Time</h4>
+                                    <h4 class="">Employee Count Over Time</h4>
                                     <div class="chart-loader flex justify-center items-center py-16">
                                         <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
                                     </div>
@@ -285,7 +279,6 @@
                 initializeSectionToggles();
 
                 // Show main loader
-                const dashboardLoader = document.getElementById('dashboard-loader');
 
                 // Set current time for last updated
                 document.getElementById('last-updated-time').textContent = new Date().toLocaleString();
@@ -293,12 +286,9 @@
                 // Initialize charts
                 initializeCharts()
                     .then(() => {
-                        // Hide main loader when all charts are loaded
-                        dashboardLoader.classList.add('hidden');
                     })
                     .catch(error => {
                         console.error('Error initializing charts:', error);
-                        dashboardLoader.classList.add('hidden');
                         alert('There was an error loading the dashboard data. Please try refreshing the page.');
                     });
             });
