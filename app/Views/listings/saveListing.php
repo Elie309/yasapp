@@ -60,7 +60,6 @@
 
                 <!-- Location -->
                 <div>
-                    <h3 class="secondary-title">Location</h3>
 
                     <div class="flex flex-col w-full mb-4">
                         <?php if ($method == 'NEW_REQUEST'): ?>
@@ -80,12 +79,22 @@
                             ) ?>
                         <?php endif; ?>
 
+
                         <div>
                             <label class="main-label" for="property_location">Location Details:</label>
                             <textarea class="main-input" placeholder="Location address"
                                 name="property_location" id="property_location"></textarea>
                         </div>
                     </div>
+                </div>
+
+                <hr class="mx-2" />
+
+                <div class="my-4">
+                    <h3 class="secondary-title">Property Size (m²):</h3>
+
+                    <input type="text" id="property_size" name="property_size" class="main-input"><br>
+
                 </div>
 
                 <hr class="mx-2" />
@@ -103,16 +112,7 @@
                                 Land
                             </button>
                         </div>
-                    <?php else : ?>
-                        <div class=" w-full flex border-y border-gray-300">
 
-                            <button type="button" id="apartment-btn"
-                                class="w-full py-4 text-center font-medium text-gray-700  focus:outline-none
-                                hover:bg-gray-200">
-                                Apartment
-                            </button>
-
-                        </div>
                     <?php endif; ?>
                 <?php else : ?>
                     <div class=" w-full flex border-y border-gray-300">
@@ -166,12 +166,6 @@
                     </div>
 
 
-                    <div class="my-4">
-
-                        <label class="main-label" for="property_size">Property Size (m²):</label>
-                        <input type="text" id="property_size" name="property_size" class="main-input"><br>
-
-                    </div>
 
                     <div class="my-4 flex flex-col">
                         <label class="main-label" for="property_price_display">Price:</label>
