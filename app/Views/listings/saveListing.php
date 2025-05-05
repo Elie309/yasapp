@@ -113,22 +113,34 @@
                             </button>
                         </div>
 
+                    <?php else : ?>
+                        <div class=" w-full flex border-y border-gray-300">
+
+                            <button type="button" id="apartment-btn"
+                                class="w-full py-4 text-center font-medium text-gray-700  focus:outline-none
+                                hover:bg-gray-200">
+                                Apartment
+                            </button>
+
+                        </div>
                     <?php endif; ?>
+
+                    
                 <?php else : ?>
+
                     <div class=" w-full flex border-y border-gray-300">
+                        <button type="button" id="apartment-btn" onclick="showApartmentForm()"
+                            class="w-1/2 py-4 text-center font-medium text-gray-700  focus:outline-none
+                        hover:bg-gray-200">
+                            Apartment
+                        </button>
                         <button type="button" id="land-btn" onclick="showLandForm()"
                             class=" w-1/2 py-4 text-center 
                             font-medium text-gray-700 focus:outline-none 
-                            hover:bg-gray-200
-                            ">
+                            hover:bg-gray-200">
                             Land
                         </button>
-                        <button type="button" id="apartment-btn" onclick="showApartmentForm()"
-                            class="w-1/2 py-4 text-center font-medium text-gray-700  focus:outline-none
-                        hover:bg-gray-200
-                    ">
-                            Apartment
-                        </button>
+
                     </div>
 
                 <?php endif; ?>
