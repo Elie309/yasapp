@@ -213,10 +213,6 @@
                     <td><?= $apartmentDetails->ad_furnished ? 'Yes' : 'No' ?></td>
                 </tr>
                 <tr>
-                    <th>Furnished Provision</th>
-                    <td><?= $apartmentDetails->ad_furnished_provision ? 'Yes' : 'No' ?></td>
-                </tr>
-                <tr>
                     <th>Elevator</th>
                     <td><?= $apartmentDetails->ad_elevator ? 'Yes' : 'No' ?></td>
                 </tr>

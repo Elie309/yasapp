@@ -457,10 +457,6 @@
                 document.getElementById("ad_furnished").checked = data.ad_furnished;
             }
 
-            if (data.ad_furnished_provision) {
-                document.getElementById("ad_furnished_provision").checked = data.ad_furnished_provision;
-            }
-
             if (data.ad_elevator) {
                 document.getElementById("ad_elevator").checked = data.ad_elevator;
             }

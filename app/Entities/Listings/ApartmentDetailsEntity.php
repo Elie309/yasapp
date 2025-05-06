@@ -23,7 +23,6 @@ class ApartmentDetailsEntity extends Entity
         'ad_terrace',
         'ad_roof',
         'ad_furnished',
-        'ad_furnished_provision',
         'ad_elevator'
     ];
 
@@ -67,11 +66,6 @@ class ApartmentDetailsEntity extends Entity
         $this->attributes['ad_furnished'] = $value == 'on' ? true : false;
     }
 
-    public function setAdFurnishedProvision(string $value = 'off')
-    {
-        $this->attributes['ad_furnished_provision'] = $value == 'on' ? true : false;
-    }
-
     public function setAdElevator(string $value = 'off')
     {
         $this->attributes['ad_elevator'] = $value == 'on' ? true : false;
@@ -91,11 +85,6 @@ class ApartmentDetailsEntity extends Entity
     public function getAdFurnished()
     {
         return $this->attributes['ad_furnished'] ? true : false;
-    }
-
-    public function getAdFurnishedProvision()
-    {
-        return $this->attributes['ad_furnished_provision'] ? true : false;
     }
 
     public function getAdElevator()

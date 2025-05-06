@@ -231,7 +231,6 @@ CREATE TABLE apartment_details (
     ad_roof_area INT DEFAULT 0,
 
     ad_furnished BOOLEAN DEFAULT FALSE,
-    ad_furnished_provision BOOLEAN DEFAULT FALSE,
     ad_elevator BOOLEAN DEFAULT FALSE,
 
     ad_status_age VARCHAR(255),

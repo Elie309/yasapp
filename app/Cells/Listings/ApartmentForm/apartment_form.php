@@ -51,11 +51,6 @@
         <input type="checkbox" id="ad_furnished" name="ad_furnished"
             class="main-checkbox">
 
-        <label class="secondary-label md:col-span-2" for="ad_furnished_provision">Furnished Provision:</label>
-        <input type="checkbox" id="ad_furnished_provision"
-            name="ad_furnished_provision"
-            class="main-checkbox ">
-
         <label class="secondary-label" for="ad_elevator">Elevator:</label>
         <input type="checkbox" id="ad_elevator" name="ad_elevator" class="main-checkbox">
 

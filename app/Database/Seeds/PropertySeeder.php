@@ -102,7 +102,6 @@ class PropertySeeder extends Seeder
                     'ad_gender_id' => $faker->randomElement($apartmentGenderData)['apartment_gender_id'], // Random gender ID
                     'ad_type_id' => $faker->randomElement($apartmentTypeData)['apartment_type_id'], // Random property type
                     'ad_furnished' => $faker->boolean(),
-                    'ad_furnished_provision' => $faker->boolean(),
                     'ad_elevator' => $faker->boolean(),
                     'ad_status_age' => $faker->sentence(4),
                     'ad_floor_level' => $faker->numberBetween(1, 10),
