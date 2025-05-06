@@ -14,7 +14,7 @@
 
     <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
 
-    <div class="my-8 bg-white p-10 shadow-md rounded-md min-w-full overflow-auto">
+    <div class="my-8 p-4 min-w-full overflow-auto">
 
         <?php if ($method == 'NEW_REQUEST') : ?>
             <form action="/listings/add" method="POST">
@@ -23,7 +23,7 @@
                 <?php endif; ?>
 
                 <!-- Client details -->
-                <div>
+                <div class="form-section">
 
                     <h3 class="secondary-title">Client</h3>
                     <div class="w-full text-end">
@@ -42,24 +42,24 @@
 
                 </div>
 
-                <hr class="mx-2" />
-
-
                 <!-- Referral -->
-                <div class="mb-4">
+                <div class="form-section">
                     <h3 class="secondary-title">Referral</h3>
 
-                    <label class="main-label" for="property_referral_name">Referral Name:</label>
-                    <input type="text" id="property_referral_name" name="property_referral_name" class="main-input"><br>
-
-                    <label class="main-label" for="property_referral_phone">Referral Phone:</label>
-                    <input type="text" id="property_referral_phone" name="property_referral_phone" class="main-input"><br>
+                    <div class="flex flex-row w-full mb-4">
+                        <div class="w-1/2 mr-2">
+                            <label class="main-label" for="property_referral_name">Referral Name:</label>
+                            <input type="text" id="property_referral_name" name="property_referral_name" class="main-input">
+                        </div>
+                        <div class="w-1/2 ml-2">
+                            <label class="main-label" for="property_referral_phone">Referral Phone:</label>
+                            <input type="text" id="property_referral_phone" name="property_referral_phone" class="main-input">
+                        </div>
+                    </div>
                 </div>
 
-                <hr class="mx-2" />
-
                 <!-- Location -->
-                <div>
+                <div class="form-section">
 
                     <div class="flex flex-col w-full mb-4">
                         <?php if ($method == 'NEW_REQUEST'): ?>
@@ -88,16 +88,12 @@
                     </div>
                 </div>
 
-                <hr class="mx-2" />
-
-                <div class="my-4">
+                <div class="form-section">
                     <h3 class="secondary-title">Property Size (m²):</h3>
 
                     <input type="text" id="property_size" name="property_size" class="main-input"><br>
 
                 </div>
-
-                <hr class="mx-2" />
 
 
                 <?php if ($method == 'UPDATE_REQUEST') : ?>
@@ -107,8 +103,7 @@
                             <button type="button" id="land-btn"
                                 class=" w-full py-4 text-center 
                             font-medium text-gray-700 focus:outline-none 
-                            hover:bg-gray-200
-                            ">
+                            hover:bg-gray-200">
                                 Land
                             </button>
                         </div>
@@ -125,19 +120,18 @@
                         </div>
                     <?php endif; ?>
 
-                    
+
                 <?php else : ?>
 
-                    <div class=" w-full flex border-y border-gray-300">
+                    <div class=" w-full flex my-4 border-gray-300">
                         <button type="button" id="apartment-btn" onclick="showApartmentForm()"
-                            class="w-1/2 py-4 text-center font-medium text-gray-700  focus:outline-none
-                        hover:bg-gray-200">
+                            class="w-1/2 py-4 text-center font-medium text-gray-700 border mx-2 rounded-lg focus:outline-none
+                        hover:bg-gray-200 bg-white focus:ring-red-800 hover:ring-red-800">
                             Apartment
                         </button>
                         <button type="button" id="land-btn" onclick="showLandForm()"
-                            class=" w-1/2 py-4 text-center 
-                            font-medium text-gray-700 focus:outline-none 
-                            hover:bg-gray-200">
+                            class=" w-1/2 py-4 text-center border mx-2 rounded-lg font-medium text-gray-700 focus:outline-none 
+                            hover:bg-gray-200 bg-white focus:ring-red-800 hover:ring-red-800">
                             Land
                         </button>
 
@@ -162,7 +156,7 @@
                 </div>
 
                 <!-- Property Details -->
-                <div>
+                <div class="form-section">
                     <h3 class="secondary-title">Property Details</h3>
 
                     <div class="my-4">
@@ -209,7 +203,7 @@
 
 
                 <!-- Payment plans & Rent/Sale -->
-                <div>
+                <div class="form-section">
 
                     <!-- Rent or Sale checkbox -->
                     <div class="flex flex-col justify-between mb-4 text-xl">
@@ -228,7 +222,7 @@
                         name="property_payment_plan" id="property_payment_plan"></textarea>
                 </div>
 
-                <div class="my-4 flex flex-row w-full justify-evenly">
+                <div class="form-section flex flex-row w-full justify-evenly">
                     <?php if ($method == 'UPDATE_REQUEST') : ?>
                         <button type="button" popovertarget="delete-popover"
                             class="secondary-btn w-1/2 mr-2 md:w-2/6">Delete
@@ -242,7 +236,7 @@
                         class="primary-btn disabled:primary-btn-disabled w-1/2 ml-2 md:w-2/6">Save</button>
                 </div>
 
-                </form>
+            </form>
     </div>
 </div>
 

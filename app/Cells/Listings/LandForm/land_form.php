@@ -1,4 +1,4 @@
-<div class="my-2">
+<div class="form-section">
     <h2 class="secondary-title">Land Details</h2>
 
     <div class="my-4">

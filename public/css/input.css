@@ -233,6 +233,12 @@
   .chart-container canvas {
     @apply w-full h-full mx-auto row-span-10 mb-4;
   }
+  
+  .form-section {
+    @apply w-full mb-4 p-6 bg-white shadow-md rounded-md;
+  }
+
+  
 }
 
 /* HTML: <div class="loader"></div> */

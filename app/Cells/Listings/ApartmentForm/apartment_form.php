@@ -2,32 +2,34 @@
     <h2 class="secondary-title">Apartment Details</h2>
 
 
-    <div class="my-4">
-        <label class="secondary-label" for="apartment_gender_name">Apartment Gender:</label>
-        <div class="flex flex-col w-full">
-            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                'placeholder' => 'Search Apartment Gender',
-                'data' => $apartmentGender,
-                'selectedId' => "ad_gender_id",
-                'selectedName' => 'apartment_gender_name'
-            ]) ?>
+    <div class="form-section">
+        <div class="mb-4">
+            <label class="secondary-label" for="apartment_gender_name">Apartment Gender:</label>
+            <div class="flex flex-col w-full">
+                <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+                    'placeholder' => 'Search Apartment Gender',
+                    'data' => $apartmentGender,
+                    'selectedId' => "ad_gender_id",
+                    'selectedName' => 'apartment_gender_name'
+                ]) ?>
+            </div>
         </div>
+
+        <div class="">
+            <label class="main-label" for="ad_type_name">Apartment Type</label>
+            <div class="flex flex-col w-full">
+                <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
+                    'placeholder' => 'Search Apartment Type',
+                    'data' => $apartmentTypes,
+                    'selectedId' => "ad_type_id",
+                    'selectedName' => 'ad_type_name'
+                ]) ?>
+            </div>
+        </div>
+
     </div>
 
-    <div class="my-4">
-        <label class="main-label" for="ad_type_name">Apartment Type</label>
-        <div class="flex flex-col w-full">
-            <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                'placeholder' => 'Search Apartment Type',
-                'data' => $apartmentTypes,
-                'selectedId' => "ad_type_id",
-                'selectedName' => 'ad_type_name'
-            ]) ?>
-        </div>
-    </div>
-
-
-    <div class="my-4 grid grid-cols-2 md:grid-cols-8 gap-4 justify-start items-center">
+    <div class="form-section grid grid-cols-2 md:grid-cols-8 gap-4 justify-start items-center">
         <label class="secondary-label" for="ad_terrace">Terrace:</label>
         <input type="checkbox" id="ad_terrace" name="ad_terrace"
             class="main-checkbox" />
@@ -59,7 +61,7 @@
 
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 my-4">
+    <div class="form-section grid grid-cols-1 md:grid-cols-12 gap-4">
 
         <label class="secondary-label col-span-2" for="ad_status_age">Status/Age:</label>
         <input type="text" id="ad_status_age" name="ad_status_age" class="main-input col-span-10">
@@ -76,11 +78,10 @@
     </div>
 
 
-    <hr>
 
     <h2 class="secondary-title">Apartment Partitions</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mt-4 mb-8">
+    <div class="form-section grid grid-cols-1 md:grid-cols-12 gap-2 mt-4 mb-8">
         <label class="secondary-label col-span-2 " for="partition_salon">Salon:</label>
         <input type="text" id="partition_salon" name="partition_salon" class="main-input col-span-10">
 
@@ -120,13 +121,11 @@
 
     </div>
 
-    <hr>
-
 
     <h2 class="secondary-title">Apartment Specifications</h2>
 
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 mb-8 items-center">
+    <div class="form-section grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 mb-8 items-center">
 
 
         <label class="secondary-label" for="spec_heating_system">Heating System Installed:</label>
@@ -196,20 +195,27 @@
         <input type="checkbox" id="spec_driver_room" name="spec_driver_room" class="main-checkbox place-self-center">
 
 
-
+        <div class="col-span-2 md:col-span-4">
+            <div class="mx-auto max-w-[300px] flex flex-row">
+                <label class="secondary-label" for="spec_tiles">Tiles:</label>
+                <select id="spec_tiles" name="spec_tiles" class="main-input">
+                    <?php foreach ($tilesOptions as $tile): ?>
+                        <option value="<?= $tile ?>"><?= ucfirst($tile) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
 
     </div>
 
-    <label class="secondary-label" for="spec_tiles">Tiles:</label>
-    <select id="spec_tiles" name="spec_tiles" class="main-input">
-        <?php foreach ($tilesOptions as $tile): ?>
-            <option value="<?= $tile ?>"><?= ucfirst($tile) ?></option>
-        <?php endforeach; ?>
-    </select>
+    <div class="form-section ">
+        
 
-    <label class="secondary-label" for="ad_extra_features">Extra Features:</label>
-    <textarea id="ad_extra_features" name="ad_extra_features" class="main-input min-h-20"></textarea>
+        <!-- TODO: Remove -->
+        <label class="secondary-label" for="ad_extra_features">Extra Features:</label>
+        <textarea id="ad_extra_features" name="ad_extra_features" class="main-input min-h-20"></textarea>
 
+    </div>
 </div>
 
 <script>
