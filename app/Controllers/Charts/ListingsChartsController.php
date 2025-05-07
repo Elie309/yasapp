@@ -71,6 +71,7 @@ class ListingsChartsController extends BaseController
         }
     }
 
+    // TODO: Change the query after the database is updated
     public function saleVsRentProperties()
     {
         try {

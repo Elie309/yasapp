@@ -139,7 +139,6 @@ CREATE TABLE properties (
     
     property_status_id INT UNSIGNED NOT NULL,
 
-    property_rent BOOLEAN DEFAULT FALSE,
     property_sale BOOLEAN DEFAULT FALSE,
 
     land_id INT UNSIGNED NULL,
@@ -173,6 +172,34 @@ CREATE TABLE properties (
     -- FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)
     -- THEY ARE ADDED LATER IN THE FLOW
 );
+
+CREATE TABLE property_prices (
+    property_price_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    property_price_property_id INT UNSIGNED NOT NULL,
+    property_price_type ENUM('rent', 'sale') NOT NULL,
+
+    property_price_currency_id INT UNSIGNED NOT NULL,
+    property_price_amount DECIMAL(15, 2) NOT NULL,
+    
+    -- For rent-specific fields
+    property_price_rent_period ENUM('daily', 'weekly', 'monthly', 'yearly') NULL,
+    
+    -- Payment plan details
+    property_price_payment_terms ENUM('cash', 'installments', 'mortgage', 'custom') NULL,
+    
+    property_price_is_negotiable BOOLEAN DEFAULT FALSE,
+    property_price_is_primary BOOLEAN DEFAULT FALSE,
+    
+    property_price_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (property_price_property_id) REFERENCES properties(property_id),
+    FOREIGN KEY (property_price_currency_id) REFERENCES currencies(currency_id),
+    
+    -- Ensure each property has only one primary price per type
+    CONSTRAINT unique_primary_price UNIQUE (property_price_property_id, property_price_type, property_price_is_primary)
+);
+
+
 
 CREATE TABLE property_uploads (
     upload_id INT AUTO_INCREMENT PRIMARY KEY,

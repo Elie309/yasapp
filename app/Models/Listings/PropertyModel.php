@@ -21,7 +21,6 @@ class PropertyModel extends Model
         'land_id',
         'apartment_id',
 
-        'property_rent',
         'property_sale',
         'property_location',
         'property_referral_name',
@@ -75,7 +74,6 @@ class PropertyModel extends Model
         'currency_id' => 'required|integer',
         'land_id' => 'integer|permit_empty',
         'apartment_id' => 'integer|permit_empty',
-        'property_rent' => 'permit_empty|boolean',
         'property_sale' => 'permit_empty|boolean',
         'property_location' => 'string|max_length[255]',
         'property_referral_name' => 'string|max_length[255]',
@@ -112,9 +110,6 @@ class PropertyModel extends Model
         'currency_id' => [
             'required' => 'Currency ID is required',
             'integer' => 'Currency ID must be an integer'
-        ],
-        'property_rent' => [
-            'boolean' => 'Property Rent must be a boolean'
         ],
         'property_sale' => [
             'boolean' => 'Property Sale must be a boolean'

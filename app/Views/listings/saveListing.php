@@ -196,12 +196,12 @@
                 </div>
 
 
-                <!-- Rent or Sale checkbox -->
+                <!-- Property Availability -->
                 <div class="flex flex-col mb-4">
                     <h3 class="main-label">Property Availability</h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                        <!-- Rent option with price -->
+                        <!-- Rent option with details -->
                         <div class="flex flex-col border rounded p-3 hover:bg-gray-50">
                             <div class="flex items-center mb-2">
                                 <input type="checkbox" id="property_rent" name="property_rent" class="main-checkbox" onchange="togglePriceInput('rent')">
@@ -221,9 +221,30 @@
                                     class="secondary-input ml-2 w-3/4" placeholder="Rental price" disabled>
                                 <input type="hidden" name="property_rent_price" id="property_rent_price">
                             </div>
+                            <div class="mt-2" id="rent_additional_fields" style="display: none;">
+                                <div class="flex items-center mb-2">
+                                    <label for="rent_period" class="text-sm w-1/3">Rent Period:</label>
+                                    <select id="rent_period" name="property_price_rent_period" class="secondary-input w-2/3">
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="daily">Daily</option>
+                                    </select>
+                                </div>
+                                <div class="w-full flex items-center justify-around my-2">
+                                    <label class="inline-flex items-center">
+                                        <input type="checkbox" id="rent_negotiable" name="rent_is_negotiable">
+                                        <span class="ml-2 text-sm">is Negotiable</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="checkbox" id="rent_primary" name="rent_is_primary">
+                                        <span class="ml-2 text-sm">is Primary</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Sale option with price -->
+                        <!-- Sale option with details -->
                         <div class="flex flex-col border rounded p-3 hover:bg-gray-50">
                             <div class="flex items-center mb-2">
                                 <input type="checkbox" id="property_sale" name="property_sale" class="main-checkbox" onchange="togglePriceInput('sale')">
@@ -243,13 +264,35 @@
                                     class="secondary-input ml-2 w-3/4" placeholder="Sale price" disabled>
                                 <input type="hidden" name="property_sale_price" id="property_sale_price">
                             </div>
+                            <div class="mt-2" id="sale_additional_fields" style="display: none;">
+                                <div class="flex items-center mb-2">
+                                    <label for="sale_payment_terms" class="text-sm w-1/3">Payment Terms:</label>
+                                    <select id="sale_payment_terms" name="property_price_payment_terms" class="secondary-input w-2/3">
+                                        <option value="cash" selected>Cash</option>
+                                        <option value="installments">Installments</option>
+                                        <option value="mortgage">Mortgage</option>
+                                        <option value="custom">Custom</option>
+                                    </select>
+                                </div>
+                                <div class="w-full flex items-center justify-around my-2">
+                                    <label class="inline-flex items-center">
+                                        <input type="checkbox" id="sale_negotiable" name="sale_is_negotiable">
+                                        <span class="ml-2 text-sm">is Negotiable</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="checkbox" id="rent_primary" name="sales_is_primary">
+                                        <span class="ml-2 text-sm">is Primary</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <h3 class="main-label">Payment Plan</h3>
                 <textarea class="main-input" placeholder="Property Payment Plan Details"
-                    name="property_payment_plan" id="property_payment_plan"></textarea>
+                    name="property_price_payment_plan" id="property_payment_plan">
+                </textarea>
             </div>
 
             <!-- Submit & Cancel -->
@@ -365,16 +408,21 @@
         const isChecked = document.getElementById(`property_${type}`).checked;
         const currencySelect = document.getElementById(`${type}_currency`);
         const priceInput = document.getElementById(`property_${type}_price_display`);
+        const additionalFields = document.getElementById(`${type}_additional_fields`);
 
         currencySelect.disabled = !isChecked;
         priceInput.disabled = !isChecked;
+
+        // Toggle visibility of additional fields
+        if (additionalFields) {
+            additionalFields.style.display = isChecked ? 'block' : 'none';
+        }
 
         if (!isChecked) {
             priceInput.value = '';
             document.getElementById(`property_${type}_price`).value = '';
         }
     }
-
 
     function populateField(data) {
         // Helper function to set value on simple fields
@@ -419,7 +467,6 @@
         // Basic property details
         setValue('property_referral_name', data.property_referral_name);
         setValue('property_referral_phone', data.property_referral_phone);
-        setCheckbox('property_rent', data.property_rent);
         setCheckbox('property_sale', data.property_sale);
         setValue('property_location', data.property_location);
 
@@ -567,24 +614,39 @@
         });
 
         ['rent', 'sale'].forEach(type => {
-        const displayInput = document.getElementById(`property_${type}_price_display`);
-        const hiddenInput = document.getElementById(`property_${type}_price`);
-        
-        displayInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/[^\d.]/g, '');
-            
-            if (value && !isNaN(parseFloat(value))) {
-                hiddenInput.value = parseFloat(value);
-                e.target.value = parseFloat(value).toLocaleString();
-            } else {
-                hiddenInput.value = '';
-                e.target.value = value;
-            }
+            const displayInput = document.getElementById(`property_${type}_price_display`);
+            const hiddenInput = document.getElementById(`property_${type}_price`);
+
+            displayInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^\d.]/g, '');
+
+                if (value && !isNaN(parseFloat(value))) {
+                    hiddenInput.value = parseFloat(value);
+                    e.target.value = parseFloat(value).toLocaleString();
+                } else {
+                    hiddenInput.value = '';
+                    e.target.value = value;
+                }
+            });
+
+            // Initialize state
+            togglePriceInput(type);
         });
-        
-        // Initialize state
-        togglePriceInput(type);
-    });
+
+
+        const salePaymentTerms = document.getElementById('sale_payment_terms');
+        if (salePaymentTerms) {
+            salePaymentTerms.addEventListener('change', function(e) {
+                const paymentPlanField = document.getElementById('property_payment_plan');
+                // If payment terms are custom, focus on payment plan for details
+                if (e.target.value === 'custom') {
+                    paymentPlanField.focus();
+                    paymentPlanField.setAttribute('placeholder', 'Please describe your custom payment terms here...');
+                } else {
+                    paymentPlanField.setAttribute('placeholder', 'Property Payment Plan Details');
+                }
+            });
+        }
 
 
     });

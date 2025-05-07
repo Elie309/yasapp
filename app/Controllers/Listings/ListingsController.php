@@ -549,6 +549,10 @@ class ListingsController extends BaseController
         $propertyModel = new PropertyModel();
         $landDetailModel = new LandDetailsModel();
         $apartmentDetailModel = new ApartmentDetailsModel();
+        
+        // Add PropertyPriceModel
+        $propertyPriceModel = new \App\Models\Listings\PropertyPriceModel();
+        $currencyModel = new CurrenciesModel();
 
         $employee_id = $this->session->get('id');
 
@@ -591,6 +595,16 @@ class ListingsController extends BaseController
         $landDetails = null;
         $apartmentDetails = null;
 
+        // Fetch property prices
+        $propertyPrices = $propertyPriceModel->getPricesByProperty($property_id);
+        
+        // Get currency symbols for display
+        $currencies = $currencyModel->findAll();
+        $currencySymbols = [];
+        foreach ($currencies as $currency) {
+            $currencySymbols[$currency->currency_id] = $currency->currency_symbol;
+        }
+
         if (!empty($property->land_id)) {
             $landDetails = $landDetailModel->where('property_id', $property_id)->first();
         } else if (!empty($property->apartment_id)) {
@@ -615,7 +629,9 @@ class ListingsController extends BaseController
             'landDetails' => $landDetails,
             'apartmentDetails' => $apartmentDetails,
             'propertyStatuses' => $propertyStatuses,
-            'employee_id' => $employee_id
+            'employee_id' => $employee_id,
+            'propertyPrices' => $propertyPrices, // Add property prices
+            'currencySymbols' => $currencySymbols // Add currency symbols
         ]) . view('template/footer');
     }
 

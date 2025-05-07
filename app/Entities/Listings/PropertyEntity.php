@@ -22,7 +22,6 @@ class PropertyEntity extends Entity
     ];
 
     protected $defaultBooleans = [
-        'property_rent',
         'property_sale',
     ];
 
@@ -53,19 +52,9 @@ class PropertyEntity extends Entity
         return $this;
     }
 
-    public function setPropertyRent(string $value = 'off')
-    {
-        $this->attributes['property_rent'] = $value == 'on' ? true : false;
-    }
-
     public function setPropertySale(string $value = 'off')
     {
         $this->attributes['property_sale'] = $value == 'on' ? true : false;
-    }
-
-    public function getPropertyRent()
-    {
-        return $this->attributes['property_rent'] ? true : false;
     }
 
     public function getPropertySale()

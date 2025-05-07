@@ -52,16 +52,17 @@ class PropertySeeder extends Seeder
             $cityId = $faker->randomElement($cityIds[$employeeId]);
             unset($cityIds[$employeeId][$cityId]);
 
+            $currencyId = $faker->randomElement($currencyData)['currency_id'];
+            $isSale = $faker->boolean(70); // 70% chance for sale properties
 
             $propertyData = [
                 'client_id' => $client['client_id'], // Get random client ID
                 'employee_id' => $employeeId,
                 'city_id' => $cityId,
                 'property_status_id' => $faker->randomElement($propertyStatusData)['property_status_id'], // Random property status
-                'currency_id' => $faker->randomElement($currencyData)['currency_id'], // Random currency ID
+                'currency_id' => $currencyId, // Random currency ID
                 'property_payment_plan' => $faker->randomElement(['cash to be paid directly', 'installments for over 30 years', 'loan from bank', 'other']),
-                'property_rent' => $faker->boolean(),
-                'property_sale' => $faker->boolean(),
+                'property_sale' => $isSale,
                 'property_location' => $faker->address(),
                 'property_referral_name' => $faker->name(),
                 'property_referral_phone' => $faker->phoneNumber(),
@@ -75,6 +76,9 @@ class PropertySeeder extends Seeder
             // Insert property data
             $this->db->table('properties')->insert($propertyData);
             $propertyId = $this->db->insertID();
+            
+            // Generate property prices
+            $this->generatePropertyPrices($faker, $propertyId, $currencyId, $isSale);
 
             // Seed data for 'land_details' table
             if ($faker->boolean(40)) {
@@ -83,10 +87,7 @@ class PropertySeeder extends Seeder
                     'land_type' => $faker->randomElement(['residential', 'industrial', 'commercial', 'agricultural', 'mixed', 'other']),
                     'land_zone_first' => $faker->randomFloat(2, 1, 10),
                     'land_zone_second' => $faker->randomFloat(2, 1, 10),
-                    'land_extra_features' => $faker->sentence(10),
                 ];
-
-
 
                 $this->db->table('land_details')->insert($landData);
                 $land_id = $this->db->insertID();
@@ -107,7 +108,6 @@ class PropertySeeder extends Seeder
                     'ad_floor_level' => $faker->numberBetween(1, 10),
                     'ad_apartments_per_floor' => $faker->numberBetween(1, 5),
                     'ad_view' => $faker->sentence(4),
-                    'ad_extra_features' => $faker->sentence(10),
                 ];
 
                 $this->db->table('apartment_details')->insert($apartmentData);
@@ -162,6 +162,105 @@ class PropertySeeder extends Seeder
                 ];
 
                 $this->db->table('apartment_specifications')->insert($specificationData);
+            }
+        }
+    }
+    
+    /**
+     * Generate property prices for a property
+     *
+     * @param \Faker\Generator $faker
+     * @param int $propertyId
+     * @param int $currencyId
+     * @param bool $isSale
+     * @return void
+     */
+    private function generatePropertyPrices($faker, $propertyId, $currencyId, $isSale)
+    {
+        // If property is for sale, add sale prices
+        if ($isSale) {
+            // Add 1-3 sale prices (but only one primary)
+            $numPrices = $faker->numberBetween(1, 3);
+            $primarySet = false;
+            
+            for ($i = 0; $i < $numPrices; $i++) {
+                // Only set is_primary to true for the first price
+                $isPrimary = !$primarySet;
+                if ($isPrimary) {
+                    $primarySet = true;
+                }
+
+                $salePrice = [
+                    'property_price_property_id' => $propertyId,
+                    'property_price_type' => 'sale',
+                    'property_price_currency_id' => $currencyId,
+                    'property_price_amount' => $faker->randomFloat(2, 100000, 5000000),
+                    'property_price_payment_plan' => $faker->boolean(70) ? $faker->paragraph(1) : null,
+                    'property_price_payment_terms' => $faker->randomElement(['cash', 'installments', 'mortgage', 'custom']),
+                    'property_price_is_negotiable' => $faker->boolean(60),
+                    'property_price_is_primary' => $isPrimary,
+                    'property_price_updated_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
+                ];
+                
+                try {
+                    $this->db->table('property_prices')->insert($salePrice);
+                } catch (\Exception $e) {
+                    // Log error but continue seeding
+                    log_message('error', "Failed to insert sale price for property {$propertyId}: " . $e->getMessage());
+                }
+            }
+        }
+        
+        // Add rent prices (sometimes even for sale properties)
+        if (!$isSale || $faker->boolean(30)) {
+            // Add 1-2 rent prices
+            $numRentPrices = $faker->numberBetween(1, 2);
+            $primarySet = false;
+            
+            for ($i = 0; $i < $numRentPrices; $i++) {
+                $rentPeriod = $faker->randomElement(['daily', 'weekly', 'monthly', 'yearly']);
+                $baseAmount = 0;
+                
+                switch ($rentPeriod) {
+                    case 'daily':
+                        $baseAmount = $faker->randomFloat(2, 50, 500);
+                        break;
+                    case 'weekly':
+                        $baseAmount = $faker->randomFloat(2, 200, 2000);
+                        break;
+                    case 'monthly':
+                        $baseAmount = $faker->randomFloat(2, 500, 10000);
+                        break;
+                    case 'yearly':
+                        $baseAmount = $faker->randomFloat(2, 5000, 120000);
+                        break;
+                }
+                
+                // Only set is_primary to true for the first rent price
+                $isPrimary = !$primarySet;
+                if ($isPrimary) {
+                    $primarySet = true;
+                }
+                
+                $rentPrice = [
+                    'property_price_property_id' => $propertyId,
+                    'property_price_type' => 'rent',
+                    'property_price_currency_id' => $currencyId,
+                    'property_price_amount' => $baseAmount,
+                    'property_price_rent_period' => $rentPeriod,
+                    'property_price_payment_plan' => $faker->boolean(50) ? $faker->paragraph(1) : null,
+                    'property_price_payment_terms' => $faker->randomElement(['cash', 'installments', null, null]),
+                    'property_price_is_negotiable' => $faker->boolean(70),
+                    'property_price_is_primary' => $isPrimary,
+                    'property_price_updated_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
+                ];
+                
+                try {
+                    $this->db->table('property_prices')->insert($rentPrice);
+                } catch (\Exception $e) {
+                    // Log error but continue seeding
+                    log_message('error', "Failed to insert rent price for property {$propertyId}: " . $e->getMessage());
+                }
             }
         }
     }
