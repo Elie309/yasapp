@@ -1,5 +1,4 @@
 <div>
-    <h3 class="secondary-title">Location</h3>
     <div class="space-y-2 mb-4">
         <div>
             <label for="country_id" class="main-label">Country</label>

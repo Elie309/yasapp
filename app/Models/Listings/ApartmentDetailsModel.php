@@ -27,7 +27,6 @@ class ApartmentDetailsModel extends Model
         'ad_floor_level',
         'ad_apartments_per_floor',
         'ad_view',
-        'ad_extra_features'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -68,7 +67,6 @@ class ApartmentDetailsModel extends Model
         'ad_floor_level' => 'permit_empty|integer',
         'ad_apartments_per_floor' => 'permit_empty|integer',
         'ad_view' => 'string|max_length[255]',
-        'ad_extra_features' => 'string'
     ];
     protected $validationMessages   = [
         'apartment_id' => [],
@@ -116,9 +114,6 @@ class ApartmentDetailsModel extends Model
             'string' => 'View must be a string',
             'max_length' => 'View must not exceed 255 characters'
         ],
-        'ad_extra_features' => [
-            'string' => 'Extra Features must be a string'
-        ]
     ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;

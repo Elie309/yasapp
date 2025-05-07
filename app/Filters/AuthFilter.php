@@ -33,7 +33,7 @@ class AuthFilter implements FilterInterface
             $role = strtolower($session->get('role'));
 
             if($currentUri === "login"){
-                return redirect("HomeController::index");
+                return redirect("DashboardController::index");
             }
 
 

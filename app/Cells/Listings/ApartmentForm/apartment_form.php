@@ -191,7 +191,7 @@
 
 
         <div class="col-span-2 md:col-span-4">
-            <div class="mx-auto max-w-[300px] flex flex-row">
+            <div class="mx-auto max-w-[300px] flex flex-row space-x-2">
                 <label class="secondary-label" for="spec_tiles">Tiles:</label>
                 <select id="spec_tiles" name="spec_tiles" class="main-input">
                     <?php foreach ($tilesOptions as $tile): ?>
@@ -200,15 +200,6 @@
                 </select>
             </div>
         </div>
-
-    </div>
-
-    <div class="form-section ">
-        
-
-        <!-- TODO: Remove -->
-        <label class="secondary-label" for="ad_extra_features">Extra Features:</label>
-        <textarea id="ad_extra_features" name="ad_extra_features" class="main-input min-h-20"></textarea>
 
     </div>
 </div>

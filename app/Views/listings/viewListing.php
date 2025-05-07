@@ -9,8 +9,6 @@
             <p>Return</p>
         </button>
         <h2 class="hidden md:block main-title-page text-wrap">Property of <?= esc($property->client_name) ?></h2>
-
-
     </div>
 
     <h2 class="md:hidden main-title-page">Property of <?= esc($property->client_name) ?></h2>
@@ -86,9 +84,6 @@
             </tr>
         </table>
 
-        <br class="no-print">
-        <hr class="no-print">
-        <br class="no-print">
 
         <div class="break-page"></div>
         <h2 class="secondary-title">Property Details</h2>
@@ -147,11 +142,6 @@
         <!-- Land Details -->
         <?php if ($landDetails): ?>
 
-            <br>
-            <hr>
-            <br>
-
-
             <h2 class="secondary-title">Land Details</h2>
              <table class="view-table">
                 <tr>
@@ -166,17 +156,10 @@
                     <th>Zone 2</th>
                     <td><?= esc($landDetails->land_zone_second) ?>%</td>
                 </tr>
-                <tr>
-                    <th>Extra Features</th>
-                    <td><?= esc($landDetails->land_extra_features) ?></td>
-                </tr>
             </table>
 
         <?php endif; ?>
 
-        <br class="no-print">
-        <hr class="no-print">
-        <br class="no-print">
 
         <?php if ($apartmentDetails): ?>
             <!-- Apartment Details -->
@@ -232,16 +215,8 @@
                     <th>View</th>
                     <td><?= esc($apartmentDetails->ad_view) ?></td>
                 </tr>
-                <tr>
-                    <th>Extra Features</th>
-                    <td><?= esc($apartmentDetails->ad_extra_features) ?></td>
-                </tr>
 
             </table>
-
-            <br class="no-print">
-            <hr class="no-print">
-            <br class="no-print">
 
             <div class="break-page"></div>
 
@@ -297,10 +272,6 @@
                     <td><?= esc($apartmentDetails->partition_storage_room) ?></td>
                 </tr>
             </table>
-
-            <br class="no-print">
-            <hr class="no-print">
-            <br class="no-print">
 
             <div class="break-page"></div>
 
@@ -402,9 +373,6 @@
                 </tr>
             </table>
 
-            <br class="no-print">
-            <hr class="no-print">
-            <br class="no-print">
         <?php endif; ?>
 
     </div>

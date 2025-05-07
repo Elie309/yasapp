@@ -202,7 +202,6 @@ CREATE TABLE land_details (
     land_type ENUM('residential', 'industrial', 'commercial', 'agricultural', 'mixed', 'other') DEFAULT 'residential',
     land_zone_first DECIMAL(5, 2),
     land_zone_second DECIMAL(5, 2),
-    land_extra_features TEXT,
     FOREIGN KEY (property_id) REFERENCES properties(property_id)
 );
 
@@ -237,7 +236,6 @@ CREATE TABLE apartment_details (
     ad_floor_level INT DEFAULT 0,
     ad_apartments_per_floor INT DEFAULT 1,
     ad_view VARCHAR(255),
-    ad_extra_features TEXT DEFAULT NULL,
 
     FOREIGN KEY (property_id) REFERENCES properties(property_id),
     FOREIGN KEY (ad_gender_id) REFERENCES  apartment_gender(apartment_gender_id),

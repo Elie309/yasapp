@@ -17,7 +17,6 @@ class LandDetailsModel extends Model
         'land_type',
         'land_zone_first',
         'land_zone_second',
-        'land_extra_features'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -45,7 +44,6 @@ class LandDetailsModel extends Model
         'land_type' => 'required|string|in_list[industrial, residential, commercial, agricultural, mixed, other]',
         'land_zone_first' => 'decimal',
         'land_zone_second' => 'decimal',
-        'land_extra_features' => 'required|string'
     ];
     protected $validationMessages   = [
         'land_id' => [],
@@ -64,10 +62,6 @@ class LandDetailsModel extends Model
         'land_zone_second' => [
             'decimal' => 'Land Zone Second must be a number'
         ],
-        'land_extra_features' => [
-            'required' => 'Land Extra Features is required',
-            'string'   => 'Land Extra Features must be a string'
-        ]
     ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
