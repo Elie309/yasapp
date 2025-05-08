@@ -26,7 +26,7 @@ class ApartmentDetailsEntity extends Entity
         'ad_elevator'
     ];
 
-    public function fill(array $data = null)
+    public function fill(?array $data = null)
     {
         parent::fill($data);
 

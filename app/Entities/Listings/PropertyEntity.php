@@ -25,7 +25,7 @@ class PropertyEntity extends Entity
         'property_sale',
     ];
 
-    public function fill(array $data = null)
+    public function fill(?array $data = null)
     {
         parent::fill($data);
 

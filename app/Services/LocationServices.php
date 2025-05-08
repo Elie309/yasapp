@@ -43,7 +43,6 @@ class LocationServices
 
     public function getSubregionsByEmployeeId($employee_id, $region_id = null, $role = null)
     {
-        log_message('debug', 'LocationServices getSubregionsByEmployeeId employee_id: ' . $employee_id . ' region_id: ' . $region_id . ' role: ' . json_encode($role));
         if ($role !== 'manager' && $role !== 'admin') {
             $employeeSubregionModel = new EmployeeSubregionModel();
             $employeeSubregions = $employeeSubregionModel->where('employee_id', $employee_id)->findAll();

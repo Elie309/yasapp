@@ -206,13 +206,6 @@
                                 <canvas id="propertyTypeBreakdownChart" class="hidden"></canvas>
                             </div>
                             <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                                <h4 class="">Sale vs Rent Properties</h4>
-                                <div class="chart-loader flex justify-center items-center py-16">
-                                    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
-                                </div>
-                                <canvas id="saleVsRentPropertiesChart" class="hidden"></canvas>
-                            </div>
-                            <div class="chart-container bg-white p-5 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                                 <h4 class="">Avg. Property Price by City</h4>
                                 <div class="chart-loader flex justify-center items-center py-16">
                                     <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
@@ -285,8 +278,7 @@
 
                 // Initialize charts
                 initializeCharts()
-                    .then(() => {
-                    })
+                    .then(() => {})
                     .catch(error => {
                         console.error('Error initializing charts:', error);
                         alert('There was an error loading the dashboard data. Please try refreshing the page.');
@@ -583,14 +575,6 @@
                         labelsKey: 'type',
                         dataKey: 'count',
                         title: 'Property Types'
-                    },
-                    {
-                        url: '/charts/listings/sale-vs-rent',
-                        id: 'saleVsRentPropertiesChart',
-                        type: 'pie',
-                        labelsKey: 'type',
-                        dataKey: 'count',
-                        title: 'Sale vs Rent'
                     },
                     {
                         url: '/charts/listings/average-price',

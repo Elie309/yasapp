@@ -3,7 +3,6 @@
 namespace App\Controllers\Charts;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\Listings\PropertyModel;
 
 class ListingsChartsController extends BaseController
@@ -71,29 +70,7 @@ class ListingsChartsController extends BaseController
         }
     }
 
-    // TODO: Change the query after the database is updated
-    public function saleVsRentProperties()
-    {
-        try {
-            $model = new PropertyModel();
-            $query = $model->select('
-                            SUM(CASE WHEN property_sale = TRUE THEN 1 ELSE 0 END) AS for_sale,
-                            SUM(CASE WHEN property_rent = TRUE THEN 1 ELSE 0 END) AS for_rent
-                        ')
-                        ->where('employee_id', $this->employee_id)
-                        ->first();
 
-            // Format data to match the expected structure for the chart
-            $data = [
-                ['type' => 'For Sale', 'count' => intval($query->for_sale)],
-                ['type' => 'For Rent', 'count' => intval($query->for_rent)]
-            ];
-
-            return $this->response->setStatusCode(200)->setJSON($data);
-        } catch (\Exception $e) {
-            return $this->response->setStatusCode(500)->setJSON(['error' => $e->getMessage()]);
-        }
-    }
 
     public function averagePropertyPriceByCity()
     {

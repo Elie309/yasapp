@@ -304,9 +304,9 @@
     font-size: 14px;
   }
 
-  /* .break-page {
+  .break-page {
         page-break-before: always;
-    } */
+    }
 
   table {
     width: 100%;
