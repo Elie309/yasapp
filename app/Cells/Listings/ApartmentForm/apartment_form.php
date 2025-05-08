@@ -5,26 +5,22 @@
     <div class="form-section">
         <div class="mb-4">
             <label class="secondary-label" for="apartment_gender_name">Apartment Gender:</label>
-            <div class="flex flex-col w-full">
-                <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                    'placeholder' => 'Search Apartment Gender',
-                    'data' => $apartmentGender,
-                    'selectedId' => "ad_gender_id",
-                    'selectedName' => 'apartment_gender_name'
-                ]) ?>
-            </div>
+            <select name="ad_gender_id" id="ad_gender_id" class="main-input">
+                <option value="">Select Apartment Gender</option>
+                <?php foreach ($apartmentGender as $gender): ?>
+                    <option value="<?= $gender['id'] ?>"><?= $gender['name'] ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
         <div class="">
-            <label class="main-label" for="ad_type_name">Apartment Type</label>
-            <div class="flex flex-col w-full">
-                <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                    'placeholder' => 'Search Apartment Type',
-                    'data' => $apartmentTypes,
-                    'selectedId' => "ad_type_id",
-                    'selectedName' => 'ad_type_name'
-                ]) ?>
-            </div>
+            <label class="main-label" for="ad_type_id">Apartment Type</label>
+            <select name="ad_type_id" id="ad_type_id" class="main-input">
+                <option value="">Select Apartment Type</option>
+                <?php foreach ($apartmentTypes as $apartmentType): ?>
+                    <option value="<?= $apartmentType['id'] ?>"><?= $apartmentType['name'] ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
     </div>
@@ -62,10 +58,10 @@
         <input type="text" id="ad_status_age" name="ad_status_age" class="main-input col-span-10">
 
         <label class="secondary-label col-span-2 " for="ad_floor_level">Floor Level:</label>
-        <input type="text" id="ad_floor_level" name="ad_floor_level" class="main-input col-span-10">
+        <input type="number" id="ad_floor_level" name="ad_floor_level" class="main-input col-span-10">
 
         <label class="secondary-label col-span-2 " for="ad_apartments_per_floor">Apartments Per Floor:</label>
-        <input type="text" id="ad_apartments_per_floor" name="ad_apartments_per_floor" class="main-input col-span-10">
+        <input type="number" id="ad_apartments_per_floor" name="ad_apartments_per_floor" class="main-input col-span-10">
 
         <label class="secondary-label col-span-2 " for="ad_view">View:</label>
         <input type="text" id="ad_view" name="ad_view" class="main-input col-span-10">
