@@ -15,14 +15,11 @@ class PropertyEntity extends Entity
         'city_id' => 'integer',
         'land_id' => 'integer',
         'apartment_id' => 'integer',
-        'currency_id' => 'integer',
         'property_status_id' => 'integer',
         'property_size' => 'float',
-        'property_price' => 'float',
     ];
 
     protected $defaultBooleans = [
-        'property_sale',
     ];
 
     public function fill(?array $data = null)
@@ -51,17 +48,6 @@ class PropertyEntity extends Entity
         $this->attributes['property_price'] = (float) $price;
         return $this;
     }
-
-    public function setPropertySale(string $value = 'off')
-    {
-        $this->attributes['property_sale'] = $value == 'on' ? true : false;
-    }
-
-    public function getPropertySale()
-    {
-        return $this->attributes['property_sale'] ? true : false;
-    }
-
 
 
 

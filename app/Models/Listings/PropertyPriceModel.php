@@ -18,7 +18,6 @@ class PropertyPriceModel extends Model
         'property_price_currency_id',
         'property_price_amount',
         'property_price_rent_period',
-        'property_price_payment_plan',
         'property_price_payment_terms',
         'property_price_is_negotiable',
         'property_price_is_primary',
@@ -45,7 +44,6 @@ class PropertyPriceModel extends Model
         'property_price_amount'      => 'required|decimal',
         'property_price_rent_period'       => 'permit_empty|in_list[daily,weekly,monthly,yearly]',
         'property_price_payment_terms'     => 'permit_empty|in_list[cash,installments,mortgage,custom]',
-        'property_price_payment_plan'      => 'permit_empty|string',
         'property_price_is_negotiable'     => 'permit_empty|boolean',
         'property_price_is_primary'        => 'permit_empty|boolean',
     ];

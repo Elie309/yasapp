@@ -38,7 +38,7 @@ class ApartmentSpecificationsEntity extends Entity
         'spec_driver_room',
     ];
 
-    public function fill(array $data = null)
+    public function fill(?array $data = null)
     {
         parent::fill($data);
 

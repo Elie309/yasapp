@@ -13,7 +13,6 @@ class PropertyPriceEntity extends Entity
         'currency_id' => 'property_price_currency_id',
         'price_amount' => 'property_price_amount',
         'rent_period' => 'property_price_rent_period',
-        'payment_plan' => 'property_price_payment_plan',
         'payment_terms' => 'property_price_payment_terms',
         'is_negotiable' => 'property_price_is_negotiable',
         'is_primary' => 'property_price_is_primary',

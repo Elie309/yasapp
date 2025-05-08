@@ -85,7 +85,6 @@
         </table>
 
 
-        <div class="break-page"></div>
         <h2 class="secondary-title">Property Details</h2>
 
         <table class="view-table">
@@ -101,14 +100,6 @@
                 <th>Status</th>
                 <td><?= esc($property->property_status_name) ?>
                 </td>
-            </tr>
-            <tr>
-                <th>Sale</th>
-                <td><?= $property->property_sale ? 'Yes' : 'No' ?></td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td><?= esc($property->property_budget) ?></td>
             </tr>
             <tr>
                 <th>Size</th>
@@ -130,23 +121,22 @@
         </table>
 
         <!-- Property Pricing Details -->
-        <?php if (isset($propertyPrices) && !empty($propertyPrices)): ?>
-            <div class="break-page"></div>
-            <h2 class="secondary-title">Property Pricing</h2>
+        <h2 class="secondary-title">Property Pricing</h2>
 
-            <?php if ($property->property_payment_plan): ?>
-                <div class="w-full mb-4">
-                    <h3 class="text-base font-semibold mb-1 text-gray-700">Payment Plan</h3>
-                    <p class="border border-gray-200"><?= esc($property->property_payment_plan) ?></p>
-                </div>
-            <?php endif; ?>
+        <?php if ($property->property_payment_plan): ?>
+            <div class="w-full mb-4">
+                <h3 class="text-base font-semibold mb-1 text-gray-700">Payment Plan</h3>
+                <p class="border border-gray-300 p-2 text-left rounded-md bg-gray-100">
+                    <?= esc($property->property_payment_plan) ?> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus vel excepturi minima sequi animi laudantium quidem repellat, eos ad natus adipisci quibusdam eligendi corporis voluptates at omnis ipsa nam nemo?
+                </p>
+            </div>
+        <?php endif; ?>
+        <?php if (isset($propertyPrices) && !empty($propertyPrices)): ?>
+
 
             <div class="flex flex-col justify-between items-center mb-4">
 
-                <!-- Payment Plan details -->
-
                 <!-- Property Prices -->
-
                 <?php foreach ($propertyPrices as $index => $price): ?>
                     <div class="w-full <?= $price->property_price_is_primary ? 'order-first' : 'mt-6 pt-4 border-t border-gray-200' ?>">
                         <h3 class=" text-base font-semibold mb-1 text-gray-700">
@@ -181,252 +171,243 @@
                                 <th>Payment Terms</th>
                                 <td><?= ucfirst($price->property_price_payment_terms) ?></td>
                             </tr>
-
-                            <tr>
-                                <th>Payment Plan</th>
-                                <td><?= $price->property_price_payment_plan ?></td>
-                            </tr>
                         </table>
                     </div>
                 <?php endforeach; ?>
-            <?php endif; ?>
+
             </div>
+        <?php endif; ?>
 
-            <!-- Land Details -->
-            <?php if ($landDetails): ?>
+        <!-- Land Details -->
+        <?php if ($landDetails): ?>
 
-                <h2 class="secondary-title">Land Details</h2>
-                <table class="view-table">
-                    <tr>
-                        <th>Land Type</th>
-                        <td><?= esc($landDetails->land_type) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Zone 1</th>
-                        <td><?= esc($landDetails->land_zone_first) ?>%</td>
-                    </tr>
-                    <tr>
-                        <th>Zone 2</th>
-                        <td><?= esc($landDetails->land_zone_second) ?>%</td>
-                    </tr>
-                </table>
+            <h2 class="secondary-title">Land Details</h2>
+            <table class="view-table">
+                <tr>
+                    <th>Land Type</th>
+                    <td><?= esc($landDetails->land_type) ?></td>
+                </tr>
+                <tr>
+                    <th>Zone 1</th>
+                    <td><?= esc($landDetails->land_zone_first) ?>%</td>
+                </tr>
+                <tr>
+                    <th>Zone 2</th>
+                    <td><?= esc($landDetails->land_zone_second) ?>%</td>
+                </tr>
+            </table>
 
-            <?php endif; ?>
+        <?php endif; ?>
 
 
-            <?php if ($apartmentDetails): ?>
-                <!-- Apartment Details -->
-                <div class="break-page"></div>
-                <h2 class="secondary-title">Apartment Details</h2>
-                <table class="view-table">
-                    <tr>
-                        <th>Gender</th>
-                        <td><?= esc($apartmentDetails->apartment_gender_name) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Type</th>
-                        <td><?= esc($apartmentDetails->apartment_type_name) ?></td>
-                    </tr>
+        <?php if ($apartmentDetails): ?>
+            <!-- Apartment Details -->
+            <h2 class="secondary-title">Apartment Details</h2>
+            <table class="view-table">
+                <tr>
+                    <th>Gender</th>
+                    <td><?= esc($apartmentDetails->apartment_gender_name) ?></td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td><?= esc($apartmentDetails->apartment_type_name) ?></td>
+                </tr>
 
-                    <tr>
-                        <th>Terrace</th>
-                        <td><?= $apartmentDetails->ad_terrace ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Terrace Area</th>
-                        <td><?= esc($apartmentDetails->ad_terrace_area) ?> m²</td>
-                    </tr>
-                    <tr>
-                        <th>Roof</th>
-                        <td><?= $apartmentDetails->ad_roof ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Roof Area</th>
-                        <td><?= esc($apartmentDetails->ad_roof_area) ?> m²</td>
-                    </tr>
-                    <tr>
-                        <th>Furnished</th>
-                        <td><?= $apartmentDetails->ad_furnished ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Elevator</th>
-                        <td><?= $apartmentDetails->ad_elevator ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Status Age</th>
-                        <td><?= esc($apartmentDetails->ad_status_age) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Floor Level</th>
-                        <td><?= esc($apartmentDetails->ad_floor_level) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Apartments Per Floor</th>
-                        <td><?= esc($apartmentDetails->ad_apartments_per_floor) ?></td>
-                    </tr>
-                    <tr>
-                        <th>View</th>
-                        <td><?= esc($apartmentDetails->ad_view) ?></td>
-                    </tr>
+                <tr>
+                    <th>Terrace</th>
+                    <td><?= $apartmentDetails->ad_terrace ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Terrace Area</th>
+                    <td><?= esc($apartmentDetails->ad_terrace_area) ?> m²</td>
+                </tr>
+                <tr>
+                    <th>Roof</th>
+                    <td><?= $apartmentDetails->ad_roof ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Roof Area</th>
+                    <td><?= esc($apartmentDetails->ad_roof_area) ?> m²</td>
+                </tr>
+                <tr>
+                    <th>Furnished</th>
+                    <td><?= $apartmentDetails->ad_furnished ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Elevator</th>
+                    <td><?= $apartmentDetails->ad_elevator ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Status Age</th>
+                    <td><?= esc($apartmentDetails->ad_status_age) ?></td>
+                </tr>
+                <tr>
+                    <th>Floor Level</th>
+                    <td><?= esc($apartmentDetails->ad_floor_level) ?></td>
+                </tr>
+                <tr>
+                    <th>Apartments Per Floor</th>
+                    <td><?= esc($apartmentDetails->ad_apartments_per_floor) ?></td>
+                </tr>
+                <tr>
+                    <th>View</th>
+                    <td><?= esc($apartmentDetails->ad_view) ?></td>
+                </tr>
 
-                </table>
+            </table>
 
-                <div class="break-page"></div>
+            <!-- Apartment Partition -->
+            <h2 class="secondary-title">Apartment Partition</h2>
+            <table class="view-table">
+                <tr>
+                    <th>Salon</th>
+                    <td><?= esc($apartmentDetails->partition_salon) ?></td>
+                </tr>
+                <tr>
+                    <th>Dining</th>
+                    <td><?= esc($apartmentDetails->partition_dining) ?></td>
+                </tr>
+                <tr>
+                    <th>Kitchen</th>
+                    <td><?= esc($apartmentDetails->partition_kitchen) ?></td>
+                </tr>
+                <tr>
+                    <th>Master Bedroom</th>
+                    <td><?= esc($apartmentDetails->partition_master_bedroom) ?></td>
+                </tr>
+                <tr>
+                    <th>Bedroom</th>
+                    <td><?= esc($apartmentDetails->partition_bedroom) ?></td>
+                </tr>
+                <tr>
+                    <th>Bathroom</th>
+                    <td><?= esc($apartmentDetails->partition_bathroom) ?></td>
+                </tr>
+                <tr>
+                    <th>Maid Room</th>
+                    <td><?= esc($apartmentDetails->partition_maid_room) ?></td>
+                </tr>
+                <tr>
+                    <th>Reception Balcony</th>
+                    <td><?= esc($apartmentDetails->partition_reception_balcony) ?></td>
+                </tr>
+                <tr>
+                    <th>Sitting Corner</th>
+                    <td><?= esc($apartmentDetails->partition_sitting_corner) ?></td>
+                </tr>
+                <tr>
+                    <th>Balconies</th>
+                    <td><?= esc($apartmentDetails->partition_balconies) ?></td>
+                </tr>
+                <tr>
+                    <th>Parking</th>
+                    <td><?= esc($apartmentDetails->partition_parking) ?></td>
+                </tr>
+                <tr>
+                    <th>Storage Room</th>
+                    <td><?= esc($apartmentDetails->partition_storage_room) ?></td>
+                </tr>
+            </table>
 
-                <!-- Apartment Partition -->
-                <h2 class="secondary-title">Apartment Partition</h2>
-                <table class="view-table">
-                    <tr>
-                        <th>Salon</th>
-                        <td><?= esc($apartmentDetails->partition_salon) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Dining</th>
-                        <td><?= esc($apartmentDetails->partition_dining) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Kitchen</th>
-                        <td><?= esc($apartmentDetails->partition_kitchen) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Master Bedroom</th>
-                        <td><?= esc($apartmentDetails->partition_master_bedroom) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Bedroom</th>
-                        <td><?= esc($apartmentDetails->partition_bedroom) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Bathroom</th>
-                        <td><?= esc($apartmentDetails->partition_bathroom) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Maid Room</th>
-                        <td><?= esc($apartmentDetails->partition_maid_room) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Reception Balcony</th>
-                        <td><?= esc($apartmentDetails->partition_reception_balcony) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Sitting Corner</th>
-                        <td><?= esc($apartmentDetails->partition_sitting_corner) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Balconies</th>
-                        <td><?= esc($apartmentDetails->partition_balconies) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Parking</th>
-                        <td><?= esc($apartmentDetails->partition_parking) ?></td>
-                    </tr>
-                    <tr>
-                        <th>Storage Room</th>
-                        <td><?= esc($apartmentDetails->partition_storage_room) ?></td>
-                    </tr>
-                </table>
+            <!-- Apartment Specifications -->
+            <h2 class="secondary-title">Apartment Specifications</h2>
+            <table class="view-table">
+                <tr>
+                    <th>Heating System Installed</th>
+                    <td><?= $apartmentDetails->spec_heating_system ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Heating System Provision</th>
+                    <td><?= $apartmentDetails->spec_heating_system_provision ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>AC System Installed</th>
+                    <td><?= $apartmentDetails->spec_ac_system ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>AC System Provision</th>
+                    <td><?= $apartmentDetails->spec_ac_system_provision ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Double Wall</th>
+                    <td><?= $apartmentDetails->spec_double_wall ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Double Glazing</th>
+                    <td><?= $apartmentDetails->spec_double_glazing ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Shutters Electrical</th>
+                    <td><?= $apartmentDetails->spec_shutters_electrical ? 'Yes' : 'No' ?></td>
+                </tr>
 
-                <div class="break-page"></div>
+                <tr>
+                    <th>Oak Doors</th>
+                    <td><?= $apartmentDetails->spec_oak_doors ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Chimney</th>
+                    <td><?= $apartmentDetails->spec_chimney ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Indirect Light</th>
+                    <td><?= $apartmentDetails->spec_indirect_light ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Wood Panel Decoration</th>
+                    <td><?= $apartmentDetails->spec_wood_panel_decoration ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Stone Panel Decoration</th>
+                    <td><?= $apartmentDetails->spec_stone_panel_decoration ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Security Door</th>
+                    <td><?= $apartmentDetails->spec_security_door ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Alarm System</th>
+                    <td><?= $apartmentDetails->spec_alarm_system ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Solar Heater</th>
+                    <td><?= $apartmentDetails->spec_solar_heater ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Intercom</th>
+                    <td><?= $apartmentDetails->spec_intercom ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Garage</th>
+                    <td><?= $apartmentDetails->spec_garage ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Jacuzzi</th>
+                    <td><?= $apartmentDetails->specs_jacuzzi ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Swimming Pool</th>
+                    <td><?= $apartmentDetails->spec_swimming_pool ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Gym</th>
+                    <td><?= $apartmentDetails->spec_gym ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Kitchenette</th>
+                    <td><?= $apartmentDetails->spec_kitchenette ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Driver Room</th>
+                    <td><?= $apartmentDetails->spec_driver_room ? 'Yes' : 'No' ?></td>
+                </tr>
+                <tr>
+                    <th>Tiles</th>
+                    <td><?= esc(ucfirst($apartmentDetails->spec_tiles)) ?></td>
+                </tr>
+            </table>
 
-                <!-- Apartment Specifications -->
-                <h2 class="secondary-title">Apartment Specifications</h2>
-                <table class="view-table">
-                    <tr>
-                        <th>Heating System Installed</th>
-                        <td><?= $apartmentDetails->spec_heating_system ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Heating System Provision</th>
-                        <td><?= $apartmentDetails->spec_heating_system_provision ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>AC System Installed</th>
-                        <td><?= $apartmentDetails->spec_ac_system ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>AC System Provision</th>
-                        <td><?= $apartmentDetails->spec_ac_system_provision ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Double Wall</th>
-                        <td><?= $apartmentDetails->spec_double_wall ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Double Glazing</th>
-                        <td><?= $apartmentDetails->spec_double_glazing ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Shutters Electrical</th>
-                        <td><?= $apartmentDetails->spec_shutters_electrical ? 'Yes' : 'No' ?></td>
-                    </tr>
-
-                    <tr>
-                        <th>Oak Doors</th>
-                        <td><?= $apartmentDetails->spec_oak_doors ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Chimney</th>
-                        <td><?= $apartmentDetails->spec_chimney ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Indirect Light</th>
-                        <td><?= $apartmentDetails->spec_indirect_light ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Wood Panel Decoration</th>
-                        <td><?= $apartmentDetails->spec_wood_panel_decoration ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Stone Panel Decoration</th>
-                        <td><?= $apartmentDetails->spec_stone_panel_decoration ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Security Door</th>
-                        <td><?= $apartmentDetails->spec_security_door ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Alarm System</th>
-                        <td><?= $apartmentDetails->spec_alarm_system ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Solar Heater</th>
-                        <td><?= $apartmentDetails->spec_solar_heater ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Intercom</th>
-                        <td><?= $apartmentDetails->spec_intercom ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Garage</th>
-                        <td><?= $apartmentDetails->spec_garage ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Jacuzzi</th>
-                        <td><?= $apartmentDetails->specs_jacuzzi ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Swimming Pool</th>
-                        <td><?= $apartmentDetails->spec_swimming_pool ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Gym</th>
-                        <td><?= $apartmentDetails->spec_gym ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Kitchenette</th>
-                        <td><?= $apartmentDetails->spec_kitchenette ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Driver Room</th>
-                        <td><?= $apartmentDetails->spec_driver_room ? 'Yes' : 'No' ?></td>
-                    </tr>
-                    <tr>
-                        <th>Tiles</th>
-                        <td><?= esc(ucfirst($apartmentDetails->spec_tiles)) ?></td>
-                    </tr>
-                </table>
-
-            <?php endif; ?>
+        <?php endif; ?>
 
     </div>
 

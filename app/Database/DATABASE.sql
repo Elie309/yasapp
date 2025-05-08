@@ -129,17 +129,13 @@ CREATE TABLE property_status (
 
 CREATE TABLE properties (
     property_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-
-    
     client_id INT UNSIGNED NOT NULL,
     employee_id INT UNSIGNED NOT NULL,
-    currency_id INT UNSIGNED NOT NULL,
 
     city_id INT UNSIGNED NOT NULL,
     
     property_status_id INT UNSIGNED NOT NULL,
 
-    property_sale BOOLEAN DEFAULT FALSE,
 
     land_id INT UNSIGNED NULL,
     apartment_id INT UNSIGNED NULL, 
@@ -154,8 +150,6 @@ CREATE TABLE properties (
     property_payment_plan TEXT,
 
     property_size DECIMAL(10, 2),
-    property_price DECIMAL(15, 2),
-
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -165,8 +159,7 @@ CREATE TABLE properties (
     FOREIGN KEY (client_id) REFERENCES clients(client_id),
     FOREIGN KEY (city_id) REFERENCES cities(city_id),
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
-    FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id),
-    FOREIGN KEY (currency_id) REFERENCES currencies(currency_id)
+    FOREIGN KEY (property_status_id) REFERENCES property_status(property_status_id)
     
     -- FOREIGN KEY (land_id) REFERENCES land_details(land_id),
     -- FOREIGN KEY (apartment_id) REFERENCES apartment_details(apartment_id)

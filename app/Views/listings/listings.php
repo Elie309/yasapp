@@ -130,7 +130,6 @@
                 'id_field' => 'property_id',
                 'searchParam' => [
                     'client_name' => 'Vendor',
-                    'property_price' => 'Budget',
                     'city_name' => 'City',
                     'subregion_name' => 'District',
                 ],

@@ -87,7 +87,7 @@
 
             <div class="form-section">
 
-                <input type="text" id="property_size" name="property_size" placeholder="Enter property size in m²" class="main-input">
+                <input type="number" id="property_size" name="property_size" placeholder="Enter property size in m²" class="main-input">
 
             </div>
 
@@ -158,36 +158,16 @@
 
                 <div class="my-4">
                     <label class="main-label" for="property_status_name">Property Status</label>
-                    <div class="flex flex-col w-full">
-                        <?= view_cell('\App\Cells\Utils\Autocomplete\AutocompleteSearchCell::render', [
-                            'placeholder' => 'Search Property Status',
-                            'data' => $propertyStatus,
-                            'selectedId' => "property_status_id",
-                            'selectedName' => 'property_status_name'
-                        ]) ?>
-                    </div>
+                    <select name="property_status_id" id="property_status_id" class="main-input" required>
+                        <option value="" selected disabled>Search Property Status</option>
+                        <?php foreach ($propertyStatus as $status) : ?>
+                            <option value="<?= $status['id'] ?>"><?= $status['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
 
 
 
-                <div class="my-4 flex flex-col">
-                    <label class="main-label" for="property_price_display">Price:</label>
-                    <div class="w-full flex flex-row">
-                        <select class="secondary-input w-2/12" name="currency_id" id="currency_id" required>
-                            <?php foreach ($currencies as $currency) : ?>
-                                <?php if ($currency->currency_symbol == '$') : ?>
-                                    <option value="<?= $currency->currency_id ?>" selected><?= $currency->currency_symbol ?></option>
-                                <?php else : ?>
-                                    <option value="<?= $currency->currency_id ?>"><?= $currency->currency_symbol ?></option>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        </select>
-
-                        <input type="text" pattern="^\d{1,3}(,\d{3})*(\.\d+)?$" class="secondary-input ml-2 w-10/12" id="property_price_display" required><br>
-                        <input type="hidden" name="property_price" id="property_price">
-                    </div>
-
-                </div>
 
                 <div class="my-4">
                     <label class="main-label" for="property_catch_phrase">Catch Phrase:</label>
@@ -201,30 +181,30 @@
                     <h3 class="main-label">Property Availability</h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                        <!-- Rent option with details -->
+                        <!-- Rent Option -->
                         <div class="flex flex-col border rounded p-3 hover:bg-gray-50">
                             <div class="flex items-center mb-2">
-                                <input type="checkbox" id="property_rent" name="property_rent" class="main-checkbox" onchange="togglePriceInput('rent')">
-                                <label for="property_rent" class="ml-2 font-medium cursor-pointer">For Rent</label>
+                                <input type="checkbox" id="property_rent" name="prices[rent][is_enabled]" value="1" class="main-checkbox" onchange="togglePriceInput('rent')">
+                                <label for="prices[rent][is_enabled]" class="ml-2 font-medium cursor-pointer">For Rent</label>
                             </div>
+
                             <div class="flex items-center mt-2">
-                                <select id="rent_currency" name="rent_currency_id" class="secondary-input w-1/4" disabled>
+                                <select id="rent_currency" name="prices[rent][currency_id]" class="secondary-input w-1/4" disabled>
                                     <?php foreach ($currencies as $currency) : ?>
-                                        <?php if ($currency->currency_symbol == '$') : ?>
-                                            <option value="<?= $currency->currency_id ?>" selected><?= $currency->currency_symbol ?></option>
-                                        <?php else : ?>
-                                            <option value="<?= $currency->currency_id ?>"><?= $currency->currency_symbol ?></option>
-                                        <?php endif; ?>
+                                        <option value="<?= $currency->currency_id ?>" <?= $currency->currency_symbol === '$' ? 'selected' : '' ?>>
+                                            <?= $currency->currency_symbol ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 </select>
-                                <input type="text" id="property_rent_price_display" name="property_rent_price_display"
-                                    class="secondary-input ml-2 w-3/4" placeholder="Rental price" disabled>
-                                <input type="hidden" name="property_rent_price" id="property_rent_price">
+
+                                <input type="text" id="property_rent_price_display" name="prices[rent][price_display]" class="secondary-input ml-2 w-3/4" placeholder="Rental price" oninput="updatePriceInput('rent')" disabled>
+                                <input type="hidden" name="prices[rent][price]" id="property_rent_price">
                             </div>
+
                             <div class="mt-2" id="rent_additional_fields" style="display: none;">
                                 <div class="flex items-center mb-2">
                                     <label for="rent_period" class="text-sm w-1/3">Rent Period:</label>
-                                    <select id="rent_period" name="property_price_rent_period" class="secondary-input w-2/3">
+                                    <select id="rent_period" name="prices[rent][period]" class="secondary-input w-2/3">
                                         <option value="monthly" selected>Monthly</option>
                                         <option value="yearly">Yearly</option>
                                         <option value="weekly">Weekly</option>
@@ -233,41 +213,41 @@
                                 </div>
                                 <div class="w-full flex items-center justify-around my-2">
                                     <label class="inline-flex items-center">
-                                        <input type="checkbox" id="rent_negotiable" name="rent_is_negotiable">
-                                        <span class="ml-2 text-sm">is Negotiable</span>
+                                        <input type="checkbox" id="rent_negotiable" name="prices[rent][is_negotiable]" value="1">
+                                        <span class="ml-2 text-sm">Is Negotiable</span>
                                     </label>
                                     <label class="inline-flex items-center">
-                                        <input type="checkbox" id="rent_primary" name="rent_is_primary">
-                                        <span class="ml-2 text-sm">is Primary</span>
+                                        <input type="checkbox" id="rent_primary" name="prices[rent][is_primary]" value="1">
+                                        <span class="ml-2 text-sm">Is Primary</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Sale option with details -->
+                        <!-- Sale Option -->
                         <div class="flex flex-col border rounded p-3 hover:bg-gray-50">
                             <div class="flex items-center mb-2">
-                                <input type="checkbox" id="property_sale" name="property_sale" class="main-checkbox" onchange="togglePriceInput('sale')">
+                                <input type="checkbox" id="property_sale" name="prices[sale][is_enabled]" value="1" class="main-checkbox" onchange="togglePriceInput('sale')">
                                 <label for="property_sale" class="ml-2 font-medium cursor-pointer">For Sale</label>
                             </div>
+
                             <div class="flex items-center mt-2">
-                                <select id="sale_currency" name="sale_currency_id" class="secondary-input w-1/4" disabled>
+                                <select id="sale_currency" name="prices[sale][currency_id]" class="secondary-input w-1/4" disabled>
                                     <?php foreach ($currencies as $currency) : ?>
-                                        <?php if ($currency->currency_symbol == '$') : ?>
-                                            <option value="<?= $currency->currency_id ?>" selected><?= $currency->currency_symbol ?></option>
-                                        <?php else : ?>
-                                            <option value="<?= $currency->currency_id ?>"><?= $currency->currency_symbol ?></option>
-                                        <?php endif; ?>
+                                        <option value="<?= $currency->currency_id ?>" <?= $currency->currency_symbol === '$' ? 'selected' : '' ?>>
+                                            <?= $currency->currency_symbol ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 </select>
-                                <input type="text" id="property_sale_price_display" name="property_sale_price_display"
-                                    class="secondary-input ml-2 w-3/4" placeholder="Sale price" disabled>
-                                <input type="hidden" name="property_sale_price" id="property_sale_price">
+
+                                <input type="text" id="property_sale_price_display" name="prices[sale][price_display]" class="secondary-input ml-2 w-3/4" placeholder="Sale price" oninput="updatePriceInput('sale')" disabled>
+                                <input type="hidden" name="prices[sale][price]" id="property_sale_price">
                             </div>
+
                             <div class="mt-2" id="sale_additional_fields" style="display: none;">
                                 <div class="flex items-center mb-2">
                                     <label for="sale_payment_terms" class="text-sm w-1/3">Payment Terms:</label>
-                                    <select id="sale_payment_terms" name="property_price_payment_terms" class="secondary-input w-2/3">
+                                    <select id="sale_payment_terms" name="prices[sale][payment_terms]" class="secondary-input w-2/3">
                                         <option value="cash" selected>Cash</option>
                                         <option value="installments">Installments</option>
                                         <option value="mortgage">Mortgage</option>
@@ -276,12 +256,12 @@
                                 </div>
                                 <div class="w-full flex items-center justify-around my-2">
                                     <label class="inline-flex items-center">
-                                        <input type="checkbox" id="sale_negotiable" name="sale_is_negotiable">
-                                        <span class="ml-2 text-sm">is Negotiable</span>
+                                        <input type="checkbox" id="sale_negotiable" name="prices[sale][is_negotiable]" value="1">
+                                        <span class="ml-2 text-sm">Is Negotiable</span>
                                     </label>
                                     <label class="inline-flex items-center">
-                                        <input type="checkbox" id="rent_primary" name="sales_is_primary">
-                                        <span class="ml-2 text-sm">is Primary</span>
+                                        <input type="checkbox" id="sale_primary" name="prices[sale][is_primary]" value="1">
+                                        <span class="ml-2 text-sm">Is Primary</span>
                                     </label>
                                 </div>
                             </div>
@@ -291,8 +271,7 @@
 
                 <h3 class="main-label">Payment Plan</h3>
                 <textarea class="main-input" placeholder="Property Payment Plan Details"
-                    name="property_price_payment_plan" id="property_payment_plan">
-                </textarea>
+                    name="property_payment_plan" id="property_payment_plan"></textarea>
             </div>
 
             <!-- Submit & Cancel -->
@@ -404,26 +383,11 @@
 
     ?>
 
-    function togglePriceInput(type) {
-        const isChecked = document.getElementById(`property_${type}`).checked;
-        const currencySelect = document.getElementById(`${type}_currency`);
-        const priceInput = document.getElementById(`property_${type}_price_display`);
-        const additionalFields = document.getElementById(`${type}_additional_fields`);
 
-        currencySelect.disabled = !isChecked;
-        priceInput.disabled = !isChecked;
-
-        // Toggle visibility of additional fields
-        if (additionalFields) {
-            additionalFields.style.display = isChecked ? 'block' : 'none';
-        }
-
-        if (!isChecked) {
-            priceInput.value = '';
-            document.getElementById(`property_${type}_price`).value = '';
-        }
-    }
-
+    /**
+     * Populate the form fields with the provided data.
+     * @param {Object} data - The data to populate the fields with.
+     */
     function populateField(data) {
         // Helper function to set value on simple fields
         function setValue(id, value) {
@@ -467,26 +431,20 @@
         // Basic property details
         setValue('property_referral_name', data.property_referral_name);
         setValue('property_referral_phone', data.property_referral_phone);
-        setCheckbox('property_sale', data.property_sale);
         setValue('property_location', data.property_location);
 
         // Numeric values with conversion
         if (data.property_size) setValue('property_size', parseFloat(data.property_size));
 
         // Price with special formatting
-        if (data.property_price) {
-            setValue('property_price_display', priceDisplay(data.property_price));
-            setValue('property_price', parseFloat(data.property_price));
+        if (data.prices) {
+            populatePriceSection('rent', data.prices.rent);
+            populatePriceSection('sale', data.prices.sale);
         }
 
         setValue('property_catch_phrase', data.property_catch_phrase);
         setValue('property_payment_plan', data.property_payment_plan);
-
-        // Property status
-        if (data.property_status_id) {
-            setValue('result_id_property_status_name', data.property_status_id);
-            setValue('search_property_status_name', data.info_property_status_name ?? data.property_status_name);
-        }
+        setValue('property_status_id', data.property_status_id);
 
         // Property type selection (land or apartment)
         if (data.property_land_or_apartment) {
@@ -566,6 +524,44 @@
         }
     }
 
+    /**
+     * Populate the price section based on the type and values provided.
+     * @param {string} type - The type of price (e.g., 'rent', 'sale')
+     */
+    function populatePriceSection(type, values) {
+        if (!values) return;
+
+        const checkbox = document.getElementById(`property_${type}`);
+        const currency = document.getElementById(`${type}_currency`);
+        const displayInput = document.getElementById(`property_${type}_price_display`);
+        const hiddenInput = document.getElementById(`property_${type}_price`);
+        const additionalFields = document.getElementById(`${type}_additional_fields`);
+
+        if (values.is_enabled) {
+            checkbox.checked = true;
+            currency.disabled = false;
+            displayInput.disabled = false;
+            additionalFields.style.display = 'block';
+        }
+
+        if (values.currency_id !== undefined) currency.value = values.currency_id;
+        if (values.price !== undefined) {
+            displayInput.value = priceDisplay(values.price);
+            hiddenInput.value = parseFloat(values.price);
+        }
+
+        if (type === 'rent' && values.period !== undefined) {
+            setValue('rent_period', values.period);
+        }
+
+        if (type === 'sale' && values.payment_terms !== undefined) {
+            setValue('sale_payment_terms', values.payment_terms);
+        }
+
+        setCheckbox(`${type}_negotiable`, values.is_negotiable);
+        setCheckbox(`${type}_primary`, values.is_primary);
+    }
+
     function showPropertyForm(type) {
         const landForm = document.getElementById('show-land');
         const apartmentForm = document.getElementById('show-apartment');
@@ -592,20 +588,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const displayInput = document.getElementById('property_price_display');
-        const hiddenInput = document.getElementById('property_price');
-
-        displayInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/[^\d.]/g, ''); // Only allow digits and decimal point
-
-            if (value && !isNaN(parseFloat(value))) {
-                hiddenInput.value = parseFloat(value); // Store numeric value
-                e.target.value = parseFloat(value).toLocaleString(); // Format for display
-            } else {
-                hiddenInput.value = '';
-                e.target.value = value;
-            }
-        });
 
         document.getElementById('clear-btn').addEventListener('click', function() {
             if (confirm('Are you sure you want to clear all fields?')) {
@@ -613,43 +595,36 @@
             }
         });
 
-        ['rent', 'sale'].forEach(type => {
-            const displayInput = document.getElementById(`property_${type}_price_display`);
-            const hiddenInput = document.getElementById(`property_${type}_price`);
 
-            displayInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/[^\d.]/g, '');
-
-                if (value && !isNaN(parseFloat(value))) {
-                    hiddenInput.value = parseFloat(value);
-                    e.target.value = parseFloat(value).toLocaleString();
-                } else {
-                    hiddenInput.value = '';
-                    e.target.value = value;
-                }
-            });
-
-            // Initialize state
-            togglePriceInput(type);
-        });
-
-
-        const salePaymentTerms = document.getElementById('sale_payment_terms');
-        if (salePaymentTerms) {
-            salePaymentTerms.addEventListener('change', function(e) {
-                const paymentPlanField = document.getElementById('property_payment_plan');
-                // If payment terms are custom, focus on payment plan for details
-                if (e.target.value === 'custom') {
-                    paymentPlanField.focus();
-                    paymentPlanField.setAttribute('placeholder', 'Please describe your custom payment terms here...');
-                } else {
-                    paymentPlanField.setAttribute('placeholder', 'Property Payment Plan Details');
-                }
-            });
-        }
 
 
     });
+
+    function updatePriceInput(type) {
+        const displayInput = document.getElementById(`property_${type}_price_display`);
+        const hiddenInput = document.getElementById(`property_${type}_price`);
+        hiddenInput.value = displayInput.value.replace(/,/g, '');
+    }
+
+    function togglePriceInput(type) {
+        const isChecked = document.getElementById(`property_${type}`).checked;
+        const currencySelect = document.getElementById(`${type}_currency`);
+        const priceInput = document.getElementById(`property_${type}_price_display`);
+        const additionalFields = document.getElementById(`${type}_additional_fields`);
+
+        currencySelect.disabled = !isChecked;
+        priceInput.disabled = !isChecked;
+
+        // Toggle visibility of additional fields
+        if (additionalFields) {
+            additionalFields.style.display = isChecked ? 'block' : 'none';
+        }
+
+        if (!isChecked) {
+            priceInput.value = '';
+            document.getElementById(`property_${type}_price`).value = '';
+        }
+    }
 
     function priceDisplay(value) {
         return parseFloat(value).toLocaleString();

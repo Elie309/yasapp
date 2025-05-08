@@ -60,15 +60,12 @@ class PropertySeeder extends Seeder
                 'employee_id' => $employeeId,
                 'city_id' => $cityId,
                 'property_status_id' => $faker->randomElement($propertyStatusData)['property_status_id'], // Random property status
-                'currency_id' => $currencyId, // Random currency ID
                 'property_payment_plan' => $faker->randomElement(['cash to be paid directly', 'installments for over 30 years', 'loan from bank', 'other']),
-                'property_sale' => $isSale,
                 'property_location' => $faker->address(),
                 'property_referral_name' => $faker->name(),
                 'property_referral_phone' => $faker->phoneNumber(),
                 'property_catch_phrase' => $faker->sentence(15),
                 'property_size' => $faker->randomFloat(2, 50, 500),
-                'property_price' => $faker->randomFloat(2, 100000, 5000000),
                 'created_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
                 'updated_at' => $faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
             ];
@@ -195,7 +192,6 @@ class PropertySeeder extends Seeder
                     'property_price_type' => 'sale',
                     'property_price_currency_id' => $currencyId,
                     'property_price_amount' => $faker->randomFloat(2, 100000, 5000000),
-                    'property_price_payment_plan' => $faker->boolean(70) ? $faker->paragraph(1) : null,
                     'property_price_payment_terms' => $faker->randomElement(['cash', 'installments', 'mortgage', 'custom']),
                     'property_price_is_negotiable' => $faker->boolean(60),
                     'property_price_is_primary' => $isPrimary,
@@ -248,7 +244,6 @@ class PropertySeeder extends Seeder
                     'property_price_currency_id' => $currencyId,
                     'property_price_amount' => $baseAmount,
                     'property_price_rent_period' => $rentPeriod,
-                    'property_price_payment_plan' => $faker->boolean(50) ? $faker->paragraph(1) : null,
                     'property_price_payment_terms' => $faker->randomElement(['cash', 'installments', null, null]),
                     'property_price_is_negotiable' => $faker->boolean(70),
                     'property_price_is_primary' => $isPrimary,

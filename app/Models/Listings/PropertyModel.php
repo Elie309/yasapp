@@ -16,19 +16,16 @@ class PropertyModel extends Model
         'client_id',
         'employee_id',
         'city_id',
-        'currency_id',
 
         'land_id',
         'apartment_id',
 
-        'property_sale',
         'property_location',
         'property_referral_name',
         'property_referral_phone',
         'property_catch_phrase',
         'property_payment_plan',
         'property_size',
-        'property_price',
         'property_status_id',
 
         'created_at',
@@ -46,9 +43,7 @@ class PropertyModel extends Model
         'city_id' => 'integer',
         'land_id' => '?integer',
         'apartment_id' => '?integer',
-        'currency_id' => 'integer',
         'property_size' => 'float',
-        'property_price' => 'float',
         'property_status_id' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -71,17 +66,14 @@ class PropertyModel extends Model
         'employee_id' => 'required|integer',
         'city_id' => 'required|integer',
         'property_status_id' => 'required|integer',
-        'currency_id' => 'required|integer',
         'land_id' => 'integer|permit_empty',
         'apartment_id' => 'integer|permit_empty',
-        'property_sale' => 'permit_empty|boolean',
         'property_location' => 'string|max_length[255]',
         'property_referral_name' => 'string|max_length[255]',
         'property_referral_phone' => 'string|max_length[20]',
         'property_catch_phrase' => 'permit_empty|string',
         'property_payment_plan' => 'permit_empty|string',
         'property_size' => 'decimal',
-        'property_price' => 'decimal',
     ];
     protected $validationMessages   = [
         'property_id' => [],
@@ -107,13 +99,6 @@ class PropertyModel extends Model
             'required' => 'Property Status ID is required',
             'integer' => 'Property Status ID must be an integer'
         ],
-        'currency_id' => [
-            'required' => 'Currency ID is required',
-            'integer' => 'Currency ID must be an integer'
-        ],
-        'property_sale' => [
-            'boolean' => 'Property Sale must be a boolean'
-        ],
         'property_location' => [
             'string' => 'Property Location must be a string',
             'max_length' => 'Property Location must not exceed 255 characters'
@@ -134,9 +119,6 @@ class PropertyModel extends Model
         ],
         'property_size' => [
             'decimal' => 'Property Size must be a decimal or float',
-        ],
-        'property_price' => [
-            'decimal' => 'Property Price must be a decimal or float',
         ],
 
     ];
