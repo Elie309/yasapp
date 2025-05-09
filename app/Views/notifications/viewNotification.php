@@ -12,6 +12,21 @@
     </div>
 
     <?= view_cell('App\Cells\Utils\ErrorHandler\ErrorHandlerCell::render') ?>
+
+    <!-- Notification Counter -->
+    <div class="mb-4 px-1">
+        <span class="text-sm text-gray-600">
+            <?php
+            $unreadCount = 0;
+            foreach ($notifications as $notification) {
+                if ($notification->notification_status === 'unread') $unreadCount++;
+            }
+            echo count($notifications) . " notification" . (count($notifications) != 1 ? "s" : "");
+            if ($unreadCount > 0) echo " ($unreadCount unread)";
+            ?>
+        </span>
+    </div>
+
     <div class="space-y-4">
         <?php if (empty($notifications)) : ?>
             <div class="p-4 bg-white shadow rounded-lg">

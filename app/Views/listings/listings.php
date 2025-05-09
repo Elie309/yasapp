@@ -1,12 +1,12 @@
 <div class="container-main">
 
-    <div class="flex flex-row items-center">
-
-        <h2 class="main-title-page text-start pl-4 md:p-0 md:text-center">Listings</h2>
-        <a href="<?= base_url('listings/add') ?>" class=" border-2 border-gray-900 bg-white shadow-xl text-gray-900
-                                font-bold size-14 rounded-full text-4xl flex items-center justify-center
+    <div class="flex flex-row items-center justify-between md:justify-center gap-4 mb-6">
+        <h2 class="main-title-page text-start pl-4 md:p-0">Listings</h2>
+        <a href="<?= base_url('listings/add') ?>" class="flex items-center gap-2 border-2 border-gray-900 bg-white 
+                                shadow-md text-gray-900 font-bold py-2 px-4 rounded-lg text-nowrap 
                                 hover:bg-gray-900 hover:text-white transition duration-300 ease-in-out">
-           <span class="pb-2">+</span>
+            <i class="fas fa-plus"></i>
+            <span class="hidden md:inline">Add Listing</span>
         </a>
     </div>
 
@@ -18,14 +18,22 @@
 
 
         <div class="flex flex-col">
+            <!-- Filter Section Header -->
+            <div class="mb-4 border-b pb-2">
+                <h3 class="text-lg font-semibold flex items-center gap-2">
+                    <i class="fas fa-filter text-gray-600"></i> Filter Listings
+                </h3>
+            </div>
 
-            <div class="flex flex-col md:flex-row mb-4 flex-nowrap w-full justify-center">
-
+            <!-- Main Filters Row -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
                 <?php if (isset($agents) && !empty($agents)) : ?>
-                    <div class="my-2 md:my-0 md:ml-4 order-2">
-                        <label for="agent" class="main-label mr-2 text-wrap">Agent:</label>
-                        <select name="agent" id="agent" class="secondary-input min-w-40">
-                            <option value="" <?= isset($_GET['agent']) ? '' : 'selected' ?>>All</option>
+                    <div class="filter-item">
+                        <label for="agent" class="main-label flex items-center mb-1">
+                            <i class="fas fa-user-tie text-gray-500 mr-2"></i>Agent
+                        </label>
+                        <select name="agent" id="agent" class="secondary-input w-full">
+                            <option value="" <?= isset($_GET['agent']) ? '' : 'selected' ?>>All Agents</option>
                             <?php foreach ($agents as $agent): ?>
                                 <option value="<?= $agent->employee_name ?>"
                                     <?= isset($_GET['agent']) && $_GET['agent'] === $agent->employee_name ? 'selected' : '' ?>><?= ucfirst($agent->employee_name) ?></option>
@@ -33,55 +41,66 @@
                         </select>
                     </div>
                 <?php endif; ?>
-                <div class="my-2 md:my-0 md:ml-4 order-3">
-                    <label for="land_apartment" class="main-label mr-2 text-wrap">Land/Apartment:</label>
-                    <select name="land_apartment" id="land_apartment" class="secondary-input min-w-40">
-                        <option value="" <?= isset($_GET['landOrApartment']) ? '' : 'selected' ?>>All</option>
+
+                <div class="filter-item">
+                    <label for="land_apartment" class="main-label flex items-center mb-1">
+                        <i class="fas fa-home text-gray-500 mr-2"></i>Property Type
+                    </label>
+                    <select name="land_apartment" id="land_apartment" class="secondary-input w-full">
+                        <option value="" <?= isset($_GET['landOrApartment']) ? '' : 'selected' ?>>All Types</option>
                         <option value="land" <?= isset($_GET['landOrApartment']) && $_GET['landOrApartment'] === 'land' ? 'selected' : '' ?>>Land</option>
                         <option value="apartment" <?= isset($_GET['landOrApartment']) && $_GET['landOrApartment'] === 'apartment' ? 'selected' : '' ?>>Apartment</option>
                     </select>
                 </div>
-                <div class="my-2 md:my-0 md:ml-4 order-5">
-                    <label for="propertyStatus" class="main-label mr-2 text-wrap">Status:</label>
-                    <select name="propertyStatus" id="propertyStatus" class="secondary-input min-w-40">
-                        <option value="" <?= isset($_GET['propertyStatus']) ? '' : 'selected' ?>>All</option>
+
+                <div class="filter-item">
+                    <label for="propertyStatus" class="main-label flex items-center mb-1">
+                        <i class="fas fa-tag text-gray-500 mr-2"></i>Status
+                    </label>
+                    <select name="propertyStatus" id="propertyStatus" class="secondary-input w-full">
+                        <option value="" <?= isset($_GET['propertyStatus']) ? '' : 'selected' ?>>All Status</option>
                         <?php foreach ($propertyStatus as $status): ?>
                             <option value="<?= $status['name'] ?>"
                                 <?= isset($_GET['propertyStatus']) && $_GET['propertyStatus'] === $status['name'] ? 'selected' : '' ?>><?= ucfirst($status['name']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-
-                <div class="my-2 md:my-0 md:ml-4 order-1 md:order-6 flex items-end">
-                    <button class="secondary-btn w-full min-w-40  " onclick='resetURL("listings")'>Clear Filter</button>
-                </div>
-
-
             </div>
 
-            <div class="flex flex-col md:flex-row mb-8 justify-center">
-                <div class="my-2 md:my-0">
-                    <label for="createdAt" class="main-label mr-2 text-wrap">Created At:</label>
+            <!-- Date Filters Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div class="filter-item">
+                    <label for="createdAt" class="main-label flex items-center mb-1">
+                        <i class="far fa-calendar-plus text-gray-500 mr-2"></i>Created after date
+                    </label>
                     <input type="date" name="createdAt" id="createdAt"
                         value="<?= isset($_GET['createdAt']) ? $_GET['createdAt'] : '' ?>"
-                        class="secondary-input">
+                        class="secondary-input w-full">
                 </div>
-                <div class=" my-2 md:my-0 md:ml-4">
-                    <label for="updatedAt" class="main-label mr-2 text-wrap">Updated At:</label>
+
+                <div class="filter-item">
+                    <label for="updatedAt" class="main-label flex items-center mb-1">
+                        <i class="far fa-calendar-check text-gray-500 mr-2"></i>Updated after date
+                    </label>
                     <input type="date" name="updatedAt" id="updatedAt"
                         value="<?= isset($_GET['updatedAt']) ? $_GET['updatedAt'] : '' ?>"
-                        class="secondary-input">
+                        class="secondary-input w-full">
+                </div>
+
+                <div class="filter-item flex items-end">
+                    <button class="secondary-btn w-full flex items-center justify-center gap-2" onclick='resetURL("listings")'>
+                        <i class="fas fa-undo-alt"></i>
+                        <span>Clear Filters</span>
+                    </button>
                 </div>
             </div>
-
-
         </div>
 
         <?php
 
         $adminHeaders = [];
-                            
-        if (isset($agents) && !empty($agents)){
+
+        if (isset($agents) && !empty($agents)) {
             $adminHeaders['employee_name'] = 'Agent';
         }
         $tableHeaders = [
@@ -91,7 +110,6 @@
             'city_name' => 'City',
             'property_land_or_apartment' => 'Land/Apartment',
             'property_status_name' => 'Status',
-            'property_budget' => 'Price',
             'property_dimension' => 'Size',
             'property_created_at' => 'Created At',
             'property_updated_at' => 'Updated At',
