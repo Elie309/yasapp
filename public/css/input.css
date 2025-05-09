@@ -213,7 +213,7 @@
   }
 
   .carousel-controls {
-    @apply flex justify-between mt-2.5 ;
+    @apply flex justify-between mt-2.5;
   }
 
   .carousel-controls button {
@@ -233,7 +233,7 @@
   .chart-container canvas {
     @apply w-full h-full mx-auto row-span-10 mb-4;
   }
-  
+
   .form-section {
     @apply w-full mb-4 p-6 bg-white shadow-md rounded-md;
   }
@@ -242,7 +242,21 @@
     @apply py-2 text-center text-xl font-semibold text-gray-700 border mx-2 rounded-lg focus:outline-none bg-white ring-1 ring-gray-400 focus:ring-red-800 hover:ring-red-800 hover:text-red-800 transition-colors duration-500 ease-in-out;
   }
 
-  
+  .badge {
+    @apply inline-flex items-center px-2 py-1 text-xs font-medium text-gray-800 bg-gray-200 rounded-full;
+  }
+  .badge-success {
+    @apply bg-green-200 text-green-800;
+  }
+  .badge-danger {
+    @apply bg-red-200 text-red-800;
+  }
+  .badge-warning {
+    @apply bg-yellow-200 text-yellow-800;
+  }
+  .badge-info {
+    @apply bg-blue-200 text-blue-800;
+  }
 }
 
 /* HTML: <div class="loader"></div> */
@@ -305,8 +319,12 @@
   }
 
   .break-page {
-        page-break-before: always;
-    }
+    page-break-before: always;
+  }
+
+  .no-break-page {
+    page-break-inside: avoid;
+  }
 
   table {
     width: 100%;
@@ -321,6 +339,12 @@
 
   .no-print {
     display: none;
+  }
+
+  /* For tabs in listings */
+  .tab-content {
+    display: block !important;
+    margin-bottom: 2rem;
   }
 }
 
@@ -352,7 +376,7 @@
 
   /* Add the blur effect */
   filter: blur(4px);
-    -webkit-filter: blur(4px);
+  -webkit-filter: blur(4px);
 }
 
 /* width */
@@ -374,4 +398,20 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* TABS */
+.tab-button.active {
+  color: #dc2626;
+  border-color: #dc2626;
+  border-bottom-width: 2px;
+}
+
+.tab-button {
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover:not(.active) {
+  color: #9ca3af;
+  border-color: #9ca3af;
 }
